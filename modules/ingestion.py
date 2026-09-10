@@ -31,6 +31,14 @@ def fetch_source_posts(source_page_id: str, access_token: str, processed_ids: li
         print(f"Network error accessing Facebook Graph API for {ident}: {e}")
         data = {}
 
+    if "error" in data:
+        err = data["error"]
+        print(f" [FETCHER NOTICE] Meta Graph API query for '{ident}' returned: {err.get('message')} (Code: {err.get('code')})")
+        if err.get('code') == 10:
+            print(" [FETCHER NOTICE] Meta requires 'Page Public Content Access' feature for third-party pages without admin permission.")
+        elif err.get('code') == 190:
+            print(" [FETCHER NOTICE] Access token is expired or invalid. Please refresh your Page Access Token.")
+
     posts = data.get("data", [])
     new_posts = []
 
@@ -73,6 +81,19 @@ def fetch_source_posts(source_page_id: str, access_token: str, processed_ids: li
 
         if new_posts:
             return new_posts
+
+    # Check for custom feed file if configured
+    if os.path.exists("custom_feed.json"):
+        try:
+            with open("custom_feed.json", "r") as cf:
+                c_data = json.load(cf)
+                if isinstance(c_data, list):
+                    custom_items = [p for p in c_data if p.get("post_id") not in processed_ids]
+                    if custom_items:
+                        print(f" [FETCHER] Loaded {len(custom_items)} posts from custom_feed.json")
+                        return custom_items[:limit]
+        except Exception as e:
+            print(f" [FETCHER] Note reading custom_feed.json: {e}")
 
     # Fallback to demo curated feed if page is public/token has restricted permissions
     fallback_items = [
