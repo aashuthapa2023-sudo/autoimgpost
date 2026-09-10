@@ -48,7 +48,12 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     text_y = target_h - 260
 
     for line in overlay_lines:
-        line_text = "".join([token.get("text", "") for token in line])
+        if isinstance(line, str):
+            line_text = line
+        elif isinstance(line, list):
+            line_text = "".join([token.get("text", "") if isinstance(token, dict) else str(token) for token in line])
+        else:
+            line_text = str(line)
         draw.text((60, text_y), line_text, font=font, fill=(255, 255, 255))
         text_y += 68
 

@@ -42,9 +42,10 @@ def main():
     mode = sys.argv[1] if len(sys.argv) > 1 else "run"
     target_channel = sys.argv[2] if len(sys.argv) > 2 else "all"
 
+    repo_slug = os.getenv("GITHUB_REPOSITORY", "aashuthapa2023-sudo/autoimgpost")
     print("===================================================================")
     print("  Facebook Multi-Page Hourly Automated Publisher (Zero-Cost Pipeline)")
-    print(f"  Target Repository: https://github.com/{repoOwner}/{repoName}.git")
+    print(f"  Target Repository: https://github.com/{repo_slug}.git")
     print(f"  Execution Mode: {mode.upper()} | Filter: {target_channel}")
     print("===================================================================")
 
@@ -99,8 +100,13 @@ def main():
             continue
 
         if not token:
-            print(f" [WARN] Skipping channel '{channel_id}': Missing environment token {token_env}")
-            continue
+            if mode == "dry_run":
+                print(f" [NOTICE] Channel '{channel_id}' has no {token_env} set; running DRY RUN with staged simulation credentials.")
+                token = "SIMULATED_DEMO_TOKEN"
+            else:
+                print(f" [WARN] Skipping channel '{channel_id}': Missing environment token {token_env}")
+                print(f"        To publish live posts, configure {token_env} in GitHub Secrets.")
+                continue
 
         processed_ids = processed_ids_map.get(channel_id, [])
 
