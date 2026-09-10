@@ -1,0 +1,71 @@
+name: Multi-Page Content Pipeline & Hourly Scheduler
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Runs automatically every hour to ingest source page posts
+  workflow_dispatch:     # Allows manual trigger or control from UI
+    inputs:
+      action:
+        description: 'Pipeline Action'
+        required: true
+        default: 'run'
+        type: choice
+        options:
+          - 'run'
+          - 'dry_run'
+          - 'health_check'
+      channel:
+        description: 'Target Channel ID (or all)'
+        required: false
+        default: 'all'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  run-pipeline:
+    name: Execute Hourly Auto-Post Pipeline
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install System Dependencies (OpenCV & Fonts)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1 libglib2.0-0 fonts-dejavu-core
+
+      - name: Install Python Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Execute Multi-Channel Post Pipeline
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          FB_TOKEN_CINEMA: ${{ secrets.FB_TOKEN_CINEMA }}
+          FB_TOKEN_GAMING: ${{ secrets.FB_TOKEN_GAMING }}
+          FB_TOKEN_TECH: ${{ secrets.FB_TOKEN_TECH }}
+        run: |
+          python main.py ${{ github.event.inputs.action || 'run' }} ${{ github.event.inputs.channel || 'all' }}
+
+      - name: Commit and Push Updated State
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add state.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update processed post state [skip ci]" && git push)

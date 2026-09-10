@@ -1,0 +1,58 @@
+{
+  "pipeline_active": true,
+  "max_images_per_day_per_page": 15,
+  "min_hour_gap_per_page": 1,
+  "channels": [
+    {
+      "channel_id": "cinema_news",
+      "channel_name": "Cinema Pulse & Box Office",
+      "source_page_url": "https://www.facebook.com/HollywoodInsiderDaily",
+      "source_page_id": "100084928172635",
+      "dest_page_id": "100095827163829",
+      "dest_page_name": "CineVerse Official",
+      "dest_access_token_env": "FB_TOKEN_CINEMA",
+      "logo_badge": "assets/logos/jurassic_emblem.png",
+      "highlight_color": "#FFC83B",
+      "max_posts_per_run": 2,
+      "cadence_mirror_enabled": true,
+      "fetch_frequency": "hourly",
+      "policy_compliance_mode": "strict_fb_standard",
+      "max_daily_posts": 15,
+      "min_gap_hours": 1
+    },
+    {
+      "channel_id": "gaming_central",
+      "channel_name": "NextGen Gaming HQ",
+      "source_page_url": "https://www.facebook.com/GamingNewsNetworkOfficial",
+      "source_page_id": "100063829104820",
+      "dest_page_id": "100072918274920",
+      "dest_page_name": "NextGen Gaming",
+      "dest_access_token_env": "FB_TOKEN_GAMING",
+      "logo_badge": "assets/logos/default_badge.png",
+      "highlight_color": "#00E5FF",
+      "max_posts_per_run": 2,
+      "cadence_mirror_enabled": true,
+      "fetch_frequency": "hourly",
+      "policy_compliance_mode": "strict_fb_standard",
+      "max_daily_posts": 15,
+      "min_gap_hours": 1
+    },
+    {
+      "channel_id": "tech_breakthroughs",
+      "channel_name": "Future AI & Tech Trends",
+      "source_page_url": "https://www.facebook.com/SiliconHorizonScoop",
+      "source_page_id": "100049102847291",
+      "dest_page_id": "100081729384729",
+      "dest_page_name": "AI Frontier",
+      "dest_access_token_env": "FB_TOKEN_TECH",
+      "logo_badge": null,
+      "highlight_color": "#34D399",
+      "max_posts_per_run": 2,
+      "cadence_mirror_enabled": true,
+      "fetch_frequency": "hourly",
+      "policy_compliance_mode": "strict_fb_standard",
+      "max_daily_posts": 15,
+      "min_gap_hours": 1
+    }
+  ]
+}
