@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import time
+import shutil
 import traceback
 from datetime import datetime, timezone
 from modules.ingestion import fetch_source_posts
@@ -13,13 +14,14 @@ from modules.notifier import send_telegram_alert
 
 CONFIG_FILE = "config.json"
 STATE_FILE = "state.json"
-MAX_DAILY_LIMIT_PER_PAGE = 15  # STRICT RULE: Must not exceed 15 images per day per page
-MIN_POST_GAP_SECONDS = 3600    # STRICT RULE: At least 1 hour (3600s) gap per post
+OUTPUT_DIR = "output"
+MAX_DAILY_LIMIT_PER_PAGE = 15
+MIN_POST_GAP_SECONDS = 3600
 
 def load_config():
     if not os.path.exists(CONFIG_FILE):
         raise FileNotFoundError(f"{CONFIG_FILE} does not exist.")
-    with open(CONFIG_FILE, "r") as f:
+    with open(CONFIG_FILE, "r", encoding="utf-8") as f:
         data = json.load(f)
     if isinstance(data, list):
         return {"pipeline_active": True, "channels": data}
@@ -28,20 +30,21 @@ def load_config():
 def load_state():
     if os.path.exists(STATE_FILE):
         try:
-            with open(STATE_FILE, "r") as f:
+            with open(STATE_FILE, "r", encoding="utf-8") as f:
                 return json.load(f)
         except Exception:
             return {"processed_ids": {}, "daily_stats": {}}
     return {"processed_ids": {}, "daily_stats": {}}
 
 def save_state(state):
-    with open(STATE_FILE, "w") as f:
+    with open(STATE_FILE, "w", encoding="utf-8") as f:
         json.dump(state, f, indent=2)
 
 def main():
     mode = sys.argv[1] if len(sys.argv) > 1 else "run"
     target_channel = sys.argv[2] if len(sys.argv) > 2 else "all"
 
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
     repo_slug = os.getenv("GITHUB_REPOSITORY", "aashuthapa2023-sudo/autoimgpost")
     print("===================================================================")
     print("  Facebook Multi-Page Hourly Automated Publisher (Zero-Cost Pipeline)")
@@ -63,7 +66,6 @@ def main():
     daily_stats = state.get("daily_stats", {})
 
     today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    now_ts = int(time.time())
 
     for ch in channels:
         channel_id = ch["channel_id"]
@@ -72,20 +74,19 @@ def main():
 
         channel_name = ch.get("channel_name", channel_id)
         source_url = ch.get("source_page_url", "")
-        source_id = ch["source_page_id"]
-        dest_id = ch["dest_page_id"]
-        token_env = ch["dest_access_token_env"]
+        source_id = ch.get("source_page_id", "")
+        dest_id = ch.get("dest_page_id", "")
+        token_env = ch.get("dest_access_token_env", "FB_TOKEN_DEFAULT")
         token = os.getenv(token_env)
         max_posts = ch.get("max_posts_per_run", 2)
-        cadence_mirror = ch.get("cadence_mirror_enabled", True)
+        badge_label = ch.get("badge_label", "OFFICIAL UPDATE")
+        highlight_hex = ch.get("highlight_color", "#FFC83B")
 
         print(f"\n-------------------------------------------------------------")
         print(f" Channel: {channel_name} ({channel_id})")
         print(f" Source URL: {source_url or source_id} -> Destination Page: {dest_id}")
 
-        # -----------------------------------------------------------------
-        # STRICT CONSTRAINT 1: Max 15 images per day per page
-        # -----------------------------------------------------------------
+        # 1. STRICT CONSTRAINT: Max 15 images per day per page
         channel_stat = daily_stats.get(channel_id, {"date": today_str, "count": 0, "timestamps": [], "last_published_time": 0})
         if channel_stat.get("date") != today_str:
             channel_stat = {"date": today_str, "count": 0, "timestamps": [], "last_published_time": channel_stat.get("last_published_time", 0)}
@@ -96,16 +97,14 @@ def main():
 
         if current_count >= MAX_DAILY_LIMIT_PER_PAGE:
             print(f" [HALT] Channel '{channel_name}' has reached its strict limit of {MAX_DAILY_LIMIT_PER_PAGE} images today.")
-            print(" Skipping until the next 24-hour UTC reset to protect page distribution and policy rating.")
             continue
 
         if not token:
-            if mode == "dry_run":
-                print(f" [NOTICE] Channel '{channel_id}' has no {token_env} set; running DRY RUN with staged simulation credentials.")
+            if mode == "dry_run" or mode == "test":
+                print(f" [NOTICE] Channel '{channel_id}' has no {token_env} set; running in SIMULATED DRY RUN mode.")
                 token = "SIMULATED_DEMO_TOKEN"
             else:
                 print(f" [WARN] Skipping channel '{channel_id}': Missing environment token {token_env}")
-                print(f"        To publish live posts, configure {token_env} in GitHub Secrets.")
                 continue
 
         processed_ids = processed_ids_map.get(channel_id, [])
@@ -113,7 +112,7 @@ def main():
         try:
             allowed_to_fetch = min(max_posts, remaining_today)
             new_posts = fetch_source_posts(source_id, token, processed_ids, limit=allowed_to_fetch, source_url=source_url)
-            print(f" [INGEST] Found {len(new_posts)} new unprocessed post(s)")
+            print(f" [INGEST] Found {len(new_posts)} new unprocessed post(s) from Facebook source")
         except Exception as err:
             tb_str = traceback.format_exc()
             print(f" [ERROR] Failed to fetch source posts: {err}")
@@ -130,7 +129,6 @@ def main():
         last_pub_time = channel_stat.get("last_published_time", 0)
 
         for post in new_posts:
-            # Double check daily cap before each image
             if channel_stat["count"] >= MAX_DAILY_LIMIT_PER_PAGE:
                 print(f" [DAILY CAP REACHED] Hit {MAX_DAILY_LIMIT_PER_PAGE} posts limit for {channel_id}. Stopping batch.")
                 break
@@ -138,41 +136,41 @@ def main():
             post_id = post["post_id"]
             source_gap_hours = post.get("source_gap_hours", 2.0)
 
-            # -------------------------------------------------------------
-            # STRICT CONSTRAINT 2: At least 1 hour gap per post in a page
-            # -------------------------------------------------------------
+            # 2. STRICT CONSTRAINT: At least 1 hour gap per post in a page
             effective_gap_hours = max(1.0, float(source_gap_hours))
             effective_gap_seconds = int(effective_gap_hours * 3600)
 
-            print(f"\n [+] Post: {post_id}")
-            print(f"     Source hour gap: {source_gap_hours}h | Enforced gap: {effective_gap_hours}h (>= 1 hour rule satisfied)")
+            print(f"\n [+] Processing Post: {post_id}")
+            print(f"     Enforced Schedule Gap: {effective_gap_hours}h (>= 1 hour rule satisfied)")
 
             try:
-                # 1. Image Text & Watermark Erasure (Local EasyOCR + OpenCV Telea)
-                print("     [1/5] Erasing source watermarks & subtitles with CPU EasyOCR + Inpainting...")
+                # 1. Image Download & Smart Cleaner
+                print("     [1/5] Downloading image from Facebook crawler CDN...")
                 raw_img = download_image(post["image_url"])
+                print(f"           Source image downloaded: {raw_img.shape[1]}x{raw_img.shape[0]}px")
                 cleaned_img = erase_text_and_watermarks(raw_img)
 
-                # 2. Cinematic Color Grading (CLAHE & Tone Enhancement)
-                print("     [2/5] Applying OpenCV CLAHE LAB contrast grading...")
+                # 2. Cinematic Color Grading
+                print("     [2/5] Applying OpenCV CIE-LAB CLAHE contrast grading...")
                 graded_img = apply_cinematic_grade(cleaned_img)
 
-                # 3. AI Caption & Headline (Multi-Provider Waterfall: Groq -> Gemini -> OpenRouter -> Local)
-                print("     [3/5] Executing Zero-Cost LLM Failover Waterfall...")
+                # 3. AI Caption & Dual-Tone Headline
+                print("     [3/5] Generating dual-tone headline & policy-compliant caption...")
                 ai_data = generate_social_payload(post["caption"])
 
-                # 4. Composite 4:5 Poster with Gradient & Bold Typography
-                rendered_file = f"temp_{channel_id}_{post_id}.jpg"
-                print(f"     [4/5] Compositing 4:5 poster typography to {rendered_file}...")
+                # 4. Composite 4:5 Poster
+                rendered_file = os.path.join(OUTPUT_DIR, f"{channel_id}_{post_id}.jpg")
+                print(f"     [4/5] Compositing 4:5 studio poster to {rendered_file}...")
                 render_final_poster(
                     base_img=graded_img,
                     overlay_lines=ai_data["overlay_lines"],
-                    highlight_hex=ch.get("highlight_color", "#FFC83B"),
-                    badge_path=ch.get("logo_badge"),
+                    highlight_hex=highlight_hex,
+                    badge_label=badge_label,
                     output_path=rendered_file
                 )
+                print(f"           Poster created successfully: 1080x1350px")
 
-                # 5. Scheduling / Publishing with guaranteed minimum 1 hour spacing
+                # 5. Scheduling / Publishing
                 now_current = int(time.time())
                 candidate_time_now = now_current + accumulated_gap_seconds + (effective_gap_seconds if accumulated_gap_seconds > 0 else 0)
                 min_time_from_last = (last_pub_time + MIN_POST_GAP_SECONDS) if last_pub_time > 0 else candidate_time_now
@@ -181,11 +179,11 @@ def main():
                 sched_dt = datetime.fromtimestamp(target_publish_ts, tz=timezone.utc)
                 sched_str = sched_dt.strftime("%Y-%m-%d %H:%M:%S UTC")
 
-                print(f"     [5/5] Enforced Schedule: {sched_str} (>= 1 hour gap guaranteed)")
+                print(f"     [5/5] Target Schedule: {sched_str}")
 
-                if mode == "dry_run":
-                    print(f"     [DRY RUN] Would publish to page {dest_id} scheduled for {sched_str}")
-                    published_id = f"dry_run_{post_id}"
+                if mode in ["dry_run", "test"]:
+                    print(f"     [DRY RUN] Would publish to Facebook Page {dest_id} scheduled for {sched_str}")
+                    published_id = f"simulated_{post_id}"
                 else:
                     published_id = publish_to_facebook(
                         dest_page_id=dest_id,
@@ -203,9 +201,6 @@ def main():
                 channel_stat["last_published_time"] = target_publish_ts
                 last_pub_time = target_publish_ts
                 accumulated_gap_seconds += effective_gap_seconds
-
-                if os.path.exists(rendered_file):
-                    os.remove(rendered_file)
 
             except Exception as err:
                 tb_str = traceback.format_exc()

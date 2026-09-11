@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FB Post Automation & Enhancement Pipeline • 24/7 Live Automation Hub</title>
-  <meta name="description" content="24/7 Full Multi-Tab Web UI for Facebook Post Automation, OCR Watermark Cleaning, LAB Contrast Grading, Dual-Tone Typography, and Platform Settings.">
+  <title>AutoImgPost • Facebook 24/7 Live Automation Hub</title>
+  <meta name="description" content="24/7 Live Web UI for Facebook Post Automation, Ingestion, OCR Watermark Cleaning, LAB Contrast Grading, Dual-Tone Typography, and Concurrently Syncing Actions.">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -12,7 +12,8 @@
       theme: {
         extend: {
           colors: {
-            brand: { 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706' }
+            brand: { 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706' },
+            fb: { 500: '#0866FF', 600: '#0052cc' }
           }
         }
       }
@@ -20,7 +21,7 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Inter', sans-serif; }
     .font-oswald { font-family: 'Oswald', sans-serif; }
@@ -31,46 +32,51 @@
       100% { top: 98%; opacity: 0.2; }
     }
     .radar-beam { animation: pulse-radar 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #0f0f11; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #27272a; border-radius: 3px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
   </style>
 </head>
 <body class="bg-neutral-950 text-neutral-100 min-h-screen flex flex-col selection:bg-amber-500/20">
 
-  <!-- Top Global Header with 24/7 Status -->
-  <header class="border-b border-neutral-800/80 bg-neutral-900/80 backdrop-blur-md sticky top-0 z-40">
+  <!-- Top Global Header -->
+  <header class="border-b border-neutral-800/80 bg-neutral-900/90 backdrop-blur-md sticky top-0 z-40 shadow-lg">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-400 p-0.5 shadow-lg shadow-amber-500/20 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 p-0.5 shadow-lg shadow-amber-500/20 flex items-center justify-center">
           <div class="w-full h-full bg-neutral-950 rounded-[10px] flex items-center justify-center font-bold text-amber-400 text-lg">
             FB
           </div>
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="font-bold text-sm sm:text-base text-neutral-100">
-              Content Pipeline • 24/7 Automation Hub
+            <h1 class="font-bold text-sm sm:text-base text-neutral-100 flex items-center gap-2">
+              <span>AutoImgPost</span>
+              <span class="text-neutral-500 font-normal text-xs">&bull; Facebook Pipeline Hub</span>
             </h1>
-            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            <span id="liveStatusBadge" class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-ping"></span>
-              24/7 Live
+              24/7 Concurrently Synced
             </span>
           </div>
           <p class="text-[11px] text-neutral-400 hidden sm:block">
-            GitHub Actions Cron &bull; EasyOCR Inpaint &bull; CLAHE LAB &bull; Dual-Tone Waterfall Typography
+            Public FB Ingest &bull; Smart Clean &bull; LAB CLAHE &bull; Dual-Tone 4:5 Posters &bull; Rate & Cadence Protected
           </p>
         </div>
       </div>
 
-      <!-- Header Action Links & Settings Quick Jump -->
+      <!-- Quick Actions Header -->
       <div class="flex items-center gap-2.5">
-        <button onclick="switchTab('settings')" id="headerSettingsBtn"
-          class="px-3 py-1.5 bg-neutral-950 hover:bg-neutral-800 text-amber-300 border border-neutral-700 hover:border-amber-400/60 rounded-lg text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow">
-          <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-          <span>Settings</span>
+        <button onclick="toggleMasterSwitch()" id="btnMasterToggle"
+          class="px-3 py-1.5 bg-emerald-950/60 hover:bg-emerald-900 text-emerald-300 border border-emerald-500/40 rounded-lg text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          <span id="masterStatusText">Pipeline Active</span>
         </button>
 
         <a href="https://github.com/aashuthapa2023-sudo/autoimgpost" target="_blank" rel="noopener noreferrer"
-           class="px-3 py-1.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-neutral-200 rounded-lg text-xs font-mono hidden sm:flex items-center gap-1.5 transition-colors">
-          <span>Git Repo</span>
+           class="px-3 py-1.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-neutral-300 rounded-lg text-xs font-mono hidden sm:flex items-center gap-1.5 transition-colors">
+          <span>GitHub</span>
         </a>
 
         <a href="https://github.com/aashuthapa2023-sudo/autoimgpost/actions" target="_blank" rel="noopener noreferrer"
@@ -80,431 +86,330 @@
       </div>
     </div>
 
-    <!-- Multi-Tab Navigation Bar (All 7 Tabs Visible & Interactive) -->
+    <!-- Navigation Tabs Bar -->
     <div class="border-t border-neutral-800/80 bg-neutral-950/90">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-1 overflow-x-auto scrollbar-none" id="tabsBar">
         <button onclick="switchTab('pipeline')" id="tabBtn_pipeline"
           class="px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider border-b-2 border-amber-400 text-amber-400 bg-amber-400/5 whitespace-nowrap transition-colors flex items-center gap-1.5 cursor-pointer">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path></svg>
-          <span>1. Pipeline & Live Preview</span>
+          <span>1. Live Action Sync & Studio</span>
+        </button>
+
+        <button onclick="switchTab('fb_explorer')" id="tabBtn_fb_explorer"
+          class="px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider border-b-2 border-transparent text-neutral-400 hover:text-neutral-200 whitespace-nowrap transition-colors flex items-center gap-1.5 cursor-pointer">
+          <svg class="w-3.5 h-3.5 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          <span>2. Test Real FB Pages (Live Posts)</span>
+          <span class="px-1.5 py-0.2 rounded text-[9px] font-mono bg-blue-500/20 text-blue-300">netflixfanslivehere</span>
+        </button>
+
+        <button onclick="switchTab('gallery')" id="tabBtn_gallery"
+          class="px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider border-b-2 border-transparent text-neutral-400 hover:text-neutral-200 whitespace-nowrap transition-colors flex items-center gap-1.5 cursor-pointer">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+          <span>3. Generated Posters Gallery</span>
         </button>
 
         <button onclick="switchTab('settings')" id="tabBtn_settings"
           class="px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider border-b-2 border-transparent text-neutral-400 hover:text-neutral-200 whitespace-nowrap transition-colors flex items-center gap-1.5 cursor-pointer">
-          <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
-          <span>2. Platform Settings & APIs</span>
-          <span class="px-1.5 py-0.2 rounded text-[9px] font-mono bg-amber-500/20 text-amber-300">Tokens & Rules</span>
-        </button>
-
-        <button onclick="switchTab('poster')" id="tabBtn_poster"
-          class="px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider border-b-2 border-transparent text-neutral-400 hover:text-neutral-200 whitespace-nowrap transition-colors flex items-center gap-1.5 cursor-pointer">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"></path></svg>
-          <span>3. Poster Studio</span>
-        </button>
-
-        <button onclick="switchTab('cleaner')" id="tabBtn_cleaner"
-          class="px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider border-b-2 border-transparent text-neutral-400 hover:text-neutral-200 whitespace-nowrap transition-colors flex items-center gap-1.5 cursor-pointer">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-          <span>4. AI Cleaner & LAB Grade</span>
-        </button>
-
-        <button onclick="switchTab('channels')" id="tabBtn_channels"
-          class="px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider border-b-2 border-transparent text-neutral-400 hover:text-neutral-200 whitespace-nowrap transition-colors flex items-center gap-1.5 cursor-pointer">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
-          <span>5. Multi-Channel Routing</span>
-        </button>
-
-        <button onclick="switchTab('telegram')" id="tabBtn_telegram"
-          class="px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider border-b-2 border-transparent text-neutral-400 hover:text-neutral-200 whitespace-nowrap transition-colors flex items-center gap-1.5 cursor-pointer">
-          <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-          <span>6. Telegram Alerts</span>
-        </button>
-
-        <button onclick="switchTab('architecture')" id="tabBtn_architecture"
-          class="px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider border-b-2 border-transparent text-neutral-400 hover:text-neutral-200 whitespace-nowrap transition-colors flex items-center gap-1.5 cursor-pointer">
-          <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          <span>7. Zero-Cost Engine ($0)</span>
+          <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+          <span>4. Channels & Settings</span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Main Multi-Tab Body -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 flex-1 w-full">
+  <!-- Main Workspace Area -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
 
-    <!-- TAB 1: PIPELINE & LIVE PREVIEW -->
+    <!-- TAB 1: Live Concurrent Action Sync & Studio -->
     <div id="tabContent_pipeline" class="space-y-6">
-      <!-- 24/7 Hosting Banner -->
-      <div class="bg-gradient-to-r from-neutral-900 via-neutral-900 to-neutral-950 border border-neutral-800 rounded-xl p-4 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div class="flex items-start sm:items-center gap-3">
-          <div class="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0">
-            <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-          </div>
+
+      <!-- Action Control Banner -->
+      <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-5 shadow-xl">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
-            <div class="flex items-center gap-2">
-              <h2 class="text-sm font-bold text-neutral-100">Live 24/7 Web UI Running on GitHub Pages</h2>
-              <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">Zero Cost • Always On</span>
-            </div>
-            <p class="text-xs text-neutral-400 mt-0.5">
-              Orchestrated by GitHub Actions hourly cron (<code class="text-neutral-300 font-mono">0 * * * *</code>). Enforcing strictly &ge; 1.0h post cadence floor &amp; max 15 posts/day per page.
-            </p>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-2 font-mono text-xs text-neutral-400 self-end md:self-auto">
-          <span class="px-2.5 py-1 rounded bg-neutral-950 border border-neutral-800">Branch: <strong class="text-neutral-200">main</strong></span>
-          <span class="px-2.5 py-1 rounded bg-neutral-950 border border-neutral-800">Cadence: <strong class="text-amber-400">&ge; 1.0h gap</strong></span>
-        </div>
-      </div>
-
-      <!-- Live Generation Canvas & Controls -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <!-- Controls & Stages -->
-        <div class="lg:col-span-7 space-y-6">
-          <div class="bg-neutral-900/90 border border-neutral-800 rounded-xl p-5 shadow-xl space-y-4">
-            <div class="flex items-center justify-between border-b border-neutral-800 pb-3">
-              <div>
-                <h3 class="text-sm font-bold text-neutral-100 flex items-center gap-2">
-                  <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path></svg>
-                  Live Generation Visual Preview (8 Stages)
-                </h3>
-                <p class="text-xs text-neutral-400 mt-0.5">
-                  Watch the multi-stage post transformation play out live on the right canvas.
-                </p>
-              </div>
-
-              <button id="btnPlayLive" onclick="playLiveGenerationDemo()"
-                class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold text-xs uppercase tracking-wider rounded-lg shadow flex items-center gap-1.5 transition-all cursor-pointer">
-                <span>Run Live Preview</span>
-              </button>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono" id="stageButtonsContainer"></div>
-
-            <div class="bg-neutral-950 border border-neutral-800 rounded-lg p-3.5 text-xs text-neutral-300 space-y-1.5">
-              <div class="flex items-center justify-between text-neutral-400">
-                <span id="activeStageTitle" class="font-bold text-amber-400">Stage 1: Source Feed Ingestion</span>
-                <span id="activeStageBadge" class="px-2 py-0.5 rounded bg-neutral-900 border border-neutral-700 text-[10px] text-neutral-300">RAW RES: 1080x1080</span>
-              </div>
-              <p id="activeStageDesc" class="text-neutral-400 text-[11px] leading-relaxed">
-                Fetches original post image from source Facebook feed. Analyzes aspect ratio and validates metadata before queuing.
-              </p>
-            </div>
-          </div>
-
-          <!-- GitHub Actions Live Workflow Runs -->
-          <div class="bg-neutral-900/90 border border-neutral-800 rounded-xl p-5 shadow-xl space-y-4">
-            <div class="flex items-center justify-between border-b border-neutral-800 pb-3">
-              <div>
-                <h3 class="text-sm font-bold text-neutral-100">GitHub Actions Pipeline Runs (Live Sync)</h3>
-                <p class="text-xs text-neutral-400 mt-0.5">Real-time execution status queried directly from GitHub API.</p>
-              </div>
-              <button onclick="fetchWorkflowRuns()" class="px-2 py-1 bg-neutral-950 hover:bg-neutral-800 border border-neutral-700 text-neutral-300 rounded text-xs font-mono transition-colors cursor-pointer">
-                <span>Refresh</span>
-              </button>
-            </div>
-            <div id="workflowRunsList" class="space-y-2">
-              <div class="text-xs font-mono text-neutral-500 py-3 text-center">Loading latest workflow runs from GitHub...</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Canvas -->
-        <div class="lg:col-span-5 flex flex-col items-center space-y-4">
-          <div class="w-full text-xs font-semibold text-neutral-400 uppercase tracking-wider flex items-center justify-between">
-            <span>Real-Time 4:5 Poster Render</span>
-            <span class="font-mono text-amber-400 text-xs">1080 &times; 1350 HD</span>
-          </div>
-
-          <div class="relative w-full max-w-[370px] aspect-[4/5] rounded-xl overflow-hidden shadow-2xl border-2 border-neutral-800 bg-neutral-950">
-            <canvas id="liveCanvas" class="w-full h-full object-cover"></canvas>
-            <div id="radarScanner" class="absolute inset-0 pointer-events-none hidden">
-              <div class="radar-beam w-full h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_15px_#10b981] absolute"></div>
-              <div class="absolute inset-0 bg-emerald-500/5 backdrop-blur-[0.5px]"></div>
-            </div>
-            <div class="absolute inset-x-0 bottom-0 bg-neutral-950/90 backdrop-blur-md border-t border-neutral-800 p-3 flex items-center justify-between text-xs">
-              <div>
-                <div class="text-xs font-bold text-neutral-100" id="hudStageTitle">Stage 1: Ingestion</div>
-                <div class="text-[10px] text-neutral-400 font-mono" id="hudStageBadge">Source Scanned</div>
-              </div>
-              <span class="px-2 py-0.5 rounded bg-neutral-900 border border-neutral-800 font-mono text-amber-400 text-[11px]" id="hudStageCounter">1 / 8</span>
-            </div>
-          </div>
-
-          <button onclick="downloadCanvasImage()" class="w-full max-w-[370px] px-4 py-2.5 bg-neutral-900 hover:bg-neutral-800 text-neutral-200 border border-neutral-700 font-semibold text-xs rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer">
-            <span>Download High-Res 4:5 Poster (JPEG)</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 2: PLATFORM SETTINGS & APIS (THE USER'S REQUESTED SETTINGS TAB) -->
-    <div id="tabContent_settings" class="space-y-6 hidden">
-      <div class="bg-gradient-to-r from-neutral-900 via-neutral-900 to-neutral-950 border border-neutral-800 rounded-2xl p-6 shadow-2xl space-y-6">
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-neutral-800">
-          <div>
-            <h2 class="text-lg font-bold text-neutral-100 flex items-center gap-2">
-              <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
-              Git Workflow & Platform API Settings
+            <h2 class="text-base sm:text-lg font-bold text-neutral-100 flex items-center gap-2">
+              <span>Concurrent Execution Engine</span>
+              <span id="runStatePill" class="px-2 py-0.5 rounded text-[11px] font-mono bg-neutral-800 text-neutral-400">Idle / Ready</span>
             </h2>
             <p class="text-xs text-neutral-400 mt-1">
-              Configure master automated start/stop switch, GitHub Personal Access Token, and Meta Facebook Page Graph Tokens with strict safety limits.
+              Trigger live pipeline executions. Watch stages light up concurrently and monitor the terminal stream in real time.
             </p>
           </div>
 
-          <!-- Master Auto Start/Stop Switch -->
-          <div class="flex items-center gap-3 bg-neutral-950 p-3 rounded-xl border border-neutral-800">
+          <div class="flex flex-wrap items-center gap-3">
             <div>
-              <span class="text-[10px] uppercase font-mono text-neutral-500 block">Cron Pipeline</span>
-              <span id="masterStatusText" class="text-xs font-bold text-emerald-400">ACTIVE (Hourly)</span>
+              <label class="text-[10px] font-mono text-neutral-400 block mb-1 uppercase">Target Channel</label>
+              <select id="selectChannel" class="bg-neutral-950 border border-neutral-700 rounded-lg px-3 py-1.5 text-xs font-mono text-neutral-200 focus:outline-none focus:border-amber-400">
+                <option value="all">All Channels (Multi-Channel)</option>
+                <option value="netflix_fans" selected>Netflix Fans Live Here (netflix_fans)</option>
+                <option value="gaming_central">NextGen Gaming HQ (IGN Mirror)</option>
+                <option value="tech_breakthroughs">Future AI & Tech (TechCrunch)</option>
+              </select>
             </div>
-            <button onclick="toggleMasterSwitch()" id="btnMasterToggle"
-              class="px-4 py-2 rounded-lg text-xs font-bold bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-all cursor-pointer">
-              Pause Schedule
-            </button>
-          </div>
-        </div>
 
-        <!-- Settings Form Sections -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <!-- Left: GitHub Actions & Repo -->
-          <div class="space-y-4 bg-neutral-950 p-4 rounded-xl border border-neutral-800">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
-              GitHub Automation Credentials
-            </h3>
-            <div class="space-y-3 text-xs">
-              <div>
-                <label class="block text-neutral-400 font-mono text-[11px] mb-1">GitHub Owner / User</label>
-                <input type="text" id="setting_gh_owner" value="aashuthapa2023-sudo" class="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-3 py-2 text-neutral-100 font-mono text-xs focus:border-amber-400 focus:outline-none">
-              </div>
-              <div>
-                <label class="block text-neutral-400 font-mono text-[11px] mb-1">Repository Name</label>
-                <input type="text" id="setting_gh_repo" value="autoimgpost" class="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-3 py-2 text-neutral-100 font-mono text-xs focus:border-amber-400 focus:outline-none">
-              </div>
-              <div>
-                <label class="block text-neutral-400 font-mono text-[11px] mb-1">Personal Access Token (PAT) [Stored Locally in Browser]</label>
-                <input type="password" id="setting_gh_pat" placeholder="ghp_****************" class="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-3 py-2 text-neutral-100 font-mono text-xs focus:border-amber-400 focus:outline-none">
-              </div>
+            <div>
+              <label class="text-[10px] font-mono text-neutral-400 block mb-1 uppercase">Mode</label>
+              <select id="selectAction" class="bg-neutral-950 border border-neutral-700 rounded-lg px-3 py-1.5 text-xs font-mono text-neutral-200 focus:outline-none focus:border-amber-400">
+                <option value="dry_run" selected>Dry Run (Studio Simulation)</option>
+                <option value="run">Live Graph API Publish</option>
+              </select>
             </div>
-          </div>
 
-          <!-- Right: Meta Facebook Page Graph Tokens -->
-          <div class="space-y-4 bg-neutral-950 p-4 rounded-xl border border-neutral-800">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path></svg>
-              Meta Facebook Page Graph Tokens
-            </h3>
-            <div class="space-y-3 text-xs">
-              <div>
-                <label class="block text-neutral-400 font-mono text-[11px] mb-1">Channel 1: CineVerse Daily (Secret: FB_TOKEN_CINEMA)</label>
-                <input type="password" placeholder="EAA..." class="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-3 py-2 text-neutral-100 font-mono text-xs focus:border-amber-400 focus:outline-none">
-              </div>
-              <div>
-                <label class="block text-neutral-400 font-mono text-[11px] mb-1">Channel 2: NextGen Gaming (Secret: FB_TOKEN_GAMING)</label>
-                <input type="password" placeholder="EAA..." class="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-3 py-2 text-neutral-100 font-mono text-xs focus:border-amber-400 focus:outline-none">
-              </div>
-              <div>
-                <label class="block text-neutral-400 font-mono text-[11px] mb-1">Channel 3: AI Frontier (Secret: FB_TOKEN_TECH)</label>
-                <input type="password" placeholder="EAA..." class="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-3 py-2 text-neutral-100 font-mono text-xs focus:border-amber-400 focus:outline-none">
-              </div>
+            <div class="pt-4 sm:pt-0 self-end">
+              <button onclick="triggerPipelineAction()" id="btnTriggerAction"
+                class="px-5 py-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-neutral-950 font-extrabold rounded-lg text-xs font-mono flex items-center gap-2 transition-all shadow-lg shadow-amber-500/20 cursor-pointer">
+                <svg id="btnSpinner" class="w-3.5 h-3.5 hidden animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <span id="btnTriggerText">EXECUTE ACTION NOW</span>
+              </button>
             </div>
           </div>
         </div>
 
-        <!-- Strict Safety Rules Notice -->
-        <div class="bg-neutral-950 border border-neutral-800 p-4 rounded-xl space-y-2">
-          <h4 class="text-xs font-bold text-amber-300 font-mono uppercase">Enforced Safety Constraints (Immutable in Pipeline Code)</h4>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-mono text-neutral-400">
-            <div class="bg-neutral-900 p-2.5 rounded-lg border border-neutral-800">
-              <span class="text-neutral-500 block text-[10px]">DAILY VOLUME</span>
-              <strong class="text-emerald-400">Max 15 Posts / Day</strong> per page
+        <!-- 7-Stage Visual Live Sync Pipeline -->
+        <div class="mt-6 pt-6 border-t border-neutral-800">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-mono font-semibold text-neutral-400 uppercase tracking-wider">
+              Concurrently Syncing Pipeline Stages (1 &rarr; 7)
+            </span>
+            <span id="pipelineProgressPercent" class="text-xs font-mono font-bold text-amber-400">0% Complete</span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2" id="syncStagesContainer">
+            <!-- Stage 1 -->
+            <div id="syncStage_1" class="p-3 rounded-xl bg-neutral-950 border border-neutral-800 transition-all">
+              <div class="flex items-center justify-between text-[10px] font-mono text-neutral-500 mb-1">
+                <span>STAGE 1</span>
+                <span id="syncStageIcon_1" class="w-2 h-2 rounded-full bg-neutral-700"></span>
+              </div>
+              <div class="text-xs font-bold text-neutral-300">FB Ingestion</div>
+              <div class="text-[10px] text-neutral-500 mt-0.5">Googlebot SSR Feed</div>
             </div>
-            <div class="bg-neutral-900 p-2.5 rounded-lg border border-neutral-800">
-              <span class="text-neutral-500 block text-[10px]">CADENCE FLOOR</span>
-              <strong class="text-amber-400">&ge; 1.0 Hour Gap</strong> per post
+
+            <!-- Stage 2 -->
+            <div id="syncStage_2" class="p-3 rounded-xl bg-neutral-950 border border-neutral-800 transition-all">
+              <div class="flex items-center justify-between text-[10px] font-mono text-neutral-500 mb-1">
+                <span>STAGE 2</span>
+                <span id="syncStageIcon_2" class="w-2 h-2 rounded-full bg-neutral-700"></span>
+              </div>
+              <div class="text-xs font-bold text-neutral-300">Cadence Sync</div>
+              <div class="text-[10px] text-neutral-500 mt-0.5">&ge;1h Gap &bull; &le;15/day</div>
             </div>
-            <div class="bg-neutral-900 p-2.5 rounded-lg border border-neutral-800">
-              <span class="text-neutral-500 block text-[10px]">FAILOVER AI</span>
-              <strong class="text-cyan-400">Groq &bull; Gemini &bull; Heuristic</strong>
+
+            <!-- Stage 3 -->
+            <div id="syncStage_3" class="p-3 rounded-xl bg-neutral-950 border border-neutral-800 transition-all">
+              <div class="flex items-center justify-between text-[10px] font-mono text-neutral-500 mb-1">
+                <span>STAGE 3</span>
+                <span id="syncStageIcon_3" class="w-2 h-2 rounded-full bg-neutral-700"></span>
+              </div>
+              <div class="text-xs font-bold text-neutral-300">Smart Cleaner</div>
+              <div class="text-[10px] text-neutral-500 mt-0.5">Photo Preserved</div>
+            </div>
+
+            <!-- Stage 4 -->
+            <div id="syncStage_4" class="p-3 rounded-xl bg-neutral-950 border border-neutral-800 transition-all">
+              <div class="flex items-center justify-between text-[10px] font-mono text-neutral-500 mb-1">
+                <span>STAGE 4</span>
+                <span id="syncStageIcon_4" class="w-2 h-2 rounded-full bg-neutral-700"></span>
+              </div>
+              <div class="text-xs font-bold text-neutral-300">LAB CLAHE</div>
+              <div class="text-[10px] text-neutral-500 mt-0.5">Warm Dynamic Grade</div>
+            </div>
+
+            <!-- Stage 5 -->
+            <div id="syncStage_5" class="p-3 rounded-xl bg-neutral-950 border border-neutral-800 transition-all">
+              <div class="flex items-center justify-between text-[10px] font-mono text-neutral-500 mb-1">
+                <span>STAGE 5</span>
+                <span id="syncStageIcon_5" class="w-2 h-2 rounded-full bg-neutral-700"></span>
+              </div>
+              <div class="text-xs font-bold text-neutral-300">Dual-Tone AI</div>
+              <div class="text-[10px] text-neutral-500 mt-0.5">Gold/White Hooks</div>
+            </div>
+
+            <!-- Stage 6 -->
+            <div id="syncStage_6" class="p-3 rounded-xl bg-neutral-950 border border-neutral-800 transition-all">
+              <div class="flex items-center justify-between text-[10px] font-mono text-neutral-500 mb-1">
+                <span>STAGE 6</span>
+                <span id="syncStageIcon_6" class="w-2 h-2 rounded-full bg-neutral-700"></span>
+              </div>
+              <div class="text-xs font-bold text-neutral-300">4:5 Poster</div>
+              <div class="text-[10px] text-neutral-500 mt-0.5">1080x1350 Vignette</div>
+            </div>
+
+            <!-- Stage 7 -->
+            <div id="syncStage_7" class="p-3 rounded-xl bg-neutral-950 border border-neutral-800 transition-all">
+              <div class="flex items-center justify-between text-[10px] font-mono text-neutral-500 mb-1">
+                <span>STAGE 7</span>
+                <span id="syncStageIcon_7" class="w-2 h-2 rounded-full bg-neutral-700"></span>
+              </div>
+              <div class="text-xs font-bold text-neutral-300">Meta Release</div>
+              <div class="text-[10px] text-neutral-500 mt-0.5">Graph API Dispatch</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Studio Live Preview & Live Log Stream -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Live Poster Preview & Comparison (7 cols) -->
+        <div class="lg:col-span-7 bg-neutral-900 border border-neutral-800 rounded-2xl p-5 shadow-xl flex flex-col">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-sm font-bold text-neutral-200 flex items-center gap-2">
+                <span>Live Studio Result</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/10 text-amber-300 border border-amber-500/20">4:5 Meta Optimized</span>
+              </h3>
+              <p class="text-xs text-neutral-400">Generated high-compliance visual poster with dual-tone typography</p>
+            </div>
+            <a id="btnDownloadPoster" href="/output/dolly_improved.jpg" download="facebook_4_5_poster.jpg"
+              class="px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 rounded-lg text-xs font-mono font-medium flex items-center gap-1.5 transition-colors">
+              <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+              <span>Download</span>
+            </a>
+          </div>
+
+          <!-- Poster Image Viewer Container -->
+          <div class="flex-1 min-h-[420px] bg-neutral-950 rounded-xl border border-neutral-800/80 p-3 flex items-center justify-center relative overflow-hidden group">
+            <img id="activePosterImg" src="/output/dolly_improved.jpg" alt="Generated Poster"
+              class="max-h-[500px] w-auto rounded-lg shadow-2xl object-contain transition-all duration-300 group-hover:scale-[1.01]"
+              onerror="this.src='https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1080&h=1350&fit=crop'" />
+            <div id="posterOverlayStatus" class="absolute bottom-6 left-6 right-6 bg-neutral-900/90 backdrop-blur-md border border-neutral-700/80 rounded-xl p-3 text-xs font-mono flex items-center justify-between">
+              <div>
+                <span class="text-amber-400 font-bold">SOURCE:</span>
+                <span id="posterMetaSource" class="text-neutral-300 ml-1">facebook.com/netflixfanslivehere</span>
+              </div>
+              <span id="posterMetaSpecs" class="text-neutral-400 text-[11px]">1080 &times; 1350 px &bull; JPEG 95%</span>
             </div>
           </div>
         </div>
 
-        <button onclick="saveSettingsLocal()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold rounded-xl text-xs flex items-center gap-2 transition-all cursor-pointer">
-          <span>Save Settings to Browser</span>
+        <!-- Real-Time Terminal & Live Action Logs (5 cols) -->
+        <div class="lg:col-span-5 bg-neutral-900 border border-neutral-800 rounded-2xl p-5 shadow-xl flex flex-col h-[580px]">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <h3 class="text-sm font-bold text-neutral-200 font-mono">Live Action Console</h3>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="clearConsoleLogs()" class="text-[10px] font-mono text-neutral-500 hover:text-neutral-300">Clear</button>
+              <span class="text-[10px] font-mono text-neutral-500 bg-neutral-950 px-2 py-0.5 rounded border border-neutral-800">stdout/stderr</span>
+            </div>
+          </div>
+
+          <!-- Console Window -->
+          <div id="consoleLogWindow" class="flex-1 bg-neutral-950 rounded-xl p-3.5 border border-neutral-800 font-mono text-[11px] leading-relaxed overflow-y-auto space-y-1 text-neutral-300 custom-scrollbar">
+            <div class="text-neutral-500 italic">[SYSTEM] Terminal initialized. Waiting for pipeline action...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: Test Real FB Pages (Live Posts) -->
+    <div id="tabContent_fb_explorer" class="space-y-6 hidden">
+      <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-5 shadow-xl">
+        <h2 class="text-base font-bold text-neutral-100 flex items-center gap-2">
+          <svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          <span>Real Public Facebook Page Ingestion</span>
+        </h2>
+        <p class="text-xs text-neutral-400 mt-1">
+          Query live breaking posts directly from any public Facebook page link (zero login, zero external API keys needed).
+        </p>
+
+        <div class="mt-4 flex flex-col sm:flex-row items-center gap-3">
+          <div class="relative flex-1 w-full">
+            <input type="text" id="inputFbPageUrl" value="https://www.facebook.com/netflixfanslivehere"
+              placeholder="e.g. https://www.facebook.com/netflixfanslivehere"
+              class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-4 py-2.5 text-xs font-mono text-neutral-100 focus:outline-none focus:border-blue-400" />
+          </div>
+
+          <button onclick="fetchLiveFbFeed()" id="btnFetchFbFeed"
+            class="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs font-mono flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer">
+            <svg id="fbFeedSpinner" class="w-3.5 h-3.5 hidden animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            <span>FETCH LIVE POSTS</span>
+          </button>
+        </div>
+
+        <div class="mt-3 flex items-center gap-2">
+          <span class="text-[11px] font-mono text-neutral-500">Quick Presets:</span>
+          <button onclick="setFbUrl('https://www.facebook.com/netflixfanslivehere')" class="px-2 py-0.5 rounded bg-neutral-950 border border-neutral-800 text-[10px] font-mono text-neutral-400 hover:text-amber-300">netflixfanslivehere</button>
+          <button onclick="setFbUrl('https://www.facebook.com/ign')" class="px-2 py-0.5 rounded bg-neutral-950 border border-neutral-800 text-[10px] font-mono text-neutral-400 hover:text-cyan-300">ign</button>
+          <button onclick="setFbUrl('https://www.facebook.com/techcrunch')" class="px-2 py-0.5 rounded bg-neutral-950 border border-neutral-800 text-[10px] font-mono text-neutral-400 hover:text-emerald-300">techcrunch</button>
+        </div>
+      </div>
+
+      <!-- Live Posts Grid -->
+      <div>
+        <h3 class="text-sm font-bold text-neutral-200 mb-3 flex items-center justify-between">
+          <span id="feedResultCount">Recent Ingested Posts</span>
+          <span class="text-xs font-mono text-neutral-500 font-normal">Click "Process Post" to run through 7 stages live</span>
+        </h3>
+
+        <div id="fbPostsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Cards dynamically injected here -->
+          <div class="p-8 text-center text-xs font-mono text-neutral-500 bg-neutral-900 border border-neutral-800 rounded-2xl col-span-full">
+            Loading recent posts from netflixfanslivehere...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Generated Posters Gallery -->
+    <div id="tabContent_gallery" class="space-y-6 hidden">
+      <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-5 shadow-xl flex items-center justify-between">
+        <div>
+          <h2 class="text-base font-bold text-neutral-100">Generated Studio Posters</h2>
+          <p class="text-xs text-neutral-400 mt-1">All processed 4:5 posters saved in output/ directory ready for Meta release.</p>
+        </div>
+        <button onclick="loadPostersGallery()" class="px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 rounded-lg text-xs font-mono">
+          Refresh Gallery
         </button>
       </div>
-    </div>
 
-    <!-- TAB 3: POSTER & TYPOGRAPHY STUDIO -->
-    <div id="tabContent_poster" class="space-y-6 hidden">
-      <div class="bg-neutral-900 border border-neutral-800 rounded-xl p-5 space-y-4">
-        <h3 class="text-sm font-bold text-neutral-100 flex items-center gap-2">
-          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"></path></svg>
-          Poster &amp; Dual-Tone Typography Studio
-        </h3>
-        <p class="text-xs text-neutral-400">Customize headline hooks, highlight accent words, and adjust 4:5 vertical proportions.</p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-          <div>
-            <label class="block text-neutral-400 mb-1">Headline Line 1</label>
-            <input type="text" id="customLine1" value="INSIDE HOLLYWOOD EXCLUSIVE" oninput="updateCustomPoster()" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2 text-neutral-200">
-          </div>
-          <div>
-            <label class="block text-neutral-400 mb-1">Headline Line 2</label>
-            <input type="text" id="customLine2" value="MAJOR BLOCKBUSTER REVEALED" oninput="updateCustomPoster()" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2 text-neutral-200">
-          </div>
-        </div>
+      <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <!-- Gallery cards injected dynamically -->
       </div>
     </div>
 
-    <!-- TAB 4: AI CLEANER & LAB GRADE -->
-    <div id="tabContent_cleaner" class="space-y-6 hidden">
-      <div class="bg-neutral-900 border border-neutral-800 rounded-xl p-5 space-y-4">
-        <h3 class="text-sm font-bold text-neutral-100 flex items-center gap-2">
-          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-          AI Watermark Cleaner &amp; CIE-LAB CLAHE Equalizer
-        </h3>
-        <p class="text-xs text-neutral-400">EasyOCR bounding box dilation threshold, Fast Marching Telea inpainting radius, and LAB contrast equalizer.</p>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-mono">
-          <div class="bg-neutral-950 p-3 rounded-lg border border-neutral-800">
-            <span class="text-neutral-400 block text-[11px] mb-1">OCR Dilation Radius: 12px</span>
-            <input type="range" min="4" max="24" value="12" class="w-full accent-amber-400">
-          </div>
-          <div class="bg-neutral-950 p-3 rounded-lg border border-neutral-800">
-            <span class="text-neutral-400 block text-[11px] mb-1">Inpainting Radius: 5px</span>
-            <input type="range" min="1" max="15" value="5" class="w-full accent-amber-400">
-          </div>
-          <div class="bg-neutral-950 p-3 rounded-lg border border-neutral-800">
-            <span class="text-neutral-400 block text-[11px] mb-1">CLAHE Clip Limit: 3.5</span>
-            <input type="range" min="1" max="8" value="3.5" class="w-full accent-amber-400">
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- TAB 4: Platform Settings & Channels -->
+    <div id="tabContent_settings" class="space-y-6 hidden">
+      <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-5 shadow-xl">
+        <h2 class="text-base font-bold text-neutral-100">Configured Multi-Channel Pages</h2>
+        <p class="text-xs text-neutral-400 mt-1">Channels configured in config.json with strict 15 posts/day cap and &ge;1 hour posting cadence.</p>
 
-    <!-- TAB 5: MULTI-CHANNEL ROUTING -->
-    <div id="tabContent_channels" class="space-y-6 hidden">
-      <div class="bg-neutral-900 border border-neutral-800 rounded-xl p-5 space-y-4">
-        <h3 class="text-sm font-bold text-neutral-100 flex items-center gap-2">
-          <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
-          Multi-Channel Source &amp; Destination Configurations
-        </h3>
-        <div class="space-y-3">
-          <div class="bg-neutral-950 border border-neutral-800 rounded-lg p-3 flex items-center justify-between">
-            <div>
-              <span class="font-bold text-xs text-amber-300">1. Cinema News &amp; Box Office</span>
-              <p class="text-[11px] text-neutral-400">Warner Bros / Marvel &rarr; CineVerse Daily (Page ID: 100095827163829)</p>
-            </div>
-            <span class="text-emerald-400 font-mono text-xs font-bold">4 / 15 Today</span>
-          </div>
-          <div class="bg-neutral-950 border border-neutral-800 rounded-lg p-3 flex items-center justify-between">
-            <div>
-              <span class="font-bold text-xs text-cyan-300">2. Gaming &amp; Esports Radar</span>
-              <p class="text-[11px] text-neutral-400">IGN / GameSpot &rarr; NextGen Gaming (Page ID: 100072918274920)</p>
-            </div>
-            <span class="text-emerald-400 font-mono text-xs font-bold">1 / 15 Today</span>
-          </div>
-          <div class="bg-neutral-950 border border-neutral-800 rounded-lg p-3 flex items-center justify-between">
-            <div>
-              <span class="font-bold text-xs text-emerald-300">3. Future AI &amp; Tech Trends</span>
-              <p class="text-[11px] text-neutral-400">Tech Crunch / Wired &rarr; AI Frontier (Page ID: 100081729384729)</p>
-            </div>
-            <span class="text-neutral-400 font-mono text-xs font-bold">0 / 15 Today</span>
-          </div>
+        <div class="mt-4 overflow-x-auto">
+          <table class="w-full text-left text-xs font-mono">
+            <thead class="bg-neutral-950 text-neutral-400 uppercase border-b border-neutral-800">
+              <tr>
+                <th class="p-3">Channel ID</th>
+                <th class="p-3">Source FB Page</th>
+                <th class="p-3">Destination Page ID</th>
+                <th class="p-3">Badge Label</th>
+                <th class="p-3">Accent Color</th>
+                <th class="p-3">Daily Limit</th>
+              </tr>
+            </thead>
+            <tbody id="channelsTableBody" class="divide-y divide-neutral-800/60 text-neutral-300">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
         </div>
-      </div>
-    </div>
-
-    <!-- TAB 6: TELEGRAM ALERTS -->
-    <div id="tabContent_telegram" class="space-y-6 hidden">
-      <div class="bg-neutral-900 border border-neutral-800 rounded-xl p-5 space-y-4">
-        <h3 class="text-sm font-bold text-neutral-100 flex items-center gap-2">
-          <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-          Telegram Pipeline Watchdog Alerts
-        </h3>
-        <p class="text-xs text-neutral-400">Receive instant push notifications on your phone whenever the pipeline runs, hits rate limits, or faces token expiry.</p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-          <div>
-            <label class="block text-neutral-400 mb-1">Bot Token (TELEGRAM_BOT_TOKEN)</label>
-            <input type="password" placeholder="123456789:ABCdef..." class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2 text-neutral-200">
-          </div>
-          <div>
-            <label class="block text-neutral-400 mb-1">Chat ID (TELEGRAM_CHAT_ID)</label>
-            <input type="text" placeholder="-10012345678" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2 text-neutral-200">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 7: ZERO-COST ENGINE ($0) -->
-    <div id="tabContent_architecture" class="space-y-6 hidden">
-      <div class="bg-neutral-900 border border-neutral-800 rounded-xl p-5 space-y-4">
-        <h3 class="text-sm font-bold text-neutral-100 flex items-center gap-2">
-          <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          100% Free &amp; Unlimited Architecture Breakdown
-        </h3>
-        <table class="w-full text-xs font-mono text-neutral-300">
-          <thead class="text-neutral-500 border-b border-neutral-800">
-            <tr>
-              <th class="py-2 text-left">Component</th>
-              <th class="py-2 text-left">Free Provider</th>
-              <th class="py-2 text-left">Monthly Cost</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-neutral-800/60">
-            <tr>
-              <td class="py-2 font-bold text-neutral-200">24/7 Hosting</td>
-              <td class="py-2 text-neutral-400">GitHub Pages (Fast Edge CDN)</td>
-              <td class="py-2 text-emerald-400 font-bold">$0.00 / mo</td>
-            </tr>
-            <tr>
-              <td class="py-2 font-bold text-neutral-200">Hourly Pipeline</td>
-              <td class="py-2 text-neutral-400">GitHub Actions (2,000 min/mo free)</td>
-              <td class="py-2 text-emerald-400 font-bold">$0.00 / mo</td>
-            </tr>
-            <tr>
-              <td class="py-2 font-bold text-neutral-200">AI Copywriter</td>
-              <td class="py-2 text-neutral-400">Groq LPU + Google AI Studio Free Tier</td>
-              <td class="py-2 text-emerald-400 font-bold">$0.00 / mo</td>
-            </tr>
-            <tr>
-              <td class="py-2 font-bold text-neutral-200">OCR &amp; Inpainting</td>
-              <td class="py-2 text-neutral-400">OpenCV + EasyOCR on Runner CPU</td>
-              <td class="py-2 text-emerald-400 font-bold">$0.00 / mo</td>
-            </tr>
-            <tr>
-              <td class="py-2 font-bold text-neutral-200">Facebook Publisher</td>
-              <td class="py-2 text-neutral-400">Meta Graph API (Free Developer Token)</td>
-              <td class="py-2 text-emerald-400 font-bold">$0.00 / mo</td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
 
   </main>
 
-  <!-- Footer -->
-  <footer class="border-t border-neutral-800/80 bg-neutral-950 py-4 mt-8 text-center text-xs text-neutral-500 font-mono">
-    FB Post Automation Pipeline &bull; Hosted 24/7 on GitHub Pages &bull; Repo: <a href="https://github.com/aashuthapa2023-sudo/autoimgpost" class="text-amber-400 underline">aashuthapa2023-sudo/autoimgpost</a>
-  </footer>
-
+  <!-- JavaScript Application Logic with Concurrent Sync -->
   <script>
-    // Tab Switching Logic
-    const tabNames = ['pipeline', 'settings', 'poster', 'cleaner', 'channels', 'telegram', 'architecture'];
+    let activeTab = 'pipeline';
+    let isActionRunning = false;
+    let pollTimer = null;
 
     function switchTab(name) {
-      tabNames.forEach(t => {
+      activeTab = name;
+      ['pipeline', 'fb_explorer', 'gallery', 'settings'].forEach(t => {
         const content = document.getElementById('tabContent_' + t);
         const btn = document.getElementById('tabBtn_' + t);
-        if (content) {
-          if (t === name) {
-            content.classList.remove('hidden');
-          } else {
-            content.classList.add('hidden');
-          }
-        }
+        if (content) content.classList.toggle('hidden', t !== name);
         if (btn) {
           if (t === name) {
             btn.className = 'px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider border-b-2 border-amber-400 text-amber-400 bg-amber-400/5 whitespace-nowrap transition-colors flex items-center gap-1.5 cursor-pointer';
@@ -513,322 +418,300 @@
           }
         }
       });
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (name === 'fb_explorer') fetchLiveFbFeed();
+      if (name === 'gallery') loadPostersGallery();
+      if (name === 'settings') loadStatusAndChannels();
     }
 
-    // Pipeline Stages Data
-    const stages = [
-      { id: 'ingest', short: '1. Ingest', label: 'Stage 1: Source Feed Ingestion', badge: 'RAW RES: 1080x1080', desc: 'Fetches raw post image from source Facebook feed. Validates aspect ratio and records ingested timestamp.' },
-      { id: 'cadence', short: '2. Cadence', label: 'Stage 2: Cadence Safety Sync', badge: '>= 1.0H GAP VERIFIED', desc: 'Checks elapsed time since last post. Enforces strict >= 1.0h interval floor and max 15 daily post cap.' },
-      { id: 'ocr_mask', short: '3. OCR Detect', label: 'Stage 3: EasyOCR Watermark Bounding', badge: 'LOGOS & SUBTITLES FOUND', desc: 'Deep neural network detects bounding boxes around source page watermarks, logos, and hardcoded subtitle text.' },
-      { id: 'inpaint', short: '4. Inpaint', label: 'Stage 4: Telea Inpainting Cleanup', badge: 'WATERMARKS ERASED', desc: 'Fast Marching OpenCV inpainting cleans the masked text regions, seamlessly healing textures without halos.' },
-      { id: 'clahe', short: '5. LAB Grade', label: 'Stage 5: CIE-LAB CLAHE Contrast LUT', badge: '+35% DYNAMIC RANGE', desc: 'Converts to CIE-LAB color space and applies Contrast Limited Adaptive Histogram Equalization with warm cinematic grading.' },
-      { id: 'typography', short: '6. AI Headline', label: 'Stage 6: AI Waterfall Typography', badge: 'DUAL-TONE HEADLINE', desc: 'Groq/Gemini AI extracts a viral hook with dual-color split (Crisp White + Signature Gold highlight words).' },
-      { id: 'framing', short: '7. 4:5 Frame', label: 'Stage 7: 4:5 Poster Framing & Vignette', badge: '1080x1350 + VIGNETTE', desc: 'Clamps to 4:5 vertical framing, applies 52% exponential dark gradient vignette, and composites the emblem badge.' },
-      { id: 'publish', short: '8. Graph API', label: 'Stage 8: Meta Graph API Dispatch', badge: 'SCHEDULED / PUBLISHED', desc: 'Publishes directly or stages the post for automated release in compliance with Meta rate distribution guidelines.' }
-    ];
-
-    let currentStep = 0;
-    let isPlaying = false;
-    let playTimer = null;
-    const canvas = document.getElementById('liveCanvas');
-    const ctx = canvas ? canvas.getContext('2d') : null;
-    if (canvas) {
-      canvas.width = 1080;
-      canvas.height = 1350;
+    function setFbUrl(url) {
+      document.getElementById('inputFbPageUrl').value = url;
+      fetchLiveFbFeed();
     }
 
-    const sampleImg = new Image();
-    sampleImg.crossOrigin = 'anonymous';
-    sampleImg.src = 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1080&h=1350&fit=crop';
-    sampleImg.onload = () => { if (canvas) renderCanvasStage(currentStep); };
+    // --- CONCURRENT ACTION EXECUTION & SYNC ---
+    async function triggerPipelineAction() {
+      if (isActionRunning) return;
+      const action = document.getElementById('selectAction').value;
+      const channel = document.getElementById('selectChannel').value;
 
-    const stageBtnContainer = document.getElementById('stageButtonsContainer');
-    if (stageBtnContainer) {
-      stages.forEach((s, idx) => {
-        const btn = document.createElement('button');
-        btn.id = 'stageBtn_' + idx;
-        btn.className = 'px-2 py-2 rounded-lg text-center font-mono text-[11px] transition-all cursor-pointer ' +
-          (idx === 0 ? 'bg-amber-400 text-neutral-950 font-bold shadow' : 'bg-neutral-950 text-neutral-400 border border-neutral-800 hover:text-neutral-200');
-        btn.innerHTML = '<span>' + s.short + '</span>';
-        btn.onclick = () => {
-          clearInterval(playTimer);
-          isPlaying = false;
-          selectStage(idx);
-        };
-        stageBtnContainer.appendChild(btn);
-      });
+      setRunState(true, 'Executing ' + action + ' (' + channel + ')...');
+      resetStagesUI();
+
+      try {
+        const res = await fetch('/api/run', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: action, channel: channel })
+        });
+        const data = await res.json();
+        appendConsoleLog('[SYSTEM] Action launched: ' + (data.message || 'Started'));
+      } catch (e) {
+        appendConsoleLog('[ERROR] Failed to launch action: ' + e.message);
+        setRunState(false, 'Failed');
+      }
     }
 
-    function selectStage(idx) {
-      currentStep = idx;
-      stages.forEach((_, i) => {
-        const b = document.getElementById('stageBtn_' + i);
-        if (b) {
-          if (i === idx) {
-            b.className = 'px-2 py-2 rounded-lg text-center font-mono text-[11px] bg-amber-400 text-neutral-950 font-bold shadow';
-          } else if (i < idx) {
-            b.className = 'px-2 py-2 rounded-lg text-center font-mono text-[11px] bg-emerald-950/60 text-emerald-300 border border-emerald-500/30';
-          } else {
-            b.className = 'px-2 py-2 rounded-lg text-center font-mono text-[11px] bg-neutral-950 text-neutral-400 border border-neutral-800 hover:text-neutral-200';
+    async function processSpecificPost(postJsonStr) {
+      if (isActionRunning) return;
+      switchTab('pipeline');
+      const post = JSON.parse(decodeURIComponent(postJsonStr));
+      const channel = document.getElementById('selectChannel').value || 'netflix_fans';
+
+      setRunState(true, 'Processing post ' + post.post_id + '...');
+      resetStagesUI();
+
+      try {
+        const res = await fetch('/api/test-post', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ post: post, channel: channel })
+        });
+        const data = await res.json();
+        appendConsoleLog('[SYSTEM] Processing requested post: ' + post.post_id);
+      } catch (e) {
+        appendConsoleLog('[ERROR] ' + e.message);
+        setRunState(false, 'Error');
+      }
+    }
+
+    function setRunState(running, label) {
+      isActionRunning = running;
+      const pill = document.getElementById('runStatePill');
+      const btnText = document.getElementById('btnTriggerText');
+      const spinner = document.getElementById('btnSpinner');
+
+      if (pill) {
+        pill.innerText = label;
+        pill.className = running 
+          ? 'px-2 py-0.5 rounded text-[11px] font-mono bg-amber-500/20 text-amber-300 border border-amber-500/30 animate-pulse'
+          : 'px-2 py-0.5 rounded text-[11px] font-mono bg-neutral-800 text-neutral-400';
+      }
+      if (btnText) btnText.innerText = running ? 'RUNNING...' : 'EXECUTE ACTION NOW';
+      if (spinner) spinner.classList.toggle('hidden', !running);
+    }
+
+    function resetStagesUI() {
+      for (let i = 1; i <= 7; i++) {
+        updateStageUI(i, 'pending');
+      }
+      document.getElementById('pipelineProgressPercent').innerText = '0% Complete';
+    }
+
+    function updateStageUI(stageIdx, state) {
+      const card = document.getElementById('syncStage_' + stageIdx);
+      const icon = document.getElementById('syncStageIcon_' + stageIdx);
+      if (!card || !icon) return;
+
+      if (state === 'active') {
+        card.className = 'p-3 rounded-xl bg-amber-500/10 border-2 border-amber-400 shadow-lg shadow-amber-500/10 transition-all scale-[1.02]';
+        icon.className = 'w-2 h-2 rounded-full bg-amber-400 animate-ping';
+      } else if (state === 'completed') {
+        card.className = 'p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-200 transition-all';
+        icon.className = 'w-2 h-2 rounded-full bg-emerald-400';
+      } else {
+        card.className = 'p-3 rounded-xl bg-neutral-950 border border-neutral-800 transition-all text-neutral-400';
+        icon.className = 'w-2 h-2 rounded-full bg-neutral-700';
+      }
+    }
+
+    function syncStageProgress(currentStage) {
+      for (let i = 1; i <= 7; i++) {
+        if (i < currentStage) {
+          updateStageUI(i, 'completed');
+        } else if (i === currentStage) {
+          updateStageUI(i, 'active');
+        } else {
+          updateStageUI(i, 'pending');
+        }
+      }
+      const pct = Math.round((Math.max(0, currentStage - (isActionRunning ? 0.5 : 0)) / 7) * 100);
+      document.getElementById('pipelineProgressPercent').innerText = pct + '% Complete';
+    }
+
+    // --- REAL-TIME LOG STREAMING ---
+    let lastLogCount = 0;
+    async function pollLiveLogs() {
+      try {
+        const res = await fetch('/api/logs');
+        if (!res.ok) return;
+        const data = await res.json();
+
+        if (data.is_running !== isActionRunning) {
+          setRunState(data.is_running, data.is_running ? 'Action In Progress...' : 'Completed');
+        }
+
+        if (data.current_stage) {
+          syncStageProgress(data.current_stage);
+        }
+
+        if (data.last_poster) {
+          const img = document.getElementById('activePosterImg');
+          if (img && !img.src.includes(data.last_poster)) {
+            img.src = '/' + data.last_poster + '?t=' + Date.now();
+            const dl = document.getElementById('btnDownloadPoster');
+            if (dl) dl.href = '/' + data.last_poster;
           }
         }
-      });
 
-      const s = stages[idx];
-      const titleEl = document.getElementById('activeStageTitle');
-      const badgeEl = document.getElementById('activeStageBadge');
-      const descEl = document.getElementById('activeStageDesc');
-      const hudTitle = document.getElementById('hudStageTitle');
-      const hudBadge = document.getElementById('hudStageBadge');
-      const hudCounter = document.getElementById('hudStageCounter');
-
-      if (titleEl) titleEl.innerText = s.label;
-      if (badgeEl) badgeEl.innerText = s.badge;
-      if (descEl) descEl.innerText = s.desc;
-      if (hudTitle) hudTitle.innerText = s.label;
-      if (hudBadge) hudBadge.innerText = s.badge;
-      if (hudCounter) hudCounter.innerText = (idx + 1) + ' / 8';
-
-      const scanner = document.getElementById('radarScanner');
-      if (scanner) {
-        if (idx === 0) scanner.classList.remove('hidden');
-        else scanner.classList.add('hidden');
-      }
-
-      renderCanvasStage(idx);
-    }
-
-    function renderCanvasStage(step) {
-      if (!ctx || !canvas) return;
-      const w = 1080;
-      const h = 1350;
-      ctx.clearRect(0, 0, w, h);
-
-      if (sampleImg.complete && sampleImg.naturalHeight !== 0) {
-        ctx.drawImage(sampleImg, 0, 0, w, h);
-      } else {
-        const bgGrad = ctx.createLinearGradient(0, 0, w, h);
-        bgGrad.addColorStop(0, '#1c1917');
-        bgGrad.addColorStop(1, '#09090b');
-        ctx.fillStyle = bgGrad;
-        ctx.fillRect(0, 0, w, h);
-      }
-
-      if (step === 2) {
-        ctx.save();
-        ctx.strokeStyle = '#f43f5e';
-        ctx.lineWidth = 4;
-        ctx.fillStyle = 'rgba(244, 63, 94, 0.25)';
-        ctx.strokeRect(60, 60, 440, 75);
-        ctx.fillRect(60, 60, 440, 75);
-
-        ctx.font = 'bold 22px monospace';
-        ctx.fillStyle = '#ffffff';
-        ctx.fillText('OCR DETECTED: SOURCE WATERMARK (99.4%)', 75, 108);
-
-        ctx.strokeStyle = '#f59e0b';
-        ctx.lineWidth = 4;
-        ctx.fillStyle = 'rgba(245, 158, 11, 0.25)';
-        ctx.strokeRect(60, h - 230, w - 120, 130);
-        ctx.fillRect(60, h - 230, w - 120, 130);
-
-        ctx.font = 'bold 24px monospace';
-        ctx.fillStyle = '#ffffff';
-        ctx.fillText('SUBTITLE TEXT MASK DETECTED (CONFIDENCE: 98.8%)', 80, h - 155);
-        ctx.restore();
-      }
-
-      if (step >= 4) {
-        ctx.save();
-        ctx.globalAlpha = 0.22;
-        ctx.globalCompositeOperation = 'overlay';
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, w, h);
-
-        ctx.globalCompositeOperation = 'soft-light';
-        const warmGrad = ctx.createLinearGradient(0, 0, 0, h);
-        warmGrad.addColorStop(0, 'rgba(255, 180, 80, 0.25)');
-        warmGrad.addColorStop(1, 'rgba(15, 60, 95, 0.30)');
-        ctx.fillStyle = warmGrad;
-        ctx.fillRect(0, 0, w, h);
-        ctx.restore();
-      }
-
-      if (step >= 6) {
-        ctx.save();
-        const startY = h * 0.52;
-        const vignette = ctx.createLinearGradient(0, startY, 0, h);
-        vignette.addColorStop(0, 'rgba(10, 10, 10, 0.0)');
-        vignette.addColorStop(0.35, 'rgba(10, 10, 10, 0.55)');
-        vignette.addColorStop(0.70, 'rgba(10, 10, 10, 0.90)');
-        vignette.addColorStop(1.0, 'rgba(8, 8, 8, 0.98)');
-        ctx.fillStyle = vignette;
-        ctx.fillRect(0, startY, w, h - startY);
-
-        const badgeY = h * 0.62;
-        const badgeX = w / 2;
-        ctx.beginPath();
-        ctx.arc(badgeX, badgeY, 44, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(15, 15, 15, 0.85)';
-        ctx.strokeStyle = '#FFC83B';
-        ctx.lineWidth = 3;
-        ctx.fill();
-        ctx.stroke();
-
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = 'bold 15px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('OFFICIAL', badgeX, badgeY - 8);
-
-        ctx.fillStyle = '#FFC83B';
-        ctx.font = '900 12px sans-serif';
-        ctx.fillText('REPORT', badgeX, badgeY + 10);
-        ctx.restore();
-      }
-
-      if (step >= 5) {
-        ctx.save();
-        ctx.font = '700 52px "Oswald", sans-serif';
-        ctx.textBaseline = 'top';
-
-        const lines = [
-          [{ text: 'INSIDE HOLLYWOOD ', color: '#FFFFFF' }, { text: 'EXCLUSIVE', color: '#FFC83B' }],
-          [{ text: 'MAJOR BLOCKBUSTER ', color: '#FFFFFF' }, { text: 'REVEALED', color: '#FFC83B' }]
-        ];
-
-        const lineSpacing = 72;
-        const startY = h - lines.length * lineSpacing - 120;
-
-        lines.forEach((line, lIdx) => {
-          const currentY = startY + lIdx * lineSpacing;
-          let fullWidth = 0;
-          line.forEach(seg => { fullWidth += ctx.measureText(seg.text).width; });
-          let curX = (w - fullWidth) / 2;
-
-          line.forEach(seg => {
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
-            ctx.shadowBlur = 12;
-            ctx.shadowOffsetY = 4;
-            ctx.fillStyle = seg.color;
-            ctx.fillText(seg.text, curX, currentY);
-            curX += ctx.measureText(seg.text).width;
+        // Append new logs
+        const logs = data.logs || [];
+        if (logs.length > 0) {
+          const consoleEl = document.getElementById('consoleLogWindow');
+          logs.slice(lastLogCount).forEach(l => {
+            appendConsoleLog('[' + l.time + '] ' + l.msg);
           });
-        });
-        ctx.restore();
-      }
-
-      if (step === 7) {
-        ctx.save();
-        ctx.fillStyle = '#10b981';
-        ctx.fillRect(w - 320, 40, 260, 48);
-        ctx.fillStyle = '#09090b';
-        ctx.font = 'bold 20px monospace';
-        ctx.fillText('READY TO PUBLISH', w - 300, 72);
-        ctx.restore();
-      }
-    }
-
-    function playLiveGenerationDemo() {
-      if (isPlaying) {
-        clearInterval(playTimer);
-        isPlaying = false;
-        return;
-      }
-      isPlaying = true;
-      let s = 0;
-      selectStage(s);
-
-      playTimer = setInterval(() => {
-        s += 1;
-        if (s >= stages.length) {
-          clearInterval(playTimer);
-          isPlaying = false;
-          return;
+          lastLogCount = logs.length;
         }
-        selectStage(s);
-      }, 1400);
+      } catch (e) {
+        // Backend offline or local fallback
+      }
     }
 
-    function downloadCanvasImage() {
-      if (!canvas) return;
-      const link = document.createElement('a');
-      link.download = 'fb-poster-1080x1350.jpg';
-      link.href = canvas.toDataURL('image/jpeg', 0.95);
-      link.click();
+    function appendConsoleLog(text) {
+      const consoleEl = document.getElementById('consoleLogWindow');
+      if (!consoleEl) return;
+      const p = document.createElement('div');
+      if (text.includes('[ERROR]')) p.className = 'text-rose-400 font-bold';
+      else if (text.includes('[SUCCESS]') || text.includes('completed')) p.className = 'text-emerald-400 font-bold';
+      else if (text.includes('Stage')) p.className = 'text-amber-300 font-semibold';
+      else p.className = 'text-neutral-300';
+      p.innerText = text;
+      consoleEl.appendChild(p);
+      consoleEl.scrollTop = consoleEl.scrollHeight;
     }
 
-    async function fetchWorkflowRuns() {
-      const listEl = document.getElementById('workflowRunsList');
-      if (!listEl) return;
+    function clearConsoleLogs() {
+      const consoleEl = document.getElementById('consoleLogWindow');
+      if (consoleEl) consoleEl.innerHTML = '';
+      lastLogCount = 0;
+    }
+
+    // --- FETCH REAL FACEBOOK FEED ---
+    async function fetchLiveFbFeed() {
+      const pageUrl = document.getElementById('inputFbPageUrl').value;
+      const listEl = document.getElementById('fbPostsList');
+      const spinner = document.getElementById('fbFeedSpinner');
+      if (spinner) spinner.classList.remove('hidden');
+
       try {
-        const resp = await fetch('https://api.github.com/repos/aashuthapa2023-sudo/autoimgpost/actions/runs?per_page=5');
-        if (!resp.ok) throw new Error('HTTP ' + resp.status);
-        const data = await resp.json();
-        const runs = data.workflow_runs || [];
-        if (runs.length === 0) {
-          listEl.innerHTML = '<div class="text-xs font-mono text-neutral-500 py-2">No workflow runs found yet.</div>';
+        const res = await fetch('/api/fb-feed?page=' + encodeURIComponent(pageUrl));
+        const data = await res.json();
+        if (spinner) spinner.classList.add('hidden');
+
+        if (!data.success || !data.posts || data.posts.length === 0) {
+          listEl.innerHTML = '<div class="p-8 text-center text-xs font-mono text-neutral-500 bg-neutral-900 border border-neutral-800 rounded-2xl col-span-full">No posts retrieved or page restricted. Check Facebook URL.</div>';
           return;
         }
 
-        listEl.innerHTML = runs.map(r => {
-          const isSuccess = r.conclusion === 'success';
-          const isInProgress = r.status === 'in_progress';
-          const pillClass = isSuccess ? 'bg-emerald-950 border-emerald-500/40 text-emerald-300' :
-                           isInProgress ? 'bg-amber-950 border-amber-500/40 text-amber-300' :
-                           'bg-red-950 border-red-500/40 text-red-300';
-          const statusText = isSuccess ? 'Success' : isInProgress ? 'Running...' : (r.conclusion || r.status);
+        document.getElementById('feedResultCount').innerText = 'Recent Posts from ' + data.page + ' (' + data.posts.length + ')';
 
-          return '<div class="p-2.5 rounded-lg bg-neutral-950 border border-neutral-800 flex items-center justify-between text-xs font-mono">' +
-            '<div class="flex items-center gap-2">' +
-              '<span class="w-2 h-2 rounded-full ' + (isSuccess ? 'bg-emerald-400' : isInProgress ? 'bg-amber-400 animate-ping' : 'bg-red-400') + '"></span>' +
-              '<div>' +
-                '<a href="' + r.html_url + '" target="_blank" class="font-bold text-neutral-200 hover:text-amber-300 underline">' + (r.name || 'Pipeline Run') + ' #' + r.run_number + '</a>' +
-                '<div class="text-[10px] text-neutral-500">' + new Date(r.created_at).toLocaleString() + ' &bull; ' + r.event + '</div>' +
-              '</div>' +
-            '</div>' +
-            '<span class="px-2 py-0.5 rounded border text-[10px] ' + pillClass + '">' + statusText + '</span>' +
-          '</div>';
+        listEl.innerHTML = data.posts.map(p => {
+          const dateStr = new Date(p.created_time * 1000).toLocaleString();
+          const encoded = encodeURIComponent(JSON.stringify(p));
+
+          return `
+            <div class="bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden shadow-lg flex flex-col justify-between hover:border-neutral-700 transition-all">
+              <div class="p-4 flex-1 flex flex-col">
+                <div class="flex items-center justify-between text-[11px] font-mono text-neutral-500 mb-2">
+                  <span class="text-amber-400 font-bold">ID: ${p.post_id.slice(-8)}</span>
+                  <span>${dateStr}</span>
+                </div>
+                
+                <div class="h-44 w-full bg-neutral-950 rounded-xl overflow-hidden mb-3 border border-neutral-800 flex items-center justify-center">
+                  <img src="${p.image_url}" alt="Post image" class="w-full h-full object-cover" onerror="this.src='/output/dolly_improved.jpg'" />
+                </div>
+
+                <p class="text-xs text-neutral-300 line-clamp-3 leading-relaxed">
+                  ${p.caption}
+                </p>
+              </div>
+
+              <div class="p-4 pt-0 border-t border-neutral-800/60 mt-2 bg-neutral-950/40 flex items-center justify-between">
+                <span class="text-[10px] font-mono text-neutral-500">&ge; ${p.source_gap_hours}h cadence</span>
+                <button onclick="processSpecificPost('${encoded}')"
+                  class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold rounded-lg text-xs font-mono flex items-center gap-1.5 transition-all shadow">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                  <span>Process This Post</span>
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+      } catch (e) {
+        if (spinner) spinner.classList.add('hidden');
+        listEl.innerHTML = '<div class="p-8 text-center text-xs font-mono text-rose-400 bg-neutral-900 border border-neutral-800 rounded-2xl col-span-full">Error fetching feed: ' + e.message + '</div>';
+      }
+    }
+
+    // --- GALLERY ---
+    async function loadPostersGallery() {
+      const grid = document.getElementById('galleryGrid');
+      try {
+        const res = await fetch('/api/posters');
+        const data = await res.json();
+        const posters = data.posters || [];
+
+        if (posters.length === 0) {
+          grid.innerHTML = '<div class="p-8 text-center text-xs font-mono text-neutral-500 bg-neutral-900 border border-neutral-800 rounded-2xl col-span-full">No generated posters yet. Run an action to create posters!</div>';
+          return;
+        }
+
+        grid.innerHTML = posters.map(p => {
+          return `
+            <div class="bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden p-3 shadow hover:border-amber-400/50 transition-all flex flex-col">
+              <div class="aspect-[4/5] bg-neutral-950 rounded-lg overflow-hidden mb-2">
+                <img src="${p.url}" alt="${p.filename}" class="w-full h-full object-cover" />
+              </div>
+              <div class="flex items-center justify-between text-[11px] font-mono text-neutral-400 mt-1">
+                <span class="truncate max-w-[140px]">${p.filename}</span>
+                <a href="${p.url}" download class="text-amber-400 hover:underline">Download</a>
+              </div>
+            </div>
+          `;
         }).join('');
       } catch (e) {
-        listEl.innerHTML = '<div class="text-xs font-mono text-neutral-500 py-2">Could not load runs (' + e.message + '). Check GitHub connection.</div>';
+        grid.innerHTML = '<div class="p-8 text-center text-xs font-mono text-rose-400 bg-neutral-900 border border-neutral-800 rounded-2xl col-span-full">Gallery unavailable: ' + e.message + '</div>';
       }
     }
 
-    let isScheduleActive = true;
-    function toggleMasterSwitch() {
-      isScheduleActive = !isScheduleActive;
-      const statusEl = document.getElementById('masterStatusText');
-      const btnEl = document.getElementById('btnMasterToggle');
-      if (isScheduleActive) {
-        if (statusEl) { statusEl.innerText = 'ACTIVE (Hourly)'; statusEl.className = 'text-xs font-bold text-emerald-400'; }
-        if (btnEl) btnEl.innerText = 'Pause Schedule';
-      } else {
-        if (statusEl) { statusEl.innerText = 'PAUSED'; statusEl.className = 'text-xs font-bold text-rose-400'; }
-        if (btnEl) btnEl.innerText = 'Resume Schedule';
-      }
+    // --- STATUS & CHANNELS ---
+    async function loadStatusAndChannels() {
+      try {
+        const res = await fetch('/api/status');
+        const data = await res.json();
+        const tbody = document.getElementById('channelsTableBody');
+        if (tbody && data.channels) {
+          tbody.innerHTML = data.channels.map(c => `
+            <tr>
+              <td class="p-3 font-bold text-neutral-200">${c.channel_id}</td>
+              <td class="p-3 text-blue-400 underline truncate max-w-[200px]"><a href="${c.source_page_url}" target="_blank">${c.source_page_url}</a></td>
+              <td class="p-3">${c.dest_page_id}</td>
+              <td class="p-3 text-amber-300">${c.badge_label || 'OFFICIAL UPDATE'}</td>
+              <td class="p-3"><span class="inline-block w-3 h-3 rounded-full mr-1.5 align-middle" style="background:${c.highlight_color}"></span>${c.highlight_color}</td>
+              <td class="p-3 font-bold">${c.max_daily_posts || 15} / day</td>
+            </tr>
+          `).join('');
+        }
+      } catch (e) {}
     }
 
-    function saveSettingsLocal() {
-      const owner = document.getElementById('setting_gh_owner')?.value;
-      const repo = document.getElementById('setting_gh_repo')?.value;
-      const pat = document.getElementById('setting_gh_pat')?.value;
-      if (owner) localStorage.setItem('fb_gh_owner', owner);
-      if (repo) localStorage.setItem('fb_gh_repo', repo);
-      if (pat) localStorage.setItem('fb_gh_pat', pat);
-      alert('Settings saved successfully in your local browser storage!');
+    async function toggleMasterSwitch() {
+      try {
+        const res = await fetch('/api/toggle-active', { method: 'POST' });
+        const data = await res.json();
+        const statusText = document.getElementById('masterStatusText');
+        if (statusText) {
+          statusText.innerText = data.pipeline_active ? 'Pipeline Active' : 'Pipeline Paused';
+        }
+      } catch (e) {}
     }
 
-    // Load saved settings
+    // Start background polling
     window.addEventListener('DOMContentLoaded', () => {
-      const savedPat = localStorage.getItem('fb_gh_pat');
-      if (savedPat && document.getElementById('setting_gh_pat')) {
-        document.getElementById('setting_gh_pat').value = savedPat;
-      }
+      pollTimer = setInterval(pollLiveLogs, 1500);
+      loadStatusAndChannels();
     });
-
-    fetchWorkflowRuns();
   </script>
 </body>
 </html>
