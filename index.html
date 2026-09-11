@@ -267,7 +267,7 @@
               </h3>
               <p class="text-xs text-neutral-400">Centered bold typography &bull; Destination page branding &bull; No attribution footer</p>
             </div>
-            <a id="btnDownloadPoster" href="/output/dolly_improved.jpg" download="facebook_4_5_poster.jpg"
+            <a id="btnDownloadPoster" href="./output/daily_netflix_1094218856297909.jpg" download="facebook_4_5_poster.jpg"
               class="px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 rounded-lg text-xs font-mono font-medium flex items-center gap-1.5 transition-colors">
               <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
               <span>Download</span>
@@ -276,9 +276,9 @@
 
           <!-- Poster Image Viewer Container -->
           <div class="flex-1 min-h-[460px] bg-neutral-950 rounded-xl border border-neutral-800/80 p-3 flex items-center justify-center relative overflow-hidden group">
-            <img id="activePosterImg" src="/scratch/centered_test.jpg" alt="Generated Poster"
+            <img id="activePosterImg" src="./output/daily_netflix_1094218856297909.jpg" alt="Generated Poster"
               class="max-h-[520px] w-auto rounded-lg shadow-2xl object-contain transition-all duration-300 group-hover:scale-[1.01]"
-              onerror="this.src='/output/dolly_improved.jpg'" />
+              onerror="this.src='./output/dolly_improved.jpg'" />
           </div>
 
           <!-- AI Rewritten Caption Box (FB Policy Compliant) -->
@@ -842,6 +842,71 @@
       }, 5000);
     }
 
+    async function triggerCloudIngest(encodedUrl) {
+      const pageUrl = decodeURIComponent(encodedUrl);
+      const token = getGitHubToken();
+      if (!token) {
+        setGitHubTokenPrompt();
+        return;
+      }
+      showToast('Dispatching Cloud Crawler for ' + pageUrl + '...');
+      appendConsoleLog('[INGESTION] Triggering cloud Facebook crawler for ' + pageUrl + '...');
+      setRunState(true, 'Crawling Facebook Source...');
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/actions/workflows/${GITHUB_WORKFLOW_ID}/dispatches`, {
+          method: 'POST',
+          headers: {
+            'Authorization': 'token ' + token,
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            ref: 'main',
+            inputs: {
+              action: 'ingest',
+              channel: 'all',
+              source_url: pageUrl
+            }
+          })
+        });
+
+        if (res.status === 204) {
+          appendConsoleLog('[SUCCESS] Cloud crawler dispatched! Scraper running with Googlebot headers...');
+          showToast('✓ Cloud Crawler Dispatched! Scrapes posts & thumbnails in ~30s');
+          let pollCount = 0;
+          const pollIngest = setInterval(async () => {
+            pollCount++;
+            if (pollCount > 12) {
+              clearInterval(pollIngest);
+              setRunState(false, 'Ready');
+              fetchLiveFbFeed();
+              return;
+            }
+            try {
+              const checkRes = await fetch('./feed_cache.json?t=' + Date.now());
+              if (checkRes.ok) {
+                const data = await checkRes.json();
+                if (data.page && (data.page.includes(pageUrl) || pageUrl.includes(data.page))) {
+                  clearInterval(pollIngest);
+                  setRunState(false, 'Completed');
+                  showToast('✓ Feed Updated with Live Posts!');
+                  fetchLiveFbFeed();
+                }
+              }
+            } catch(e) {}
+          }, 5000);
+        } else {
+          const err = await res.json().catch(() => ({}));
+          appendConsoleLog('[ERROR] Cloud crawler dispatch failed: ' + (err.message || 'Check permissions'));
+          setRunState(false, 'Error');
+        }
+      } catch(e) {
+        appendConsoleLog('[ERROR] ' + e.message);
+        setRunState(false, 'Error');
+      }
+    }
+
     async function processSpecificPost(postJsonStr) {
       if (isActionRunning) return;
       switchTab('pipeline');
@@ -1029,18 +1094,36 @@
       if (btnFetchText) btnFetchText.innerText = 'FETCH LIVE POSTS';
 
       if (!feedData || !feedData.posts || feedData.posts.length === 0) {
-        listEl.innerHTML = '<div class="p-8 text-center text-xs font-mono text-neutral-500 bg-neutral-900 border border-neutral-800 rounded-2xl col-span-full">No cached posts found. Run pipeline or refresh.</div>';
+        listEl.innerHTML = '<div class="p-8 text-center text-xs font-mono text-neutral-500 bg-neutral-900 border border-neutral-800 rounded-2xl col-span-full">No cached posts found. Click "Crawl via Cloud Action" below to ingest!</div>';
         return;
       }
 
+      // Check if user requested a page different from the cached feed
+      const isDifferentPage = pageUrl && feedData.page && !feedData.page.toLowerCase().includes(pageUrl.toLowerCase()) && !pageUrl.toLowerCase().includes(feedData.page.toLowerCase());
+      
       const posts = feedData.posts.slice(0, currentFeedLimit);
-      document.getElementById('feedResultCount').innerText = `Recent Posts (${posts.length})`;
+      document.getElementById('feedResultCount').innerText = `Live Ingested Posts (${posts.length})`;
       document.getElementById('feedResultSubtext').innerText = `from ${feedData.page || pageUrl} (Cloud Synced)`;
 
-      listEl.innerHTML = posts.map((p, idx) => {
+      let noticeHtml = '';
+      if (isDifferentPage && !isLocalEnv()) {
+        noticeHtml = `
+          <div class="col-span-full bg-blue-950/40 border border-blue-500/40 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 mb-2">
+            <div class="text-xs font-mono text-blue-200">
+              <span class="font-bold text-amber-400">⚡ New Source Detected:</span> Showing cached posts from <code class="text-white">${feedData.page}</code>. Ingest <code class="text-amber-300">${pageUrl}</code> now?
+            </div>
+            <button onclick="triggerCloudIngest('${encodeURIComponent(pageUrl)}')"
+              class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg text-xs font-mono flex items-center gap-1.5 transition-all shadow cursor-pointer whitespace-nowrap">
+              <span>🚀 Crawl & Ingest On Cloud</span>
+            </button>
+          </div>
+        `;
+      }
+
+      listEl.innerHTML = noticeHtml + posts.map((p, idx) => {
         const dateStr = new Date(p.created_time * 1000).toLocaleString();
         const encoded = encodeURIComponent(JSON.stringify(p));
-        const imgSrc = p.image_url;
+        const imgSrc = p.preview_data_url || p.proxy_image_url || p.image_url;
 
         return `
           <div class="bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden shadow-lg flex flex-col justify-between hover:border-neutral-700 transition-all">
@@ -1050,8 +1133,9 @@
                 <span>${dateStr}</span>
               </div>
 
-              <div class="h-44 w-full bg-neutral-950 rounded-xl overflow-hidden mb-3 border border-neutral-800 flex items-center justify-center relative group">
-                <img src="${imgSrc}" alt="Post image" referrerpolicy="no-referrer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+              <div class="h-48 w-full bg-neutral-950 rounded-xl overflow-hidden mb-3 border border-neutral-800 flex items-center justify-center relative group">
+                <img src="${imgSrc}" alt="Post image" referrerpolicy="no-referrer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy"
+                  onerror="this.src='./output/daily_netflix_1094218856297909.jpg'" />
                 <span class="absolute top-2 right-2 px-2 py-0.5 rounded text-[9px] font-mono bg-black/70 backdrop-blur-sm text-neutral-300 border border-neutral-700">REAL-TIME PHOTO</span>
               </div>
 

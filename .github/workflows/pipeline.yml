@@ -14,10 +14,15 @@ on:
           - 'run'
           - 'dry_run'
           - 'health_check'
+          - 'ingest'
       channel:
         description: 'Target Channel ID (or all)'
         required: false
         default: 'all'
+      source_url:
+        description: 'Specific Facebook Page URL to ingest'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -63,7 +68,12 @@ jobs:
           FB_TOKEN_GAMING: ${{ secrets.FB_TOKEN_GAMING }}
           FB_TOKEN_TECH: ${{ secrets.FB_TOKEN_TECH }}
         run: |
-          python main.py ${{ github.event.inputs.action || 'run' }} ${{ github.event.inputs.channel || 'all' }}
+          if [ "${{ github.event.inputs.action }}" = "ingest" ]; then
+            python build_rich_feed_cache.py "${{ github.event.inputs.source_url || 'https://www.facebook.com/netflixfanslivehere' }}" 15
+          else
+            python main.py ${{ github.event.inputs.action || 'run' }} ${{ github.event.inputs.channel || 'all' }}
+            python build_rich_feed_cache.py "https://www.facebook.com/netflixfanslivehere" 15 || true
+          fi
 
       - name: Commit and Push Updated State
         run: |
