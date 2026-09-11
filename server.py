@@ -100,9 +100,10 @@ def execute_pipeline_task(action="dry_run", channel="all", specific_post=None):
             render_final_poster(
                 base_img=graded,
                 overlay_lines=ai_data["overlay_lines"],
-                highlight_hex=highlight_color,
+                highlight_hex="random",
                 dest_page_name=dest_name,
-                output_path=out_poster
+                output_path=out_poster,
+                post_id=specific_post.get("post_id")
             )
             CURRENT_RUN["last_poster"] = out_poster.replace("\\", "/")
             CURRENT_RUN["current_post"] = specific_post

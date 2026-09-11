@@ -13,10 +13,13 @@ TASK:
    - Line 1: Subject / Franchise / Headline Lead
    - Line 2: Action / Key Milestone / Record
    - Line 3 (Optional): Context / Key Date / Outcome
-   CRITICAL RULES:
+   CRITICAL THEMATIC HIGHLIGHTING RULES:
+   - Analyze the whole sentence and identify the MAIN THEMES (entity names, show titles, awards, milestones, key actions).
+   - HIGHLIGHT THE MAIN THEME WHEREVER IT APPEARS IN THE LINE (beginning, middle, or end).
+   - DO NOT always highlight the last word. Highlight the key proper noun or milestone entity (e.g. [{"text": "PREMIERED ", "type": "white"}, {"text": "THE VAMPIRE DIARIES", "type": "highlight"}] or [{"text": "WINS ANOTHER ", "type": "white"}, {"text": "EMMY AWARD", "type": "highlight"}, {"text": " FOR PERFORMANCE", "type": "white"}]).
    - NEVER add artificial filler words like 'REPORT', 'DETAILS', 'CONFIRMED', or 'BREAKING'.
    - NEVER end a line with trailing prepositions or articles (like 'THE', 'A', 'OF', 'ON', 'TO', 'AND').
-   - Split each line into: [{"text": "...", "type": "white" | "highlight"}]. Highlight the core name, title, or milestone.
+   - Split each line into tokens: [{"text": "...", "type": "white" | "highlight"}].
 
 2. REWRITTEN CAPTION (Strict Facebook Distribution Policy Compliance):
    - 100% FACTUAL & OBJECTIVE: Clear, professional journalistic tone without hyperbole or sensational adjectives.
@@ -37,12 +40,92 @@ Return strictly JSON:
 TRAILING_STOPWORDS = {
     'THE', 'A', 'AN', 'OF', 'IN', 'ON', 'AT', 'TO', 'FOR', 'WITH', 'AND', 'OR',
     'BUT', 'BY', 'FROM', 'AS', 'ABOUT', 'INTO', 'HAS', 'HAVE', 'HAD', 'IS', 'ARE',
-    'WAS', 'WERE', 'BE', 'BEEN'
+    'WAS', 'WERE', 'BE', 'BEEN', 'HER', 'HIS', 'THEIR', 'ITS', 'THIS', 'THAT',
+    'WHO', 'WHICH', 'WHERE', 'WHEN', 'WHY', 'HOW', 'ALL', 'ANOTHER', 'SOME', 'ANY',
+    'TODAY', 'AGO', 'TIME', 'YEARS', 'OLD'
 }
+
+HIGH_THEME_KEYWORDS = {
+    'EMMY', 'EMMYS', 'OSCAR', 'OSCARS', 'GRAMMY', 'AWARD', 'AWARDS', 'NETFLIX', 'HBO',
+    'DISNEY', 'MARVEL', 'DC', 'CANCELLED', 'RENEWED', 'PREMIERED', 'RETURNS', 'RETURNING',
+    'FINALE', 'TRAILER', 'TEASER', 'CASTING', 'CONFIRMED', 'RECORD', 'HISTORIC',
+    'MOVIE', 'SERIES', 'SEASON', 'SEQUEL', 'REBOOT', 'STAR', 'STARS'
+}
+
+def _is_capitalized_in_raw(word: str, raw_sentence: str) -> bool:
+    clean = word.strip('.,;:!?\'"()[]')
+    m = re.search(r'\b' + re.escape(clean) + r'\b', raw_sentence, re.IGNORECASE)
+    if m:
+        raw_token = m.group(0)
+        if raw_token[0].isupper() and m.start() > 0:
+            return True
+        elif raw_token.isupper() and len(raw_token) > 1:
+            return True
+    return False
+
+def _score_token(tok: str, raw_sentence: str) -> float:
+    clean = tok.strip('.,;:!?\'"()[]').upper()
+    if not clean or clean in TRAILING_STOPWORDS:
+        return 0.0
+    score = 1.0
+    if re.match(r'^\d+$', clean) or clean in ['FIRST', 'SECOND', 'THIRD', 'FOURTH']:
+        score += 3.5
+    if clean in HIGH_THEME_KEYWORDS:
+        score += 5.0
+    if _is_capitalized_in_raw(tok, raw_sentence):
+        score += 4.0
+    return score
+
+def extract_thematic_line_tokens(words: list, raw_sentence: str) -> list:
+    """
+    Analyzes a line of words and highlights the key thematic entity (can be anywhere in the line).
+    """
+    if not words:
+        return []
+    if len(words) == 1:
+        return [{"text": words[0].upper(), "type": "highlight"}]
+
+    scores = [_score_token(w, raw_sentence) for w in words]
+    max_score = max(scores)
+    
+    if max_score <= 1.0:
+        best_idx = max(range(len(words)), key=lambda i: len(words[i]) if words[i].upper() not in TRAILING_STOPWORDS else 0)
+    else:
+        best_idx = scores.index(max_score)
+        
+    start_hl = best_idx
+    end_hl = best_idx + 1
+    
+    # Expand forward if contiguous high theme
+    while end_hl < len(words) and scores[end_hl] >= 3.0:
+        end_hl += 1
+    # Expand backward if contiguous high theme
+    while start_hl > 0 and scores[start_hl - 1] >= 3.0:
+        start_hl -= 1
+
+    tokens = []
+    # Prefix (white)
+    if start_hl > 0:
+        prefix_str = " ".join(words[:start_hl]).upper() + " "
+        tokens.append({"text": prefix_str, "type": "white"})
+        
+    # Highlighted theme (proper noun, award, milestone, or key verb)
+    hl_str = " ".join(words[start_hl:end_hl]).upper()
+    if end_hl < len(words):
+        hl_str += " "
+    tokens.append({"text": hl_str, "type": "highlight"})
+    
+    # Suffix (white)
+    if end_hl < len(words):
+        suffix_str = " ".join(words[end_hl:]).upper()
+        tokens.append({"text": suffix_str, "type": "white"})
+        
+    return tokens
 
 def format_factual_overlay(sentence: str) -> list:
     """
     Takes a clean factual sentence and splits it into 2-3 complete, balanced lines.
+    Analyzes the entire sentence to highlight the main theme anywhere in each line.
     Never appends artificial words like REPORT or DETAILS.
     Never cuts off on trailing prepositions, articles, or auxiliary verbs.
     """
@@ -80,13 +163,8 @@ def format_factual_overlay(sentence: str) -> list:
     for lw in lines_words:
         if not lw:
             continue
-        if len(lw) == 1:
-            res.append([{"text": lw[0].upper(), "type": "highlight"}])
-        else:
-            res.append([
-                {"text": " ".join(lw[:-1]).upper() + " ", "type": "white"},
-                {"text": lw[-1].upper(), "type": "highlight"}
-            ])
+        line_tokens = extract_thematic_line_tokens(lw, s)
+        res.append(line_tokens)
     return res
 
 def smart_heuristic_headline(raw_caption: str) -> dict:

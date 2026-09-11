@@ -1,7 +1,27 @@
 import os
 import cv2
 import numpy as np
+import hashlib
+import random
 from PIL import Image, ImageDraw, ImageFont
+
+CURATED_HIGHLIGHT_PALETTE = [
+    {"name": "Dark Yellow", "hex": "#FFC83B"}, # Warm cinematic gold / dark yellow
+    {"name": "Light Blue",  "hex": "#38BDF8"}, # Electric sky / neon light blue
+    {"name": "Vivid Red",   "hex": "#FF3B30"}, # Bold crimson / ruby red
+    {"name": "Electric Cyan","hex": "#00E5FF"}, # Bright vibrant aqua cyan
+    {"name": "Amber Gold",  "hex": "#F59E0B"}, # Deep sunny amber
+    {"name": "Mint Emerald","hex": "#10B981"}, # Vivid neon emerald green
+    {"name": "Sunset Coral","hex": "#FF6B6B"}, # Punchy warm coral red
+    {"name": "Hot Magenta", "hex": "#F43F5E"}  # Electric neon rose
+]
+
+def pick_highlight_color(seed: str = None) -> str:
+    """Returns a randomized vibrant, high-contrast highlight color."""
+    if seed:
+        idx = int(hashlib.md5(str(seed).encode("utf-8")).hexdigest(), 16) % len(CURATED_HIGHLIGHT_PALETTE)
+        return CURATED_HIGHLIGHT_PALETTE[idx]["hex"]
+    return random.choice(CURATED_HIGHLIGHT_PALETTE)["hex"]
 
 def hex_to_rgb(hex_str: str) -> tuple:
     hex_str = hex_str.lstrip("#")
@@ -41,12 +61,13 @@ def measure_line_width(draw, tokens, font):
             w += len(t_str) * (font.size * 0.55 if hasattr(font, 'size') else 24)
     return w
 
-def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex: str = "#FFC83B", badge_label: str = "", dest_page_name: str = "", output_path: str = "output/poster.jpg", **kwargs):
+def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex: str = "random", badge_label: str = "", dest_page_name: str = "", output_path: str = "output/poster.jpg", **kwargs):
     """
     Renders 4:5 visual poster strictly matching user reference layout:
-    - Large, bold uppercase typography in dual-tone (White + Gold Highlight).
-    - Centered horizontal alignment for all lines.
+    - Large, bold uppercase typography in dual-tone (White + Dynamic Highlight Color).
+    - Centered horizontal alignment for all lines with whole-sentence thematic entity highlights.
     - Destination page branding badge (using individual destination page name).
+    - Randomized visible highlight colors: Red, Light Blue, Dark Yellow, Cyan, Emerald, Coral.
     - NO attribution footer line.
     - Smooth deep gradient fade concealing original captions cleanly.
     """
@@ -90,8 +111,16 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         resized[y, :] = (1.0 - alpha) * resized[y, :] + alpha * np.array([6, 6, 8])
 
     pil_img = Image.fromarray(cv2.cvtColor(resized, cv2.COLOR_BGR2RGB))
-    draw = ImageDraw.Draw(pil_img)
+    # Dynamic Highlight Color Selection (Red, Light Blue, Dark Yellow, Cyan, Emerald, Coral)
+    if not highlight_hex or highlight_hex == "random" or kwargs.get("randomize_color", True):
+        if highlight_hex and highlight_hex.startswith("#") and highlight_hex.upper() not in ["#FFC83B", "#RANDOM"]:
+            pass # Keep explicit user-configured custom color if non-default
+        else:
+            seed = kwargs.get("post_id") or kwargs.get("seed") or output_path or dest_page_name
+            highlight_hex = pick_highlight_color(seed)
+
     highlight_rgb = hex_to_rgb(highlight_hex)
+    draw = ImageDraw.Draw(pil_img)
 
     # 3. Individual Destination Page Name Branding Badge
     branding_name = dest_page_name or badge_label or kwargs.get("source_tag", "")
