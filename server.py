@@ -61,29 +61,34 @@ def execute_pipeline_task(action="dry_run", channel="all", specific_post=None):
 
         if specific_post:
             log_message(f"Stage 1: Ingesting selected post ID {specific_post.get('post_id')}...", stage=1)
-            ch = next((c for c in channels if c["channel_id"] == channel), channels[0])
+            ch = next((c for c in channels if c["channel_id"] == channel), channels[0] if channels else {})
+            badge_label = ch.get("badge_label", "NETFLIX FANS EXCLUSIVE")
+            highlight_color = ch.get("highlight_color", "#FFC83B")
+            channel_id = ch.get("channel_id", "custom")
             
             log_message("Stage 2: Enforcing Facebook publishing cadence & daily caps...", stage=2)
             time.sleep(0.5)
 
-            log_message(f"Stage 3: Downloading image & running smart watermark cleaner...", stage=3)
+            log_message(f"Stage 3: Downloading high-res Facebook image...", stage=3)
             raw_img = download_image(specific_post["image_url"])
             cleaned = erase_text_and_watermarks(raw_img)
 
             log_message("Stage 4: Applying OpenCV CIE-LAB CLAHE dynamic contrast grade...", stage=4)
             graded = apply_cinematic_grade(cleaned)
 
-            log_message("Stage 5: Generating dual-tone viral headline & policy caption...", stage=5)
+            log_message("Stage 5: Generating concise factual news headline & dual-tone copy...", stage=5)
             ai_data = generate_social_payload(specific_post["caption"])
 
-            out_poster = f"output/{ch['channel_id']}_{specific_post['post_id']}.jpg"
-            log_message(f"Stage 6: Compositing 4:5 studio poster to {out_poster}...", stage=6)
+            out_poster = f"output/{channel_id}_{specific_post['post_id']}.jpg"
+            log_message(f"Stage 6: Compositing 4:5 studio poster with safe margins & accent separator...", stage=6)
+            source_tag = specific_post.get("source_name", badge_label)
             render_final_poster(
                 base_img=graded,
                 overlay_lines=ai_data["overlay_lines"],
-                highlight_hex=ch.get("highlight_color", "#FFC83B"),
-                badge_label=ch.get("badge_label", "NETFLIX FANS EXCLUSIVE"),
-                output_path=out_poster
+                highlight_hex=highlight_color,
+                badge_label=badge_label,
+                output_path=out_poster,
+                source_tag=source_tag
             )
             CURRENT_RUN["last_poster"] = out_poster.replace("\\", "/")
             CURRENT_RUN["current_post"] = specific_post
@@ -179,7 +184,7 @@ class PipelineHandler(SimpleHTTPRequestHandler):
 
         if path == "/api/fb-feed":
             page = query.get("page", ["https://www.facebook.com/netflixfanslivehere"])[0]
-            limit = int(query.get("limit", [5])[0])
+            limit = int(query.get("limit", [15])[0])
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.send_header("Access-Control-Allow-Origin", "*")
@@ -187,7 +192,7 @@ class PipelineHandler(SimpleHTTPRequestHandler):
             try:
                 from modules.ingestion import fetch_facebook_public_posts
                 posts = fetch_facebook_public_posts(page, limit=limit)
-                self.wfile.write(json.dumps({"success": True, "page": page, "posts": posts}).encode("utf-8"))
+                self.wfile.write(json.dumps({"success": True, "page": page, "count": len(posts), "posts": posts}).encode("utf-8"))
             except Exception as e:
                 self.wfile.write(json.dumps({"success": False, "error": str(e), "posts": []}).encode("utf-8"))
             return
@@ -275,6 +280,129 @@ class PipelineHandler(SimpleHTTPRequestHandler):
             self.send_header("Access-Control-Allow-Origin", "*")
             self.end_headers()
             self.wfile.write(json.dumps({"success": True, "pipeline_active": new_val}).encode("utf-8"))
+            return
+
+        # NEW: Multi-source & Channel Management Endpoints
+        if path == "/api/channels/add":
+            import main as main_engine
+            config = main_engine.load_config()
+            cid = body.get("channel_id", "").strip().lower().replace(" ", "_")
+            if not cid:
+                self.send_response(400)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "message": "channel_id is required"}).encode("utf-8"))
+                return
+
+            sources = body.get("source_pages", [])
+            if isinstance(sources, str):
+                sources = [s.strip() for s in sources.split(",") if s.strip()]
+
+            new_ch = {
+                "channel_id": cid,
+                "channel_name": body.get("channel_name", cid),
+                "source_pages": sources if sources else [body.get("source_page_url", f"https://www.facebook.com/{cid}")],
+                "source_page_url": sources[0] if sources else body.get("source_page_url", ""),
+                "dest_page_id": body.get("dest_page_id", "DEMO_PAGE_ID"),
+                "dest_page_name": body.get("dest_page_name", body.get("channel_name", cid)),
+                "dest_access_token_env": body.get("dest_access_token_env", f"FB_TOKEN_{cid.upper()}"),
+                "badge_label": body.get("badge_label", "VERIFIED REPORT"),
+                "highlight_color": body.get("highlight_color", "#FFC83B"),
+                "max_posts_per_run": int(body.get("max_posts_per_run", 2)),
+                "cadence_mirror_enabled": True,
+                "fetch_frequency": "hourly",
+                "policy_compliance_mode": "strict_fb_standard",
+                "max_daily_posts": 15,
+                "min_gap_hours": 1
+            }
+
+            # Check if exists
+            existing_idx = next((i for i, c in enumerate(config["channels"]) if c["channel_id"] == cid), None)
+            if existing_idx is not None:
+                config["channels"][existing_idx] = new_ch
+            else:
+                config["channels"].append(new_ch)
+
+            with open("config.json", "w", encoding="utf-8") as f:
+                json.dump(config, f, indent=2)
+
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": True, "channels": config["channels"]}).encode("utf-8"))
+            return
+
+        if path == "/api/channels/delete":
+            import main as main_engine
+            config = main_engine.load_config()
+            cid = body.get("channel_id", "")
+            config["channels"] = [c for c in config["channels"] if c["channel_id"] != cid]
+            with open("config.json", "w", encoding="utf-8") as f:
+                json.dump(config, f, indent=2)
+
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": True, "channels": config["channels"]}).encode("utf-8"))
+            return
+
+        if path == "/api/channels/add-source":
+            import main as main_engine
+            config = main_engine.load_config()
+            cid = body.get("channel_id", "")
+            source_url = body.get("source_page", "").strip()
+            ch = next((c for c in config["channels"] if c["channel_id"] == cid), None)
+            if not ch or not source_url:
+                self.send_response(400)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "message": "Invalid channel or source_page"}).encode("utf-8"))
+                return
+
+            if "source_pages" not in ch:
+                ch["source_pages"] = []
+            if source_url not in ch["source_pages"]:
+                ch["source_pages"].append(source_url)
+
+            with open("config.json", "w", encoding="utf-8") as f:
+                json.dump(config, f, indent=2)
+
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": True, "source_pages": ch["source_pages"]}).encode("utf-8"))
+            return
+
+        if path == "/api/channels/remove-source":
+            import main as main_engine
+            config = main_engine.load_config()
+            cid = body.get("channel_id", "")
+            source_url = body.get("source_page", "").strip()
+            ch = next((c for c in config["channels"] if c["channel_id"] == cid), None)
+            if not ch or not source_url:
+                self.send_response(400)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "message": "Invalid channel or source_page"}).encode("utf-8"))
+                return
+
+            if "source_pages" in ch and source_url in ch["source_pages"]:
+                ch["source_pages"].remove(source_url)
+
+            with open("config.json", "w", encoding="utf-8") as f:
+                json.dump(config, f, indent=2)
+
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": True, "source_pages": ch.get("source_pages", [])}).encode("utf-8"))
             return
 
         self.send_response(404)

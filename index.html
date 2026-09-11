@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AutoImgPost • Facebook 24/7 Live Automation Hub</title>
-  <meta name="description" content="24/7 Live Web UI for Facebook Post Automation, Ingestion, OCR Watermark Cleaning, LAB Contrast Grading, Dual-Tone Typography, and Concurrently Syncing Actions.">
+  <meta name="description" content="24/7 Live Web UI for Facebook Post Automation, Multi-Source Ingestion, Smart Cleaner, LAB Contrast Grading, Dual-Tone Typography, and Concurrently Syncing Actions.">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -53,7 +53,7 @@
           <div class="flex items-center gap-2">
             <h1 class="font-bold text-sm sm:text-base text-neutral-100 flex items-center gap-2">
               <span>AutoImgPost</span>
-              <span class="text-neutral-500 font-normal text-xs">&bull; Facebook Pipeline Hub</span>
+              <span class="text-neutral-500 font-normal text-xs">&bull; Multi-Source FB Hub</span>
             </h1>
             <span id="liveStatusBadge" class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-ping"></span>
@@ -61,7 +61,7 @@
             </span>
           </div>
           <p class="text-[11px] text-neutral-400 hidden sm:block">
-            Public FB Ingest &bull; Smart Clean &bull; LAB CLAHE &bull; Dual-Tone 4:5 Posters &bull; Rate & Cadence Protected
+            Multi-Source Ingestion &bull; Selective Inpaint &bull; LAB CLAHE &bull; Bold Dual-Tone 4:5 Posters &bull; Safe Margins Enforced
           </p>
         </div>
       </div>
@@ -98,8 +98,8 @@
         <button onclick="switchTab('fb_explorer')" id="tabBtn_fb_explorer"
           class="px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider border-b-2 border-transparent text-neutral-400 hover:text-neutral-200 whitespace-nowrap transition-colors flex items-center gap-1.5 cursor-pointer">
           <svg class="w-3.5 h-3.5 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-          <span>2. Test Real FB Pages (Live Posts)</span>
-          <span class="px-1.5 py-0.2 rounded text-[9px] font-mono bg-blue-500/20 text-blue-300">netflixfanslivehere</span>
+          <span>2. Real FB Page Ingestion (15+ Posts)</span>
+          <span class="px-1.5 py-0.2 rounded text-[9px] font-mono bg-blue-500/20 text-blue-300">Multi-Source</span>
         </button>
 
         <button onclick="switchTab('gallery')" id="tabBtn_gallery"
@@ -108,10 +108,11 @@
           <span>3. Generated Posters Gallery</span>
         </button>
 
-        <button onclick="switchTab('settings')" id="tabBtn_settings"
+        <button onclick="switchTab('channels_hub')" id="tabBtn_channels_hub"
           class="px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider border-b-2 border-transparent text-neutral-400 hover:text-neutral-200 whitespace-nowrap transition-colors flex items-center gap-1.5 cursor-pointer">
-          <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-          <span>4. Channels & Settings</span>
+          <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+          <span>4. Channels & Multi-Source Hub</span>
+          <span class="px-1.5 py-0.2 rounded text-[9px] font-mono bg-amber-500/20 text-amber-300">Manager</span>
         </button>
       </div>
     </div>
@@ -132,7 +133,7 @@
               <span id="runStatePill" class="px-2 py-0.5 rounded text-[11px] font-mono bg-neutral-800 text-neutral-400">Idle / Ready</span>
             </h2>
             <p class="text-xs text-neutral-400 mt-1">
-              Trigger live pipeline executions. Watch stages light up concurrently and monitor the terminal stream in real time.
+              Trigger live pipeline executions across multiple Facebook source pages. Watch the 7 stages sync in real time.
             </p>
           </div>
 
@@ -140,17 +141,17 @@
             <div>
               <label class="text-[10px] font-mono text-neutral-400 block mb-1 uppercase">Target Channel</label>
               <select id="selectChannel" class="bg-neutral-950 border border-neutral-700 rounded-lg px-3 py-1.5 text-xs font-mono text-neutral-200 focus:outline-none focus:border-amber-400">
-                <option value="all">All Channels (Multi-Channel)</option>
-                <option value="netflix_fans" selected>Netflix Fans Live Here (netflix_fans)</option>
-                <option value="gaming_central">NextGen Gaming HQ (IGN Mirror)</option>
-                <option value="tech_breakthroughs">Future AI & Tech (TechCrunch)</option>
+                <option value="all">All Configured Channels</option>
+                <option value="netflix_fans" selected>Netflix Fans (Multi-Source)</option>
+                <option value="gaming_central">NextGen Gaming (IGN)</option>
+                <option value="tech_breakthroughs">Tech Frontiers (TechCrunch)</option>
               </select>
             </div>
 
             <div>
               <label class="text-[10px] font-mono text-neutral-400 block mb-1 uppercase">Mode</label>
               <select id="selectAction" class="bg-neutral-950 border border-neutral-700 rounded-lg px-3 py-1.5 text-xs font-mono text-neutral-200 focus:outline-none focus:border-amber-400">
-                <option value="dry_run" selected>Dry Run (Studio Simulation)</option>
+                <option value="dry_run" selected>Dry Run (Studio 4:5 Poster)</option>
                 <option value="run">Live Graph API Publish</option>
               </select>
             </div>
@@ -181,8 +182,8 @@
                 <span>STAGE 1</span>
                 <span id="syncStageIcon_1" class="w-2 h-2 rounded-full bg-neutral-700"></span>
               </div>
-              <div class="text-xs font-bold text-neutral-300">FB Ingestion</div>
-              <div class="text-[10px] text-neutral-500 mt-0.5">Googlebot SSR Feed</div>
+              <div class="text-xs font-bold text-neutral-300">Public FB SSR</div>
+              <div class="text-[10px] text-neutral-500 mt-0.5">Multi-Source Ingest</div>
             </div>
 
             <!-- Stage 2 -->
@@ -191,8 +192,8 @@
                 <span>STAGE 2</span>
                 <span id="syncStageIcon_2" class="w-2 h-2 rounded-full bg-neutral-700"></span>
               </div>
-              <div class="text-xs font-bold text-neutral-300">Cadence Sync</div>
-              <div class="text-[10px] text-neutral-500 mt-0.5">&ge;1h Gap &bull; &le;15/day</div>
+              <div class="text-xs font-bold text-neutral-300">Policy Engine</div>
+              <div class="text-[10px] text-neutral-500 mt-0.5">&le; 15/Day &bull; &ge; 1h Gap</div>
             </div>
 
             <!-- Stage 3 -->
@@ -202,7 +203,7 @@
                 <span id="syncStageIcon_3" class="w-2 h-2 rounded-full bg-neutral-700"></span>
               </div>
               <div class="text-xs font-bold text-neutral-300">Smart Cleaner</div>
-              <div class="text-[10px] text-neutral-500 mt-0.5">Photo Preserved</div>
+              <div class="text-[10px] text-neutral-500 mt-0.5">Selective Non-Destr.</div>
             </div>
 
             <!-- Stage 4 -->
@@ -212,7 +213,7 @@
                 <span id="syncStageIcon_4" class="w-2 h-2 rounded-full bg-neutral-700"></span>
               </div>
               <div class="text-xs font-bold text-neutral-300">LAB CLAHE</div>
-              <div class="text-[10px] text-neutral-500 mt-0.5">Warm Dynamic Grade</div>
+              <div class="text-[10px] text-neutral-500 mt-0.5">Dynamic Contrast</div>
             </div>
 
             <!-- Stage 5 -->
@@ -222,7 +223,7 @@
                 <span id="syncStageIcon_5" class="w-2 h-2 rounded-full bg-neutral-700"></span>
               </div>
               <div class="text-xs font-bold text-neutral-300">Dual-Tone AI</div>
-              <div class="text-[10px] text-neutral-500 mt-0.5">Gold/White Hooks</div>
+              <div class="text-[10px] text-neutral-500 mt-0.5">Pure Fact Headlines</div>
             </div>
 
             <!-- Stage 6 -->
@@ -231,8 +232,8 @@
                 <span>STAGE 6</span>
                 <span id="syncStageIcon_6" class="w-2 h-2 rounded-full bg-neutral-700"></span>
               </div>
-              <div class="text-xs font-bold text-neutral-300">4:5 Poster</div>
-              <div class="text-[10px] text-neutral-500 mt-0.5">1080x1350 Vignette</div>
+              <div class="text-xs font-bold text-neutral-300">Polished Poster</div>
+              <div class="text-[10px] text-neutral-500 mt-0.5">Safe Margins & Line</div>
             </div>
 
             <!-- Stage 7 -->
@@ -257,9 +258,9 @@
             <div>
               <h3 class="text-sm font-bold text-neutral-200 flex items-center gap-2">
                 <span>Live Studio Result</span>
-                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/10 text-amber-300 border border-amber-500/20">4:5 Meta Optimized</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/10 text-amber-300 border border-amber-500/20">Polished 4:5 Layout</span>
               </h3>
-              <p class="text-xs text-neutral-400">Generated high-compliance visual poster with dual-tone typography</p>
+              <p class="text-xs text-neutral-400">Bold dual-tone headlines &bull; 68px safe margin &bull; 3px glowing accent separator</p>
             </div>
             <a id="btnDownloadPoster" href="/output/dolly_improved.jpg" download="facebook_4_5_poster.jpg"
               class="px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 rounded-lg text-xs font-mono font-medium flex items-center gap-1.5 transition-colors">
@@ -269,29 +270,29 @@
           </div>
 
           <!-- Poster Image Viewer Container -->
-          <div class="flex-1 min-h-[420px] bg-neutral-950 rounded-xl border border-neutral-800/80 p-3 flex items-center justify-center relative overflow-hidden group">
+          <div class="flex-1 min-h-[460px] bg-neutral-950 rounded-xl border border-neutral-800/80 p-3 flex items-center justify-center relative overflow-hidden group">
             <img id="activePosterImg" src="/output/dolly_improved.jpg" alt="Generated Poster"
-              class="max-h-[500px] w-auto rounded-lg shadow-2xl object-contain transition-all duration-300 group-hover:scale-[1.01]"
+              class="max-h-[520px] w-auto rounded-lg shadow-2xl object-contain transition-all duration-300 group-hover:scale-[1.01]"
               onerror="this.src='https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1080&h=1350&fit=crop'" />
             <div id="posterOverlayStatus" class="absolute bottom-6 left-6 right-6 bg-neutral-900/90 backdrop-blur-md border border-neutral-700/80 rounded-xl p-3 text-xs font-mono flex items-center justify-between">
               <div>
                 <span class="text-amber-400 font-bold">SOURCE:</span>
                 <span id="posterMetaSource" class="text-neutral-300 ml-1">facebook.com/netflixfanslivehere</span>
               </div>
-              <span id="posterMetaSpecs" class="text-neutral-400 text-[11px]">1080 &times; 1350 px &bull; JPEG 95%</span>
+              <span id="posterMetaSpecs" class="text-neutral-400 text-[11px]">1080 &times; 1350 px &bull; Dual-Tone Safe Margin</span>
             </div>
           </div>
         </div>
 
         <!-- Real-Time Terminal & Live Action Logs (5 cols) -->
-        <div class="lg:col-span-5 bg-neutral-900 border border-neutral-800 rounded-2xl p-5 shadow-xl flex flex-col h-[580px]">
+        <div class="lg:col-span-5 bg-neutral-900 border border-neutral-800 rounded-2xl p-5 shadow-xl flex flex-col h-[600px]">
           <div class="flex items-center justify-between mb-3">
             <div class="flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
               <h3 class="text-sm font-bold text-neutral-200 font-mono">Live Action Console</h3>
             </div>
             <div class="flex items-center gap-2">
-              <button onclick="clearConsoleLogs()" class="text-[10px] font-mono text-neutral-500 hover:text-neutral-300">Clear</button>
+              <button onclick="clearConsoleLogs()" class="text-[10px] font-mono text-neutral-500 hover:text-neutral-300 cursor-pointer">Clear</button>
               <span class="text-[10px] font-mono text-neutral-500 bg-neutral-950 px-2 py-0.5 rounded border border-neutral-800">stdout/stderr</span>
             </div>
           </div>
@@ -304,48 +305,68 @@
       </div>
     </div>
 
-    <!-- TAB 2: Test Real FB Pages (Live Posts) -->
+    <!-- TAB 2: Test Real FB Pages (Live 15+ Posts Ingestion) -->
     <div id="tabContent_fb_explorer" class="space-y-6 hidden">
       <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-5 shadow-xl">
-        <h2 class="text-base font-bold text-neutral-100 flex items-center gap-2">
-          <svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-          <span>Real Public Facebook Page Ingestion</span>
-        </h2>
-        <p class="text-xs text-neutral-400 mt-1">
-          Query live breaking posts directly from any public Facebook page link (zero login, zero external API keys needed).
-        </p>
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-base font-bold text-neutral-100 flex items-center gap-2">
+              <svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              <span>Real Public Facebook Page Ingestion</span>
+              <span id="feedBadgeCount" class="px-2 py-0.5 rounded text-[10px] font-mono bg-blue-500/20 text-blue-300">15+ Live Posts</span>
+            </h2>
+            <p class="text-xs text-neutral-400 mt-1">
+              Extract real timeline posts, high-res photos, and timestamps directly from public Facebook pages.
+            </p>
+          </div>
+
+          <!-- Controls: Post Limit & Source Quick Selector -->
+          <div class="flex flex-wrap items-center gap-2">
+            <div class="flex items-center gap-1 bg-neutral-950 p-1 rounded-xl border border-neutral-800">
+              <span class="text-[10px] font-mono text-neutral-500 px-2">POSTS:</span>
+              <button onclick="setFeedLimit(5)" id="btnLimit_5" class="px-2.5 py-1 text-xs font-mono rounded-lg text-neutral-400 hover:text-neutral-200">5</button>
+              <button onclick="setFeedLimit(10)" id="btnLimit_10" class="px-2.5 py-1 text-xs font-mono rounded-lg text-neutral-400 hover:text-neutral-200">10</button>
+              <button onclick="setFeedLimit(15)" id="btnLimit_15" class="px-2.5 py-1 text-xs font-mono rounded-lg bg-blue-600 text-white font-bold">15</button>
+              <button onclick="setFeedLimit(20)" id="btnLimit_20" class="px-2.5 py-1 text-xs font-mono rounded-lg text-neutral-400 hover:text-neutral-200">20</button>
+            </div>
+          </div>
+        </div>
 
         <div class="mt-4 flex flex-col sm:flex-row items-center gap-3">
           <div class="relative flex-1 w-full">
             <input type="text" id="inputFbPageUrl" value="https://www.facebook.com/netflixfanslivehere"
-              placeholder="e.g. https://www.facebook.com/netflixfanslivehere"
+              placeholder="Enter any public Facebook page URL, e.g. https://www.facebook.com/netflixfanslivehere"
               class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-4 py-2.5 text-xs font-mono text-neutral-100 focus:outline-none focus:border-blue-400" />
           </div>
 
           <button onclick="fetchLiveFbFeed()" id="btnFetchFbFeed"
-            class="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs font-mono flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer">
+            class="w-full sm:w-auto px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs font-mono flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer">
             <svg id="fbFeedSpinner" class="w-3.5 h-3.5 hidden animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-            <span>FETCH LIVE POSTS</span>
+            <span id="btnFetchText">FETCH LIVE POSTS</span>
           </button>
         </div>
 
-        <div class="mt-3 flex items-center gap-2">
-          <span class="text-[11px] font-mono text-neutral-500">Quick Presets:</span>
-          <button onclick="setFbUrl('https://www.facebook.com/netflixfanslivehere')" class="px-2 py-0.5 rounded bg-neutral-950 border border-neutral-800 text-[10px] font-mono text-neutral-400 hover:text-amber-300">netflixfanslivehere</button>
-          <button onclick="setFbUrl('https://www.facebook.com/ign')" class="px-2 py-0.5 rounded bg-neutral-950 border border-neutral-800 text-[10px] font-mono text-neutral-400 hover:text-cyan-300">ign</button>
-          <button onclick="setFbUrl('https://www.facebook.com/techcrunch')" class="px-2 py-0.5 rounded bg-neutral-950 border border-neutral-800 text-[10px] font-mono text-neutral-400 hover:text-emerald-300">techcrunch</button>
+        <!-- Quick Source Buttons -->
+        <div class="mt-3 flex flex-wrap items-center gap-2" id="quickSourcePresets">
+          <span class="text-[11px] font-mono text-neutral-500">Configured Sources:</span>
+          <button onclick="setFbUrl('https://www.facebook.com/netflixfanslivehere')" class="px-2.5 py-1 rounded-lg bg-neutral-950 border border-neutral-800 text-[11px] font-mono text-neutral-300 hover:border-amber-400 hover:text-amber-300 transition-colors">netflixfanslivehere</button>
+          <button onclick="setFbUrl('https://www.facebook.com/netflix')" class="px-2.5 py-1 rounded-lg bg-neutral-950 border border-neutral-800 text-[11px] font-mono text-neutral-300 hover:border-red-400 hover:text-red-300 transition-colors">netflix</button>
+          <button onclick="setFbUrl('https://www.facebook.com/ign')" class="px-2.5 py-1 rounded-lg bg-neutral-950 border border-neutral-800 text-[11px] font-mono text-neutral-300 hover:border-cyan-400 hover:text-cyan-300 transition-colors">ign</button>
+          <button onclick="setFbUrl('https://www.facebook.com/techcrunch')" class="px-2.5 py-1 rounded-lg bg-neutral-950 border border-neutral-800 text-[11px] font-mono text-neutral-300 hover:border-emerald-400 hover:text-emerald-300 transition-colors">techcrunch</button>
         </div>
       </div>
 
       <!-- Live Posts Grid -->
       <div>
-        <h3 class="text-sm font-bold text-neutral-200 mb-3 flex items-center justify-between">
-          <span id="feedResultCount">Recent Ingested Posts</span>
-          <span class="text-xs font-mono text-neutral-500 font-normal">Click "Process Post" to run through 7 stages live</span>
-        </h3>
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-sm font-bold text-neutral-200 flex items-center gap-2">
+            <span id="feedResultCount">Recent Ingested Posts</span>
+            <span id="feedResultSubtext" class="text-xs font-mono text-neutral-500 font-normal">Ready to process</span>
+          </h3>
+          <span class="text-xs font-mono text-neutral-500 hidden sm:inline">Click "Process This Post" to run through 7 stages</span>
+        </div>
 
         <div id="fbPostsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <!-- Cards dynamically injected here -->
           <div class="p-8 text-center text-xs font-mono text-neutral-500 bg-neutral-900 border border-neutral-800 rounded-2xl col-span-full">
             Loading recent posts from netflixfanslivehere...
           </div>
@@ -360,7 +381,7 @@
           <h2 class="text-base font-bold text-neutral-100">Generated Studio Posters</h2>
           <p class="text-xs text-neutral-400 mt-1">All processed 4:5 posters saved in output/ directory ready for Meta release.</p>
         </div>
-        <button onclick="loadPostersGallery()" class="px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 rounded-lg text-xs font-mono">
+        <button onclick="loadPostersGallery()" class="px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 rounded-lg text-xs font-mono cursor-pointer">
           Refresh Gallery
         </button>
       </div>
@@ -370,43 +391,100 @@
       </div>
     </div>
 
-    <!-- TAB 4: Platform Settings & Channels -->
-    <div id="tabContent_settings" class="space-y-6 hidden">
+    <!-- TAB 4: Channels & Multi-Source Hub -->
+    <div id="tabContent_channels_hub" class="space-y-6 hidden">
       <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-5 shadow-xl">
-        <h2 class="text-base font-bold text-neutral-100">Configured Multi-Channel Pages</h2>
-        <p class="text-xs text-neutral-400 mt-1">Channels configured in config.json with strict 15 posts/day cap and &ge;1 hour posting cadence.</p>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-base font-bold text-neutral-100 flex items-center gap-2">
+              <span>Multi-Source Facebook Channels Manager</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/20 text-amber-300">Multi-Source Enabled</span>
+            </h2>
+            <p class="text-xs text-neutral-400 mt-1">
+              Link multiple Facebook source pages to a single destination page. Add new channels or configure existing ones dynamically.
+            </p>
+          </div>
 
-        <div class="mt-4 overflow-x-auto">
-          <table class="w-full text-left text-xs font-mono">
-            <thead class="bg-neutral-950 text-neutral-400 uppercase border-b border-neutral-800">
-              <tr>
-                <th class="p-3">Channel ID</th>
-                <th class="p-3">Source FB Page</th>
-                <th class="p-3">Destination Page ID</th>
-                <th class="p-3">Badge Label</th>
-                <th class="p-3">Accent Color</th>
-                <th class="p-3">Daily Limit</th>
-              </tr>
-            </thead>
-            <tbody id="channelsTableBody" class="divide-y divide-neutral-800/60 text-neutral-300">
-              <!-- Dynamically populated -->
-            </tbody>
-          </table>
+          <button onclick="openAddChannelModal()"
+            class="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-neutral-950 font-bold rounded-xl text-xs font-mono flex items-center gap-2 transition-all shadow cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+            <span>ADD NEW CHANNEL</span>
+          </button>
         </div>
+      </div>
+
+      <!-- Channel Cards Grid -->
+      <div id="channelCardsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Rendered dynamically -->
       </div>
     </div>
 
   </main>
+
+  <!-- MODAL: Add New Channel -->
+  <div id="modalAddChannel" class="fixed inset-0 z-50 bg-neutral-950/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-neutral-900 border border-neutral-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-neutral-800 pb-3">
+        <h3 class="text-base font-bold text-neutral-100">Create New Channel</h3>
+        <button onclick="closeAddChannelModal()" class="text-neutral-500 hover:text-neutral-200 text-lg font-bold">&times;</button>
+      </div>
+
+      <div class="space-y-3 text-xs font-mono">
+        <div>
+          <label class="block text-neutral-400 mb-1">Channel Identifier (Slug)</label>
+          <input type="text" id="newChannelId" placeholder="e.g. streaming_pulse" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-neutral-100 focus:border-amber-400" />
+        </div>
+        <div>
+          <label class="block text-neutral-400 mb-1">Channel Display Name</label>
+          <input type="text" id="newChannelName" placeholder="e.g. Streaming Pulse Hub" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-neutral-100 focus:border-amber-400" />
+        </div>
+        <div>
+          <label class="block text-neutral-400 mb-1">Source Facebook Pages (comma-separated URLs)</label>
+          <textarea id="newChannelSources" rows="2" placeholder="https://www.facebook.com/netflixfanslivehere, https://www.facebook.com/netflix" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-neutral-100 focus:border-amber-400"></textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-neutral-400 mb-1">Destination Page ID</label>
+            <input type="text" id="newDestPageId" placeholder="e.g. 100095827163829" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-neutral-100 focus:border-amber-400" />
+          </div>
+          <div>
+            <label class="block text-neutral-400 mb-1">Token Env Variable</label>
+            <input type="text" id="newTokenEnv" placeholder="e.g. FB_TOKEN_STREAMING" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-neutral-100 focus:border-amber-400" />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-neutral-400 mb-1">Badge Label</label>
+            <input type="text" id="newBadgeLabel" placeholder="e.g. STREAMING EXCLUSIVE" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-neutral-100 focus:border-amber-400" />
+          </div>
+          <div>
+            <label class="block text-neutral-400 mb-1">Highlight Color (Hex)</label>
+            <div class="flex items-center gap-2">
+              <input type="color" id="newHighlightPicker" value="#FFC83B" class="h-9 w-10 bg-transparent border-0 cursor-pointer" onchange="document.getElementById('newHighlightHex').value = this.value" />
+              <input type="text" id="newHighlightHex" value="#FFC83B" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2 text-neutral-100 font-mono" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-3 border-t border-neutral-800">
+        <button onclick="closeAddChannelModal()" class="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 rounded-lg text-xs font-mono cursor-pointer">Cancel</button>
+        <button onclick="submitNewChannel()" class="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold rounded-lg text-xs font-mono cursor-pointer">Create Channel</button>
+      </div>
+    </div>
+  </div>
 
   <!-- JavaScript Application Logic with Concurrent Sync -->
   <script>
     let activeTab = 'pipeline';
     let isActionRunning = false;
     let pollTimer = null;
+    let currentFeedLimit = 15;
+    let cachedChannels = [];
 
     function switchTab(name) {
       activeTab = name;
-      ['pipeline', 'fb_explorer', 'gallery', 'settings'].forEach(t => {
+      ['pipeline', 'fb_explorer', 'gallery', 'channels_hub'].forEach(t => {
         const content = document.getElementById('tabContent_' + t);
         const btn = document.getElementById('tabBtn_' + t);
         if (content) content.classList.toggle('hidden', t !== name);
@@ -420,11 +498,26 @@
       });
       if (name === 'fb_explorer') fetchLiveFbFeed();
       if (name === 'gallery') loadPostersGallery();
-      if (name === 'settings') loadStatusAndChannels();
+      if (name === 'channels_hub') renderChannelsHub();
     }
 
     function setFbUrl(url) {
       document.getElementById('inputFbPageUrl').value = url;
+      fetchLiveFbFeed();
+    }
+
+    function setFeedLimit(num) {
+      currentFeedLimit = num;
+      [5, 10, 15, 20].forEach(n => {
+        const btn = document.getElementById('btnLimit_' + n);
+        if (btn) {
+          if (n === num) {
+            btn.className = 'px-2.5 py-1 text-xs font-mono rounded-lg bg-blue-600 text-white font-bold';
+          } else {
+            btn.className = 'px-2.5 py-1 text-xs font-mono rounded-lg text-neutral-400 hover:text-neutral-200';
+          }
+        }
+      });
       fetchLiveFbFeed();
     }
 
@@ -562,9 +655,7 @@
           });
           lastLogCount = logs.length;
         }
-      } catch (e) {
-        // Backend offline or local fallback
-      }
+      } catch (e) {}
     }
 
     function appendConsoleLog(text) {
@@ -586,26 +677,30 @@
       lastLogCount = 0;
     }
 
-    // --- FETCH REAL FACEBOOK FEED ---
+    // --- FETCH REAL FACEBOOK FEED (15+ Posts) ---
     async function fetchLiveFbFeed() {
       const pageUrl = document.getElementById('inputFbPageUrl').value;
       const listEl = document.getElementById('fbPostsList');
       const spinner = document.getElementById('fbFeedSpinner');
+      const btnFetchText = document.getElementById('btnFetchText');
       if (spinner) spinner.classList.remove('hidden');
+      if (btnFetchText) btnFetchText.innerText = 'FETCHING ' + currentFeedLimit + ' POSTS...';
 
       try {
-        const res = await fetch('/api/fb-feed?page=' + encodeURIComponent(pageUrl));
+        const res = await fetch('/api/fb-feed?page=' + encodeURIComponent(pageUrl) + '&limit=' + currentFeedLimit);
         const data = await res.json();
         if (spinner) spinner.classList.add('hidden');
+        if (btnFetchText) btnFetchText.innerText = 'FETCH LIVE POSTS';
 
         if (!data.success || !data.posts || data.posts.length === 0) {
-          listEl.innerHTML = '<div class="p-8 text-center text-xs font-mono text-neutral-500 bg-neutral-900 border border-neutral-800 rounded-2xl col-span-full">No posts retrieved or page restricted. Check Facebook URL.</div>';
+          listEl.innerHTML = '<div class="p-8 text-center text-xs font-mono text-neutral-500 bg-neutral-900 border border-neutral-800 rounded-2xl col-span-full">No posts retrieved. Try another public page or refresh.</div>';
           return;
         }
 
-        document.getElementById('feedResultCount').innerText = 'Recent Posts from ' + data.page + ' (' + data.posts.length + ')';
+        document.getElementById('feedResultCount').innerText = `Recent Posts (${data.posts.length})`;
+        document.getElementById('feedResultSubtext').innerText = `from ${data.page}`;
 
-        listEl.innerHTML = data.posts.map(p => {
+        listEl.innerHTML = data.posts.map((p, idx) => {
           const dateStr = new Date(p.created_time * 1000).toLocaleString();
           const encoded = encodeURIComponent(JSON.stringify(p));
 
@@ -613,12 +708,13 @@
             <div class="bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden shadow-lg flex flex-col justify-between hover:border-neutral-700 transition-all">
               <div class="p-4 flex-1 flex flex-col">
                 <div class="flex items-center justify-between text-[11px] font-mono text-neutral-500 mb-2">
-                  <span class="text-amber-400 font-bold">ID: ${p.post_id.slice(-8)}</span>
+                  <span class="text-amber-400 font-bold">#${idx + 1} &bull; ID: ${p.post_id.slice(-8)}</span>
                   <span>${dateStr}</span>
                 </div>
                 
-                <div class="h-44 w-full bg-neutral-950 rounded-xl overflow-hidden mb-3 border border-neutral-800 flex items-center justify-center">
-                  <img src="${p.image_url}" alt="Post image" class="w-full h-full object-cover" onerror="this.src='/output/dolly_improved.jpg'" />
+                <div class="h-44 w-full bg-neutral-950 rounded-xl overflow-hidden mb-3 border border-neutral-800 flex items-center justify-center relative group">
+                  <img src="${p.image_url}" alt="Post image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='/output/dolly_improved.jpg'" />
+                  <span class="absolute top-2 right-2 px-2 py-0.5 rounded text-[9px] font-mono bg-black/70 backdrop-blur-sm text-neutral-300 border border-neutral-700">HD CRAWLER</span>
                 </div>
 
                 <p class="text-xs text-neutral-300 line-clamp-3 leading-relaxed">
@@ -629,7 +725,7 @@
               <div class="p-4 pt-0 border-t border-neutral-800/60 mt-2 bg-neutral-950/40 flex items-center justify-between">
                 <span class="text-[10px] font-mono text-neutral-500">&ge; ${p.source_gap_hours}h cadence</span>
                 <button onclick="processSpecificPost('${encoded}')"
-                  class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold rounded-lg text-xs font-mono flex items-center gap-1.5 transition-all shadow">
+                  class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold rounded-lg text-xs font-mono flex items-center gap-1.5 transition-all shadow cursor-pointer">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                   <span>Process This Post</span>
                 </button>
@@ -640,6 +736,7 @@
 
       } catch (e) {
         if (spinner) spinner.classList.add('hidden');
+        if (btnFetchText) btnFetchText.innerText = 'FETCH LIVE POSTS';
         listEl.innerHTML = '<div class="p-8 text-center text-xs font-mono text-rose-400 bg-neutral-900 border border-neutral-800 rounded-2xl col-span-full">Error fetching feed: ' + e.message + '</div>';
       }
     }
@@ -675,25 +772,209 @@
       }
     }
 
-    // --- STATUS & CHANNELS ---
-    async function loadStatusAndChannels() {
+    // --- CHANNELS & MULTI-SOURCE HUB ---
+    async function renderChannelsHub() {
+      const container = document.getElementById('channelCardsContainer');
       try {
         const res = await fetch('/api/status');
         const data = await res.json();
-        const tbody = document.getElementById('channelsTableBody');
-        if (tbody && data.channels) {
-          tbody.innerHTML = data.channels.map(c => `
-            <tr>
-              <td class="p-3 font-bold text-neutral-200">${c.channel_id}</td>
-              <td class="p-3 text-blue-400 underline truncate max-w-[200px]"><a href="${c.source_page_url}" target="_blank">${c.source_page_url}</a></td>
-              <td class="p-3">${c.dest_page_id}</td>
-              <td class="p-3 text-amber-300">${c.badge_label || 'OFFICIAL UPDATE'}</td>
-              <td class="p-3"><span class="inline-block w-3 h-3 rounded-full mr-1.5 align-middle" style="background:${c.highlight_color}"></span>${c.highlight_color}</td>
-              <td class="p-3 font-bold">${c.max_daily_posts || 15} / day</td>
-            </tr>
-          `).join('');
+        cachedChannels = data.channels || [];
+
+        // Update target select in Tab 1
+        const sel = document.getElementById('selectChannel');
+        if (sel) {
+          sel.innerHTML = '<option value="all">All Configured Channels</option>' + 
+            cachedChannels.map(c => `<option value="${c.channel_id}">${c.channel_name} (${c.channel_id})</option>`).join('');
         }
-      } catch (e) {}
+
+        if (cachedChannels.length === 0) {
+          container.innerHTML = '<div class="col-span-full p-8 text-center text-xs font-mono text-neutral-500 bg-neutral-900 border border-neutral-800 rounded-2xl">No channels configured. Click "Add New Channel" above!</div>';
+          return;
+        }
+
+        container.innerHTML = cachedChannels.map(ch => {
+          const sources = ch.source_pages || (ch.source_page_url ? [ch.source_page_url] : []);
+          
+          return `
+            <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-5 shadow-xl flex flex-col justify-between hover:border-neutral-700 transition-all">
+              <div>
+                <!-- Channel Header -->
+                <div class="flex items-start justify-between gap-2 mb-3">
+                  <div>
+                    <h3 class="text-sm font-bold text-neutral-100 flex items-center gap-1.5">
+                      <span>${ch.channel_name}</span>
+                    </h3>
+                    <span class="text-[11px] font-mono text-neutral-500">ID: ${ch.channel_id}</span>
+                  </div>
+                  <button onclick="deleteChannel('${ch.channel_id}')" title="Delete Channel"
+                    class="text-neutral-500 hover:text-rose-400 p-1 rounded-lg hover:bg-neutral-800 transition-colors cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                  </button>
+                </div>
+
+                <!-- Meta Specs Badge & Color -->
+                <div class="flex flex-wrap items-center gap-2 mb-4">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-neutral-950 border border-neutral-800" style="color: ${ch.highlight_color || '#FFC83B'}">
+                    ● ${ch.badge_label || 'VERIFIED REPORT'}
+                  </span>
+                  <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-neutral-950 text-neutral-400 border border-neutral-800">
+                    &le; ${ch.max_daily_posts || 15}/Day
+                  </span>
+                  <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-neutral-950 text-neutral-400 border border-neutral-800">
+                    Dest: ${ch.dest_page_id}
+                  </span>
+                </div>
+
+                <!-- Linked Multiple Facebook Source Pages -->
+                <div class="mb-4">
+                  <div class="text-[11px] font-mono text-neutral-400 mb-2 flex items-center justify-between">
+                    <span>Linked Source Pages (${sources.length}):</span>
+                  </div>
+                  
+                  <div class="space-y-1.5 max-h-36 overflow-y-auto custom-scrollbar">
+                    ${sources.map(src => {
+                      const displaySlug = src.replace('https://www.facebook.com/', '').replace('https://facebook.com/', '').replace('/', '');
+                      return `
+                        <div class="flex items-center justify-between bg-neutral-950 px-2.5 py-1.5 rounded-lg border border-neutral-800 text-[11px] font-mono">
+                          <span class="text-blue-400 truncate max-w-[200px]" title="${src}">facebook.com/${displaySlug}</span>
+                          <button onclick="removeSourceFromChannel('${ch.channel_id}', '${encodeURIComponent(src)}')" title="Remove Source"
+                            class="text-neutral-500 hover:text-rose-400 ml-2 font-bold cursor-pointer">
+                            &times;
+                          </button>
+                        </div>
+                      `;
+                    }).join('')}
+                  </div>
+                </div>
+
+                <!-- Inline Add Source Input -->
+                <div class="pt-2 border-t border-neutral-800/80">
+                  <div class="flex items-center gap-1.5">
+                    <input type="text" id="inputNewSource_${ch.channel_id}" placeholder="https://www.facebook.com/..."
+                      class="flex-1 bg-neutral-950 border border-neutral-800 rounded-lg px-2.5 py-1.5 text-[11px] font-mono text-neutral-200 focus:outline-none focus:border-amber-400" />
+                    <button onclick="addSourceToChannel('${ch.channel_id}')"
+                      class="px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-neutral-950 font-bold rounded-lg text-xs font-mono transition-colors cursor-pointer">
+                      + Add
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+      } catch (e) {
+        container.innerHTML = '<div class="col-span-full p-8 text-center text-xs font-mono text-rose-400 bg-neutral-900 border border-neutral-800 rounded-2xl">Failed to load channels: ' + e.message + '</div>';
+      }
+    }
+
+    async function addSourceToChannel(channelId) {
+      const input = document.getElementById('inputNewSource_' + channelId);
+      const val = input ? input.value.trim() : '';
+      if (!val) return;
+
+      try {
+        const res = await fetch('/api/channels/add-source', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ channel_id: channelId, source_page: val })
+        });
+        const data = await res.json();
+        if (data.success) {
+          if (input) input.value = '';
+          renderChannelsHub();
+        } else {
+          alert('Error adding source: ' + (data.message || 'Failed'));
+        }
+      } catch (e) {
+        alert('Request failed: ' + e.message);
+      }
+    }
+
+    async function removeSourceFromChannel(channelId, encodedSrc) {
+      const src = decodeURIComponent(encodedSrc);
+      if (!confirm('Remove source: ' + src + '?')) return;
+
+      try {
+        const res = await fetch('/api/channels/remove-source', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ channel_id: channelId, source_page: src })
+        });
+        const data = await res.json();
+        if (data.success) {
+          renderChannelsHub();
+        }
+      } catch (e) {
+        alert('Request failed: ' + e.message);
+      }
+    }
+
+    async function deleteChannel(channelId) {
+      if (!confirm('Are you sure you want to delete channel ' + channelId + '?')) return;
+      try {
+        const res = await fetch('/api/channels/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ channel_id: channelId })
+        });
+        const data = await res.json();
+        if (data.success) {
+          renderChannelsHub();
+        }
+      } catch (e) {
+        alert('Request failed: ' + e.message);
+      }
+    }
+
+    function openAddChannelModal() {
+      document.getElementById('modalAddChannel').classList.remove('hidden');
+    }
+
+    function closeAddChannelModal() {
+      document.getElementById('modalAddChannel').classList.add('hidden');
+    }
+
+    async function submitNewChannel() {
+      const cid = document.getElementById('newChannelId').value.trim();
+      const cname = document.getElementById('newChannelName').value.trim();
+      const sourcesStr = document.getElementById('newChannelSources').value.trim();
+      const destId = document.getElementById('newDestPageId').value.trim();
+      const tokenEnv = document.getElementById('newTokenEnv').value.trim();
+      const badge = document.getElementById('newBadgeLabel').value.trim();
+      const color = document.getElementById('newHighlightHex').value.trim();
+
+      if (!cid) {
+        alert('Please enter a channel identifier');
+        return;
+      }
+
+      const sources = sourcesStr ? sourcesStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+      try {
+        const res = await fetch('/api/channels/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            channel_id: cid,
+            channel_name: cname || cid,
+            source_pages: sources,
+            dest_page_id: destId || 'DEMO_PAGE_ID',
+            dest_access_token_env: tokenEnv || 'FB_TOKEN_DEFAULT',
+            badge_label: badge || 'EXCLUSIVE',
+            highlight_color: color || '#FFC83B'
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          closeAddChannelModal();
+          renderChannelsHub();
+        } else {
+          alert('Error: ' + data.message);
+        }
+      } catch (e) {
+        alert('Request failed: ' + e.message);
+      }
     }
 
     async function toggleMasterSwitch() {
@@ -710,7 +991,7 @@
     // Start background polling
     window.addEventListener('DOMContentLoaded', () => {
       pollTimer = setInterval(pollLiveLogs, 1500);
-      loadStatusAndChannels();
+      renderChannelsHub();
     });
   </script>
 </body>

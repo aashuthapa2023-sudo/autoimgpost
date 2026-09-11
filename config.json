@@ -1,5 +1,5 @@
 {
-  "pipeline_active": true,
+  "pipeline_active": false,
   "max_images_per_day_per_page": 15,
   "min_hour_gap_per_page": 1,
   "channels": [
@@ -18,7 +18,11 @@
       "fetch_frequency": "hourly",
       "policy_compliance_mode": "strict_fb_standard",
       "max_daily_posts": 15,
-      "min_gap_hours": 1
+      "min_gap_hours": 1,
+      "source_pages": [
+        "https://www.facebook.com/netflixfanslivehere",
+        "https://www.facebook.com/netflix"
+      ]
     },
     {
       "channel_id": "gaming_central",
@@ -35,7 +39,10 @@
       "fetch_frequency": "hourly",
       "policy_compliance_mode": "strict_fb_standard",
       "max_daily_posts": 15,
-      "min_gap_hours": 1
+      "min_gap_hours": 1,
+      "source_pages": [
+        "https://www.facebook.com/ign"
+      ]
     },
     {
       "channel_id": "tech_breakthroughs",
@@ -52,7 +59,10 @@
       "fetch_frequency": "hourly",
       "policy_compliance_mode": "strict_fb_standard",
       "max_daily_posts": 15,
-      "min_gap_hours": 1
+      "min_gap_hours": 1,
+      "source_pages": [
+        "https://www.facebook.com/techcrunch"
+      ]
     }
   ]
 }

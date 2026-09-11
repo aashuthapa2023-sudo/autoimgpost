@@ -73,7 +73,13 @@ def main():
             continue
 
         channel_name = ch.get("channel_name", channel_id)
-        source_url = ch.get("source_page_url", "")
+        source_pages = ch.get("source_pages", [])
+        if not source_pages:
+            if ch.get("source_page_url"):
+                source_pages = [ch["source_page_url"]]
+            elif ch.get("source_page_id"):
+                source_pages = [f"https://www.facebook.com/{ch['source_page_id']}"]
+
         source_id = ch.get("source_page_id", "")
         dest_id = ch.get("dest_page_id", "")
         token_env = ch.get("dest_access_token_env", "FB_TOKEN_DEFAULT")
@@ -84,7 +90,9 @@ def main():
 
         print(f"\n-------------------------------------------------------------")
         print(f" Channel: {channel_name} ({channel_id})")
-        print(f" Source URL: {source_url or source_id} -> Destination Page: {dest_id}")
+        print(f" Linked Source Pages: {len(source_pages)} sources -> Destination Page: {dest_id}")
+        for sp in source_pages:
+            print(f"   * Source: {sp}")
 
         # 1. STRICT CONSTRAINT: Max 15 images per day per page
         channel_stat = daily_stats.get(channel_id, {"date": today_str, "count": 0, "timestamps": [], "last_published_time": 0})
@@ -111,8 +119,14 @@ def main():
 
         try:
             allowed_to_fetch = min(max_posts, remaining_today)
-            new_posts = fetch_source_posts(source_id, token, processed_ids, limit=allowed_to_fetch, source_url=source_url)
-            print(f" [INGEST] Found {len(new_posts)} new unprocessed post(s) from Facebook source")
+            new_posts = fetch_source_posts(
+                page_id=source_id,
+                access_token=token,
+                processed_ids=processed_ids,
+                limit=allowed_to_fetch,
+                source_urls=source_pages
+            )
+            print(f" [INGEST] Found {len(new_posts)} new unprocessed post(s) from multi-source Facebook pages")
         except Exception as err:
             tb_str = traceback.format_exc()
             print(f" [ERROR] Failed to fetch source posts: {err}")
@@ -161,12 +175,14 @@ def main():
                 # 4. Composite 4:5 Poster
                 rendered_file = os.path.join(OUTPUT_DIR, f"{channel_id}_{post_id}.jpg")
                 print(f"     [4/5] Compositing 4:5 studio poster to {rendered_file}...")
+                source_tag = post.get("source_name", badge_label)
                 render_final_poster(
                     base_img=graded_img,
                     overlay_lines=ai_data["overlay_lines"],
                     highlight_hex=highlight_hex,
                     badge_label=badge_label,
-                    output_path=rendered_file
+                    output_path=rendered_file,
+                    source_tag=source_tag
                 )
                 print(f"           Poster created successfully: 1080x1350px")
 

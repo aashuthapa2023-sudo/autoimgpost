@@ -24,8 +24,11 @@ def extract_identifier(url_or_id: str) -> str:
         return slug_match.group(1)
     return url_or_id.replace('@', '').rstrip('/')
 
-def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = None, limit: int = 5):
-    """Scrapes and extracts real public posts from any public Facebook page (e.g. netflixfanslivehere)."""
+def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = None, limit: int = 15):
+    """
+    Scrapes and extracts up to 25 real public posts from any public Facebook page
+    (e.g., https://www.facebook.com/netflixfanslivehere) using Googlebot SSR routing.
+    """
     processed_ids = processed_ids or []
     ident = extract_identifier(page_url_or_slug)
     url = f"https://www.facebook.com/{ident}"
@@ -42,8 +45,9 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
 
     html = res.text
     scripts = re.findall(r'<script\s+type="application/json"[^>]*>(.*?)</script>', html)
+
     posts = []
-    seen_posts = set()
+    seen = set()
 
     for s in scripts:
         if ('creation_time' not in s and 'publish_time' not in s) or ('message' not in s and 'story' not in s):
@@ -88,18 +92,25 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
                             if tm:
                                 created_ts = int(tm.group(1))
 
-                        if msg and len(msg.strip()) > 10 and photo_id:
-                            raw_pid = str(p_id or photo_id)
-                            if raw_pid not in seen_posts and raw_pid not in processed_ids:
-                                seen_posts.add(raw_pid)
-                                posts.append({
-                                    "post_id": raw_pid,
-                                    "photo_id": photo_id,
-                                    "caption": msg.strip(),
-                                    "image_url": f"https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id={photo_id}",
-                                    "created_time": created_ts or int(datetime.now(timezone.utc).timestamp()),
-                                    "source_gap_hours": 2.0
-                                })
+                        if msg and len(msg.strip()) > 10:
+                            if not photo_id:
+                                any_media = re.findall(r'media_id=(\d+)', s_sub)
+                                if any_media:
+                                    photo_id = any_media[0]
+
+                            if photo_id:
+                                clean_key = re.sub(r'\s+', ' ', msg.strip()[:60])
+                                raw_pid = str(p_id or photo_id)
+                                if clean_key not in seen and raw_pid not in processed_ids:
+                                    seen.add(clean_key)
+                                    posts.append({
+                                        "post_id": raw_pid,
+                                        "photo_id": photo_id,
+                                        "caption": msg.strip(),
+                                        "image_url": f"https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id={photo_id}",
+                                        "created_time": created_ts or int(datetime.now(timezone.utc).timestamp()),
+                                        "source_gap_hours": 2.0
+                                    })
 
                     for v in node.values():
                         walk(v)
@@ -120,47 +131,47 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
 
     return posts[:limit]
 
-def fetch_source_posts(source_page_id: str, access_token: str, processed_ids: list, limit: int = 2, source_url: str = ""):
+def fetch_source_posts(source_page_id: str = "", access_token: str = "", processed_ids: list = None, limit: int = 2, source_url: str = "", source_pages: list = None, **kwargs):
+    """
+    Fetches posts across MULTIPLE source Facebook pages configured for a destination channel.
+    """
+    if "page_id" in kwargs and not source_page_id:
+        source_page_id = kwargs["page_id"]
+    if "source_urls" in kwargs and not source_pages:
+        source_pages = kwargs["source_urls"]
+
     processed_ids = processed_ids or []
-    target = source_url or source_page_id
+    targets = []
 
-    if target:
-        fb_posts = fetch_facebook_public_posts(target, processed_ids=processed_ids, limit=limit)
-        if fb_posts:
-            print(f" [FB INGEST] Retrieved {len(fb_posts)} real post(s) from Facebook page '{target}'")
-            return fb_posts
+    if source_pages and isinstance(source_pages, list):
+        for sp in source_pages:
+            if sp and sp not in targets:
+                targets.append(sp)
 
-    if access_token and access_token not in ["SIMULATED_DEMO_TOKEN", ""]:
-        ident = extract_identifier(target)
-        url = f"https://graph.facebook.com/v19.0/{ident}/posts"
-        params = {
-            "fields": "id,message,created_time,full_picture,attachments{media,subattachments}",
-            "limit": 10,
-            "access_token": access_token
-        }
-        try:
-            res = requests.get(url, params=params, timeout=15)
-            data = res.json()
-            if "data" in data and len(data["data"]) > 0:
-                new_posts = []
-                for item in data["data"]:
-                    p_id = item.get("id")
-                    if p_id in processed_ids:
-                        continue
-                    img_url = item.get("full_picture")
-                    caption = item.get("message", "")
-                    if img_url:
-                        new_posts.append({
-                            "post_id": p_id,
-                            "image_url": img_url,
-                            "caption": caption,
-                            "source_gap_hours": 2.0
-                        })
-                        if len(new_posts) >= limit:
-                            break
-                if new_posts:
-                    return new_posts
-        except Exception as e:
-            print(f" [GRAPH API ERROR] {e}")
+    if source_url and source_url not in targets:
+        targets.append(source_url)
+    if not targets and source_page_id:
+        targets.append(source_page_id)
+
+    all_posts = []
+    seen_ids = set(processed_ids)
+
+    for target in targets:
+        if len(all_posts) >= limit:
+            break
+        needed = limit - len(all_posts)
+        fb_posts = fetch_facebook_public_posts(target, processed_ids=list(seen_ids), limit=needed)
+        for p in fb_posts:
+            pid = p["post_id"]
+            if pid not in seen_ids:
+                seen_ids.add(pid)
+                p["source_tag"] = extract_identifier(target).replace("_", " ").title()
+                all_posts.append(p)
+                if len(all_posts) >= limit:
+                    break
+
+    if all_posts:
+        print(f" [MULTI-SOURCE INGEST] Retrieved {len(all_posts)} post(s) from {len(targets)} source page(s)")
+        return all_posts
 
     return []
