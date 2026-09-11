@@ -8,7 +8,7 @@ import threading
 import subprocess
 import urllib.parse
 import requests
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from datetime import datetime, timezone
 
 PORT = 8000
@@ -202,21 +202,8 @@ class PipelineHandler(SimpleHTTPRequestHandler):
                     self.end_headers()
                     self.wfile.write(resp.content)
                     return
-            except Exception:
-                pass
-
-            # Fallback to local default poster
-            fallback_fp = os.path.join(ROOT_DIR, "output", "dolly_improved.jpg")
-            if os.path.exists(fallback_fp):
-                with open(fallback_fp, "rb") as f:
-                    content = f.read()
-                self.send_response(200)
-                self.send_header("Content-Type", "image/jpeg")
-                self.send_header("Content-Length", str(len(content)))
-                self.send_header("Access-Control-Allow-Origin", "*")
-                self.end_headers()
-                self.wfile.write(content)
-                return
+            except Exception as e:
+                print(f" [PROXY ERROR] Failed to fetch image {img_url}: {e}")
 
             self.send_response(404)
             self.end_headers()
@@ -263,13 +250,12 @@ class PipelineHandler(SimpleHTTPRequestHandler):
             limit = int(query.get("limit", [15])[0])
             try:
                 from modules.ingestion import fetch_facebook_public_posts
-                from modules.llm_transformer import generate_social_payload
+                from modules.llm_transformer import smart_heuristic_headline
                 posts = fetch_facebook_public_posts(page, limit=limit)
-                # Attach proxy_image_url and rewritten preview
+                # Attach proxy_image_url and instant rewritten preview
                 for p in posts:
                     p["proxy_image_url"] = f"/api/proxy-image?url={urllib.parse.quote(p['image_url'])}"
-                    # Quick preview of rewritten caption
-                    ai_prev = generate_social_payload(p["caption"])
+                    ai_prev = smart_heuristic_headline(p["caption"])
                     p["rewritten_caption"] = ai_prev["rewritten_caption"]
                 resp_json = {"success": True, "page": page, "count": len(posts), "posts": posts}
             except Exception as e:
@@ -521,7 +507,7 @@ class PipelineHandler(SimpleHTTPRequestHandler):
         self.end_headers()
 
 def run_server(port=PORT):
-    server = HTTPServer(("0.0.0.0", port), PipelineHandler)
+    server = ThreadingHTTPServer(("0.0.0.0", port), PipelineHandler)
     print(f"===========================================================")
     print(f"  AutoImgPost 24/7 Automation Hub & Live Sync UI Server")
     print(f"  Listening on: http://localhost:{port}")

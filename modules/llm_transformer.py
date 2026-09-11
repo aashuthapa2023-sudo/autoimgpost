@@ -4,36 +4,93 @@ import re
 import requests
 
 def build_system_prompt() -> str:
-    return """You are a master entertainment journalist rewriting social media posts for 100% ORIGINALITY and strict adherence to Facebook Distribution Guidelines.
+    return """You are a professional entertainment journalist creating visually impactful, policy-compliant social media content.
+Strictly adhere to Facebook Distribution Guidelines: NO clickbait, NO sensationalism, and ABSOLUTELY NO comment bait or engagement bait.
 
 TASK:
 1. OVERLAY HEADLINES (Centered Dual-Tone):
-   Generate 3 to 4 punchy, centered lines matching the reference layout:
-   - Line 1: Subject / Creator / Franchise
-   - Line 2: Action / Record / Target
-   - Line 3: Strategic Context / Production Milestone
-   - Line 4 (Optional): Superlative / Key Date / Outcome
-   Split each line into: [{"text": "...", "type": "white" | "highlight"}]. Highlight the most impactful entities or superlatives.
+   Generate 2 to 3 natural, balanced lines extracted from the factual core of the news:
+   - Line 1: Subject / Franchise / Headline Lead
+   - Line 2: Action / Key Milestone / Record
+   - Line 3 (Optional): Context / Key Date / Outcome
+   CRITICAL RULES:
+   - NEVER add artificial filler words like 'REPORT', 'DETAILS', 'CONFIRMED', or 'BREAKING'.
+   - NEVER end a line with trailing prepositions or articles (like 'THE', 'A', 'OF', 'ON', 'TO', 'AND').
+   - Split each line into: [{"text": "...", "type": "white" | "highlight"}]. Highlight the core name, title, or milestone.
 
-2. ORIGINAL REWRITTEN CAPTION (Strict Facebook Distribution Policy Compliant):
-   - 100% ORIGINAL NARRATIVE: Completely rewrite the source caption in sophisticated journalistic prose. Never copy sentences verbatim.
-   - HOOK LINE: Engaging opening headline with emoji.
-   - 2-3 INFORMATIVE BODY PARAGRAPHS: Deep factual context, production implications, and industry significance.
-   - CONVERSATIONAL DISCUSSION STARTER: A natural question prompting meaningful comments (NO engagement bait like 'type yes' or 'share').
-   - CLEAN HASHTAGS: 4-6 targeted, relevant hashtags.
+2. REWRITTEN CAPTION (Strict Facebook Distribution Policy Compliance):
+   - 100% FACTUAL & OBJECTIVE: Clear, professional journalistic tone without hyperbole or sensational adjectives.
+   - PARAGRAPH 1: The core news statement (who, what, when, where).
+   - PARAGRAPH 2: Contextual industry background or production history.
+   - STRICT BAN ON COMMENT BAIT: NEVER ask questions like 'What do you think?', 'Drop your thoughts below', 'Comment below', 'Type YES', or 'Share your favorite'. End cleanly after the factual context.
+   - CLEAN HASHTAGS: 4-5 relevant topic hashtags.
 
 Return strictly JSON:
 {
   "overlay_lines": [
-    [{"text": "SUBJECT WORDS ", "type": "white"}, {"text": "HIGHLIGHT ENTITY", "type": "highlight"}],
-    [{"text": "ACTION WORDS ", "type": "white"}, {"text": "HIGHLIGHT VERB", "type": "highlight"}],
-    [{"text": "CONTEXT WORDS ", "type": "white"}, {"text": "HIGHLIGHT OUTCOME", "type": "highlight"}]
+    [{"text": "LEAD PHRASE ", "type": "white"}, {"text": "KEY ENTITY", "type": "highlight"}],
+    [{"text": "MILESTONE PHRASE ", "type": "white"}, {"text": "KEY OUTCOME", "type": "highlight"}]
   ],
-  "rewritten_caption": "HOOK\n\nBody paragraphs...\n\nDiscussion question...\n\n#Hashtags"
+  "rewritten_caption": "Factual headline\n\nObjective news paragraph.\n\nContext and background paragraph.\n\n#Hashtag1 #Hashtag2 #Hashtag3"
 }"""
 
+TRAILING_STOPWORDS = {
+    'THE', 'A', 'AN', 'OF', 'IN', 'ON', 'AT', 'TO', 'FOR', 'WITH', 'AND', 'OR',
+    'BUT', 'BY', 'FROM', 'AS', 'ABOUT', 'INTO', 'HAS', 'HAVE', 'HAD', 'IS', 'ARE',
+    'WAS', 'WERE', 'BE', 'BEEN'
+}
+
+def format_factual_overlay(sentence: str) -> list:
+    """
+    Takes a clean factual sentence and splits it into 2-3 complete, balanced lines.
+    Never appends artificial words like REPORT or DETAILS.
+    Never cuts off on trailing prepositions, articles, or auxiliary verbs.
+    """
+    s = re.sub(r'https?:\S+', '', sentence).strip()
+    s = re.sub(r'^[A-Z\s]+:\s*', '', s)
+    s = s.rstrip('.,;:')
+
+    words = s.split()
+    total = len(words)
+
+    if total <= 7:
+        mid = max(1, total // 2)
+        while mid > 1 and words[mid - 1].rstrip(',.;:').upper() in TRAILING_STOPWORDS:
+            mid -= 1
+        lines_words = [words[:mid], words[mid:]]
+    else:
+        # Split into 3 balanced lines
+        c = total // 3
+        p1 = c
+        while p1 > 1 and words[p1 - 1].rstrip(',.;:').upper() in TRAILING_STOPWORDS:
+            p1 -= 1
+
+        p2 = p1 + c
+        while p2 > p1 + 1 and words[p2 - 1].rstrip(',.;:').upper() in TRAILING_STOPWORDS:
+            p2 -= 1
+
+        lines_words = [words[:p1], words[p1:p2], words[p2:]]
+
+    # Clean any trailing stopword from any line
+    for lw in lines_words:
+        while lw and lw[-1].rstrip(',.;:').upper() in TRAILING_STOPWORDS:
+            lw.pop()
+
+    res = []
+    for lw in lines_words:
+        if not lw:
+            continue
+        if len(lw) == 1:
+            res.append([{"text": lw[0].upper(), "type": "highlight"}])
+        else:
+            res.append([
+                {"text": " ".join(lw[:-1]).upper() + " ", "type": "white"},
+                {"text": lw[-1].upper(), "type": "highlight"}
+            ])
+    return res
+
 def smart_heuristic_headline(raw_caption: str) -> dict:
-    """Extracts factual news subject and synthesizes a 100% original, policy-compliant caption."""
+    """Extracts factual news subject and synthesizes a 100% original, policy-compliant caption without comment bait."""
     cleaned = re.sub(r'https?:\S+', '', raw_caption).strip()
     sentences = [s.strip() for s in re.split(r'[.\n!]', cleaned) if len(s.strip()) > 8]
     first_sent = sentences[0] if sentences else cleaned[:120]
@@ -43,82 +100,62 @@ def smart_heuristic_headline(raw_caption: str) -> dict:
     if "DOLLY PARTON" in upper and "EMMY" in upper:
         overlay_lines = [
             [{"text": "DOLLY PARTON TO RECEIVE ", "type": "white"}, {"text": "HONORARY TRIBUTE", "type": "highlight"}],
-            [{"text": "2026 EMMY AWARDS ", "type": "white"}, {"text": "SPECIAL SEGMENT", "type": "highlight"}],
-            [{"text": "CELEBRATING SEVEN DECADES ", "type": "white"}, {"text": "OF MUSIC & TV", "type": "highlight"}]
+            [{"text": "2026 TELEVISION ACADEMY ", "type": "white"}, {"text": "HONORS", "type": "highlight"}],
+            [{"text": "CELEBRATING SEVEN DECADES ", "type": "white"}, {"text": "OF LEGACY", "type": "highlight"}]
         ]
         rewritten = (
-            "🌟 TELEVISION & MUSIC ICON HONORED\n\n"
-            "The Television Academy has officially announced a dedicated tribute honoring the incomparable Dolly Parton at the upcoming 2026 Emmy Awards ceremony. The celebration will spotlight her groundbreaking seven-decade legacy across music, film, and global philanthropy.\n\n"
-            "Industry organizers confirmed that the broadcast will feature exclusive guest tributes and archival retrospective footage chronicling her indelible impact on entertainment culture.\n\n"
-            "What is your all-time favorite Dolly Parton song or screen performance? Share your memories below! 👇\n\n"
-            "#DollyParton #Emmys2026 #TelevisionAcademy #CountryLegend #EntertainmentNews"
+            "🌟 TELEVISION ACADEMY HONORS DOLLY PARTON\n\n"
+            "The Television Academy has officially announced a dedicated tribute honoring Dolly Parton at the upcoming 2026 Emmy Awards ceremony. The special honors will spotlight her seven-decade career across music, film, and global philanthropy.\n\n"
+            "The broadcast will feature archival retrospectives documenting her historic contributions to the entertainment industry.\n\n"
+            "#DollyParton #EmmyAwards #TelevisionAcademy #EntertainmentNews"
         )
     elif "RANSOM CANYON" in upper and ("CANCEL" in upper or "ENDS" in upper):
         overlay_lines = [
-            [{"text": "NETFLIX OFFICIALLY CANCELS ", "type": "white"}, {"text": "'RANSOM CANYON'", "type": "highlight"}],
-            [{"text": "WESTERN DRAMA CONCLUDES ", "type": "white"}, {"text": "AFTER TWO SEASONS", "type": "highlight"}],
-            [{"text": "STREAMING PLATFORM REVEALS ", "type": "white"}, {"text": "FINAL DECISION", "type": "highlight"}]
+            [{"text": "NETFLIX DRAMA ", "type": "white"}, {"text": "'RANSOM CANYON'", "type": "highlight"}],
+            [{"text": "CONCLUDES FOLLOWING ", "type": "white"}, {"text": "SEASON TWO", "type": "highlight"}],
+            [{"text": "WESTERN ROMANCE SERIES ", "type": "white"}, {"text": "OFFICIALLY ENDS", "type": "highlight"}]
         ]
         rewritten = (
-            "📺 STREAMING UPDATE: SERIES CONCLUSION\n\n"
-            "Netflix has officially confirmed that romance-western drama 'Ransom Canyon' will not be returning for a third chapter, bringing the family ranching saga to an abrupt close following its sophomore run.\n\n"
-            "Despite maintaining a passionate following, network performance metrics and production scheduling led executives to conclude the series storyline with season two.\n\n"
-            "Did you follow the story of the Double K Ranch? Let us know your thoughts on this cancellation below! 👇\n\n"
-            "#RansomCanyon #NetflixSeries #StreamingUpdates #TVNews #CancelledSeries"
+            "📺 SERIES UPDATE: RANSOM CANYON\n\n"
+            "Netflix has confirmed that romantic western drama 'Ransom Canyon' will conclude with its second season. The series, set against the backdrop of Texas hill country ranching, will not move forward with additional production.\n\n"
+            "The final episodes deliver narrative closure for the Double K Ranch storylines.\n\n"
+            "#RansomCanyon #NetflixOriginals #DramaSeries #TelevisionNews"
         )
     elif "LUPIN" in upper:
         overlay_lines = [
-            [{"text": "OMAR SY RETURNS IN ", "type": "white"}, {"text": "'LUPIN' SEASON 4", "type": "highlight"}],
-            [{"text": "FIRST LOOK IMAGERY REVEALS ", "type": "white"}, {"text": "NEW MISSION", "type": "highlight"}],
-            [{"text": "PARISIAN HEIST SAGA CONTINUES ", "type": "white"}, {"text": "ON NETFLIX", "type": "highlight"}]
+            [{"text": "OMAR SY RETURNS IN ", "type": "white"}, {"text": "'LUPIN' PART 4", "type": "highlight"}],
+            [{"text": "PRODUCTION UNDERWAY ON ", "type": "white"}, {"text": "NEW SEASON", "type": "highlight"}],
+            [{"text": "PARISIAN THRILLER CONTINUES ", "type": "white"}, {"text": "ON NETFLIX", "type": "highlight"}]
         ]
         rewritten = (
-            "🎩 ASSANE DIOP IS BACK\n\n"
-            "First-look visuals have arrived for the fourth installment of the global blockbuster series 'Lupin', confirming that Omar Sy has officially stepped back into the shoes of the gentleman thief.\n\n"
-            "The new season promises elevated stakes across Europe as Diop faces his most intricate psychological challenge yet following the dramatic revelations of part three.\n\n"
-            "Are you excited for the next chapter of Lupin? What are your theories for Season 4? Drop your thoughts below! 👇\n\n"
-            "#Lupin #LupinNetflix #OmarSy #NetflixOriginals #FrenchSeries"
+            "🎩 PRODUCTION BRIEFING: LUPIN PART 4\n\n"
+            "Production is officially progressing on the fourth installment of the global French heist series 'Lupin', featuring Omar Sy as Assane Diop.\n\n"
+            "The upcoming chapter follows the cliffhanger conclusion of Part 3, expanding the narrative scope across new European locations.\n\n"
+            "#Lupin #OmarSy #NetflixSeries #StreamingUpdates"
         )
     elif "LIZZIE BORDEN" in upper or "MONSTER" in upper:
         overlay_lines = [
-            [{"text": "'MONSTER: LIZZIE BORDEN' ", "type": "white"}, {"text": "OFFICIAL FIRST LOOK", "type": "highlight"}],
-            [{"text": "RYAN MURPHY ANTHOLOGY ", "type": "white"}, {"text": "PREMIERES THIS MONTH", "type": "highlight"}],
-            [{"text": "STREAMING EXCLUSIVELY ", "type": "white"}, {"text": "WORLDWIDE ON NETFLIX", "type": "highlight"}]
+            [{"text": "'MONSTER: LIZZIE BORDEN' ", "type": "white"}, {"text": "PRODUCTION UPDATE", "type": "highlight"}],
+            [{"text": "RYAN MURPHY ANTHOLOGY ", "type": "white"}, {"text": "CONFIRMS CASTING", "type": "highlight"}],
+            [{"text": "HISTORICAL CRIME DRAMA ", "type": "white"}, {"text": "ON NETFLIX", "type": "highlight"}]
         ]
         rewritten = (
-            "🩸 THE NEXT CHILLING CHAPTER ARRIVES\n\n"
-            "The chilling anthology series from Ryan Murphy shifts its focus to one of the most infamous true-crime cases in American history with 'Monster: The Lizzie Borden Story'.\n\n"
-            "Featuring an all-star ensemble cast and atmospheric period production design, the series examines the 1892 Fall River axe murders and the subsequent trial that captivated the nation.\n\n"
-            "Will you be streaming this premiere on day one? Share your reactions below! 👇\n\n"
-            "#LizzieBorden #MonsterNetflix #TrueCrimeAnthology #RyanMurphy #NetflixWatchlist"
+            "🎬 CASTING & PRODUCTION: MONSTER ANTHOLOGY\n\n"
+            "The latest iteration of Ryan Murphy's 'Monster' anthology series shifts focus to the historical case of Lizzie Borden, following previous seasons centered on notorious true-crime chronicles.\n\n"
+            "The project will document the 1892 Fall River trial with period set design and an ensemble cast.\n\n"
+            "#MonsterNetflix #LizzieBorden #RyanMurphy #TrueCrimeDrama"
         )
     else:
-        words = first_sent.split()
-        if len(words) >= 12:
-            l1 = " ".join(words[:4]).upper()
-            l2 = " ".join(words[4:8]).upper()
-            l3 = " ".join(words[8:12]).upper()
-            l4 = " ".join(words[12:16]).upper() if len(words) >= 16 else ""
-
-            overlay_lines = [
-                [{"text": l1 + " ", "type": "white"}, {"text": "REPORT", "type": "highlight"}],
-                [{"text": l2 + " ", "type": "white"}, {"text": "DETAILS", "type": "highlight"}],
-                [{"text": l3 + " ", "type": "white"}]
-            ]
-            if l4:
-                overlay_lines.append([{"text": l4, "type": "highlight"}])
-        else:
-            overlay_lines = [
-                [{"text": first_sent.upper()[:35] + " ", "type": "white"}, {"text": "CONFIRMED", "type": "highlight"}],
-                [{"text": "OFFICIAL MEDIA REPORT ", "type": "white"}, {"text": "AND COVERAGE", "type": "highlight"}]
-            ]
+        overlay_lines = format_factual_overlay(first_sent)
+        body = f"{first_sent}."
+        if second_sent:
+            body += f" {second_sent}."
 
         rewritten = (
-            f"🎬 BREAKING ENTERTAINMENT BRIEFING\n\n"
-            f"{first_sent}.\n\n"
-            f"{second_sent if second_sent else 'Verified sources confirm that developments continue to unfold with industry reactions emerging across major networks.'}\n\n"
-            f"What is your take on this latest announcement? Join the conversation in the comments! 👇\n\n"
-            f"#EntertainmentNews #FilmIndustry #StreamingUpdates #HollywoodHeadlines"
+            f"🎬 INDUSTRY REPORTING & UPDATES\n\n"
+            f"{body}\n\n"
+            f"Verified production and distribution documentation have been logged for this release.\n\n"
+            f"#EntertainmentNews #FilmIndustry #StreamingUpdates #Television"
         )
 
     return {

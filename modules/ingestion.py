@@ -71,69 +71,87 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
         try:
             data = json.loads(s)
 
-            def walk(node):
+            def extract_stories(node):
                 if isinstance(node, dict):
+                    # Check if this node is a top-level story with message and attachments
                     msg = None
                     if "message" in node and isinstance(node["message"], dict) and "text" in node["message"]:
-                        msg = node["message"]["text"]
+                        msg = node["message"]["text"].strip()
                     elif "story" in node and isinstance(node["story"], dict):
                         st = node["story"]
                         if "message" in st and isinstance(st["message"], dict):
-                            msg = st["message"].get("text")
+                            msg = st["message"].get("text", "").strip()
 
-                    if msg and len(msg.strip()) > 8:
-                        s_sub = json.dumps(node)
-
-                        # Extract photo_id or media_id
-                        photo_id = None
-                        pm = re.search(r'"photo_id":\s*"(\\d+)"', s_sub)
-                        if pm:
-                            photo_id = pm.group(1)
-                        if not photo_id:
-                            pm2 = re.search(r'media_id=(\\d+)', s_sub)
-                            if pm2:
-                                photo_id = pm2.group(1)
-
+                    if msg and len(msg) > 8:
+                        media_id = None
                         img_url = None
-                        if photo_id:
-                            img_url = f"https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id={photo_id}"
+
+                        # 1. Check direct attachments
+                        atts = node.get("attachments", [])
+                        if isinstance(atts, list):
+                            for a in atts:
+                                media = a.get("media")
+                                if isinstance(media, dict) and media.get("id"):
+                                    media_id = str(media["id"])
+                                    break
+                                # Check subattachments
+                                sub = a.get("all_subattachments")
+                                if isinstance(sub, dict) and "nodes" in sub:
+                                    for sn in sub["nodes"]:
+                                        sm = sn.get("media")
+                                        if isinstance(sm, dict) and sm.get("id"):
+                                            media_id = str(sm["id"])
+                                            break
+                                if media_id:
+                                    break
+
+                        # 2. Check direct media_id or photo_id on the node itself
+                        if not media_id:
+                            if node.get("photo_id"):
+                                media_id = str(node["photo_id"])
+                            elif node.get("media_id"):
+                                media_id = str(node["media_id"])
+
+                        if media_id:
+                            img_url = f"https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id={media_id}"
                         else:
-                            # Direct high-res CDN uri
+                            # Direct high-res CDN uri fallback
+                            s_sub = json.dumps(node)
                             um = re.search(r'"uri":\s*"(https://scontent[^"]+)"', s_sub)
                             if um:
                                 img_url = bytes(um.group(1), "utf-8").decode("unicode_escape", errors="ignore").replace("\\/", "/")
 
-                        # Post ID
-                        p_id = node.get("post_id") or node.get("id") or photo_id
-
-                        # Timestamp
+                        # Post ID and Timestamp
+                        p_id = node.get("post_id") or node.get("id") or media_id
                         ts = node.get("creation_time") or node.get("publish_time")
                         if not ts:
-                            tm = re.search(r'"(?:publish_time|creation_time)":\s*(\\d{9,11})', s_sub)
+                            s_sub = json.dumps(node)
+                            tm = re.search(r'"(?:publish_time|creation_time)":\s*(\d{9,11})', s_sub)
                             if tm:
                                 ts = int(tm.group(1))
 
-                        if img_url:
-                            clean_k = re.sub(r'\s+', ' ', msg.strip()[:50])
-                            raw_pid = str(p_id or photo_id or len(posts) + 1)
-                            if clean_k not in seen and raw_pid not in processed_ids:
+                        if img_url and media_id:
+                            clean_k = re.sub(r'\s+', ' ', msg[:50])
+                            raw_pid = str(p_id or media_id or len(posts) + 1)
+                            if media_id not in seen and clean_k not in seen and raw_pid not in processed_ids:
+                                seen.add(media_id)
                                 seen.add(clean_k)
                                 posts.append({
                                     "post_id": raw_pid,
-                                    "photo_id": photo_id or "cdn_photo",
-                                    "caption": msg.strip(),
+                                    "photo_id": media_id,
+                                    "caption": msg,
                                     "image_url": img_url,
                                     "created_time": int(ts) if ts else int(datetime.now(timezone.utc).timestamp()),
                                     "source_gap_hours": 2.0
                                 })
 
                     for v in node.values():
-                        walk(v)
+                        extract_stories(v)
                 elif isinstance(node, list):
                     for it in node:
-                        walk(it)
+                        extract_stories(it)
 
-            walk(data)
+            extract_stories(data)
         except Exception:
             pass
 

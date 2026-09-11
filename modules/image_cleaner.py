@@ -15,16 +15,35 @@ def download_image(url: str) -> np.ndarray:
 def detect_and_remove_watermarks(img: np.ndarray) -> np.ndarray:
     """
     Intelligently inspects image for watermarks, channel logos, text stamps,
-    and semi-transparent overlays, and seamlessly inpaints them using Telea algorithm.
+    and semi-transparent overlays, while strictly preserving human faces using
+    Haar cascade detection, and seamlessly inpaints watermarks using Telea algorithm.
     """
     if img is None:
         return None
 
     h, w = img.shape[:2]
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    mask = np.zeros((h, w), dtype=np.uint8)
 
-    # 1. Gradient edge detection for high-frequency text / watermark strokes
+    # 1. Face detection mask to strictly prevent inpainting over human faces
+    face_mask = np.zeros((h, w), dtype=np.uint8)
+    try:
+        cascade_path = cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
+        face_cascade = cv2.CascadeClassifier(cascade_path)
+        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.15, minNeighbors=4, minSize=(50, 50))
+        for (fx, fy, fw, fh) in faces:
+            # Expand face bounds by 25% for hair, forehead, and neck protection
+            pad_x = int(fw * 0.25)
+            pad_y = int(fh * 0.25)
+            x1 = max(0, fx - pad_x)
+            y1 = max(0, fy - pad_y)
+            x2 = min(w, fx + fw + pad_x)
+            y2 = min(h, fy + fh + pad_y)
+            cv2.rectangle(face_mask, (x1, y1), (x2, y2), 255, -1)
+    except Exception:
+        pass
+
+    # 2. Gradient edge detection for high-frequency text / watermark strokes
+    mask = np.zeros((h, w), dtype=np.uint8)
     grad_x = cv2.Sobel(gray, cv2.CV_16S, 1, 0, ksize=3)
     grad_y = cv2.Sobel(gray, cv2.CV_16S, 0, 1, ksize=3)
     abs_grad_x = cv2.convertScaleAbs(grad_x)
@@ -35,7 +54,7 @@ def detect_and_remove_watermarks(img: np.ndarray) -> np.ndarray:
     _, thresh = cv2.threshold(grad, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
 
     # Morphological horizontal closing to group letters into words
-    kernel_text = cv2.getStructuringElement(cv2.MORPH_RECT, (9, 3))
+    kernel_text = cv2.getStructuringElement(cv2.MORPH_RECT, (11, 3))
     connected = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel_text)
 
     contours, _ = cv2.findContours(connected, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -46,15 +65,16 @@ def detect_and_remove_watermarks(img: np.ndarray) -> np.ndarray:
         aspect = cw / float(ch + 1e-5)
         area = cw * ch
 
-        # Watermark heuristics: aspect ratio > 1.2, height between 8 and 70px, area < 4% of total
-        if 1.2 <= aspect <= 15.0 and 8 <= ch <= 70 and 80 <= area <= (h * w * 0.04):
-            # Check edge density inside region
+        # Strictly ignore any region that overlaps with human faces
+        if np.any(face_mask[y:y+ch, x:x+cw] > 0):
+            continue
+
+        # Watermark criteria: corner regions (within 14% of edges) or small watermark stamps
+        is_corner_edge = (x < w * 0.14 or x + cw > w * 0.86 or y < h * 0.12 or y + ch > h * 0.88)
+        if is_corner_edge and 1.2 <= aspect <= 15.0 and 8 <= ch <= 65 and area <= (h * w * 0.025):
             roi_grad = grad[y:y+ch, x:x+cw]
             density = np.count_nonzero(roi_grad > 40) / float(area + 1e-5)
-
-            # Target corner logos, watermark stamps, and semi-transparent badges
-            is_corner = (x < w * 0.35 or x > w * 0.65) or (y < h * 0.35 or y > h * 0.65)
-            if density > 0.22 and (is_corner or aspect > 2.5):
+            if density > 0.24:
                 cv2.rectangle(mask, (max(0, x - 2), max(0, y - 2)), (min(w, x + cw + 2), min(h, y + ch + 2)), 255, -1)
                 watermark_detected = True
 
