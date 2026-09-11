@@ -609,7 +609,7 @@
         } catch(e) {}
       }
 
-      // 2. Fetch config.json directly (GitHub Pages / static fallback)
+      // 2. Fetch config.json directly (GitHub Pages / static fallback - ZERO RATE LIMIT)
       try {
         const res = await fetch('./config.json?t=' + Date.now());
         if (res.ok) {
@@ -620,21 +620,23 @@
         }
       } catch(e) {}
 
-      // 3. Fetch from GitHub API with SHA tracking
-      try {
-        const token = getGitHubToken();
-        const headers = token ? { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' } : {};
-        const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json?t=${Date.now()}`, { headers });
-        if (res.ok) {
-          const data = await res.json();
-          configSha = data.sha;
-          const decoded = decodeURIComponent(escape(atob(data.content)));
-          cachedConfig = JSON.parse(decoded);
-          cachedChannels = cachedConfig.channels || [];
-          updateHeaderStatus();
-          return cachedConfig;
-        }
-      } catch(e) {}
+      // 3. Fetch from GitHub API with SHA tracking (only if static fallback failed AND token exists)
+      const token = getGitHubToken();
+      if (token) {
+        try {
+          const headers = { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' };
+          const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json?t=${Date.now()}`, { headers });
+          if (res.ok) {
+            const data = await res.json();
+            configSha = data.sha;
+            const decoded = decodeURIComponent(escape(atob(data.content)));
+            cachedConfig = JSON.parse(decoded);
+            cachedChannels = cachedConfig.channels || [];
+            updateHeaderStatus();
+            return cachedConfig;
+          }
+        } catch(e) {}
+      }
 
       return cachedConfig;
     }
@@ -642,6 +644,8 @@
     function updateHeaderStatus() {
       const statusText = document.getElementById('masterStatusText');
       const toggleBtn = document.getElementById('btnMasterToggle');
+      const syncBadge = document.getElementById('githubSyncBadge');
+      const token = getGitHubToken();
       const active = cachedConfig.pipeline_active !== false;
 
       if (statusText) statusText.innerText = active ? 'Pipeline Active' : 'Pipeline Paused';
@@ -649,6 +653,18 @@
         toggleBtn.className = active
           ? 'px-3 py-1.5 bg-emerald-950/60 hover:bg-emerald-900 text-emerald-300 border border-emerald-500/40 rounded-lg text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow'
           : 'px-3 py-1.5 bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-500/40 rounded-lg text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow';
+      }
+
+      if (syncBadge) {
+        if (token) {
+          syncBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span><span>GitHub Token: 5,000/hr</span>';
+          syncBadge.className = 'hidden sm:inline-flex items-center px-2.5 py-1.5 rounded-lg text-xs font-mono bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 cursor-pointer transition-colors';
+          syncBadge.title = 'Authenticated with GitHub Personal Access Token (5,000 req/hr quota)';
+        } else {
+          syncBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-400 mr-1.5"></span><span>API: 60/hr • Click to Unlock 5k</span>';
+          syncBadge.className = 'hidden sm:inline-flex items-center px-2.5 py-1.5 rounded-lg text-xs font-mono bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 cursor-pointer transition-colors';
+          syncBadge.title = 'Click to add Personal Access Token to raise GitHub API limit from 60 to 5,000 req/hr';
+        }
       }
 
       const sel = document.getElementById('selectChannel');
@@ -795,9 +811,11 @@
         }
         try {
           const token = getGitHubToken();
-          const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/actions/runs?per_page=1`, {
-            headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
-          });
+          const headers = token 
+            ? { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+            : { 'Accept': 'application/vnd.github.v3+json' };
+
+          const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/actions/runs?per_page=1`, { headers });
           if (res.ok) {
             const data = await res.json();
             const run = data.workflow_runs && data.workflow_runs[0];
@@ -814,9 +832,14 @@
                 loadPostersGallery();
               }
             }
+          } else if (res.status === 403) {
+            clearInterval(interval);
+            appendConsoleLog('[NOTICE] GitHub API rate limit (60/hr) reached. Enter your Token in the top header to unlock 5,000 requests/hr.');
+            showToast('GitHub API rate limit (60/hr) reached. Click Token button in header to unlock 5k/hr.', 'warning');
+            setRunState(false, 'Ready');
           }
         } catch(e) {}
-      }, 4000);
+      }, 5000);
     }
 
     async function processSpecificPost(postJsonStr) {
@@ -1062,12 +1085,12 @@
       }).join('');
     }
 
-    // --- GALLERY (UNIVERSAL COMPATIBLE) ---
+    // --- GALLERY (UNIVERSAL COMPATIBLE & RATE-LIMIT IMMUNE) ---
     async function loadPostersGallery() {
       const grid = document.getElementById('galleryGrid');
       let posters = [];
 
-      // 1. Try local server endpoint
+      // 1. Try local server endpoint if on localhost
       if (isLocalEnv()) {
         try {
           const res = await fetch('/api/posters');
@@ -1078,23 +1101,38 @@
         } catch(e) {}
       }
 
-      // 2. Fallback to GitHub API to list output directory
+      // 2. Static posters_cache.json (GitHub Pages direct CDN - ZERO API CALLS, ZERO RATE LIMITS)
+      if (posters.length === 0) {
+        try {
+          const res = await fetch('./posters_cache.json?t=' + Date.now());
+          if (res.ok) {
+            const data = await res.json();
+            posters = data.posters || [];
+          }
+        } catch(e) {}
+      }
+
+      // 3. Fallback to GitHub API only if static cache was empty AND token exists
       if (posters.length === 0) {
         try {
           const token = getGitHubToken();
-          const headers = token ? { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' } : {};
-          const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/output?t=${Date.now()}`, { headers });
-          if (res.ok) {
-            const files = await res.json();
-            if (Array.isArray(files)) {
-              posters = files
-                .filter(f => f.name.endsWith('.jpg') || f.name.endsWith('.png'))
-                .map(f => ({
-                  filename: f.name,
-                  url: f.download_url,
-                  size: f.size
-                }))
-                .reverse();
+          if (token) {
+            const headers = { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' };
+            const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/output?t=${Date.now()}`, { headers });
+            if (res.ok) {
+              const files = await res.json();
+              if (Array.isArray(files)) {
+                posters = files
+                  .filter(f => f.name.endsWith('.jpg') || f.name.endsWith('.png'))
+                  .map(f => ({
+                    filename: f.name,
+                    url: f.download_url,
+                    size: f.size
+                  }))
+                  .reverse();
+              }
+            } else if (res.status === 403) {
+              console.warn("GitHub API rate limit reached on contents/output. Using static fallbacks.");
             }
           }
         } catch(e) {}

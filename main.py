@@ -214,6 +214,11 @@ def main():
                     post_id=post_id
                 )
                 print(f"           Poster created successfully: 1080x1350px")
+                try:
+                    from update_cache import update_posters_cache
+                    update_posters_cache()
+                except Exception:
+                    pass
 
                 # 5. Scheduling / Publishing
                 now_current = int(time.time())
