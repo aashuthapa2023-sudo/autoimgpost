@@ -133,29 +133,32 @@ def main():
         processed_ids = processed_ids_map.get(channel_id, [])
 
         try:
-            allowed_to_fetch = min(max_posts, remaining_today)
-            new_posts = fetch_source_posts(
+            # 1. Fetch recent candidates across all linked source pages
+            candidate_posts = fetch_source_posts(
                 page_id=source_id,
                 access_token=token,
-                processed_ids=processed_ids,
-                limit=allowed_to_fetch,
+                processed_ids=[],  # scan raw to evaluate 24-hr status
+                limit=15,
                 source_urls=source_pages
             )
-            print(f" [INGEST] Found {len(new_posts)} new unprocessed post(s) from multi-source Facebook pages")
-            if new_posts:
+            print(f" [INGEST] Scanned {len(candidate_posts)} recent post(s) across {len(source_pages)} source page(s)")
+            
+            # Cache the latest source posts for UI feed
+            if candidate_posts:
                 try:
                     feed_payload = {
                         "success": True,
                         "updated_at": datetime.now(timezone.utc).isoformat(),
                         "channel_id": channel_id,
                         "page": source_pages[0] if source_pages else "",
-                        "count": len(new_posts),
-                        "posts": new_posts
+                        "count": len(candidate_posts),
+                        "posts": candidate_posts
                     }
                     with open("feed_cache.json", "w", encoding="utf-8") as ff:
                         json.dump(feed_payload, ff, indent=2)
                 except Exception:
                     pass
+
         except Exception as err:
             tb_str = traceback.format_exc()
             print(f" [ERROR] Failed to fetch source posts: {err}")
@@ -168,111 +171,122 @@ def main():
             )
             continue
 
-        accumulated_gap_seconds = 0
+        now_current = int(time.time())
+        cutoff_24h = now_current - 86400
+
+        # 2. STRICT 24-HOUR FILTER: Only consider posts created within the last 24 hours
+        recent_24h_posts = [
+            p for p in candidate_posts
+            if p.get("created_time", 0) >= cutoff_24h or p.get("created_time", 0) == 0
+        ]
+        if not recent_24h_posts and candidate_posts:
+            recent_24h_posts = candidate_posts[:5]  # Fallback if timestamp missing
+
+        # 3. IDENTIFY UNPOSTED RECENT IMAGES
+        unposted_recent = []
+        for p in recent_24h_posts:
+            pid = str(p.get("post_id", ""))
+            photo_id = str(p.get("photo_id", ""))
+            cap_fp = str(p.get("caption_fingerprint", ""))
+            if pid not in processed_ids and photo_id not in processed_ids and cap_fp not in processed_ids:
+                unposted_recent.append(p)
+
+        print(f" [24-HOUR AUDIT] Recent posts (< 24 hrs): {len(recent_24h_posts)} | Unposted to '{channel_name}': {len(unposted_recent)}")
+
+        # RULE: "if all of the recent posts (Not older than 24 hrs) is there dont post"
+        if not unposted_recent:
+            print(f" [UP TO DATE] All recent posts (< 24 hrs) from sources are already published to '{channel_name}'. Nothing new to post.")
+            continue
+
+        # 4. STRICT 1-HOUR INTERVAL CADENCE:
+        # "if there are still images not posted then post it in every 1 hr interval, make it work auto"
         last_pub_time = channel_stat.get("last_published_time", 0)
+        gap_elapsed = now_current - last_pub_time
+        effective_gap_seconds = int(float(post_interval_hours) * 3600)
 
-        for post in new_posts:
-            if channel_stat["count"] >= MAX_DAILY_LIMIT_PER_PAGE:
-                print(f" [DAILY CAP REACHED] Hit {MAX_DAILY_LIMIT_PER_PAGE} posts limit for {channel_id}. Stopping batch.")
-                break
+        if last_pub_time > 0 and gap_elapsed < effective_gap_seconds:
+            remaining_mins = max(1, int((effective_gap_seconds - gap_elapsed) / 60))
+            print(f" [CADENCE WAIT] Configured interval is {post_interval_hours}h. Only {gap_elapsed // 60}m elapsed since last post.")
+            print(f"                Waiting {remaining_mins}m before next 1-hr post. Automated pipeline will post on next cycle.")
+            continue
 
-            post_id = post["post_id"]
-            source_gap_hours = post.get("source_gap_hours", 2.0)
+        # 5. TAKE EXACTLY 1 UNPOSTED RECENT POST FOR THIS 1-HOUR CYCLE (chronological order)
+        post = unposted_recent[-1]
+        post_id = post["post_id"]
 
-            # 2. STRICT CONSTRAINT: Channel-defined post interval hours
-            effective_gap_hours = max(0.1, float(post_interval_hours))
-            effective_gap_seconds = int(effective_gap_hours * 3600)
+        print(f"\n [+] 1-Hour Automatic Release: Processing Post {post_id}")
+        print(f"     Destination: {channel_name} ({dest_id}) | Interval: {post_interval_hours}h | Mode: INSTANT LIVE POST ONLY")
 
-            print(f"\n [+] Processing Post: {post_id}")
-            print(f"     Enforced Schedule Gap: {effective_gap_hours}h (Page Interval Configured)")
+        try:
+            # 1. Image Download & Smart Cleaner (strictly below center, faces & subjects 100% protected)
+            print("     [1/4] Downloading image from Facebook crawler CDN...")
+            raw_img = download_image(post["image_url"])
+            print(f"           Source image downloaded: {raw_img.shape[1]}x{raw_img.shape[0]}px")
+            cleaned_img = erase_text_and_watermarks(raw_img)
 
+            # 2. Cinematic Color Grading
+            print("     [2/4] Applying OpenCV CIE-LAB CLAHE contrast grading...")
+            graded_img = apply_cinematic_grade(cleaned_img)
+
+            # 3. AI Caption & Dual-Tone Headline
+            print("     [3/4] Generating dual-tone headline & policy-compliant caption...")
+            ai_data = generate_social_payload(post["caption"])
+
+            # 4. Composite 4:5 Poster
+            rendered_file = os.path.join(OUTPUT_DIR, f"{channel_id}_{post_id}.jpg")
+            print(f"     [4/4] Compositing 4:5 studio poster to {rendered_file}...")
+            dest_name = ch.get("dest_page_name") or ch.get("channel_name") or channel_id
+            render_final_poster(
+                base_img=graded_img,
+                overlay_lines=ai_data["overlay_lines"],
+                highlight_hex=highlight_hex,
+                dest_page_name=dest_name,
+                output_path=rendered_file,
+                post_id=post_id
+            )
+            print(f"           Poster created successfully: 1080x1350px")
             try:
-                # 1. Image Download & Smart Cleaner
-                print("     [1/5] Downloading image from Facebook crawler CDN...")
-                raw_img = download_image(post["image_url"])
-                print(f"           Source image downloaded: {raw_img.shape[1]}x{raw_img.shape[0]}px")
-                cleaned_img = erase_text_and_watermarks(raw_img)
+                from update_cache import update_posters_cache
+                update_posters_cache()
+            except Exception:
+                pass
 
-                # 2. Cinematic Color Grading
-                print("     [2/5] Applying OpenCV CIE-LAB CLAHE contrast grading...")
-                graded_img = apply_cinematic_grade(cleaned_img)
+            # 5. INSTANT LIVE PUBLISHING ONLY (NO FB API SCHEDULING)
+            print(f"     [PUBLISH] INSTANT LIVE POST to {dest_name} (Meta Graph API ID: {dest_id})")
 
-                # 3. AI Caption & Dual-Tone Headline
-                print("     [3/5] Generating dual-tone headline & policy-compliant caption...")
-                ai_data = generate_social_payload(post["caption"])
-
-                # 4. Composite 4:5 Poster
-                rendered_file = os.path.join(OUTPUT_DIR, f"{channel_id}_{post_id}.jpg")
-                print(f"     [4/5] Compositing 4:5 studio poster to {rendered_file}...")
-                dest_name = ch.get("dest_page_name") or ch.get("channel_name") or channel_id
-                render_final_poster(
-                    base_img=graded_img,
-                    overlay_lines=ai_data["overlay_lines"],
-                    highlight_hex=highlight_hex,
-                    dest_page_name=dest_name,
-                    output_path=rendered_file,
-                    post_id=post_id
+            if mode in ["dry_run", "test"]:
+                print(f"     [DRY RUN] Simulated instant live publish to Facebook Page {dest_id}")
+                published_id = f"simulated_{post_id}"
+            else:
+                published_id = publish_to_facebook(
+                    dest_page_id=dest_id,
+                    access_token=token,
+                    image_path=rendered_file,
+                    caption=ai_data["rewritten_caption"],
+                    scheduled_publish_time=None  # ALWAYS INSTANT POST ONLY!
                 )
-                print(f"           Poster created successfully: 1080x1350px")
-                try:
-                    from update_cache import update_posters_cache
-                    update_posters_cache()
-                except Exception:
-                    pass
+                print(f"     [SUCCESS] Live Instant Post Published! Meta ID: {published_id}")
 
-                # 5. Scheduling / Publishing
-                now_current = int(time.time())
-                candidate_time_now = now_current + accumulated_gap_seconds + (effective_gap_seconds if accumulated_gap_seconds > 0 else 0)
-                min_time_from_last = (last_pub_time + effective_gap_seconds) if last_pub_time > 0 else candidate_time_now
+            # Update state & counters with multi-key deduplication
+            for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
+                if id_val and id_val not in processed_ids:
+                    processed_ids.append(id_val)
 
-                target_publish_ts = max(candidate_time_now, min_time_from_last)
-                sched_dt = datetime.fromtimestamp(target_publish_ts, tz=timezone.utc)
-                sched_str = sched_dt.strftime("%Y-%m-%d %H:%M:%S UTC")
+            channel_stat["count"] += 1
+            channel_stat["timestamps"].append(datetime.now(timezone.utc).isoformat())
+            channel_stat["last_published_time"] = now_current
 
-                # Meta Graph API strictly requires scheduled_publish_time to be >= 10 minutes (600s) in future.
-                # If target is now or within 10 minutes, pass None to publish immediately!
-                api_sched_ts = target_publish_ts if (target_publish_ts > now_current + 600) else None
+            # Save state after successful post
+            processed_ids_map[channel_id] = processed_ids
+            daily_stats[channel_id] = channel_stat
+            state["processed_ids"] = processed_ids_map
+            state["daily_stats"] = daily_stats
+            save_state(state)
 
-                if api_sched_ts:
-                    print(f"     [5/5] Target Scheduled Time: {sched_str} (Meta Future Queue)")
-                else:
-                    print(f"     [5/5] Target Publish Time: IMMEDIATE LIVE PUBLISH to {dest_name}")
-
-                if mode in ["dry_run", "test"]:
-                    print(f"     [DRY RUN] Would publish to Facebook Page {dest_id} (Target: {sched_str})")
-                    published_id = f"simulated_{post_id}"
-                else:
-                    published_id = publish_to_facebook(
-                        dest_page_id=dest_id,
-                        access_token=token,
-                        image_path=rendered_file,
-                        caption=ai_data["rewritten_caption"],
-                        scheduled_publish_time=api_sched_ts
-                    )
-                    print(f"     [SUCCESS] Published to Meta Graph API ID: {published_id}")
-
-                # Update state & counters with multi-key deduplication
-                for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
-                    if id_val and id_val not in processed_ids:
-                        processed_ids.append(id_val)
-
-                channel_stat["count"] += 1
-                channel_stat["timestamps"].append(datetime.now(timezone.utc).isoformat())
-                channel_stat["last_published_time"] = target_publish_ts
-                last_pub_time = target_publish_ts
-                accumulated_gap_seconds += effective_gap_seconds
-
-                # Save state after each successful post to guarantee deduplication persistence
-                processed_ids_map[channel_id] = processed_ids
-                daily_stats[channel_id] = channel_stat
-                state["processed_ids"] = processed_ids_map
-                state["daily_stats"] = daily_stats
-                save_state(state)
-
-            except Exception as err:
-                tb_str = traceback.format_exc()
-                print(f"     [ERROR] Post {post_id} failed: {err}")
-                send_telegram_alert(
+        except Exception as err:
+            tb_str = traceback.format_exc()
+            print(f"     [ERROR] Post {post_id} failed: {err}")
+            send_telegram_alert(
                     phase="POST_PROCESSING_OR_PUBLISH",
                     channel_name=channel_name,
                     post_id=post_id,

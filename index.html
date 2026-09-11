@@ -129,6 +129,45 @@
     <!-- TAB 1: Live Concurrent Action Sync & Studio -->
     <div id="tabContent_pipeline" class="space-y-6">
 
+      <!-- 1-Hour Automated Poster Master Card -->
+      <div id="automationMasterCard" class="bg-gradient-to-r from-neutral-900 via-neutral-900 to-neutral-950 border border-neutral-800 rounded-2xl p-5 shadow-2xl">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2.5">
+              <span id="autoPipelineStatusDot" class="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></span>
+              <h2 id="autoPipelineTitle" class="text-base sm:text-lg font-bold text-neutral-100 font-mono flex items-center gap-2">
+                1-Hour Automated Poster: <span class="text-emerald-400 font-extrabold">ACTIVE (24/7 AUTO-RUN)</span>
+              </h2>
+            </div>
+            <p class="text-xs text-neutral-400">
+              Searches linked sources every 30m. Skips if all posts in past 24h are already posted. Posts unposted images in strict 1-hr intervals instantly.
+            </p>
+            <div class="flex flex-wrap items-center gap-2 pt-2">
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">
+                ⚡ Instant Post Only (No FB Queue)
+              </span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/10 text-amber-300 border border-amber-500/30">
+                ⏱️ 1-Hr Interval Cadence
+              </span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-blue-500/10 text-blue-300 border border-blue-500/30">
+                🔍 24-Hr Freshness Check
+              </span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-purple-500/10 text-purple-300 border border-purple-500/30">
+                🛡️ Subjects & Faces 100% Protected
+              </span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button onclick="toggleMasterSwitch()" id="btnAutoStartStop"
+              class="px-5 py-2.5 bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-500/40 rounded-xl font-mono font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-lg">
+              <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+              <span id="btnAutoStartStopText">STOP AUTOMATION</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Action Control Banner -->
       <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-5 shadow-xl">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
@@ -645,6 +684,11 @@
       const statusText = document.getElementById('masterStatusText');
       const toggleBtn = document.getElementById('btnMasterToggle');
       const syncBadge = document.getElementById('githubSyncBadge');
+      const autoBtn = document.getElementById('btnAutoStartStop');
+      const autoBtnText = document.getElementById('btnAutoStartStopText');
+      const autoTitle = document.getElementById('autoPipelineTitle');
+      const autoDot = document.getElementById('autoPipelineStatusDot');
+
       const token = getGitHubToken();
       const active = cachedConfig.pipeline_active !== false;
 
@@ -653,6 +697,20 @@
         toggleBtn.className = active
           ? 'px-3 py-1.5 bg-emerald-950/60 hover:bg-emerald-900 text-emerald-300 border border-emerald-500/40 rounded-lg text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow'
           : 'px-3 py-1.5 bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-500/40 rounded-lg text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow';
+      }
+
+      if (autoBtn) {
+        if (active) {
+          autoBtn.className = 'px-5 py-2.5 bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-500/40 rounded-xl font-mono font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-lg';
+          if (autoBtnText) autoBtnText.innerText = 'STOP AUTOMATION';
+          if (autoTitle) autoTitle.innerHTML = '1-Hour Automated Poster: <span class="text-emerald-400 font-extrabold">ACTIVE (24/7 AUTO-RUN)</span>';
+          if (autoDot) autoDot.className = 'w-3 h-3 rounded-full bg-emerald-400 animate-ping';
+        } else {
+          autoBtn.className = 'px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white border border-emerald-400 rounded-xl font-mono font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-lg';
+          if (autoBtnText) autoBtnText.innerText = 'START 1-HOUR AUTO PIPELINE';
+          if (autoTitle) autoTitle.innerHTML = '1-Hour Automated Poster: <span class="text-rose-400 font-extrabold">PAUSED</span>';
+          if (autoDot) autoDot.className = 'w-3 h-3 rounded-full bg-rose-500';
+        }
       }
 
       if (syncBadge) {
