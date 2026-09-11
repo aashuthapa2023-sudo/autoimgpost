@@ -3,15 +3,18 @@ import cv2
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
-def hex_to_rgb(hex_str: str):
-    hex_str = hex_str.lstrip('#')
+def hex_to_rgb(hex_str: str) -> tuple:
+    hex_str = hex_str.lstrip("#")
+    if len(hex_str) == 3:
+        hex_str = "".join([c*2 for c in hex_str])
     return tuple(int(hex_str[i:i+2], 16) for i in (0, 2, 4))
 
-def get_font(size: int, bold: bool = True):
+def get_font(size: int, bold: bool = True) -> ImageFont.FreeTypeFont:
     font_candidates = [
-        "C:/Windows/Fonts/arialbd.ttf" if bold else "C:/Windows/Fonts/arial.ttf",
-        "C:/Windows/Fonts/segoeuib.ttf" if bold else "C:/Windows/Fonts/segoeui.ttf",
-        "C:/Windows/Fonts/impact.ttf",
+        r"C:\Windows\Fonts\impact.ttf",
+        r"C:\Windows\Fonts\arialbd.ttf",
+        r"C:\Windows\Fonts\segoeuib.ttf",
+        r"C:\Windows\Fonts\tahomabd.ttf",
         "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
         "/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf",
         "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
@@ -38,7 +41,15 @@ def measure_line_width(draw, tokens, font):
             w += len(t_str) * (font.size * 0.55 if hasattr(font, 'size') else 24)
     return w
 
-def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex: str = "#FFC83B", badge_label: str = "NETFLIX FANS EXCLUSIVE", source_tag: str = "NETFLIX FANS LIVE HERE", badge_path: str = None, output_path: str = "output/poster.jpg"):
+def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex: str = "#FFC83B", badge_label: str = "", dest_page_name: str = "", output_path: str = "output/poster.jpg", **kwargs):
+    """
+    Renders 4:5 visual poster strictly matching user reference layout:
+    - Large, bold uppercase typography in dual-tone (White + Gold Highlight).
+    - Centered horizontal alignment for all lines.
+    - Destination page branding badge (using individual destination page name).
+    - NO attribution footer line.
+    - Smooth deep gradient fade concealing original captions cleanly.
+    """
     target_w, target_h = 1080, 1350
     h, w, _ = base_img.shape
 
@@ -57,54 +68,48 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
 
     resized = cv2.resize(cropped, (target_w, target_h), interpolation=cv2.INTER_LANCZOS4)
 
-    # 1. Atmospheric Top Vignette (top 16%)
-    top_fade_h = int(target_h * 0.16)
+    # 1. Atmospheric Top Vignette (top 12%)
+    top_fade_h = int(target_h * 0.12)
     for y in range(top_fade_h):
-        alpha = (1.0 - (y / top_fade_h)) * 0.45
+        alpha = (1.0 - (y / top_fade_h)) * 0.35
         resized[y, :] = (1.0 - alpha) * resized[y, :] + alpha * np.array([8, 8, 10])
 
-    # 2. Deep Exponential Bottom Gradient (starts at 50%, 100% solid at 72%)
-    start_y = int(target_h * 0.50)
-    solid_y = int(target_h * 0.72)
+    # 2. Smooth Exponential Bottom Vignette
+    # Starts at 52%, reaches solid deep black at 78% height
+    start_y = int(target_h * 0.52)
+    solid_y = int(target_h * 0.78)
 
     for y in range(start_y, target_h):
         if y < solid_y:
-            t = (y - start_y) / (solid_y - start_y)
-            alpha = t * t * (3.0 - 2.0 * t)
+            t = (y - start_y) / float(solid_y - start_y)
+            alpha = (t ** 1.8) * 0.98
         else:
             alpha = 1.0
-        resized[y, :] = (1.0 - alpha) * resized[y, :] + alpha * np.array([10, 10, 12])
+        resized[y, :] = (1.0 - alpha) * resized[y, :] + alpha * np.array([6, 6, 8])
 
-    rgb = cv2.cvtColor(resized, cv2.COLOR_BGR2RGB)
-    pil_img = Image.fromarray(rgb)
+    pil_img = Image.fromarray(cv2.cvtColor(resized, cv2.COLOR_BGR2RGB))
     draw = ImageDraw.Draw(pil_img)
-
     highlight_rgb = hex_to_rgb(highlight_hex)
-    badge_font = get_font(18, bold=True)
-    footer_font = get_font(13, bold=False)
 
-    # 3. Sleek Accent Line Separator
-    line_y = target_h - 370
-    draw.rounded_rectangle([68, line_y, 148, line_y + 4], radius=2, fill=highlight_rgb)
-    dimmed_rgb = tuple(max(0, c // 3) for c in highlight_rgb)
-    draw.rounded_rectangle([154, line_y + 1, 230, line_y + 3], radius=1, fill=dimmed_rgb)
-
-    # 4. Modern Pill Badge
-    if badge_label:
-        badge_text = f"●  {badge_label.upper()}  ●"
+    # 3. Individual Destination Page Name Branding Badge
+    branding_name = dest_page_name or badge_label or kwargs.get("source_tag", "")
+    if branding_name:
+        badge_font = get_font(18, bold=True)
+        dest_badge_text = f"●  {branding_name.upper()}  ●"
         try:
-            bbox = draw.textbbox((0, 0), badge_text, font=badge_font)
-            bw = bbox[2] - bbox[0] + 36
-            bh = bbox[3] - bbox[1] + 18
+            bbox = draw.textbbox((0, 0), dest_badge_text, font=badge_font)
+            bw = bbox[2] - bbox[0] + 32
+            bh = bbox[3] - bbox[1] + 16
         except Exception:
-            bw, bh = 270, 38
+            bw, bh = 240, 36
 
-        bx = 68
-        by = target_h - 345
-        draw.rounded_rectangle([bx, by, bx + bw, by + bh], radius=10, fill=(22, 22, 26), outline=highlight_rgb, width=2)
-        draw.text((bx + 18, by + 9), badge_text, font=badge_font, fill=highlight_rgb)
+        # Centered destination badge above the headline
+        bx = (target_w - bw) // 2
+        by = target_h - 390
+        draw.rounded_rectangle([bx, by, bx + bw, by + bh], radius=8, fill=(18, 18, 22), outline=highlight_rgb, width=2)
+        draw.text((bx + 16, by + 8), dest_badge_text, font=badge_font, fill=highlight_rgb)
 
-    # Normalize lines
+    # Normalize lines into lists of token dicts
     normalized_lines = []
     for line in overlay_lines:
         if isinstance(line, str):
@@ -117,14 +122,18 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         elif isinstance(line, list):
             normalized_lines.append(line)
 
-    # Auto-fit font size starting from bold 58px down to 34px
-    safe_max_w = target_w - 136 # 944px safe width inside margins
-    chosen_size = 58
-    for test_size in [58, 54, 50, 46, 42, 38, 34]:
-        f_cand = get_font(test_size, bold=True)
+    # 4. Center-Aligned Bold Typography matching user reference image
+    safe_margin = 60
+    safe_max_w = target_w - (safe_margin * 2) # 960px
+
+    # Calculate optimal font size starting at 58px down to 36px
+    chosen_size = 56
+    for test_size in [56, 52, 48, 44, 40, 36]:
+        f_test = get_font(test_size, bold=True)
         all_fit = True
         for line in normalized_lines:
-            if measure_line_width(draw, line, f_cand) > safe_max_w:
+            line_w = measure_line_width(draw, line, f_test)
+            if line_w > safe_max_w:
                 all_fit = False
                 break
         if all_fit:
@@ -133,33 +142,36 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         chosen_size = test_size
 
     title_font = get_font(chosen_size, bold=True)
-    text_y = target_h - 265
-    line_spacing = int(chosen_size * 1.34)
+    line_spacing = int(chosen_size * 1.30)
+    total_text_h = len(normalized_lines) * line_spacing
+
+    # Place text dynamically in the lower third with perfect balance
+    start_text_y = target_h - 325 if branding_name else (target_h - 300)
 
     for line in normalized_lines:
-        cur_x = 68
+        line_w = measure_line_width(draw, line, title_font)
+        cur_x = (target_w - line_w) // 2  # EXACT CENTER ALIGNMENT
+
         for token in line:
             t_str = token.get("text", "") if isinstance(token, dict) else str(token)
             t_type = token.get("type", "white") if isinstance(token, dict) else "white"
             color = highlight_rgb if t_type == "highlight" else (255, 255, 255)
 
-            # High-impact double drop shadow for intense 3D clarity
-            draw.text((cur_x + 3, text_y + 4), t_str, font=title_font, fill=(0, 0, 0))
-            draw.text((cur_x + 1, text_y + 2), t_str, font=title_font, fill=(0, 0, 0))
+            # Drop shadow for intense 3D clarity
+            draw.text((cur_x + 3, start_text_y + 3), t_str, font=title_font, fill=(0, 0, 0))
+            draw.text((cur_x + 1, start_text_y + 1), t_str, font=title_font, fill=(0, 0, 0))
             # Main bold text
-            draw.text((cur_x, text_y), t_str, font=title_font, fill=color)
+            draw.text((cur_x, start_text_y), t_str, font=title_font, fill=color)
 
             try:
-                t_bbox = draw.textbbox((cur_x, text_y), t_str, font=title_font)
+                t_bbox = draw.textbbox((cur_x, start_text_y), t_str, font=title_font)
                 cur_x += (t_bbox[2] - t_bbox[0])
             except Exception:
                 cur_x += len(t_str) * int(chosen_size * 0.55)
 
-        text_y += line_spacing
+        start_text_y += line_spacing
 
-    # 5. Clean Journalistic Footer Attribution Line
-    footer_text = f"SOURCE: {source_tag.upper()}  •  VERIFIED STREAMING REPORT"
-    draw.text((68, target_h - 55), footer_text, font=footer_font, fill=(150, 155, 165))
+    # NO attribution footer line (removed completely as requested)
 
     os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
     pil_img.save(output_path, "JPEG", quality=95)

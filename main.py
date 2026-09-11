@@ -175,14 +175,13 @@ def main():
                 # 4. Composite 4:5 Poster
                 rendered_file = os.path.join(OUTPUT_DIR, f"{channel_id}_{post_id}.jpg")
                 print(f"     [4/5] Compositing 4:5 studio poster to {rendered_file}...")
-                source_tag = post.get("source_name", badge_label)
+                dest_name = ch.get("dest_page_name") or ch.get("channel_name") or channel_id
                 render_final_poster(
                     base_img=graded_img,
                     overlay_lines=ai_data["overlay_lines"],
                     highlight_hex=highlight_hex,
-                    badge_label=badge_label,
-                    output_path=rendered_file,
-                    source_tag=source_tag
+                    dest_page_name=dest_name,
+                    output_path=rendered_file
                 )
                 print(f"           Poster created successfully: 1080x1350px")
 
