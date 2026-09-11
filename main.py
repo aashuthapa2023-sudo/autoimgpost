@@ -83,14 +83,29 @@ def main():
         source_id = ch.get("source_page_id", "")
         dest_id = ch.get("dest_page_id", "")
         token_env = ch.get("dest_access_token_env", "FB_TOKEN_DEFAULT")
-        token = os.getenv(token_env)
-        max_posts = ch.get("max_posts_per_run", 2)
-        badge_label = ch.get("badge_label", "OFFICIAL UPDATE")
-        highlight_hex = ch.get("highlight_color", "#FFC83B")
+        
+        token = None
+        if token_env and token_env.startswith("EAA"):
+            token = token_env
+        else:
+            token = os.getenv(token_env)
+            
+        if not token:
+            for fallback_key in ["FB_TOKEN_DAILY_NETFLIX", "DAILY_NETFLIX_TOKEN", "FB_TOKEN_CINEMA", "FB_TOKEN_DEFAULT"]:
+                cand = os.getenv(fallback_key)
+                if cand:
+                    token = cand
+                    break
+
+        max_posts = ch.get("max_posts_per_run", 1)
+        post_interval_hours = float(ch.get("post_interval_hours", ch.get("min_gap_hours", 1.0)))
+        badge_label = ch.get("badge_label", ch.get("dest_page_name", "OFFICIAL UPDATE"))
+        highlight_hex = ch.get("highlight_color", "random")
 
         print(f"\n-------------------------------------------------------------")
         print(f" Channel: {channel_name} ({channel_id})")
         print(f" Linked Source Pages: {len(source_pages)} sources -> Destination Page: {dest_id}")
+        print(f" Configured Post Interval: {post_interval_hours} hour(s) | Max Posts per Run: {max_posts}")
         for sp in source_pages:
             print(f"   * Source: {sp}")
 
@@ -150,12 +165,12 @@ def main():
             post_id = post["post_id"]
             source_gap_hours = post.get("source_gap_hours", 2.0)
 
-            # 2. STRICT CONSTRAINT: At least 1 hour gap per post in a page
-            effective_gap_hours = max(1.0, float(source_gap_hours))
+            # 2. STRICT CONSTRAINT: Channel-defined post interval hours
+            effective_gap_hours = max(0.1, float(post_interval_hours))
             effective_gap_seconds = int(effective_gap_hours * 3600)
 
             print(f"\n [+] Processing Post: {post_id}")
-            print(f"     Enforced Schedule Gap: {effective_gap_hours}h (>= 1 hour rule satisfied)")
+            print(f"     Enforced Schedule Gap: {effective_gap_hours}h (Page Interval Configured)")
 
             try:
                 # 1. Image Download & Smart Cleaner
@@ -181,23 +196,31 @@ def main():
                     overlay_lines=ai_data["overlay_lines"],
                     highlight_hex=highlight_hex,
                     dest_page_name=dest_name,
-                    output_path=rendered_file
+                    output_path=rendered_file,
+                    post_id=post_id
                 )
                 print(f"           Poster created successfully: 1080x1350px")
 
                 # 5. Scheduling / Publishing
                 now_current = int(time.time())
                 candidate_time_now = now_current + accumulated_gap_seconds + (effective_gap_seconds if accumulated_gap_seconds > 0 else 0)
-                min_time_from_last = (last_pub_time + MIN_POST_GAP_SECONDS) if last_pub_time > 0 else candidate_time_now
+                min_time_from_last = (last_pub_time + effective_gap_seconds) if last_pub_time > 0 else candidate_time_now
 
                 target_publish_ts = max(candidate_time_now, min_time_from_last)
                 sched_dt = datetime.fromtimestamp(target_publish_ts, tz=timezone.utc)
                 sched_str = sched_dt.strftime("%Y-%m-%d %H:%M:%S UTC")
 
-                print(f"     [5/5] Target Schedule: {sched_str}")
+                # Meta Graph API strictly requires scheduled_publish_time to be >= 10 minutes (600s) in future.
+                # If target is now or within 10 minutes, pass None to publish immediately!
+                api_sched_ts = target_publish_ts if (target_publish_ts > now_current + 600) else None
+
+                if api_sched_ts:
+                    print(f"     [5/5] Target Scheduled Time: {sched_str} (Meta Future Queue)")
+                else:
+                    print(f"     [5/5] Target Publish Time: IMMEDIATE LIVE PUBLISH to {dest_name}")
 
                 if mode in ["dry_run", "test"]:
-                    print(f"     [DRY RUN] Would publish to Facebook Page {dest_id} scheduled for {sched_str}")
+                    print(f"     [DRY RUN] Would publish to Facebook Page {dest_id} (Target: {sched_str})")
                     published_id = f"simulated_{post_id}"
                 else:
                     published_id = publish_to_facebook(
@@ -205,17 +228,27 @@ def main():
                         access_token=token,
                         image_path=rendered_file,
                         caption=ai_data["rewritten_caption"],
-                        scheduled_publish_time=target_publish_ts
+                        scheduled_publish_time=api_sched_ts
                     )
                     print(f"     [SUCCESS] Published to Meta Graph API ID: {published_id}")
 
-                # Update state & counters
-                processed_ids.append(post_id)
+                # Update state & counters with multi-key deduplication
+                for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
+                    if id_val and id_val not in processed_ids:
+                        processed_ids.append(id_val)
+
                 channel_stat["count"] += 1
                 channel_stat["timestamps"].append(datetime.now(timezone.utc).isoformat())
                 channel_stat["last_published_time"] = target_publish_ts
                 last_pub_time = target_publish_ts
                 accumulated_gap_seconds += effective_gap_seconds
+
+                # Save state after each successful post to guarantee deduplication persistence
+                processed_ids_map[channel_id] = processed_ids
+                daily_stats[channel_id] = channel_stat
+                state["processed_ids"] = processed_ids_map
+                state["daily_stats"] = daily_stats
+                save_state(state)
 
             except Exception as err:
                 tb_str = traceback.format_exc()

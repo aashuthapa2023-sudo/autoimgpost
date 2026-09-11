@@ -1,6 +1,7 @@
 import os
 import json
 import re
+import hashlib
 import requests
 from datetime import datetime, timezone
 
@@ -132,13 +133,24 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
 
                         if img_url and media_id:
                             clean_k = re.sub(r'\s+', ' ', msg[:50])
+                            cap_fp = hashlib.md5(re.sub(r'\s+', '', msg[:60]).lower().encode('utf-8')).hexdigest()
                             raw_pid = str(p_id or media_id or len(posts) + 1)
-                            if media_id not in seen and clean_k not in seen and raw_pid not in processed_ids:
+                            processed_set = set(str(x) for x in processed_ids)
+
+                            # Strictly exclude any post that has already been processed/published to this page
+                            is_already_posted = (
+                                raw_pid in processed_set or
+                                str(media_id) in processed_set or
+                                cap_fp in processed_set
+                            )
+
+                            if not is_already_posted and media_id not in seen and clean_k not in seen:
                                 seen.add(media_id)
                                 seen.add(clean_k)
                                 posts.append({
                                     "post_id": raw_pid,
                                     "photo_id": media_id,
+                                    "caption_fingerprint": cap_fp,
                                     "caption": msg,
                                     "image_url": img_url,
                                     "created_time": int(ts) if ts else int(datetime.now(timezone.utc).timestamp()),
@@ -199,9 +211,13 @@ def fetch_source_posts(source_page_id: str = "", access_token: str = "", process
         needed = limit - len(all_posts)
         fb_posts = fetch_facebook_public_posts(target, processed_ids=list(seen_ids), limit=needed)
         for p in fb_posts:
-            pid = p["post_id"]
-            if pid not in seen_ids:
-                seen_ids.add(pid)
+            pid = str(p.get("post_id", ""))
+            photo_id = str(p.get("photo_id", ""))
+            cap_fp = str(p.get("caption_fingerprint", ""))
+            if pid not in seen_ids and photo_id not in seen_ids and cap_fp not in seen_ids:
+                if pid: seen_ids.add(pid)
+                if photo_id: seen_ids.add(photo_id)
+                if cap_fp: seen_ids.add(cap_fp)
                 p["source_tag"] = extract_identifier(target).replace("_", " ").title()
                 all_posts.append(p)
                 if len(all_posts) >= limit:

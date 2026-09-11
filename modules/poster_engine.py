@@ -122,24 +122,6 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     highlight_rgb = hex_to_rgb(highlight_hex)
     draw = ImageDraw.Draw(pil_img)
 
-    # 3. Individual Destination Page Name Branding Badge
-    branding_name = dest_page_name or badge_label or kwargs.get("source_tag", "")
-    if branding_name:
-        badge_font = get_font(18, bold=True)
-        dest_badge_text = f"●  {branding_name.upper()}  ●"
-        try:
-            bbox = draw.textbbox((0, 0), dest_badge_text, font=badge_font)
-            bw = bbox[2] - bbox[0] + 32
-            bh = bbox[3] - bbox[1] + 16
-        except Exception:
-            bw, bh = 240, 36
-
-        # Centered destination badge above the headline
-        bx = (target_w - bw) // 2
-        by = target_h - 390
-        draw.rounded_rectangle([bx, by, bx + bw, by + bh], radius=8, fill=(18, 18, 22), outline=highlight_rgb, width=2)
-        draw.text((bx + 16, by + 8), dest_badge_text, font=badge_font, fill=highlight_rgb)
-
     # Normalize lines into lists of token dicts
     normalized_lines = []
     for line in overlay_lines:
@@ -153,13 +135,13 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         elif isinstance(line, list):
             normalized_lines.append(line)
 
-    # 4. Center-Aligned Bold Typography matching user reference image
-    safe_margin = 60
-    safe_max_w = target_w - (safe_margin * 2) # 960px
+    # 3. Center-Aligned Bold Typography matching user reference image
+    safe_margin = 80
+    safe_max_w = target_w - (safe_margin * 2) # 920px
 
-    # Calculate optimal font size starting at 58px down to 36px
+    # Calculate optimal font size starting at 56px down to 26px
     chosen_size = 56
-    for test_size in [56, 52, 48, 44, 40, 36]:
+    for test_size in [56, 52, 48, 44, 40, 36, 32, 28, 26]:
         f_test = get_font(test_size, bold=True)
         all_fit = True
         for line in normalized_lines:
@@ -176,8 +158,26 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     line_spacing = int(chosen_size * 1.30)
     total_text_h = len(normalized_lines) * line_spacing
 
-    # Place text dynamically in the lower third with perfect balance
-    start_text_y = target_h - 325 if branding_name else (target_h - 300)
+    # Place text dynamically in the lower section with 90px bottom safe buffer
+    bottom_padding = 90
+    start_text_y = target_h - bottom_padding - total_text_h
+
+    # 4. Individual Destination Page Name Branding Badge positioned above headline
+    branding_name = dest_page_name or badge_label or kwargs.get("source_tag", "")
+    if branding_name:
+        badge_font = get_font(18, bold=True)
+        dest_badge_text = f"●  {branding_name.upper()}  ●"
+        try:
+            bbox = draw.textbbox((0, 0), dest_badge_text, font=badge_font)
+            bw = bbox[2] - bbox[0] + 32
+            bh = bbox[3] - bbox[1] + 16
+        except Exception:
+            bw, bh = 240, 36
+
+        bx = (target_w - bw) // 2
+        by = start_text_y - bh - 24
+        draw.rounded_rectangle([bx, by, bx + bw, by + bh], radius=8, fill=(18, 18, 22), outline=highlight_rgb, width=2)
+        draw.text((bx + 16, by + 8), dest_badge_text, font=badge_font, fill=highlight_rgb)
 
     for line in normalized_lines:
         line_w = measure_line_width(draw, line, title_font)

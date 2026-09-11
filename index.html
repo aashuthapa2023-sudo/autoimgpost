@@ -471,6 +471,10 @@
               <input type="text" id="newHighlightHex" value="#FFC83B" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2 text-neutral-100 font-mono" />
             </div>
           </div>
+          <div>
+            <label class="block text-neutral-400 mb-1">Post Interval (Hours)</label>
+            <input type="number" step="0.5" min="0.5" id="newPostIntervalHours" value="1.0" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2 text-neutral-100 font-mono focus:border-amber-400" />
+          </div>
         </div>
       </div>
 
@@ -863,6 +867,23 @@
                   </span>
                 </div>
 
+                <!-- Configurable Post Interval -->
+                <div class="mb-4 bg-neutral-950 p-2.5 rounded-xl border border-neutral-800 flex items-center justify-between">
+                  <div>
+                    <span class="text-[11px] font-mono text-neutral-300 block font-bold">Post Interval</span>
+                    <span class="text-[10px] text-neutral-500">Cadence between posts</span>
+                  </div>
+                  <div class="flex items-center gap-1.5">
+                    <input type="number" step="0.5" min="0.5" max="24" id="inputInterval_${ch.channel_id}" value="${ch.post_interval_hours || 1.0}"
+                      class="w-14 bg-neutral-900 border border-neutral-700 rounded-lg px-2 py-1 text-xs font-mono text-center text-amber-400 focus:outline-none focus:border-amber-400" />
+                    <span class="text-[11px] font-mono text-neutral-400">hr(s)</span>
+                    <button onclick="saveChannelInterval('${ch.channel_id}')"
+                      class="px-2.5 py-1 bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-neutral-950 font-mono font-bold text-[11px] rounded-lg transition-colors cursor-pointer">
+                      Save
+                    </button>
+                  </div>
+                </div>
+
                 <div class="mb-4">
                   <div class="text-[11px] font-mono text-neutral-400 mb-2 flex items-center justify-between">
                     <span>Linked Source Pages (${sources.length}):</span>
@@ -971,6 +992,31 @@
       document.getElementById('modalAddChannel').classList.add('hidden');
     }
 
+    async function saveChannelInterval(channelId) {
+      const input = document.getElementById('inputInterval_' + channelId);
+      const val = input ? parseFloat(input.value) : 1.0;
+      if (isNaN(val) || val <= 0) {
+        alert('Please enter a valid interval in hours (e.g. 1.0)');
+        return;
+      }
+      try {
+        const res = await fetch('/api/channels/update-settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ channel_id: channelId, post_interval_hours: val })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert('Post interval for channel ' + channelId + ' updated to ' + val + ' hour(s)!');
+          renderChannelsHub();
+        } else {
+          alert('Error: ' + data.message);
+        }
+      } catch (e) {
+        alert('Failed to update interval: ' + e.message);
+      }
+    }
+
     async function submitNewChannel() {
       const cid = document.getElementById('newChannelId').value.trim();
       const destName = document.getElementById('newDestPageName').value.trim();
@@ -978,6 +1024,8 @@
       const destId = document.getElementById('newDestPageId').value.trim();
       const tokenEnv = document.getElementById('newTokenEnv').value.trim();
       const color = document.getElementById('newHighlightHex').value.trim();
+      const intervalEl = document.getElementById('newPostIntervalHours');
+      const interval = intervalEl ? parseFloat(intervalEl.value) : 1.0;
 
       if (!cid) {
         alert('Please enter a channel identifier');
@@ -998,7 +1046,8 @@
             dest_page_id: destId || 'DEMO_PAGE_ID',
             dest_access_token_env: tokenEnv || 'FB_TOKEN_DEFAULT',
             badge_label: destName || 'OFFICIAL',
-            highlight_color: color || '#FFC83B'
+            highlight_color: color || '#FFC83B',
+            post_interval_hours: interval
           })
         });
         const data = await res.json();

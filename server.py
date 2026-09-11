@@ -397,7 +397,8 @@ class PipelineHandler(SimpleHTTPRequestHandler):
                 "dest_access_token_env": body.get("dest_access_token_env", f"FB_TOKEN_{cid.upper()}"),
                 "badge_label": dest_name,
                 "highlight_color": body.get("highlight_color", "#FFC83B"),
-                "max_posts_per_run": int(body.get("max_posts_per_run", 2)),
+                "max_posts_per_run": int(body.get("max_posts_per_run", 1)),
+                "post_interval_hours": float(body.get("post_interval_hours", 1.0)),
                 "cadence_mirror_enabled": True,
                 "fetch_frequency": "hourly",
                 "policy_compliance_mode": "strict_fb_standard",
@@ -415,6 +416,44 @@ class PipelineHandler(SimpleHTTPRequestHandler):
                 json.dump(config, f, indent=2)
 
             resp = json.dumps({"success": True, "channels": config["channels"]}).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(resp)))
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(resp)
+            return
+
+        if path == "/api/channels/update-settings":
+            import main as main_engine
+            config = main_engine.load_config()
+            cid = body.get("channel_id", "")
+            ch = next((c for c in config["channels"] if c["channel_id"] == cid), None)
+            if not ch:
+                resp = json.dumps({"success": False, "message": f"Channel {cid} not found"}).encode("utf-8")
+                self.send_response(404)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(resp)))
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                self.wfile.write(resp)
+                return
+
+            if "post_interval_hours" in body:
+                ch["post_interval_hours"] = float(body["post_interval_hours"])
+            if "max_posts_per_run" in body:
+                ch["max_posts_per_run"] = int(body["max_posts_per_run"])
+            if "dest_page_name" in body:
+                ch["dest_page_name"] = str(body["dest_page_name"])
+            if "badge_label" in body:
+                ch["badge_label"] = str(body["badge_label"])
+            if "highlight_color" in body:
+                ch["highlight_color"] = str(body["highlight_color"])
+
+            with open("config.json", "w", encoding="utf-8") as f:
+                json.dump(config, f, indent=2)
+
+            resp = json.dumps({"success": True, "channel": ch, "channels": config["channels"]}).encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.send_header("Content-Length", str(len(resp)))

@@ -42,7 +42,9 @@ TRAILING_STOPWORDS = {
     'BUT', 'BY', 'FROM', 'AS', 'ABOUT', 'INTO', 'HAS', 'HAVE', 'HAD', 'IS', 'ARE',
     'WAS', 'WERE', 'BE', 'BEEN', 'HER', 'HIS', 'THEIR', 'ITS', 'THIS', 'THAT',
     'WHO', 'WHICH', 'WHERE', 'WHEN', 'WHY', 'HOW', 'ALL', 'ANOTHER', 'SOME', 'ANY',
-    'TODAY', 'AGO', 'TIME', 'YEARS', 'OLD'
+    'TODAY', 'AGO', 'TIME', 'YEARS', 'OLD', 'NO', 'NOT', 'SO', 'CAN', 'COULD', 'WOULD',
+    'WILL', 'SHE', 'HE', 'IT', 'THEY', 'WE', 'YOU', 'I', 'AFTER', 'BEFORE', 'WHILE', 'DURING',
+    'SUCH', 'THAN', 'THEN', 'OVER', 'UNDER', 'MORE', 'LESS'
 }
 
 HIGH_THEME_KEYWORDS = {
@@ -134,25 +136,41 @@ def format_factual_overlay(sentence: str) -> list:
     s = s.rstrip('.,;:')
 
     words = s.split()
+    if len(words) > 13:
+        cut_idx = None
+        for i in range(min(14, len(words) - 1), 6, -1):
+            w_up = words[i].upper().strip('.,;:')
+            if w_up in ['THAT', 'SO', 'AFTER', 'FOLLOWING', 'AS', 'WHILE', 'AMID', 'BEFORE', 'WHICH', 'WHO', 'WHERE']:
+                cut_idx = i
+                break
+        if cut_idx and cut_idx >= 6:
+            words = words[:cut_idx]
+        elif len(words) > 13:
+            words = words[:13]
+
+    while words and words[-1].rstrip(',.;:').upper() in TRAILING_STOPWORDS:
+        words.pop()
+
     total = len(words)
 
-    if total <= 7:
-        mid = max(1, total // 2)
-        while mid > 1 and words[mid - 1].rstrip(',.;:').upper() in TRAILING_STOPWORDS:
-            mid -= 1
-        lines_words = [words[:mid], words[mid:]]
+    if total <= 8:
+        mid = total // 2
+        best_mid = mid
+        for d in [0, 1, -1, 2, -2]:
+            idx = mid + d
+            if 1 < idx < total and words[idx-1].upper() not in TRAILING_STOPWORDS:
+                best_mid = idx
+                break
+        lines_words = [words[:best_mid], words[best_mid:]]
     else:
-        # Split into 3 balanced lines
-        c = total // 3
-        p1 = c
-        while p1 > 1 and words[p1 - 1].rstrip(',.;:').upper() in TRAILING_STOPWORDS:
-            p1 -= 1
+        target = total / 3.0
+        cand_p1 = [p for p in range(2, total - 3) if words[p-1].upper() not in TRAILING_STOPWORDS]
+        best_p1 = min(cand_p1, key=lambda p: abs(p - target)) if cand_p1 else int(round(target))
 
-        p2 = p1 + c
-        while p2 > p1 + 1 and words[p2 - 1].rstrip(',.;:').upper() in TRAILING_STOPWORDS:
-            p2 -= 1
+        cand_p2 = [p for p in range(best_p1 + 2, total - 1) if words[p-1].upper() not in TRAILING_STOPWORDS]
+        best_p2 = min(cand_p2, key=lambda p: abs(p - (total + best_p1) / 2.0)) if cand_p2 else int(round((total + best_p1) / 2.0))
 
-        lines_words = [words[:p1], words[p1:p2], words[p2:]]
+        lines_words = [words[:best_p1], words[best_p1:best_p2], words[best_p2:]]
 
     # Clean any trailing stopword from any line
     for lw in lines_words:

@@ -1,68 +1,27 @@
 {
-  "pipeline_active": false,
+  "pipeline_active": true,
   "max_images_per_day_per_page": 15,
   "min_hour_gap_per_page": 1,
   "channels": [
     {
-      "channel_id": "netflix_fans",
-      "channel_name": "Netflix Fans Live Here & Streaming News",
+      "channel_id": "daily_netflix",
+      "channel_name": "Daily Netflix",
+      "source_pages": [
+        "https://www.facebook.com/netflixfanslivehere"
+      ],
       "source_page_url": "https://www.facebook.com/netflixfanslivehere",
-      "source_page_id": "100071294138391",
-      "dest_page_id": "100095827163829",
-      "dest_page_name": "CineVerse Official",
-      "dest_access_token_env": "FB_TOKEN_CINEMA",
-      "badge_label": "NETFLIX FANS EXCLUSIVE",
+      "dest_page_id": "105077258283692",
+      "dest_page_name": "Daily Netflix",
+      "dest_access_token_env": "EAAqmh45n064BSbVUgZAOnUNbjR4Tyubx95oZAFL0YPb4PeVzpsiZALeSBE5Trd6QgfBx3dmcnNgWQtl2hZCKzSt6HXMfTpuaLOuzoNkN6mgRRGniZBqGZBqH9BECWFP78bh4uwPy7IAEZBGSs09lZAZC54Xc3G7iUFuVITGhMRXFRFv7a5qewaSm5A1ecc7dvv7Ldu1hrojUtiAZAGKLdTVwUZD",
+      "badge_label": "Daily Netflix",
       "highlight_color": "#FFC83B",
-      "max_posts_per_run": 2,
+      "max_posts_per_run": 1,
       "cadence_mirror_enabled": true,
       "fetch_frequency": "hourly",
       "policy_compliance_mode": "strict_fb_standard",
       "max_daily_posts": 15,
       "min_gap_hours": 1,
-      "source_pages": [
-        "https://www.facebook.com/netflixfanslivehere",
-        "https://www.facebook.com/netflix"
-      ]
-    },
-    {
-      "channel_id": "gaming_central",
-      "channel_name": "NextGen Gaming HQ (IGN Mirror)",
-      "source_page_url": "https://www.facebook.com/ign",
-      "source_page_id": "ign",
-      "dest_page_id": "100072918274920",
-      "dest_page_name": "NextGen Gaming",
-      "dest_access_token_env": "FB_TOKEN_GAMING",
-      "badge_label": "GAMING PULSE",
-      "highlight_color": "#00E5FF",
-      "max_posts_per_run": 2,
-      "cadence_mirror_enabled": true,
-      "fetch_frequency": "hourly",
-      "policy_compliance_mode": "strict_fb_standard",
-      "max_daily_posts": 15,
-      "min_gap_hours": 1,
-      "source_pages": [
-        "https://www.facebook.com/ign"
-      ]
-    },
-    {
-      "channel_id": "tech_breakthroughs",
-      "channel_name": "Future AI & Tech Trends",
-      "source_page_url": "https://www.facebook.com/techcrunch",
-      "source_page_id": "techcrunch",
-      "dest_page_id": "100081729384729",
-      "dest_page_name": "AI Frontier",
-      "dest_access_token_env": "FB_TOKEN_TECH",
-      "badge_label": "TECH FRONTIER",
-      "highlight_color": "#34D399",
-      "max_posts_per_run": 2,
-      "cadence_mirror_enabled": true,
-      "fetch_frequency": "hourly",
-      "policy_compliance_mode": "strict_fb_standard",
-      "max_daily_posts": 15,
-      "min_gap_hours": 1,
-      "source_pages": [
-        "https://www.facebook.com/techcrunch"
-      ]
+      "post_interval_hours": 1.0
     }
   ]
 }
