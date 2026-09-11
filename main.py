@@ -201,6 +201,19 @@ def main():
         # 4. STRICT 1-HOUR INTERVAL CADENCE:
         # "if there are still images not posted then post it in every 1 hr interval, make it work auto"
         last_pub_time = channel_stat.get("last_published_time", 0)
+        # Guard against legacy scheduled future timestamps from old scheduling engine
+        if last_pub_time > now_current:
+            ts_list = channel_stat.get("timestamps", [])
+            if ts_list:
+                try:
+                    last_dt = datetime.fromisoformat(ts_list[-1])
+                    last_pub_time = int(last_dt.timestamp())
+                except Exception:
+                    last_pub_time = 0
+            else:
+                last_pub_time = 0
+            channel_stat["last_published_time"] = last_pub_time
+
         gap_elapsed = now_current - last_pub_time
         effective_gap_seconds = int(float(post_interval_hours) * 3600)
 
