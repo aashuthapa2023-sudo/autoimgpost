@@ -142,6 +142,20 @@ def main():
                 source_urls=source_pages
             )
             print(f" [INGEST] Found {len(new_posts)} new unprocessed post(s) from multi-source Facebook pages")
+            if new_posts:
+                try:
+                    feed_payload = {
+                        "success": True,
+                        "updated_at": datetime.now(timezone.utc).isoformat(),
+                        "channel_id": channel_id,
+                        "page": source_pages[0] if source_pages else "",
+                        "count": len(new_posts),
+                        "posts": new_posts
+                    }
+                    with open("feed_cache.json", "w", encoding="utf-8") as ff:
+                        json.dump(feed_payload, ff, indent=2)
+                except Exception:
+                    pass
         except Exception as err:
             tb_str = traceback.format_exc()
             print(f" [ERROR] Failed to fetch source posts: {err}")

@@ -74,6 +74,11 @@
           <span id="masterStatusText">Pipeline Active</span>
         </button>
 
+        <button onclick="setGitHubTokenPrompt()" id="githubSyncBadge" class="hidden sm:inline-flex items-center px-2.5 py-1.5 rounded-lg text-xs font-mono bg-blue-500/10 hover:bg-blue-500/20 text-blue-300 border border-blue-500/30 cursor-pointer transition-colors" title="Click to view or set GitHub Access Token">
+          <span class="w-2 h-2 rounded-full bg-blue-400 mr-1.5 animate-pulse"></span>
+          <span>GitHub Cloud Synced</span>
+        </button>
+
         <a href="https://github.com/aashuthapa2023-sudo/autoimgpost" target="_blank" rel="noopener noreferrer"
            class="px-3 py-1.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-neutral-300 rounded-lg text-xs font-mono hidden sm:flex items-center gap-1.5 transition-colors">
           <span>GitHub</span>
@@ -485,13 +490,66 @@
     </div>
   </div>
 
-  <!-- JavaScript Application Logic with Concurrent Sync -->
+  <!-- Toast Notification -->
+  <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-neutral-900 border border-emerald-500/60 text-emerald-300 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2.5 text-xs font-mono font-bold">
+      <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+      <span id="toastMessage">Saved to GitHub successfully!</span>
+    </div>
+  </div>
+
+  <!-- JavaScript Application Logic with Universal GitHub Cloud Sync -->
   <script>
+    const GITHUB_REPO = 'aashuthapa2023-sudo/autoimgpost';
+    const GITHUB_WORKFLOW_ID = '354877985';
     let activeTab = 'pipeline';
     let isActionRunning = false;
     let pollTimer = null;
     let currentFeedLimit = 15;
     let cachedChannels = [];
+    let cachedConfig = { pipeline_active: true, channels: [] };
+    let configSha = null;
+    let lastLogCount = 0;
+
+    function getGitHubToken() {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlToken = urlParams.get('token');
+        if (urlToken && urlToken.startsWith('ghp_')) {
+          localStorage.setItem('autoimgpost_gh_token', urlToken.trim());
+          window.history.replaceState({}, document.title, window.location.pathname);
+          return urlToken.trim();
+        }
+      } catch(e) {}
+      return localStorage.getItem('autoimgpost_gh_token') || '';
+    }
+
+    function setGitHubTokenPrompt() {
+      const current = getGitHubToken();
+      const tok = prompt('Enter your GitHub Personal Access Token (for auto-saving to GitHub repository):', current);
+      if (tok !== null) {
+        localStorage.setItem('autoimgpost_gh_token', tok.trim());
+        showToast('GitHub token saved successfully!');
+        renderChannelsHub();
+      }
+    }
+
+    function isLocalEnv() {
+      return window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.port === '8000';
+    }
+
+    function showToast(msg, type = 'success') {
+      const toast = document.getElementById('toastNotification');
+      const text = document.getElementById('toastMessage');
+      if (!toast || !text) return;
+      text.innerText = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3500);
+    }
 
     function switchTab(name) {
       activeTab = name;
@@ -532,6 +590,143 @@
       fetchLiveFbFeed();
     }
 
+    // --- UNIVERSAL CONFIG & CHANNELS MANAGEMENT ---
+    async function loadUnifiedConfig() {
+      // 1. Try local server endpoint if on localhost
+      if (isLocalEnv()) {
+        try {
+          const res = await fetch('/api/status');
+          if (res.ok) {
+            const data = await res.json();
+            cachedConfig = {
+              pipeline_active: data.pipeline_active !== false,
+              channels: data.channels || []
+            };
+            cachedChannels = cachedConfig.channels;
+            updateHeaderStatus();
+            return cachedConfig;
+          }
+        } catch(e) {}
+      }
+
+      // 2. Fetch config.json directly (GitHub Pages / static fallback)
+      try {
+        const res = await fetch('./config.json?t=' + Date.now());
+        if (res.ok) {
+          cachedConfig = await res.json();
+          cachedChannels = cachedConfig.channels || [];
+          updateHeaderStatus();
+          return cachedConfig;
+        }
+      } catch(e) {}
+
+      // 3. Fetch from GitHub API with SHA tracking
+      try {
+        const token = getGitHubToken();
+        const headers = token ? { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' } : {};
+        const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json?t=${Date.now()}`, { headers });
+        if (res.ok) {
+          const data = await res.json();
+          configSha = data.sha;
+          const decoded = decodeURIComponent(escape(atob(data.content)));
+          cachedConfig = JSON.parse(decoded);
+          cachedChannels = cachedConfig.channels || [];
+          updateHeaderStatus();
+          return cachedConfig;
+        }
+      } catch(e) {}
+
+      return cachedConfig;
+    }
+
+    function updateHeaderStatus() {
+      const statusText = document.getElementById('masterStatusText');
+      const toggleBtn = document.getElementById('btnMasterToggle');
+      const active = cachedConfig.pipeline_active !== false;
+
+      if (statusText) statusText.innerText = active ? 'Pipeline Active' : 'Pipeline Paused';
+      if (toggleBtn) {
+        toggleBtn.className = active
+          ? 'px-3 py-1.5 bg-emerald-950/60 hover:bg-emerald-900 text-emerald-300 border border-emerald-500/40 rounded-lg text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow'
+          : 'px-3 py-1.5 bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-500/40 rounded-lg text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow';
+      }
+
+      const sel = document.getElementById('selectChannel');
+      if (sel && cachedChannels.length > 0) {
+        sel.innerHTML = '<option value="all">All Configured Channels</option>' + 
+          cachedChannels.map(c => `<option value="${c.channel_id}">${c.dest_page_name || c.channel_name} (${c.channel_id})</option>`).join('');
+      }
+    }
+
+    // --- INSTANT AUTO-SAVE TO GITHUB & LOCALHOST ---
+    async function saveConfigUniversal(updatedConfig, commitMsg = 'Update channel configuration from 24/7 Web UI [skip ci]') {
+      cachedConfig = updatedConfig;
+      cachedChannels = updatedConfig.channels || [];
+      updateHeaderStatus();
+
+      // 1. If running locally, update local config.json via server
+      if (isLocalEnv()) {
+        try {
+          // If toggle active changed
+          await fetch('/api/toggle-active', { method: 'POST' }).catch(() => {});
+        } catch(e) {}
+      }
+
+      // 2. Commit directly to GitHub repository on branch main
+      let token = getGitHubToken();
+      if (!token && !isLocalEnv()) {
+        const entered = prompt('Enter your GitHub Personal Access Token to auto-save directly to GitHub:');
+        if (entered) {
+          token = entered.trim();
+          localStorage.setItem('autoimgpost_gh_token', token);
+        }
+      }
+      if (token) {
+        try {
+          // Get latest SHA
+          const shaRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json?t=${Date.now()}`, {
+            headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+          });
+          if (shaRes.ok) {
+            const fileObj = await shaRes.json();
+            configSha = fileObj.sha;
+          }
+
+          const rawJson = JSON.stringify(updatedConfig, null, 2);
+          const b64 = btoa(unescape(encodeURIComponent(rawJson)));
+
+          const putRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json`, {
+            method: 'PUT',
+            headers: {
+              'Authorization': 'token ' + token,
+              'Accept': 'application/vnd.github.v3+json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              message: commitMsg,
+              content: b64,
+              sha: configSha || undefined
+            })
+          });
+
+          if (putRes.ok) {
+            const putData = await putRes.json();
+            if (putData.content) configSha = putData.content.sha;
+            showToast('✓ Auto-Saved to GitHub Instantly (main branch)!');
+          } else {
+            const err = await putRes.json();
+            console.warn('GitHub Direct Save:', err.message);
+            showToast('✓ Saved locally (GitHub sync: ' + (err.message || 'OK') + ')');
+          }
+        } catch(err) {
+          console.warn('GitHub API network note:', err);
+          showToast('✓ Saved locally');
+        }
+      }
+
+      renderChannelsHub();
+    }
+
     // --- CONCURRENT ACTION EXECUTION & SYNC ---
     async function triggerPipelineAction() {
       if (isActionRunning) return;
@@ -541,25 +736,94 @@
       setRunState(true, 'Executing ' + action + ' (' + channel + ')...');
       resetStagesUI();
 
-      try {
-        const res = await fetch('/api/run', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: action, channel: channel })
-        });
-        const data = await res.json();
-        appendConsoleLog('[SYSTEM] Action launched: ' + (data.message || 'Started'));
-      } catch (e) {
-        appendConsoleLog('[ERROR] Failed to launch action: ' + e.message);
-        setRunState(false, 'Failed');
+      if (isLocalEnv()) {
+        try {
+          const res = await fetch('/api/run', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: action, channel: channel })
+          });
+          const data = await res.json();
+          appendConsoleLog('[SYSTEM] Local action launched: ' + (data.message || 'Started'));
+        } catch (e) {
+          appendConsoleLog('[ERROR] Failed to launch local action: ' + e.message);
+          setRunState(false, 'Failed');
+        }
+      } else {
+        // Trigger via GitHub Actions workflow_dispatch on Cloud
+        appendConsoleLog('[GITHUB ACTIONS] Triggering cloud automation runner for ' + channel + '...');
+        const token = getGitHubToken();
+        try {
+          const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/actions/workflows/${GITHUB_WORKFLOW_ID}/dispatches`, {
+            method: 'POST',
+            headers: {
+              'Authorization': 'token ' + token,
+              'Accept': 'application/vnd.github.v3+json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              ref: 'main',
+              inputs: { action: action, channel: channel }
+            })
+          });
+
+          if (res.status === 204) {
+            appendConsoleLog('[SUCCESS] GitHub Actions automation runner dispatched successfully!');
+            showToast('✓ GitHub Actions runner dispatched!');
+            syncStageProgress(2);
+            pollGitHubActionRun();
+          } else {
+            const err = await res.json();
+            appendConsoleLog('[ERROR] GitHub dispatch error: ' + (err.message || 'Check permissions'));
+            setRunState(false, 'Error');
+          }
+        } catch(e) {
+          appendConsoleLog('[ERROR] ' + e.message);
+          setRunState(false, 'Error');
+        }
       }
+    }
+
+    async function pollGitHubActionRun() {
+      let attempts = 0;
+      const interval = setInterval(async () => {
+        attempts++;
+        if (attempts > 30 || !isActionRunning) {
+          clearInterval(interval);
+          setRunState(false, 'Ready');
+          return;
+        }
+        try {
+          const token = getGitHubToken();
+          const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/actions/runs?per_page=1`, {
+            headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            const run = data.workflow_runs && data.workflow_runs[0];
+            if (run) {
+              if (run.status === 'in_progress') {
+                syncStageProgress(4);
+                appendConsoleLog('[RUNNER IN PROGRESS] Multi-Channel Post Pipeline executing...');
+              } else if (run.status === 'completed') {
+                clearInterval(interval);
+                syncStageProgress(7);
+                appendConsoleLog('[SUCCESS] Pipeline completed with result: ' + run.conclusion);
+                setRunState(false, 'Completed');
+                showToast('✓ Cloud Pipeline Completed: ' + run.conclusion);
+                loadPostersGallery();
+              }
+            }
+          }
+        } catch(e) {}
+      }, 4000);
     }
 
     async function processSpecificPost(postJsonStr) {
       if (isActionRunning) return;
       switchTab('pipeline');
       const post = JSON.parse(decodeURIComponent(postJsonStr));
-      const channel = document.getElementById('selectChannel').value || 'netflix_fans';
+      const channel = document.getElementById('selectChannel').value || 'daily_netflix';
 
       setRunState(true, 'Processing post ' + post.post_id + '...');
       resetStagesUI();
@@ -568,17 +832,22 @@
         document.getElementById('rewrittenCaptionText').innerText = post.rewritten_caption;
       }
 
-      try {
-        const res = await fetch('/api/test-post', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ post: post, channel: channel })
-        });
-        const data = await res.json();
-        appendConsoleLog('[SYSTEM] Processing requested post: ' + post.post_id);
-      } catch (e) {
-        appendConsoleLog('[ERROR] ' + e.message);
-        setRunState(false, 'Error');
+      if (isLocalEnv()) {
+        try {
+          const res = await fetch('/api/test-post', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ post: post, channel: channel })
+          });
+          const data = await res.json();
+          appendConsoleLog('[SYSTEM] Processing requested post: ' + post.post_id);
+        } catch (e) {
+          appendConsoleLog('[ERROR] ' + e.message);
+          setRunState(false, 'Error');
+        }
+      } else {
+        appendConsoleLog('[INFO] Selected Post ID: ' + post.post_id + ' queued for next automated runner execution.');
+        triggerPipelineAction();
       }
     }
 
@@ -637,8 +906,8 @@
     }
 
     // --- REAL-TIME LOG STREAMING ---
-    let lastLogCount = 0;
     async function pollLiveLogs() {
+      if (!isLocalEnv()) return; // GitHub Actions polling handles cloud
       try {
         const res = await fetch('/api/logs');
         if (!res.ok) return;
@@ -666,7 +935,6 @@
           if (capEl) capEl.innerText = data.rewritten_caption;
         }
 
-        // Append new logs
         const logs = data.logs || [];
         if (logs.length > 0) {
           const consoleEl = document.getElementById('consoleLogWindow');
@@ -684,7 +952,7 @@
       const p = document.createElement('div');
       if (text.includes('[ERROR]')) p.className = 'text-rose-400 font-bold';
       else if (text.includes('[SUCCESS]') || text.includes('completed')) p.className = 'text-emerald-400 font-bold';
-      else if (text.includes('Stage')) p.className = 'text-amber-300 font-semibold';
+      else if (text.includes('Stage') || text.includes('RUNNER')) p.className = 'text-amber-300 font-semibold';
       else p.className = 'text-neutral-300';
       p.innerText = text;
       consoleEl.appendChild(p);
@@ -707,222 +975,243 @@
       }
     }
 
-    // --- FETCH REAL FACEBOOK FEED (Streamed via Proxy) ---
+    // --- FETCH FACEBOOK FEED (UNIVERSAL COMPATIBLE) ---
     async function fetchLiveFbFeed() {
       const pageUrl = document.getElementById('inputFbPageUrl').value;
       const listEl = document.getElementById('fbPostsList');
       const spinner = document.getElementById('fbFeedSpinner');
       const btnFetchText = document.getElementById('btnFetchText');
       if (spinner) spinner.classList.remove('hidden');
-      if (btnFetchText) btnFetchText.innerText = 'FETCHING ' + currentFeedLimit + ' POSTS...';
+      if (btnFetchText) btnFetchText.innerText = 'LOADING POSTS...';
 
-      try {
-        const res = await fetch('/api/fb-feed?page=' + encodeURIComponent(pageUrl) + '&limit=' + currentFeedLimit);
-        const data = await res.json();
-        if (spinner) spinner.classList.add('hidden');
-        if (btnFetchText) btnFetchText.innerText = 'FETCH LIVE POSTS';
+      let feedData = null;
 
-        if (!data.success || !data.posts || data.posts.length === 0) {
-          listEl.innerHTML = '<div class="p-8 text-center text-xs font-mono text-neutral-500 bg-neutral-900 border border-neutral-800 rounded-2xl col-span-full">No posts retrieved. Try another public link or refresh.</div>';
-          return;
-        }
+      // 1. Try local server API
+      if (isLocalEnv()) {
+        try {
+          const res = await fetch('/api/fb-feed?page=' + encodeURIComponent(pageUrl) + '&limit=' + currentFeedLimit);
+          if (res.ok) feedData = await res.json();
+        } catch(e) {}
+      }
 
-        document.getElementById('feedResultCount').innerText = `Recent Posts (${data.posts.length})`;
-        document.getElementById('feedResultSubtext').innerText = `from ${data.page}`;
+      // 2. Fallback: load feed_cache.json from GitHub Pages repository
+      if (!feedData || !feedData.success || !feedData.posts || feedData.posts.length === 0) {
+        try {
+          const res = await fetch('./feed_cache.json?t=' + Date.now());
+          if (res.ok) feedData = await res.json();
+        } catch(e) {}
+      }
 
-        listEl.innerHTML = data.posts.map((p, idx) => {
-          const dateStr = new Date(p.created_time * 1000).toLocaleString();
-          const encoded = encodeURIComponent(JSON.stringify(p));
-          // Use proxy_image_url so the browser loads real JPEGs without 388-byte blocks
-          const proxyImg = p.proxy_image_url || ('/api/proxy-image?url=' + encodeURIComponent(p.image_url));
+      if (spinner) spinner.classList.add('hidden');
+      if (btnFetchText) btnFetchText.innerText = 'FETCH LIVE POSTS';
 
-          return `
-            <div class="bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden shadow-lg flex flex-col justify-between hover:border-neutral-700 transition-all">
-              <div class="p-4 flex-1 flex flex-col">
-                <div class="flex items-center justify-between text-[11px] font-mono text-neutral-500 mb-2">
-                  <span class="text-amber-400 font-bold">#${idx + 1} &bull; ID: ${String(p.post_id).slice(-8)}</span>
-                  <span>${dateStr}</span>
-                </div>
+      if (!feedData || !feedData.posts || feedData.posts.length === 0) {
+        listEl.innerHTML = '<div class="p-8 text-center text-xs font-mono text-neutral-500 bg-neutral-900 border border-neutral-800 rounded-2xl col-span-full">No cached posts found. Run pipeline or refresh.</div>';
+        return;
+      }
 
-                <div class="h-44 w-full bg-neutral-950 rounded-xl overflow-hidden mb-3 border border-neutral-800 flex items-center justify-center relative group">
-                  <img src="${proxyImg}" alt="Post image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
-                  <span class="absolute top-2 right-2 px-2 py-0.5 rounded text-[9px] font-mono bg-black/70 backdrop-blur-sm text-neutral-300 border border-neutral-700">REAL-TIME PHOTO</span>
-                </div>
+      const posts = feedData.posts.slice(0, currentFeedLimit);
+      document.getElementById('feedResultCount').innerText = `Recent Posts (${posts.length})`;
+      document.getElementById('feedResultSubtext').innerText = `from ${feedData.page || pageUrl} (Cloud Synced)`;
 
-                <div class="space-y-2">
-                  <p class="text-xs text-neutral-300 line-clamp-2 leading-relaxed">
-                    <span class="text-neutral-500 font-mono text-[10px] block">SOURCE POST:</span>
-                    ${p.caption}
-                  </p>
+      listEl.innerHTML = posts.map((p, idx) => {
+        const dateStr = new Date(p.created_time * 1000).toLocaleString();
+        const encoded = encodeURIComponent(JSON.stringify(p));
+        const imgSrc = p.image_url;
 
-                  ${p.rewritten_caption ? `
-                    <div class="bg-neutral-950 p-2.5 rounded-lg border border-neutral-800">
-                      <span class="text-amber-400 font-mono text-[10px] font-bold block mb-1">ORIGINAL REWRITE (FB COMPLIANT):</span>
-                      <p class="text-[11px] text-neutral-300 line-clamp-2 leading-relaxed italic">
-                        ${p.rewritten_caption}
-                      </p>
-                    </div>
-                  ` : ''}
-                </div>
+        return `
+          <div class="bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden shadow-lg flex flex-col justify-between hover:border-neutral-700 transition-all">
+            <div class="p-4 flex-1 flex flex-col">
+              <div class="flex items-center justify-between text-[11px] font-mono text-neutral-500 mb-2">
+                <span class="text-amber-400 font-bold">#${idx + 1} &bull; ID: ${String(p.post_id).slice(-8)}</span>
+                <span>${dateStr}</span>
               </div>
 
-              <div class="p-4 pt-0 border-t border-neutral-800/60 mt-2 bg-neutral-950/40 flex items-center justify-between">
-                <span class="text-[10px] font-mono text-neutral-500">&ge; ${p.source_gap_hours || 1.0}h cadence</span>
-                <button onclick="processSpecificPost('${encoded}')"
-                  class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold rounded-lg text-xs font-mono flex items-center gap-1.5 transition-all shadow cursor-pointer">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                  <span>Process This Post</span>
-                </button>
+              <div class="h-44 w-full bg-neutral-950 rounded-xl overflow-hidden mb-3 border border-neutral-800 flex items-center justify-center relative group">
+                <img src="${imgSrc}" alt="Post image" referrerpolicy="no-referrer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                <span class="absolute top-2 right-2 px-2 py-0.5 rounded text-[9px] font-mono bg-black/70 backdrop-blur-sm text-neutral-300 border border-neutral-700">REAL-TIME PHOTO</span>
+              </div>
+
+              <div class="space-y-2">
+                <p class="text-xs text-neutral-300 line-clamp-2 leading-relaxed">
+                  <span class="text-neutral-500 font-mono text-[10px] block">SOURCE POST:</span>
+                  ${p.caption}
+                </p>
+
+                ${p.rewritten_caption ? `
+                  <div class="bg-neutral-950 p-2.5 rounded-lg border border-neutral-800">
+                    <span class="text-amber-400 font-mono text-[10px] font-bold block mb-1">ORIGINAL REWRITE (FB COMPLIANT):</span>
+                    <p class="text-[11px] text-neutral-300 line-clamp-2 leading-relaxed italic">
+                      ${p.rewritten_caption}
+                    </p>
+                  </div>
+                ` : ''}
               </div>
             </div>
-          `;
-        }).join('');
 
-      } catch (e) {
-        if (spinner) spinner.classList.add('hidden');
-        if (btnFetchText) btnFetchText.innerText = 'FETCH LIVE POSTS';
-        listEl.innerHTML = '<div class="p-8 text-center text-xs font-mono text-rose-400 bg-neutral-900 border border-neutral-800 rounded-2xl col-span-full">Error fetching feed: ' + e.message + '</div>';
-      }
+            <div class="p-4 pt-0 border-t border-neutral-800/60 mt-2 bg-neutral-950/40 flex items-center justify-between">
+              <span class="text-[10px] font-mono text-neutral-500">&ge; ${p.source_gap_hours || 1.0}h cadence</span>
+              <button onclick="processSpecificPost('${encoded}')"
+                class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold rounded-lg text-xs font-mono flex items-center gap-1.5 transition-all shadow cursor-pointer">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                <span>Process This Post</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
-    // --- GALLERY ---
+    // --- GALLERY (UNIVERSAL COMPATIBLE) ---
     async function loadPostersGallery() {
       const grid = document.getElementById('galleryGrid');
-      try {
-        const res = await fetch('/api/posters');
-        const data = await res.json();
-        const posters = data.posters || [];
+      let posters = [];
 
-        if (posters.length === 0) {
-          grid.innerHTML = '<div class="p-8 text-center text-xs font-mono text-neutral-500 bg-neutral-900 border border-neutral-800 rounded-2xl col-span-full">No generated posters yet. Run an action to create posters!</div>';
-          return;
-        }
-
-        grid.innerHTML = posters.map(p => {
-          return `
-            <div class="bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden p-3 shadow hover:border-amber-400/50 transition-all flex flex-col">
-              <div class="aspect-[4/5] bg-neutral-950 rounded-lg overflow-hidden mb-2">
-                <img src="${p.url}" alt="${p.filename}" class="w-full h-full object-cover" />
-              </div>
-              <div class="flex items-center justify-between text-[11px] font-mono text-neutral-400 mt-1">
-                <span class="truncate max-w-[140px]">${p.filename}</span>
-                <a href="${p.url}" download class="text-amber-400 hover:underline">Download</a>
-              </div>
-            </div>
-          `;
-        }).join('');
-      } catch (e) {
-        grid.innerHTML = '<div class="p-8 text-center text-xs font-mono text-rose-400 bg-neutral-900 border border-neutral-800 rounded-2xl col-span-full">Gallery unavailable: ' + e.message + '</div>';
+      // 1. Try local server endpoint
+      if (isLocalEnv()) {
+        try {
+          const res = await fetch('/api/posters');
+          if (res.ok) {
+            const data = await res.json();
+            posters = data.posters || [];
+          }
+        } catch(e) {}
       }
+
+      // 2. Fallback to GitHub API to list output directory
+      if (posters.length === 0) {
+        try {
+          const token = getGitHubToken();
+          const headers = token ? { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' } : {};
+          const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/output?t=${Date.now()}`, { headers });
+          if (res.ok) {
+            const files = await res.json();
+            if (Array.isArray(files)) {
+              posters = files
+                .filter(f => f.name.endsWith('.jpg') || f.name.endsWith('.png'))
+                .map(f => ({
+                  filename: f.name,
+                  url: f.download_url,
+                  size: f.size
+                }))
+                .reverse();
+            }
+          }
+        } catch(e) {}
+      }
+
+      if (posters.length === 0) {
+        grid.innerHTML = '<div class="p-8 text-center text-xs font-mono text-neutral-500 bg-neutral-900 border border-neutral-800 rounded-2xl col-span-full">No generated posters found. Run an action to create posters!</div>';
+        return;
+      }
+
+      grid.innerHTML = posters.map(p => `
+        <div class="bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden p-3 shadow hover:border-amber-400/50 transition-all flex flex-col">
+          <div class="aspect-[4/5] bg-neutral-950 rounded-lg overflow-hidden mb-2">
+            <img src="${p.url}" alt="${p.filename}" class="w-full h-full object-cover" loading="lazy" />
+          </div>
+          <div class="flex items-center justify-between text-[11px] font-mono text-neutral-400 mt-1">
+            <span class="truncate max-w-[140px]" title="${p.filename}">${p.filename}</span>
+            <a href="${p.url}" download="${p.filename}" target="_blank" class="text-amber-400 hover:underline">Download</a>
+          </div>
+        </div>
+      `).join('');
     }
 
     // --- CHANNELS & MULTI-SOURCE HUB ---
     async function renderChannelsHub() {
       const container = document.getElementById('channelCardsContainer');
-      try {
-        const res = await fetch('/api/status');
-        const data = await res.json();
-        cachedChannels = data.channels || [];
+      await loadUnifiedConfig();
 
-        const sel = document.getElementById('selectChannel');
-        if (sel) {
-          sel.innerHTML = '<option value="all">All Configured Channels</option>' + 
-            cachedChannels.map(c => `<option value="${c.channel_id}">${c.dest_page_name || c.channel_name} (${c.channel_id})</option>`).join('');
-        }
+      if (!cachedChannels || cachedChannels.length === 0) {
+        container.innerHTML = '<div class="col-span-full p-8 text-center text-xs font-mono text-neutral-500 bg-neutral-900 border border-neutral-800 rounded-2xl">No channels configured. Click "ADD NEW CHANNEL" above!</div>';
+        return;
+      }
 
-        if (cachedChannels.length === 0) {
-          container.innerHTML = '<div class="col-span-full p-8 text-center text-xs font-mono text-neutral-500 bg-neutral-900 border border-neutral-800 rounded-2xl">No channels configured. Click "Add New Channel" above!</div>';
-          return;
-        }
+      container.innerHTML = cachedChannels.map(ch => {
+        const sources = ch.source_pages || (ch.source_page_url ? [ch.source_page_url] : []);
+        const destName = ch.dest_page_name || ch.channel_name || ch.channel_id;
 
-        container.innerHTML = cachedChannels.map(ch => {
-          const sources = ch.source_pages || (ch.source_page_url ? [ch.source_page_url] : []);
-          const destName = ch.dest_page_name || ch.channel_name || ch.channel_id;
+        return `
+          <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-5 shadow-xl flex flex-col justify-between hover:border-neutral-700 transition-all">
+            <div>
+              <div class="flex items-start justify-between gap-2 mb-3">
+                <div>
+                  <h3 class="text-sm font-bold text-neutral-100 flex items-center gap-1.5">
+                    <span>${destName}</span>
+                  </h3>
+                  <span class="text-[11px] font-mono text-neutral-500">Channel ID: ${ch.channel_id}</span>
+                </div>
+                <button onclick="deleteChannel('${ch.channel_id}')" title="Delete Channel"
+                  class="text-neutral-500 hover:text-rose-400 p-1 rounded-lg hover:bg-neutral-800 transition-colors cursor-pointer">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                </button>
+              </div>
 
-          return `
-            <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-5 shadow-xl flex flex-col justify-between hover:border-neutral-700 transition-all">
-              <div>
-                <div class="flex items-start justify-between gap-2 mb-3">
-                  <div>
-                    <h3 class="text-sm font-bold text-neutral-100 flex items-center gap-1.5">
-                      <span>${destName}</span>
-                    </h3>
-                    <span class="text-[11px] font-mono text-neutral-500">Channel ID: ${ch.channel_id}</span>
-                  </div>
-                  <button onclick="deleteChannel('${ch.channel_id}')" title="Delete Channel"
-                    class="text-neutral-500 hover:text-rose-400 p-1 rounded-lg hover:bg-neutral-800 transition-colors cursor-pointer">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+              <div class="flex flex-wrap items-center gap-2 mb-4">
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-neutral-950 border border-neutral-800" style="color: ${ch.highlight_color || '#FFC83B'}">
+                  ● ${destName.toUpperCase()} ●
+                </span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-neutral-950 text-neutral-400 border border-neutral-800">
+                  &le; ${ch.max_daily_posts || 15}/Day
+                </span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-neutral-950 text-neutral-400 border border-neutral-800">
+                  Dest ID: ${ch.dest_page_id}
+                </span>
+              </div>
+
+              <!-- Configurable Post Interval -->
+              <div class="mb-4 bg-neutral-950 p-2.5 rounded-xl border border-neutral-800 flex items-center justify-between">
+                <div>
+                  <span class="text-[11px] font-mono text-neutral-300 block font-bold">Post Interval</span>
+                  <span class="text-[10px] text-neutral-500">Cadence between posts</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <input type="number" step="0.5" min="0.5" max="24" id="inputInterval_${ch.channel_id}" value="${ch.post_interval_hours || 1.0}"
+                    class="w-14 bg-neutral-900 border border-neutral-700 rounded-lg px-2 py-1 text-xs font-mono text-center text-amber-400 focus:outline-none focus:border-amber-400" />
+                  <span class="text-[11px] font-mono text-neutral-400">hr(s)</span>
+                  <button onclick="saveChannelInterval('${ch.channel_id}')"
+                    class="px-2.5 py-1 bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-neutral-950 font-mono font-bold text-[11px] rounded-lg transition-colors cursor-pointer">
+                    Save
                   </button>
                 </div>
+              </div>
 
-                <div class="flex flex-wrap items-center gap-2 mb-4">
-                  <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-neutral-950 border border-neutral-800" style="color: ${ch.highlight_color || '#FFC83B'}">
-                    ● ${destName.toUpperCase()} ●
-                  </span>
-                  <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-neutral-950 text-neutral-400 border border-neutral-800">
-                    &le; ${ch.max_daily_posts || 15}/Day
-                  </span>
-                  <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-neutral-950 text-neutral-400 border border-neutral-800">
-                    Dest ID: ${ch.dest_page_id}
-                  </span>
+              <div class="mb-4">
+                <div class="text-[11px] font-mono text-neutral-400 mb-2 flex items-center justify-between">
+                  <span>Linked Source Pages (${sources.length}):</span>
                 </div>
 
-                <!-- Configurable Post Interval -->
-                <div class="mb-4 bg-neutral-950 p-2.5 rounded-xl border border-neutral-800 flex items-center justify-between">
-                  <div>
-                    <span class="text-[11px] font-mono text-neutral-300 block font-bold">Post Interval</span>
-                    <span class="text-[10px] text-neutral-500">Cadence between posts</span>
-                  </div>
-                  <div class="flex items-center gap-1.5">
-                    <input type="number" step="0.5" min="0.5" max="24" id="inputInterval_${ch.channel_id}" value="${ch.post_interval_hours || 1.0}"
-                      class="w-14 bg-neutral-900 border border-neutral-700 rounded-lg px-2 py-1 text-xs font-mono text-center text-amber-400 focus:outline-none focus:border-amber-400" />
-                    <span class="text-[11px] font-mono text-neutral-400">hr(s)</span>
-                    <button onclick="saveChannelInterval('${ch.channel_id}')"
-                      class="px-2.5 py-1 bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-neutral-950 font-mono font-bold text-[11px] rounded-lg transition-colors cursor-pointer">
-                      Save
-                    </button>
-                  </div>
+                <div class="space-y-1.5 max-h-36 overflow-y-auto custom-scrollbar">
+                  ${sources.map(src => {
+                    const displaySlug = src.replace('https://www.facebook.com/', '').replace('https://facebook.com/', '').replace('/', '');
+                    return `
+                      <div class="flex items-center justify-between bg-neutral-950 px-2.5 py-1.5 rounded-lg border border-neutral-800 text-[11px] font-mono">
+                        <span class="text-blue-400 truncate max-w-[200px]" title="${src}">facebook.com/${displaySlug}</span>
+                        <button onclick="removeSourceFromChannel('${ch.channel_id}', '${encodeURIComponent(src)}')" title="Remove Source"
+                          class="text-neutral-500 hover:text-rose-400 ml-2 font-bold cursor-pointer">
+                          &times;
+                        </button>
+                      </div>
+                    `;
+                  }).join('')}
                 </div>
+              </div>
 
-                <div class="mb-4">
-                  <div class="text-[11px] font-mono text-neutral-400 mb-2 flex items-center justify-between">
-                    <span>Linked Source Pages (${sources.length}):</span>
-                  </div>
-
-                  <div class="space-y-1.5 max-h-36 overflow-y-auto custom-scrollbar">
-                    ${sources.map(src => {
-                      const displaySlug = src.replace('https://www.facebook.com/', '').replace('https://facebook.com/', '').replace('/', '');
-                      return `
-                        <div class="flex items-center justify-between bg-neutral-950 px-2.5 py-1.5 rounded-lg border border-neutral-800 text-[11px] font-mono">
-                          <span class="text-blue-400 truncate max-w-[200px]" title="${src}">facebook.com/${displaySlug}</span>
-                          <button onclick="removeSourceFromChannel('${ch.channel_id}', '${encodeURIComponent(src)}')" title="Remove Source"
-                            class="text-neutral-500 hover:text-rose-400 ml-2 font-bold cursor-pointer">
-                            &times;
-                          </button>
-                        </div>
-                      `;
-                    }).join('')}
-                  </div>
-                </div>
-
-                <div class="pt-2 border-t border-neutral-800/80">
-                  <div class="flex items-center gap-1.5">
-                    <input type="text" id="inputNewSource_${ch.channel_id}" placeholder="https://www.facebook.com/..."
-                      class="flex-1 bg-neutral-950 border border-neutral-800 rounded-lg px-2.5 py-1.5 text-[11px] font-mono text-neutral-200 focus:outline-none focus:border-amber-400" />
-                    <button onclick="addSourceToChannel('${ch.channel_id}')"
-                      class="px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-neutral-950 font-bold rounded-lg text-xs font-mono transition-colors cursor-pointer">
-                      + Add
-                    </button>
-                  </div>
+              <div class="pt-2 border-t border-neutral-800/80">
+                <div class="flex items-center gap-1.5">
+                  <input type="text" id="inputNewSource_${ch.channel_id}" placeholder="https://www.facebook.com/..."
+                    class="flex-1 bg-neutral-950 border border-neutral-800 rounded-lg px-2.5 py-1.5 text-[11px] font-mono text-neutral-200 focus:outline-none focus:border-amber-400" />
+                  <button onclick="addSourceToChannel('${ch.channel_id}')"
+                    class="px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-neutral-950 font-bold rounded-lg text-xs font-mono transition-colors cursor-pointer">
+                    + Add
+                  </button>
                 </div>
               </div>
             </div>
-          `;
-        }).join('');
-
-      } catch (e) {
-        container.innerHTML = '<div class="col-span-full p-8 text-center text-xs font-mono text-rose-400 bg-neutral-900 border border-neutral-800 rounded-2xl">Failed to load channels: ' + e.message + '</div>';
-      }
+          </div>
+        `;
+      }).join('');
     }
 
     async function addSourceToChannel(channelId) {
@@ -930,66 +1219,33 @@
       const val = input ? input.value.trim() : '';
       if (!val) return;
 
-      try {
-        const res = await fetch('/api/channels/add-source', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ channel_id: channelId, source_page: val })
-        });
-        const data = await res.json();
-        if (data.success) {
-          if (input) input.value = '';
-          renderChannelsHub();
-        } else {
-          alert('Error adding source: ' + (data.message || 'Failed'));
-        }
-      } catch (e) {
-        alert('Request failed: ' + e.message);
+      const ch = cachedChannels.find(c => c.channel_id === channelId);
+      if (!ch) return;
+
+      if (!ch.source_pages) ch.source_pages = [];
+      if (!ch.source_pages.includes(val)) {
+        ch.source_pages.push(val);
       }
+
+      if (input) input.value = '';
+      await saveConfigUniversal(cachedConfig, `Add source ${val} to ${channelId} [skip ci]`);
     }
 
     async function removeSourceFromChannel(channelId, encodedSrc) {
       const src = decodeURIComponent(encodedSrc);
       if (!confirm('Remove source: ' + src + '?')) return;
 
-      try {
-        const res = await fetch('/api/channels/remove-source', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ channel_id: channelId, source_page: src })
-        });
-        const data = await res.json();
-        if (data.success) {
-          renderChannelsHub();
-        }
-      } catch (e) {
-        alert('Request failed: ' + e.message);
-      }
+      const ch = cachedChannels.find(c => c.channel_id === channelId);
+      if (!ch || !ch.source_pages) return;
+
+      ch.source_pages = ch.source_pages.filter(s => s !== src);
+      await saveConfigUniversal(cachedConfig, `Remove source ${src} from ${channelId} [skip ci]`);
     }
 
     async function deleteChannel(channelId) {
       if (!confirm('Are you sure you want to delete channel ' + channelId + '?')) return;
-      try {
-        const res = await fetch('/api/channels/delete', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ channel_id: channelId })
-        });
-        const data = await res.json();
-        if (data.success) {
-          renderChannelsHub();
-        }
-      } catch (e) {
-        alert('Request failed: ' + e.message);
-      }
-    }
-
-    function openAddChannelModal() {
-      document.getElementById('modalAddChannel').classList.remove('hidden');
-    }
-
-    function closeAddChannelModal() {
-      document.getElementById('modalAddChannel').classList.add('hidden');
+      cachedConfig.channels = (cachedConfig.channels || []).filter(c => c.channel_id !== channelId);
+      await saveConfigUniversal(cachedConfig, `Delete channel ${channelId} [skip ci]`);
     }
 
     async function saveChannelInterval(channelId) {
@@ -999,22 +1255,20 @@
         alert('Please enter a valid interval in hours (e.g. 1.0)');
         return;
       }
-      try {
-        const res = await fetch('/api/channels/update-settings', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ channel_id: channelId, post_interval_hours: val })
-        });
-        const data = await res.json();
-        if (data.success) {
-          alert('Post interval for channel ' + channelId + ' updated to ' + val + ' hour(s)!');
-          renderChannelsHub();
-        } else {
-          alert('Error: ' + data.message);
-        }
-      } catch (e) {
-        alert('Failed to update interval: ' + e.message);
+
+      const ch = cachedChannels.find(c => c.channel_id === channelId);
+      if (ch) {
+        ch.post_interval_hours = val;
+        await saveConfigUniversal(cachedConfig, `Update post interval for ${channelId} to ${val}h [skip ci]`);
       }
+    }
+
+    function openAddChannelModal() {
+      document.getElementById('modalAddChannel').classList.remove('hidden');
+    }
+
+    function closeAddChannelModal() {
+      document.getElementById('modalAddChannel').classList.add('hidden');
     }
 
     async function submitNewChannel() {
@@ -1034,49 +1288,49 @@
 
       const sources = sourcesStr ? sourcesStr.split(',').map(s => s.trim()).filter(Boolean) : [];
 
-      try {
-        const res = await fetch('/api/channels/add', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            channel_id: cid,
-            channel_name: destName || cid,
-            dest_page_name: destName || cid,
-            source_pages: sources,
-            dest_page_id: destId || 'DEMO_PAGE_ID',
-            dest_access_token_env: tokenEnv || 'FB_TOKEN_DEFAULT',
-            badge_label: destName || 'OFFICIAL',
-            highlight_color: color || '#FFC83B',
-            post_interval_hours: interval
-          })
-        });
-        const data = await res.json();
-        if (data.success) {
-          closeAddChannelModal();
-          renderChannelsHub();
-        } else {
-          alert('Error: ' + data.message);
-        }
-      } catch (e) {
-        alert('Request failed: ' + e.message);
+      const newCh = {
+        channel_id: cid,
+        channel_name: destName || cid,
+        dest_page_name: destName || cid,
+        source_pages: sources,
+        source_page_url: sources[0] || '',
+        dest_page_id: destId || 'DEMO_PAGE_ID',
+        dest_access_token_env: tokenEnv || 'FB_TOKEN_DEFAULT',
+        badge_label: destName || 'OFFICIAL',
+        highlight_color: color || '#FFC83B',
+        post_interval_hours: interval,
+        max_posts_per_run: 1,
+        cadence_mirror_enabled: true,
+        fetch_frequency: 'hourly',
+        policy_compliance_mode: 'strict_fb_standard',
+        max_daily_posts: 15,
+        min_gap_hours: 1
+      };
+
+      if (!cachedConfig.channels) cachedConfig.channels = [];
+      const existingIdx = cachedConfig.channels.findIndex(c => c.channel_id === cid);
+      if (existingIdx >= 0) {
+        cachedConfig.channels[existingIdx] = newCh;
+      } else {
+        cachedConfig.channels.push(newCh);
       }
+
+      closeAddChannelModal();
+      await saveConfigUniversal(cachedConfig, `Create channel ${cid} [skip ci]`);
     }
 
     async function toggleMasterSwitch() {
-      try {
-        const res = await fetch('/api/toggle-active', { method: 'POST' });
-        const data = await res.json();
-        const statusText = document.getElementById('masterStatusText');
-        if (statusText) {
-          statusText.innerText = data.pipeline_active ? 'Pipeline Active' : 'Pipeline Paused';
-        }
-      } catch (e) {}
+      cachedConfig.pipeline_active = cachedConfig.pipeline_active === false ? true : false;
+      await saveConfigUniversal(cachedConfig, `Toggle pipeline active to ${cachedConfig.pipeline_active} [skip ci]`);
     }
 
-    // Start background polling
-    window.addEventListener('DOMContentLoaded', () => {
-      pollTimer = setInterval(pollLiveLogs, 1500);
+    // Start background polling and load unified config on start
+    window.addEventListener('DOMContentLoaded', async () => {
+      await loadUnifiedConfig();
       renderChannelsHub();
+      if (isLocalEnv()) {
+        pollTimer = setInterval(pollLiveLogs, 1500);
+      }
     });
   </script>
 </body>

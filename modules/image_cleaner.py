@@ -60,17 +60,24 @@ def detect_and_remove_watermarks(img: np.ndarray) -> np.ndarray:
     contours, _ = cv2.findContours(connected, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     watermark_detected = False
 
+    y_center = int(h * 0.50)
+
     for cnt in contours:
         x, y, cw, ch = cv2.boundingRect(cnt)
         aspect = cw / float(ch + 1e-5)
         area = cw * ch
 
+        # STRICT CONSTRAINT: Only check for texts below center of image (y >= y_center)
+        # DO NOT touch or remove any text/marks above the vertical center of the image.
+        if y < y_center:
+            continue
+
         # Strictly ignore any region that overlaps with human faces
         if np.any(face_mask[y:y+ch, x:x+cw] > 0):
             continue
 
-        # Watermark / overlay text criteria: perimeter regions (within 22% of edges) or small badge stamps
-        is_edge_or_banner = (x < w * 0.22 or x + cw > w * 0.78 or y < h * 0.22 or y + ch > h * 0.60)
+        # Watermark / overlay text criteria in lower half
+        is_edge_or_banner = (x < w * 0.22 or x + cw > w * 0.78 or y + ch > h * 0.60)
         if is_edge_or_banner and 1.1 <= aspect <= 18.0 and 8 <= ch <= 80 and area <= (h * w * 0.04):
             roi_grad = grad[y:y+ch, x:x+cw]
             density = np.count_nonzero(roi_grad > 38) / float(area + 1e-5)
@@ -78,7 +85,7 @@ def detect_and_remove_watermarks(img: np.ndarray) -> np.ndarray:
                 cv2.rectangle(mask, (max(0, x - 3), max(0, y - 3)), (min(w, x + cw + 3), min(h, y + ch + 3)), 255, -1)
                 watermark_detected = True
 
-    # 3. Detect high-contrast colored badges (e.g. Red 'NEWS', yellow badges) outside faces
+    # 3. Detect high-contrast colored badges (strictly below the center of the image)
     try:
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         mask_r1 = cv2.inRange(hsv, np.array([0, 110, 90]), np.array([12, 255, 255]))
@@ -87,6 +94,9 @@ def detect_and_remove_watermarks(img: np.ndarray) -> np.ndarray:
         cnts_badge, _ = cv2.findContours(mask_colored, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         for bcnt in cnts_badge:
             bx, by, bw, bh = cv2.boundingRect(bcnt)
+            # Strictly ignore badges above the vertical center
+            if by < y_center:
+                continue
             b_area = bw * bh
             if not np.any(face_mask[by:by+bh, bx:bx+bw] > 0) and 25 <= bw <= 350 and 12 <= bh <= 100 and b_area < (h * w * 0.03):
                 cv2.rectangle(mask, (max(0, bx - 3), max(0, by - 3)), (min(w, bx + bw + 3), min(h, by + bh + 3)), 255, -1)
