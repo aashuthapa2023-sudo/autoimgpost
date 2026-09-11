@@ -1,5 +1,5 @@
 {
-  "pipeline_active": true,
+  "pipeline_active": false,
   "max_images_per_day_per_page": 15,
   "min_hour_gap_per_page": 1,
   "channels": [
@@ -21,7 +21,7 @@
       "policy_compliance_mode": "strict_fb_standard",
       "max_daily_posts": 15,
       "min_gap_hours": 1,
-      "post_interval_hours": 1.0
+      "post_interval_hours": 1
     }
   ]
 }
