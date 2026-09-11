@@ -75,14 +75,16 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         resized[y, :] = (1.0 - alpha) * resized[y, :] + alpha * np.array([8, 8, 10])
 
     # 2. Smooth Exponential Bottom Vignette
-    # Starts at 52%, reaches solid deep black at 78% height
-    start_y = int(target_h * 0.52)
-    solid_y = int(target_h * 0.78)
+    # Eradicates all source overlay text, source captions, and badges.
+    # Starts gracefully at 48% height and reaches 100% solid, deep black at 66% height,
+    # well above the destination branding badge at 71% height.
+    start_y = int(target_h * 0.48)
+    solid_y = int(target_h * 0.66)
 
     for y in range(start_y, target_h):
         if y < solid_y:
             t = (y - start_y) / float(solid_y - start_y)
-            alpha = (t ** 1.8) * 0.98
+            alpha = (t ** 1.6) * 1.0
         else:
             alpha = 1.0
         resized[y, :] = (1.0 - alpha) * resized[y, :] + alpha * np.array([6, 6, 8])

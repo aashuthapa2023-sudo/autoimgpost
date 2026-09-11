@@ -69,14 +69,30 @@ def detect_and_remove_watermarks(img: np.ndarray) -> np.ndarray:
         if np.any(face_mask[y:y+ch, x:x+cw] > 0):
             continue
 
-        # Watermark criteria: corner regions (within 14% of edges) or small watermark stamps
-        is_corner_edge = (x < w * 0.14 or x + cw > w * 0.86 or y < h * 0.12 or y + ch > h * 0.88)
-        if is_corner_edge and 1.2 <= aspect <= 15.0 and 8 <= ch <= 65 and area <= (h * w * 0.025):
+        # Watermark / overlay text criteria: perimeter regions (within 22% of edges) or small badge stamps
+        is_edge_or_banner = (x < w * 0.22 or x + cw > w * 0.78 or y < h * 0.22 or y + ch > h * 0.60)
+        if is_edge_or_banner and 1.1 <= aspect <= 18.0 and 8 <= ch <= 80 and area <= (h * w * 0.04):
             roi_grad = grad[y:y+ch, x:x+cw]
-            density = np.count_nonzero(roi_grad > 40) / float(area + 1e-5)
-            if density > 0.24:
-                cv2.rectangle(mask, (max(0, x - 2), max(0, y - 2)), (min(w, x + cw + 2), min(h, y + ch + 2)), 255, -1)
+            density = np.count_nonzero(roi_grad > 38) / float(area + 1e-5)
+            if density > 0.20:
+                cv2.rectangle(mask, (max(0, x - 3), max(0, y - 3)), (min(w, x + cw + 3), min(h, y + ch + 3)), 255, -1)
                 watermark_detected = True
+
+    # 3. Detect high-contrast colored badges (e.g. Red 'NEWS', yellow badges) outside faces
+    try:
+        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+        mask_r1 = cv2.inRange(hsv, np.array([0, 110, 90]), np.array([12, 255, 255]))
+        mask_r2 = cv2.inRange(hsv, np.array([168, 110, 90]), np.array([180, 255, 255]))
+        mask_colored = cv2.bitwise_or(mask_r1, mask_r2)
+        cnts_badge, _ = cv2.findContours(mask_colored, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        for bcnt in cnts_badge:
+            bx, by, bw, bh = cv2.boundingRect(bcnt)
+            b_area = bw * bh
+            if not np.any(face_mask[by:by+bh, bx:bx+bw] > 0) and 25 <= bw <= 350 and 12 <= bh <= 100 and b_area < (h * w * 0.03):
+                cv2.rectangle(mask, (max(0, bx - 3), max(0, by - 3)), (min(w, bx + bw + 3), min(h, by + bh + 3)), 255, -1)
+                watermark_detected = True
+    except Exception:
+        pass
 
     if watermark_detected and np.count_nonzero(mask) > 0:
         kernel_dilate = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
