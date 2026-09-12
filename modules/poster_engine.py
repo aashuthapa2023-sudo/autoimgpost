@@ -216,5 +216,5 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     # NO attribution footer line (removed completely as requested)
 
     os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
-    pil_img.save(output_path, "JPEG", quality=95)
+    pil_img.save(output_path, "JPEG", quality=98, subsampling=0)
     return output_path

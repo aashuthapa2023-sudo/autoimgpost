@@ -71,10 +71,10 @@ jobs:
           MUSIC_STORE_TOKEN: ${{ secrets.MUSIC_STORE_TOKEN }}
         run: |
           if [ "${{ github.event.inputs.action }}" = "ingest" ]; then
-            python build_rich_feed_cache.py "${{ github.event.inputs.source_url || 'https://www.facebook.com/netflixfanslivehere' }}" 15
+            python build_rich_feed_cache.py "${{ github.event.inputs.source_url || 'https://www.facebook.com/netflixdailyupdates' }}" 15
           else
             python main.py "${{ github.event.inputs.action || 'run' }}" "${{ github.event.inputs.channel || 'all' }}"
-            python build_rich_feed_cache.py "https://www.facebook.com/netflixfanslivehere" 15 || true
+            python build_rich_feed_cache.py "https://www.facebook.com/netflixdailyupdates" 15 || true
           fi
 
       - name: Commit and Push Updated State

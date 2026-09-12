@@ -7,7 +7,7 @@ from modules.ingestion import fetch_facebook_public_posts
 from modules.image_cleaner import download_image
 from modules.llm_transformer import smart_heuristic_headline
 
-def build_rich_feed_cache(source_url="https://www.facebook.com/netflixfanslivehere", limit=15, cache_path="feed_cache.json"):
+def build_rich_feed_cache(source_url="https://www.facebook.com/netflixdailyupdates", limit=15, cache_path="feed_cache.json"):
     print(f"Ingesting live posts from {source_url} (limit {limit})...")
     posts = fetch_facebook_public_posts(source_url, limit=limit)
     print(f"Retrieved {len(posts)} raw posts from Facebook.")

@@ -169,8 +169,8 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
                                 if pm:
                                     media_id = pm.group(1)
 
-                        # 3. Direct high-resolution crawler lookaside URI
-                        if not img_url and media_id:
+                        # 3. Direct uncompressed crawler lookaside URI (highest resolution master JPEG)
+                        if media_id:
                             img_url = f"https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id={media_id}"
 
                         if not cur_ts and media_id:
@@ -261,10 +261,8 @@ def fetch_source_posts(source_page_id: str = "", access_token: str = "", process
     seen_ids = set(processed_ids)
 
     for target in targets:
-        if len(all_posts) >= limit:
-            break
-        needed = limit - len(all_posts)
-        fb_posts = fetch_facebook_public_posts(target, processed_ids=list(seen_ids), limit=needed)
+        per_source_limit = max(5, limit // max(1, len(targets)))
+        fb_posts = fetch_facebook_public_posts(target, processed_ids=list(seen_ids), limit=per_source_limit)
         for p in fb_posts:
             pid = str(p.get("post_id", ""))
             photo_id = str(p.get("photo_id", ""))
@@ -275,11 +273,11 @@ def fetch_source_posts(source_page_id: str = "", access_token: str = "", process
                 if cap_fp: seen_ids.add(cap_fp)
                 p["source_tag"] = extract_identifier(target).replace("_", " ").title()
                 all_posts.append(p)
-                if len(all_posts) >= limit:
-                    break
 
     if all_posts:
+        # Sort aggregated posts across all sources strictly by created_time descending
+        all_posts.sort(key=lambda p: p.get("created_time", 0), reverse=True)
         print(f" [MULTI-SOURCE INGEST] Retrieved {len(all_posts)} post(s) from {len(targets)} source page(s)")
-        return all_posts
+        return all_posts[:max(limit, 30)]
 
     return []

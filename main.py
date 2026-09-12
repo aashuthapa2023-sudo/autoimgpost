@@ -6,7 +6,7 @@ import shutil
 import traceback
 from datetime import datetime, timezone
 from modules.ingestion import fetch_source_posts
-from modules.image_cleaner import download_image, erase_text_and_watermarks, apply_cinematic_grade
+from modules.image_cleaner import download_image, erase_text_and_watermarks, apply_cinematic_grade, validate_image_quality
 from modules.llm_transformer import generate_social_payload
 from modules.poster_engine import render_final_poster
 from modules.publisher import publish_to_facebook
@@ -286,21 +286,18 @@ def main():
                             all_published_ids.add(id_val)
                     continue
 
-                # STRICT HD QUALITY GATE: Ensure only super-smooth, high-res images are published
-                img_h, img_w = raw_img.shape[:2]
-                target_ratio = 4.0 / 5.0
-                effective_crop_w = int(img_h * target_ratio) if (img_w / img_h) > target_ratio else img_w
-                effective_crop_h = img_h if (img_w / img_h) > target_ratio else int(img_w / target_ratio)
-
-                if effective_crop_w < 340 or effective_crop_h < 400:
-                    print(f"     [SKIP LOW-RES] Post {post_id} effective crop ({effective_crop_w}x{effective_crop_h}px) is too small to upscale without blur/pixelation. Skipping to guarantee super smooth quality.")
+                # STRICT HD QUALITY GATE: Reject any low-resolution, blurry, or pixelated images
+                is_valid_quality, quality_msg = validate_image_quality(raw_img, min_dim=720, min_sharpness=160.0)
+                if not is_valid_quality:
+                    print(f"     [QUALITY REJECT] Post {post_id} rejected: {quality_msg}. Skipping to guarantee zero blur and zero pixelation.")
                     for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
                         if id_val and id_val not in processed_ids:
                             processed_ids.append(id_val)
                             all_published_ids.add(id_val)
                     continue
 
-                print(f"           High-resolution source verified: {img_w}x{img_h}px (Super-Smooth HD pass)")
+                img_h, img_w = raw_img.shape[:2]
+                print(f"           High-resolution source verified: {img_w}x{img_h}px ({quality_msg})")
                 cleaned_img = erase_text_and_watermarks(raw_img)
 
                 # 2. Cinematic Color Grading

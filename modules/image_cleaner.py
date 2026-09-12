@@ -194,18 +194,50 @@ def detect_and_remove_watermarks(img: np.ndarray) -> np.ndarray:
 def erase_text_and_watermarks(img: np.ndarray) -> np.ndarray:
     return detect_and_remove_watermarks(img)
 
+def validate_image_quality(img: np.ndarray, min_dim: int = 720, min_sharpness: float = 160.0) -> tuple:
+    """
+    Validates image resolution and clarity to strictly eliminate blurry or pixelated images:
+    - Verifies dimensions are at least min_dim x min_dim (or sufficient HD area >= 518,400 px)
+    - Verifies sharpness variance using Laplacian operator >= min_sharpness
+    - Verifies color / contrast standard deviation >= 22 (rejects blank, washed out, or corrupted images)
+    """
+    if img is None:
+        return False, "Image is None or corrupt"
+
+    h, w = img.shape[:2]
+    total_pixels = h * w
+    # Strict resolution gate: short dimension >= 640px and total pixels >= 518,400 (e.g. 720x720)
+    if min(w, h) < 640 or total_pixels < 518400:
+        return False, f"Low resolution: {w}x{h}px ({total_pixels:,} pixels; minimum required is 640px short-edge & 518,400px area)"
+
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    lap_var = float(cv2.Laplacian(gray, cv2.CV_64F).var())
+    if lap_var < min_sharpness:
+        return False, f"Blurry image detected: Sharpness variance {lap_var:.1f} is below minimum threshold of {min_sharpness:.1f}"
+
+    # Check contrast / std deviation
+    std_dev = float(np.std(gray))
+    if std_dev < 22.0:
+        return False, f"Insufficient contrast / washed out: std dev {std_dev:.1f} < 22.0"
+
+    return True, f"Passed HD quality check (Resolution: {w}x{h}px, Sharpness: {lap_var:.1f})"
+
 def apply_cinematic_grade(img: np.ndarray) -> np.ndarray:
     if img is None:
         return None
     # 1. Edge-preserving bilateral denoising to remove JPEG compression blocks & pixelation noise
-    smoothed = cv2.bilateralFilter(img, d=7, sigmaColor=35, sigmaSpace=35)
+    smoothed = cv2.bilateralFilter(img, d=5, sigmaColor=25, sigmaSpace=25)
 
     # 2. CIE-LAB Dynamic Contrast CLAHE
     lab = cv2.cvtColor(smoothed, cv2.COLOR_BGR2LAB)
     l, a, b = cv2.split(lab)
-    clahe = cv2.createCLAHE(clipLimit=1.8, tileGridSize=(8, 8))
+    clahe = cv2.createCLAHE(clipLimit=1.7, tileGridSize=(8, 8))
     cl = clahe.apply(l)
     merged = cv2.merge((cl, a, b))
     graded = cv2.cvtColor(merged, cv2.COLOR_LAB2BGR)
-    graded = cv2.convertScaleAbs(graded, alpha=1.03, beta=1)
+    graded = cv2.convertScaleAbs(graded, alpha=1.02, beta=1)
+
+    # 3. Micro-texture preservation: unsharp mask to ensure edges stay crisp
+    gaussian = cv2.GaussianBlur(graded, (0, 0), sigmaX=1.5)
+    graded = cv2.addWeighted(graded, 1.15, gaussian, -0.15, 0)
     return graded
