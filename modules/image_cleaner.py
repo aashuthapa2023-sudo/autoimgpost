@@ -9,8 +9,14 @@ def download_image(url: str) -> np.ndarray:
     }
     resp = requests.get(url, headers=headers, timeout=25)
     resp.raise_for_status()
+    c_type = resp.headers.get('Content-Type', '')
+    if 'text/html' in c_type:
+        return None
     arr = np.asarray(bytearray(resp.content), dtype=np.uint8)
-    return cv2.imdecode(arr, cv2.IMREAD_COLOR)
+    img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
+    if img is not None and (img.shape[0] < 50 or img.shape[1] < 50):
+        return None
+    return img
 
 def detect_and_remove_watermarks(img: np.ndarray) -> np.ndarray:
     """
@@ -107,6 +113,26 @@ def detect_and_remove_watermarks(img: np.ndarray) -> np.ndarray:
             b_area = bw * bh
             if not np.any(face_mask[by:by+bh, bx:bx+bw] > 0) and np.count_nonzero(skin_mask[by:by+bh, bx:bx+bw] > 0) < (b_area * 0.06) and 25 <= bw <= 350 and 12 <= bh <= 100 and b_area < (h * w * 0.03):
                 cv2.rectangle(mask, (max(0, bx - 2), max(0, by - 2)), (min(w, bx + bw + 2), min(h, by + bh + 2)), 255, -1)
+                watermark_detected = True
+    except Exception:
+        pass
+
+    # 4. Detect and inpaint top-left corner ND / NF logos (Netflix Daily / Netflix Fanatics)
+    # Strictly isolated to top-left corner: x < 0.16 * w and y < 0.13 * h
+    try:
+        corner_h = int(h * 0.13)
+        corner_w = int(w * 0.16)
+        roi_corner = img[0:corner_h, 0:corner_w]
+        cb, cg, cr = cv2.split(roi_corner)
+        c_diff = cr.astype(np.int16) - np.maximum(cg, cb).astype(np.int16)
+        # Saturated red logo pixels
+        c_logo_pixels = ((cr > 125) & (c_diff > 65)).astype(np.uint8) * 255
+        cnts_logo, _ = cv2.findContours(c_logo_pixels, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        for lcnt in cnts_logo:
+            lx, ly, lw, lh = cv2.boundingRect(lcnt)
+            l_area = lw * lh
+            if 8 <= lw <= 95 and 8 <= lh <= 90 and l_area >= 50:
+                cv2.rectangle(mask, (max(0, lx - 3), max(0, ly - 3)), (min(corner_w, lx + lw + 3), min(corner_h, ly + lh + 3)), 255, -1)
                 watermark_detected = True
     except Exception:
         pass

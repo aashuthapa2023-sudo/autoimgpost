@@ -7,9 +7,11 @@
       "channel_id": "daily_netflix",
       "channel_name": "Daily Netflix",
       "source_pages": [
+        "https://www.facebook.com/netflixdaily",
+        "https://www.facebook.com/netflixfanatics",
         "https://www.facebook.com/netflixfanslivehere"
       ],
-      "source_page_url": "https://www.facebook.com/netflixfanslivehere",
+      "source_page_url": "https://www.facebook.com/netflixdaily",
       "dest_page_id": "105077258283692",
       "dest_page_name": "Daily Netflix",
       "dest_access_token_env": "EAAqmh45n064BSbVUgZAOnUNbjR4Tyubx95oZAFL0YPb4PeVzpsiZALeSBE5Trd6QgfBx3dmcnNgWQtl2hZCKzSt6HXMfTpuaLOuzoNkN6mgRRGniZBqGZBqH9BECWFP78bh4uwPy7IAEZBGSs09lZAZC54Xc3G7iUFuVITGhMRXFRFv7a5qewaSm5A1ecc7dvv7Ldu1hrojUtiAZAGKLdTVwUZD",
@@ -21,19 +23,23 @@
       "policy_compliance_mode": "strict_fb_standard",
       "max_daily_posts": 15,
       "min_gap_hours": 1,
-      "post_interval_hours": 1
+      "post_interval_hours": 1.0
     },
     {
       "channel_id": "Music Store",
       "channel_name": "Music Store",
       "dest_page_name": "Music Store",
-      "source_pages": [],
-      "source_page_url": "",
+      "source_pages": [
+        "https://www.facebook.com/netflixdaily",
+        "https://www.facebook.com/netflixfanatics",
+        "https://www.facebook.com/netflixfanslivehere"
+      ],
+      "source_page_url": "https://www.facebook.com/netflixdaily",
       "dest_page_id": "106576441624891",
       "dest_access_token_env": "EAANMExaUGVsBSWnFnLsXE9P4dHFKug3KvGzgphlH2PGSO7o98b4ZB4Wxt7QdBorRdDLXMLI4jZB5uJHX7FsxoXZCCqgw4MZBFQCSyX95bT7ggyZBMnEloDorT7BJlBwbuCP5nLsGegA4eweN3JRK9tf1ATMBQkXEGQe4jHs0B3hJnYwI0B5mm6gZBZBC0VqZBls0",
       "badge_label": "Music Store",
       "highlight_color": "#FFC83B",
-      "post_interval_hours": 1,
+      "post_interval_hours": 1.0,
       "max_posts_per_run": 1,
       "cadence_mirror_enabled": true,
       "fetch_frequency": "hourly",

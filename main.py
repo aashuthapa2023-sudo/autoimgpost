@@ -223,83 +223,103 @@ def main():
             print(f"                Waiting {remaining_mins}m before next 1-hr post. Automated pipeline will post on next cycle.")
             continue
 
-        # 5. TAKE EXACTLY 1 UNPOSTED RECENT POST FOR THIS 1-HOUR CYCLE (chronological order)
-        post = unposted_recent[-1]
-        post_id = post["post_id"]
+        # 5. TAKE EXACTLY 1 VALID UNPOSTED RECENT PHOTO POST FOR THIS 1-HOUR CYCLE (chronological order)
+        posted_successfully = False
+        candidates_to_try = list(reversed(unposted_recent))
 
-        print(f"\n [+] 1-Hour Automatic Release: Processing Post {post_id}")
-        print(f"     Destination: {channel_name} ({dest_id}) | Interval: {post_interval_hours}h | Mode: INSTANT LIVE POST ONLY")
+        for post in candidates_to_try:
+            post_id = post.get("post_id", "unknown")
+            print(f"\n [+] 1-Hour Automatic Release: Evaluating Post {post_id}")
+            print(f"     Destination: {channel_name} ({dest_id}) | Interval: {post_interval_hours}h | Mode: INSTANT LIVE POST ONLY")
 
-        try:
-            # 1. Image Download & Smart Cleaner (strictly below center, faces & subjects 100% protected)
-            print("     [1/4] Downloading image from Facebook crawler CDN...")
-            raw_img = download_image(post["image_url"])
-            print(f"           Source image downloaded: {raw_img.shape[1]}x{raw_img.shape[0]}px")
-            cleaned_img = erase_text_and_watermarks(raw_img)
-
-            # 2. Cinematic Color Grading
-            print("     [2/4] Applying OpenCV CIE-LAB CLAHE contrast grading...")
-            graded_img = apply_cinematic_grade(cleaned_img)
-
-            # 3. AI Caption & Dual-Tone Headline
-            print("     [3/4] Generating dual-tone headline & policy-compliant caption...")
-            ai_data = generate_social_payload(post["caption"])
-
-            # 4. Composite 4:5 Poster
-            rendered_file = os.path.join(OUTPUT_DIR, f"{channel_id}_{post_id}.jpg")
-            print(f"     [4/4] Compositing 4:5 studio poster to {rendered_file}...")
-            dest_name = ch.get("dest_page_name") or ch.get("channel_name") or channel_id
-            render_final_poster(
-                base_img=graded_img,
-                overlay_lines=ai_data["overlay_lines"],
-                highlight_hex=highlight_hex,
-                dest_page_name=dest_name,
-                output_path=rendered_file,
-                post_id=post_id
-            )
-            print(f"           Poster created successfully: 1080x1350px")
             try:
-                from update_cache import update_posters_cache
-                update_posters_cache()
-            except Exception:
-                pass
+                # 1. Image Download & Smart Cleaner (strictly below center, faces & subjects 100% protected)
+                image_url = post.get("image_url")
+                if not image_url:
+                    print(f"     [SKIP] Post {post_id} has no image URL. Skipping.")
+                    for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
+                        if id_val and id_val not in processed_ids:
+                            processed_ids.append(id_val)
+                    continue
 
-            # 5. INSTANT LIVE PUBLISHING ONLY (NO FB API SCHEDULING)
-            print(f"     [PUBLISH] INSTANT LIVE POST to {dest_name} (Meta Graph API ID: {dest_id})")
+                print("     [1/4] Downloading image from Facebook crawler CDN...")
+                raw_img = download_image(image_url)
+                if raw_img is None:
+                    print(f"     [SKIP] Post {post_id} returned non-image or invalid media content. Marking processed and checking next candidate.")
+                    for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
+                        if id_val and id_val not in processed_ids:
+                            processed_ids.append(id_val)
+                    continue
 
-            if mode in ["dry_run", "test"]:
-                print(f"     [DRY RUN] Simulated instant live publish to Facebook Page {dest_id}")
-                published_id = f"simulated_{post_id}"
-            else:
-                published_id = publish_to_facebook(
-                    dest_page_id=dest_id,
-                    access_token=token,
-                    image_path=rendered_file,
-                    caption=ai_data["rewritten_caption"],
-                    scheduled_publish_time=None  # ALWAYS INSTANT POST ONLY!
+                print(f"           Source image downloaded: {raw_img.shape[1]}x{raw_img.shape[0]}px")
+                cleaned_img = erase_text_and_watermarks(raw_img)
+
+                # 2. Cinematic Color Grading
+                print("     [2/4] Applying OpenCV CIE-LAB CLAHE contrast grading...")
+                graded_img = apply_cinematic_grade(cleaned_img)
+
+                # 3. AI Caption & Dual-Tone Headline
+                print("     [3/4] Generating dual-tone headline & policy-compliant caption...")
+                ai_data = generate_social_payload(post.get("caption", ""))
+
+                # 4. Composite 4:5 Poster
+                rendered_file = os.path.join(OUTPUT_DIR, f"{channel_id}_{post_id}.jpg")
+                print(f"     [4/4] Compositing 4:5 studio poster to {rendered_file}...")
+                dest_name = ch.get("dest_page_name") or ch.get("channel_name") or channel_id
+                render_final_poster(
+                    base_img=graded_img,
+                    overlay_lines=ai_data["overlay_lines"],
+                    highlight_hex=highlight_hex,
+                    dest_page_name=dest_name,
+                    output_path=rendered_file,
+                    post_id=post_id
                 )
-                print(f"     [SUCCESS] Live Instant Post Published! Meta ID: {published_id}")
+                print(f"           Poster created successfully: 1080x1350px")
+                try:
+                    from update_cache import update_posters_cache
+                    update_posters_cache()
+                except Exception:
+                    pass
 
-            # Update state & counters with multi-key deduplication
-            for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
-                if id_val and id_val not in processed_ids:
-                    processed_ids.append(id_val)
+                # 5. INSTANT LIVE PUBLISHING ONLY (NO FB API SCHEDULING)
+                print(f"     [PUBLISH] INSTANT LIVE POST to {dest_name} (Meta Graph API ID: {dest_id})")
 
-            channel_stat["count"] += 1
-            channel_stat["timestamps"].append(datetime.now(timezone.utc).isoformat())
-            channel_stat["last_published_time"] = now_current
+                if mode in ["dry_run", "test"]:
+                    print(f"     [DRY RUN] Simulated instant live publish to Facebook Page {dest_id}")
+                    published_id = f"simulated_{post_id}"
+                else:
+                    published_id = publish_to_facebook(
+                        dest_page_id=dest_id,
+                        access_token=token,
+                        image_path=rendered_file,
+                        caption=ai_data["rewritten_caption"],
+                        scheduled_publish_time=None  # ALWAYS INSTANT POST ONLY!
+                    )
+                    print(f"     [SUCCESS] Live Instant Post Published! Meta ID: {published_id}")
 
-            # Save state after successful post
-            processed_ids_map[channel_id] = processed_ids
-            daily_stats[channel_id] = channel_stat
-            state["processed_ids"] = processed_ids_map
-            state["daily_stats"] = daily_stats
-            save_state(state)
+                # Update state & counters with multi-key deduplication
+                for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
+                    if id_val and id_val not in processed_ids:
+                        processed_ids.append(id_val)
 
-        except Exception as err:
-            tb_str = traceback.format_exc()
-            print(f"     [ERROR] Post {post_id} failed: {err}")
-            send_telegram_alert(
+                channel_stat["count"] += 1
+                channel_stat["timestamps"].append(datetime.now(timezone.utc).isoformat())
+                channel_stat["last_published_time"] = now_current
+
+                # Save state after successful post
+                processed_ids_map[channel_id] = processed_ids
+                daily_stats[channel_id] = channel_stat
+                state["processed_ids"] = processed_ids_map
+                state["daily_stats"] = daily_stats
+                save_state(state)
+
+                posted_successfully = True
+                break  # Exactly 1 post per hour cycle completed!
+
+            except Exception as err:
+                tb_str = traceback.format_exc()
+                print(f"     [ERROR] Post {post_id} failed: {err}")
+                send_telegram_alert(
                     phase="POST_PROCESSING_OR_PUBLISH",
                     channel_name=channel_name,
                     post_id=post_id,
@@ -309,10 +329,9 @@ def main():
 
         processed_ids_map[channel_id] = processed_ids
         daily_stats[channel_id] = channel_stat
-
-    state["processed_ids"] = processed_ids_map
-    state["daily_stats"] = daily_stats
-    save_state(state)
+        state["processed_ids"] = processed_ids_map
+        state["daily_stats"] = daily_stats
+        save_state(state)
     print("\n===================================================================")
     print("  Hourly Pipeline Execution Completed. State Saved.")
     print("===================================================================")

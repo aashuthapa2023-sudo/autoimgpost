@@ -91,6 +91,16 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
                         atts = node.get("attachments", [])
                         if isinstance(atts, list):
                             for a in atts:
+                                # Look for high-res direct CDN image URIs in this attachment
+                                s_a = json.dumps(a)
+                                att_uris = [
+                                    bytes(u, "utf-8").decode("unicode_escape", errors="ignore").replace("\\/", "/")
+                                    for u in re.findall(r'"uri":\s*"([^"]+)"', s_a)
+                                    if "rsrc.php" not in u and "static.xx" not in u and ("fbcdn.net" in u or "scontent" in u)
+                                ]
+                                if att_uris and not img_url:
+                                    img_url = att_uris[0]
+
                                 media = a.get("media")
                                 if isinstance(media, dict) and media.get("id"):
                                     media_id = str(media["id"])
@@ -113,14 +123,15 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
                             elif node.get("media_id"):
                                 media_id = str(node["media_id"])
 
-                        if media_id:
-                            img_url = f"https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id={media_id}"
-                        else:
-                            # Direct high-res CDN uri fallback
-                            s_sub = json.dumps(node)
-                            um = re.search(r'"uri":\s*"(https://scontent[^"]+)"', s_sub)
-                            if um:
-                                img_url = bytes(um.group(1), "utf-8").decode("unicode_escape", errors="ignore").replace("\\/", "/")
+                        # 3. If no direct CDN URI found, check lookaside or scontent
+                        if not img_url:
+                            if media_id:
+                                img_url = f"https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id={media_id}"
+                            else:
+                                s_sub = json.dumps(node)
+                                um = re.search(r'"uri":\s*"(https://scontent[^"]+)"', s_sub)
+                                if um:
+                                    img_url = bytes(um.group(1), "utf-8").decode("unicode_escape", errors="ignore").replace("\\/", "/")
 
                         # Post ID and Timestamp
                         p_id = node.get("post_id") or node.get("id") or media_id
@@ -130,6 +141,9 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
                             tm = re.search(r'"(?:publish_time|creation_time)":\s*(\d{9,11})', s_sub)
                             if tm:
                                 ts = int(tm.group(1))
+
+                        if not media_id:
+                            media_id = p_id or hashlib.md5((img_url or "").encode("utf-8")).hexdigest()[:15]
 
                         if img_url and media_id:
                             clean_k = re.sub(r'\s+', ' ', msg[:50])
