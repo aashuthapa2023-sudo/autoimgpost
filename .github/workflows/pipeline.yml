@@ -2,7 +2,7 @@ name: Multi-Page Content Pipeline & Hourly Scheduler
 
 on:
   schedule:
-    - cron: '*/15 * * * *'  # Runs automatically every 15 minutes to accurately fire on 1-hour and 2-hour cadence windows
+    - cron: '15,45 * * * *'  # Runs automatically at :15 and :45 (avoiding top-of-hour GitHub queue delays)
   workflow_dispatch:     # Allows manual trigger or control from UI
     inputs:
       action:
@@ -70,10 +70,17 @@ jobs:
           FB_TOKEN_MUSIC_STORE: ${{ secrets.FB_TOKEN_MUSIC_STORE }}
           MUSIC_STORE_TOKEN: ${{ secrets.MUSIC_STORE_TOKEN }}
         run: |
-          if [ "${{ github.event.inputs.action }}" = "ingest" ]; then
+          ACTION="${{ github.event.inputs.action }}"
+          CHANNEL="${{ github.event.inputs.channel }}"
+          [ -z "$ACTION" ] && ACTION="run"
+          [ -z "$CHANNEL" ] && CHANNEL="all"
+          if [ "$ACTION" = "true" ]; then ACTION="run"; fi
+          if [ "$CHANNEL" = "true" ]; then CHANNEL="all"; fi
+
+          if [ "$ACTION" = "ingest" ]; then
             python build_rich_feed_cache.py "${{ github.event.inputs.source_url || 'https://www.facebook.com/netflixdailyupdates' }}" 15
           else
-            python main.py "${{ github.event.inputs.action || 'run' }}" "${{ github.event.inputs.channel || 'all' }}"
+            python main.py "$ACTION" "$CHANNEL"
             python build_rich_feed_cache.py "https://www.facebook.com/netflixdailyupdates" 15 || true
           fi
 

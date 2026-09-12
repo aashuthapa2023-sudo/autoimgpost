@@ -48,6 +48,11 @@ def save_state(state):
         json.dump(state, f, indent=2)
 
 def run_pipeline(mode="run", target_channel="all"):
+    if not mode or str(mode).strip().lower() in ["true", "none", ""]:
+        mode = "run"
+    if not target_channel or str(target_channel).strip().lower() in ["true", "none", ""]:
+        target_channel = "all"
+
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     repo_slug = os.getenv("GITHUB_REPOSITORY", "aashuthapa2023-sudo/autoimgpost")
     print("===================================================================")
@@ -397,8 +402,11 @@ def run_pipeline(mode="run", target_channel="all"):
     print("===================================================================")
 
 def main():
-    mode = sys.argv[1] if len(sys.argv) > 1 else "run"
-    target_channel = " ".join(sys.argv[2:]).strip() if len(sys.argv) > 2 else "all"
+    raw_mode = sys.argv[1] if len(sys.argv) > 1 else "run"
+    raw_target = " ".join(sys.argv[2:]).strip() if len(sys.argv) > 2 else "all"
+
+    mode = "run" if raw_mode.strip().lower() in ["true", "none", ""] else raw_mode.strip()
+    target_channel = "all" if raw_target.strip().lower() in ["true", "none", ""] else raw_target.strip()
 
     if mode in ["daemon", "auto", "loop"]:
         print("===================================================================")
