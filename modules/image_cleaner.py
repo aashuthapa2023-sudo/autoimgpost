@@ -1,22 +1,52 @@
 import cv2
 import numpy as np
 import requests
+import urllib.parse
 
 def download_image(url: str) -> np.ndarray:
     headers = {
-        'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
         'Referer': 'https://www.facebook.com/'
     }
-    resp = requests.get(url, headers=headers, timeout=25)
-    resp.raise_for_status()
-    c_type = resp.headers.get('Content-Type', '')
-    if 'text/html' in c_type:
+
+    # 1. If Facebook proxy URL, extract original full-resolution asset URL
+    orig_url = None
+    if "fbcdn.net" in url and "url=" in url:
+        try:
+            parsed = urllib.parse.urlparse(url)
+            qs = urllib.parse.parse_qs(parsed.query)
+            orig_candidate = qs.get("url", [None])[0]
+            if orig_candidate and orig_candidate.startswith("http"):
+                orig_url = orig_candidate
+        except Exception:
+            pass
+
+    # Download original uncompressed full-res image first
+    if orig_url:
+        try:
+            resp_orig = requests.get(orig_url, headers=headers, timeout=18)
+            if resp_orig.status_code == 200 and 'text/html' not in resp_orig.headers.get('Content-Type', ''):
+                arr = np.asarray(bytearray(resp_orig.content), dtype=np.uint8)
+                img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
+                if img is not None and img.shape[0] >= 300 and img.shape[1] >= 400:
+                    return img
+        except Exception:
+            pass
+
+    # 2. Fallback to direct provided URL
+    try:
+        resp = requests.get(url, headers=headers, timeout=25)
+        resp.raise_for_status()
+        c_type = resp.headers.get('Content-Type', '')
+        if 'text/html' in c_type:
+            return None
+        arr = np.asarray(bytearray(resp.content), dtype=np.uint8)
+        img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
+        if img is not None and (img.shape[0] < 50 or img.shape[1] < 50):
+            return None
+        return img
+    except Exception:
         return None
-    arr = np.asarray(bytearray(resp.content), dtype=np.uint8)
-    img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
-    if img is not None and (img.shape[0] < 50 or img.shape[1] < 50):
-        return None
-    return img
 
 def detect_and_remove_watermarks(img: np.ndarray) -> np.ndarray:
     """
@@ -151,11 +181,15 @@ def erase_text_and_watermarks(img: np.ndarray) -> np.ndarray:
 def apply_cinematic_grade(img: np.ndarray) -> np.ndarray:
     if img is None:
         return None
-    lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
+    # 1. Edge-preserving bilateral denoising to remove JPEG compression blocks & pixelation noise
+    smoothed = cv2.bilateralFilter(img, d=7, sigmaColor=35, sigmaSpace=35)
+
+    # 2. CIE-LAB Dynamic Contrast CLAHE
+    lab = cv2.cvtColor(smoothed, cv2.COLOR_BGR2LAB)
     l, a, b = cv2.split(lab)
-    clahe = cv2.createCLAHE(clipLimit=2.2, tileGridSize=(8, 8))
+    clahe = cv2.createCLAHE(clipLimit=1.8, tileGridSize=(8, 8))
     cl = clahe.apply(l)
     merged = cv2.merge((cl, a, b))
     graded = cv2.cvtColor(merged, cv2.COLOR_LAB2BGR)
-    graded = cv2.convertScaleAbs(graded, alpha=1.05, beta=2)
+    graded = cv2.convertScaleAbs(graded, alpha=1.03, beta=1)
     return graded

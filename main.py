@@ -246,7 +246,7 @@ def main():
                             processed_ids.append(id_val)
                     continue
 
-                print("     [1/4] Downloading image from Facebook crawler CDN...")
+                print("     [1/4] Downloading high-resolution source image...")
                 raw_img = download_image(image_url)
                 if raw_img is None:
                     print(f"     [SKIP] Post {post_id} returned non-image or invalid media content. Marking processed and checking next candidate.")
@@ -255,7 +255,20 @@ def main():
                             processed_ids.append(id_val)
                     continue
 
-                print(f"           Source image downloaded: {raw_img.shape[1]}x{raw_img.shape[0]}px")
+                # STRICT HD QUALITY GATE: Ensure only super-smooth, high-res images are published
+                img_h, img_w = raw_img.shape[:2]
+                target_ratio = 4.0 / 5.0
+                effective_crop_w = int(img_h * target_ratio) if (img_w / img_h) > target_ratio else img_w
+                effective_crop_h = img_h if (img_w / img_h) > target_ratio else int(img_w / target_ratio)
+
+                if effective_crop_w < 340 or effective_crop_h < 400:
+                    print(f"     [SKIP LOW-RES] Post {post_id} effective crop ({effective_crop_w}x{effective_crop_h}px) is too small to upscale without blur/pixelation. Skipping to guarantee super smooth quality.")
+                    for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
+                        if id_val and id_val not in processed_ids:
+                            processed_ids.append(id_val)
+                    continue
+
+                print(f"           High-resolution source verified: {img_w}x{img_h}px (Super-Smooth HD pass)")
                 cleaned_img = erase_text_and_watermarks(raw_img)
 
                 # 2. Cinematic Color Grading

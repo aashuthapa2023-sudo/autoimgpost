@@ -92,6 +92,12 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
 
     resized = cv2.resize(cropped, (target_w, target_h), interpolation=cv2.INTER_LANCZOS4)
 
+    # Post-upscale Super-Smooth pass: Eliminates all stretch pixelation, smoothing skin & backgrounds
+    resized_smooth = cv2.bilateralFilter(resized, d=7, sigmaColor=28, sigmaSpace=28)
+    # Subtle unsharp mask for crystal-clear HD edges (eyes, hair, clothing contours)
+    blurred = cv2.GaussianBlur(resized_smooth, (0, 0), sigmaX=2.0)
+    resized = cv2.addWeighted(resized_smooth, 1.30, blurred, -0.30, 0)
+
     # 1. Atmospheric Top Vignette (top 10%)
     top_fade_h = int(target_h * 0.10)
     for y in range(top_fade_h):
