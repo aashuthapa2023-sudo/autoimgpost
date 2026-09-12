@@ -2,7 +2,7 @@ name: Multi-Page Content Pipeline & Hourly Scheduler
 
 on:
   schedule:
-    - cron: '*/30 * * * *'  # Runs automatically every 30 minutes to ingest source page posts
+    - cron: '*/15 * * * *'  # Runs automatically every 15 minutes to accurately fire on 1-hour and 2-hour cadence windows
   workflow_dispatch:     # Allows manual trigger or control from UI
     inputs:
       action:

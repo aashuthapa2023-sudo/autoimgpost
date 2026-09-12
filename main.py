@@ -47,10 +47,7 @@ def save_state(state):
     with open(STATE_FILE, "w", encoding="utf-8") as f:
         json.dump(state, f, indent=2)
 
-def main():
-    mode = sys.argv[1] if len(sys.argv) > 1 else "run"
-    target_channel = " ".join(sys.argv[2:]).strip() if len(sys.argv) > 2 else "all"
-
+def run_pipeline(mode="run", target_channel="all"):
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     repo_slug = os.getenv("GITHUB_REPOSITORY", "aashuthapa2023-sudo/autoimgpost")
     print("===================================================================")
@@ -249,11 +246,13 @@ def main():
 
         gap_elapsed = now_current - last_pub_time
         effective_gap_seconds = int(float(post_interval_hours) * 3600)
+        # 5-minute (300s) grace tolerance so 15m cron checks trigger on-schedule without skipping a whole cycle
+        min_required_gap = max(0, effective_gap_seconds - 300)
 
-        if last_pub_time > 0 and gap_elapsed < effective_gap_seconds:
+        if last_pub_time > 0 and gap_elapsed < min_required_gap:
             remaining_mins = max(1, int((effective_gap_seconds - gap_elapsed) / 60))
             print(f" [CADENCE WAIT] Configured interval is {post_interval_hours}h. Only {gap_elapsed // 60}m elapsed since last post.")
-            print(f"                Waiting {remaining_mins}m before next 1-hr post. Automated pipeline will post on next cycle.")
+            print(f"                Waiting {remaining_mins}m before next post. Automated pipeline will post on next cycle.")
             continue
 
         # 5. TAKE EXACTLY 1 VALID UNPOSTED RECENT PHOTO POST FOR THIS 1-HOUR CYCLE (chronological order)
@@ -396,6 +395,26 @@ def main():
     print("\n===================================================================")
     print("  Hourly Pipeline Execution Completed. State Saved.")
     print("===================================================================")
+
+def main():
+    mode = sys.argv[1] if len(sys.argv) > 1 else "run"
+    target_channel = " ".join(sys.argv[2:]).strip() if len(sys.argv) > 2 else "all"
+
+    if mode in ["daemon", "auto", "loop"]:
+        print("===================================================================")
+        print("  Facebook Multi-Page Continuous 24/7 Background Daemon Started")
+        print(f"  Target: {target_channel} | Interval: Checking cadence every 5 minutes")
+        print("===================================================================")
+        while True:
+            try:
+                run_pipeline(mode="run", target_channel=target_channel)
+            except Exception as e:
+                print(f"[DAEMON CYCLE ERROR] {e}")
+                traceback.print_exc()
+            print("\n[DAEMON SLEEP] Waiting 5 minutes before next automated cadence check...\n")
+            time.sleep(300)
+    else:
+        run_pipeline(mode=mode, target_channel=target_channel)
 
 if __name__ == "__main__":
     main()
