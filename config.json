@@ -22,6 +22,27 @@
       "max_daily_posts": 15,
       "min_gap_hours": 1,
       "post_interval_hours": 1
+    },
+    {
+      "channel_id": "Music Store",
+      "channel_name": "Music Store",
+      "dest_page_name": "Music Store",
+      "source_pages": [
+        "https://www.facebook.com/DailyNetflx",
+        "https://www.facebook.com/NetflixFanaticz"
+      ],
+      "source_page_url": "https://www.facebook.com/DailyNetflx",
+      "dest_page_id": "106576441624891",
+      "dest_access_token_env": "EAANMExaUGVsBSWnFnLsXE9P4dHFKug3KvGzgphlH2PGSO7o98b4ZB4Wxt7QdBorRdDLXMLI4jZB5uJHX7FsxoXZCCqgw4MZBFQCSyX95bT7ggyZBMnEloDorT7BJlBwbuCP5nLsGegA4eweN3JRK9tf1ATMBQkXEGQe4jHs0B3hJnYwI0B5mm6gZBZBC0VqZBls0",
+      "badge_label": "Music Store",
+      "highlight_color": "#00d5ff",
+      "post_interval_hours": 1,
+      "max_posts_per_run": 1,
+      "cadence_mirror_enabled": true,
+      "fetch_frequency": "hourly",
+      "policy_compliance_mode": "strict_fb_standard",
+      "max_daily_posts": 15,
+      "min_gap_hours": 1
     }
   ]
 }
