@@ -5,8 +5,18 @@ import time
 import shutil
 import traceback
 from datetime import datetime, timezone
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from modules.ingestion import fetch_source_posts
-from modules.image_cleaner import download_image, erase_text_and_watermarks, apply_cinematic_grade, validate_image_quality
+from modules.image_cleaner import (
+    download_image,
+    erase_text_and_watermarks,
+    apply_cinematic_grade,
+    validate_image_quality,
+    compute_image_dhash
+)
 from modules.llm_transformer import generate_social_payload
 from modules.poster_engine import render_final_poster
 from modules.publisher import publish_to_facebook
@@ -34,14 +44,41 @@ def compute_story_fingerprint(text: str) -> str:
     tokens = [w for w in cleaned.split() if len(w) > 3 and w not in {'this', 'that', 'with', 'from', 'have', 'been', 'will', 'about', 'after', 'season', 'series', 'netflix'}][:8]
     return "_".join(sorted(tokens)) if tokens else ""
 
+def is_duplicate_dhash(cand_hash: str, hash_pool: set, max_hamming: int = 6) -> bool:
+    """Checks if cand_hash is visually identical or near-duplicate to any hash in hash_pool."""
+    if not cand_hash:
+        return False
+    try:
+        cand_val = int(cand_hash, 16)
+        for ex in hash_pool:
+            ex_val = int(ex, 16)
+            dist = bin(cand_val ^ ex_val).count("1")
+            if dist <= max_hamming:
+                return True
+    except Exception:
+        pass
+    return False
+
 def load_state():
+    defaults = {
+        "processed_ids": {},
+        "daily_stats": {},
+        "global_processed_ids": [],
+        "global_story_fingerprints": [],
+        "global_image_hashes": [],
+        "global_processed_urls": []
+    }
     if os.path.exists(STATE_FILE):
         try:
             with open(STATE_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
+                loaded = json.load(f)
+                for k, v in defaults.items():
+                    if k not in loaded:
+                        loaded[k] = v
+                return loaded
         except Exception:
-            return {"processed_ids": {}, "daily_stats": {}, "global_processed_ids": [], "global_story_fingerprints": []}
-    return {"processed_ids": {}, "daily_stats": {}, "global_processed_ids": [], "global_story_fingerprints": []}
+            return defaults
+    return defaults
 
 def save_state(state):
     with open(STATE_FILE, "w", encoding="utf-8") as f:
@@ -75,11 +112,13 @@ def run_pipeline(mode="run", target_channel="all"):
     daily_stats = state.get("daily_stats", {})
 
     # UNIVERSAL CROSS-PAGE DEDUPLICATION POOL:
-    # Guarantees that any news item published to ANY channel is NEVER posted to another channel
+    # Guarantees that any news item or image published to ANY channel is NEVER posted to another channel
     all_published_ids = set(str(x) for x in state.get("global_processed_ids", []))
     for cid, id_list in processed_ids_map.items():
         all_published_ids.update(str(x) for x in id_list)
     global_story_fingerprints = set(state.get("global_story_fingerprints", []))
+    global_image_hashes = set(str(x) for x in state.get("global_image_hashes", []))
+    global_processed_urls = set(str(x) for x in state.get("global_processed_urls", []))
 
     today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
@@ -207,12 +246,14 @@ def run_pipeline(mode="run", target_channel="all"):
             photo_id = str(p.get("photo_id", ""))
             cap_fp = str(p.get("caption_fingerprint", ""))
             story_fp = compute_story_fingerprint(p.get("caption", ""))
+            img_url = str(p.get("image_url", ""))
 
             # MUST NOT be posted to THIS channel OR ANY OTHER channel!
             is_duplicate = (
                 pid in all_published_ids or
                 photo_id in all_published_ids or
                 cap_fp in all_published_ids or
+                (img_url and img_url in global_processed_urls) or
                 (story_fp and story_fp in global_story_fingerprints)
             )
 
@@ -300,6 +341,19 @@ def run_pipeline(mode="run", target_channel="all"):
                             all_published_ids.add(id_val)
                     continue
 
+                # STRICT CROSS-PAGE VISUAL IMAGE DEDUPLICATION:
+                # Verifies that this exact photo/image was NEVER published to any other channel
+                img_dhash = compute_image_dhash(raw_img)
+                if img_dhash and is_duplicate_dhash(img_dhash, global_image_hashes):
+                    print(f"     [CROSS-PAGE IMAGE DEDUP] Image visually matches an image already published to a channel (dHash: {img_dhash}). Skipping to guarantee 100% unique images across all pages!")
+                    for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
+                        if id_val and id_val not in processed_ids:
+                            processed_ids.append(id_val)
+                            all_published_ids.add(id_val)
+                    if image_url:
+                        global_processed_urls.add(image_url)
+                    continue
+
                 img_h, img_w = raw_img.shape[:2]
                 print(f"           High-resolution source verified: {img_w}x{img_h}px ({quality_msg})")
                 cleaned_img = erase_text_and_watermarks(raw_img)
@@ -361,6 +415,11 @@ def run_pipeline(mode="run", target_channel="all"):
                             processed_ids.append(id_val)
                         all_published_ids.add(id_val)
 
+                if image_url:
+                    global_processed_urls.add(image_url)
+                if img_dhash:
+                    global_image_hashes.add(img_dhash)
+
                 post_story_fp = compute_story_fingerprint(post.get("caption", ""))
                 if post_story_fp:
                     global_story_fingerprints.add(post_story_fp)
@@ -376,6 +435,8 @@ def run_pipeline(mode="run", target_channel="all"):
                 state["daily_stats"] = daily_stats
                 state["global_processed_ids"] = list(all_published_ids)
                 state["global_story_fingerprints"] = list(global_story_fingerprints)
+                state["global_image_hashes"] = list(global_image_hashes)
+                state["global_processed_urls"] = list(global_processed_urls)
                 save_state(state)
 
                 posted_successfully = True

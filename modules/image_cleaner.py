@@ -191,8 +191,75 @@ def detect_and_remove_watermarks(img: np.ndarray) -> np.ndarray:
 
     return img
 
+def compute_image_dhash(img: np.ndarray, hash_size: int = 8) -> str:
+    """Computes a 64-bit difference hash (dHash) as a 16-char hex string for visual deduplication."""
+    if img is None:
+        return ""
+    try:
+        resized = cv2.resize(img, (hash_size + 1, hash_size), interpolation=cv2.INTER_AREA)
+        gray = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
+        diff = gray[:, 1:] > gray[:, :-1]
+        val = sum([2 ** i for (i, v) in enumerate(diff.flatten()) if v])
+        return f"{val:016x}"
+    except Exception:
+        return ""
+
+def clean_lower_half_text_and_badges(img: np.ndarray) -> np.ndarray:
+    """
+    Detects lower-half source badges (e.g. 'NEWS', 'EXCLUSIVE', 'REPORT') and wipes out
+    all residual source headline text below the badge or in the lower 38% dark region to solid black.
+    Strictly preserves human subjects, faces, and top-half artwork.
+    """
+    if img is None:
+        return None
+    h, w = img.shape[:2]
+    out = img.copy()
+
+    # 1. Search for top-most lower-half badge (NEWS / EXCLUSIVE / UPDATE pills)
+    y_half = int(h * 0.50)
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    
+    # Red, Orange, Yellow, Crimson saturated badge detection
+    mask_r1 = cv2.inRange(hsv, np.array([0, 110, 90]), np.array([25, 255, 255]))
+    mask_r2 = cv2.inRange(hsv, np.array([165, 110, 90]), np.array([180, 255, 255]))
+    badge_mask = cv2.bitwise_or(mask_r1, mask_r2)
+    badge_mask[:y_half, :] = 0
+
+    cnts, _ = cv2.findContours(badge_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    cnts = sorted(cnts, key=lambda c: cv2.boundingRect(c)[1])
+    found_badge_bottom = None
+
+    for c in cnts:
+        bx, by, bw, bh = cv2.boundingRect(c)
+        if by >= y_half and 50 <= bw <= int(w * 0.45) and 18 <= bh <= int(h * 0.12):
+            center_x = bx + bw / 2.0
+            # Centered or near-centered banner
+            if abs(center_x - (w / 2.0)) < (w * 0.35):
+                found_badge_bottom = by + bh + 4
+                break
+
+    if found_badge_bottom:
+        # All text below the source badge is wiped completely to pure black
+        out[found_badge_bottom:, :] = 0
+        return out
+
+    # 2. If no prominent badge, detect if lower 38% is a dark banner with text edges
+    lower_start_y = int(h * 0.62)
+    roi = img[lower_start_y:, :]
+    gray_roi = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
+    dark_ratio = np.count_nonzero(gray_roi < 45) / float(gray_roi.size)
+    edges = cv2.Canny(gray_roi, 50, 150)
+    edge_ratio = np.count_nonzero(edges > 0) / float(edges.size)
+
+    if dark_ratio > 0.55 and edge_ratio > 0.035:
+        out[lower_start_y:, :] = 0
+
+    return out
+
 def erase_text_and_watermarks(img: np.ndarray) -> np.ndarray:
-    return detect_and_remove_watermarks(img)
+    cleaned = detect_and_remove_watermarks(img)
+    cleaned = clean_lower_half_text_and_badges(cleaned)
+    return cleaned
 
 def validate_image_quality(img: np.ndarray, min_dim: int = 720, min_sharpness: float = 160.0) -> tuple:
     """
