@@ -67,11 +67,13 @@ jobs:
           FB_TOKEN_CINEMA: ${{ secrets.FB_TOKEN_CINEMA }}
           FB_TOKEN_GAMING: ${{ secrets.FB_TOKEN_GAMING }}
           FB_TOKEN_TECH: ${{ secrets.FB_TOKEN_TECH }}
+          FB_TOKEN_MUSIC_STORE: ${{ secrets.FB_TOKEN_MUSIC_STORE }}
+          MUSIC_STORE_TOKEN: ${{ secrets.MUSIC_STORE_TOKEN }}
         run: |
           if [ "${{ github.event.inputs.action }}" = "ingest" ]; then
             python build_rich_feed_cache.py "${{ github.event.inputs.source_url || 'https://www.facebook.com/netflixfanslivehere' }}" 15
           else
-            python main.py ${{ github.event.inputs.action || 'run' }} ${{ github.event.inputs.channel || 'all' }}
+            python main.py "${{ github.event.inputs.action || 'run' }}" "${{ github.event.inputs.channel || 'all' }}"
             python build_rich_feed_cache.py "https://www.facebook.com/netflixfanslivehere" 15 || true
           fi
 

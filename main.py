@@ -42,7 +42,7 @@ def save_state(state):
 
 def main():
     mode = sys.argv[1] if len(sys.argv) > 1 else "run"
-    target_channel = sys.argv[2] if len(sys.argv) > 2 else "all"
+    target_channel = " ".join(sys.argv[2:]).strip() if len(sys.argv) > 2 else "all"
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     repo_slug = os.getenv("GITHUB_REPOSITORY", "aashuthapa2023-sudo/autoimgpost")
@@ -69,10 +69,14 @@ def main():
 
     for ch in channels:
         channel_id = ch["channel_id"]
-        if target_channel != "all" and target_channel != channel_id:
-            continue
-
         channel_name = ch.get("channel_name", channel_id)
+
+        if target_channel != "all":
+            t_clean = target_channel.strip().lower()
+            cid_clean = str(channel_id).strip().lower()
+            cname_clean = str(channel_name).strip().lower()
+            if t_clean != cid_clean and t_clean != cname_clean and t_clean not in cid_clean:
+                continue
         source_pages = ch.get("source_pages", [])
         if not source_pages:
             if ch.get("source_page_url"):
@@ -91,7 +95,7 @@ def main():
             token = os.getenv(token_env)
             
         if not token:
-            for fallback_key in ["FB_TOKEN_DAILY_NETFLIX", "DAILY_NETFLIX_TOKEN", "FB_TOKEN_CINEMA", "FB_TOKEN_DEFAULT"]:
+            for fallback_key in ["FB_TOKEN_MUSIC_STORE", "MUSIC_STORE_TOKEN", "FB_TOKEN_DAILY_NETFLIX", "DAILY_NETFLIX_TOKEN", "FB_TOKEN_CINEMA", "FB_TOKEN_DEFAULT"]:
                 cand = os.getenv(fallback_key)
                 if cand:
                     token = cand
@@ -288,14 +292,21 @@ def main():
                     print(f"     [DRY RUN] Simulated instant live publish to Facebook Page {dest_id}")
                     published_id = f"simulated_{post_id}"
                 else:
-                    published_id = publish_to_facebook(
-                        dest_page_id=dest_id,
-                        access_token=token,
-                        image_path=rendered_file,
-                        caption=ai_data["rewritten_caption"],
-                        scheduled_publish_time=None  # ALWAYS INSTANT POST ONLY!
-                    )
-                    print(f"     [SUCCESS] Live Instant Post Published! Meta ID: {published_id}")
+                    try:
+                        published_id = publish_to_facebook(
+                            dest_page_id=dest_id,
+                            access_token=token,
+                            image_path=rendered_file,
+                            caption=ai_data["rewritten_caption"],
+                            scheduled_publish_time=None  # ALWAYS INSTANT POST ONLY!
+                        )
+                        print(f"     [SUCCESS] Live Instant Post Published! Meta ID: {published_id}")
+                    except Exception as pub_err:
+                        print(f"     [PUBLISH REJECTED BY META] Graph API Error: {pub_err}")
+                        if "deleted" in str(pub_err).lower() or "190" in str(pub_err):
+                            print(f"     [ACTION REQUIRED] The Meta Facebook App for '{dest_name}' (ID: {dest_id}) was deleted or token expired.")
+                            print(f"     Please generate a fresh Page Access Token on Meta Developers and paste it into Web UI Settings.")
+                        raise pub_err
 
                 # Update state & counters with multi-key deduplication
                 for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
