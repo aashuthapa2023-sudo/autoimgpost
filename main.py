@@ -27,14 +27,21 @@ def load_config():
         return {"pipeline_active": True, "channels": data}
     return data
 
+def compute_story_fingerprint(text: str) -> str:
+    """Extracts core thematic keyword tokens for fuzzy cross-page story deduplication."""
+    import re
+    cleaned = re.sub(r'[^a-zA-Z0-9\s]', '', (text or "").lower())
+    tokens = [w for w in cleaned.split() if len(w) > 3 and w not in {'this', 'that', 'with', 'from', 'have', 'been', 'will', 'about', 'after', 'season', 'series', 'netflix'}][:8]
+    return "_".join(sorted(tokens)) if tokens else ""
+
 def load_state():
     if os.path.exists(STATE_FILE):
         try:
             with open(STATE_FILE, "r", encoding="utf-8") as f:
                 return json.load(f)
         except Exception:
-            return {"processed_ids": {}, "daily_stats": {}}
-    return {"processed_ids": {}, "daily_stats": {}}
+            return {"processed_ids": {}, "daily_stats": {}, "global_processed_ids": [], "global_story_fingerprints": []}
+    return {"processed_ids": {}, "daily_stats": {}, "global_processed_ids": [], "global_story_fingerprints": []}
 
 def save_state(state):
     with open(STATE_FILE, "w", encoding="utf-8") as f:
@@ -64,6 +71,13 @@ def main():
     state = load_state()
     processed_ids_map = state.get("processed_ids", {})
     daily_stats = state.get("daily_stats", {})
+
+    # UNIVERSAL CROSS-PAGE DEDUPLICATION POOL:
+    # Guarantees that any news item published to ANY channel is NEVER posted to another channel
+    all_published_ids = set(str(x) for x in state.get("global_processed_ids", []))
+    for cid, id_list in processed_ids_map.items():
+        all_published_ids.update(str(x) for x in id_list)
+    global_story_fingerprints = set(state.get("global_story_fingerprints", []))
 
     today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
@@ -178,28 +192,43 @@ def main():
         now_current = int(time.time())
         cutoff_24h = now_current - 86400
 
-        # 2. STRICT 24-HOUR FILTER: Only consider posts created within the last 24 hours
+        # 2. STRICT 24-HOUR FRESHNESS FILTER: Only consider genuine posts published within the last 24 hours
         recent_24h_posts = [
             p for p in candidate_posts
-            if p.get("created_time", 0) >= cutoff_24h or p.get("created_time", 0) == 0
+            if p.get("created_time", 0) >= cutoff_24h
         ]
-        if not recent_24h_posts and candidate_posts:
-            recent_24h_posts = candidate_posts[:5]  # Fallback if timestamp missing
 
-        # 3. IDENTIFY UNPOSTED RECENT IMAGES
+        # 3. IDENTIFY UNPOSTED RECENT IMAGES (CROSS-PAGE UNIQUE)
         unposted_recent = []
         for p in recent_24h_posts:
             pid = str(p.get("post_id", ""))
             photo_id = str(p.get("photo_id", ""))
             cap_fp = str(p.get("caption_fingerprint", ""))
-            if pid not in processed_ids and photo_id not in processed_ids and cap_fp not in processed_ids:
-                unposted_recent.append(p)
+            story_fp = compute_story_fingerprint(p.get("caption", ""))
 
-        print(f" [24-HOUR AUDIT] Recent posts (< 24 hrs): {len(recent_24h_posts)} | Unposted to '{channel_name}': {len(unposted_recent)}")
+            # MUST NOT be posted to THIS channel OR ANY OTHER channel!
+            is_duplicate = (
+                pid in all_published_ids or
+                photo_id in all_published_ids or
+                cap_fp in all_published_ids or
+                (story_fp and story_fp in global_story_fingerprints)
+            )
+
+            if not is_duplicate:
+                unposted_recent.append(p)
+            else:
+                print(f"     [CROSS-PAGE DEDUP] Story '{p.get('caption', '')[:42]}...' already published to a channel. Skipping to keep content unique across all pages.")
+
+        print(f" [24-HOUR AUDIT] Recent posts (< 24 hrs): {len(recent_24h_posts)} | Unposted & Unique across all channels: {len(unposted_recent)}")
+
+        # RULE: "always use recent post only, dont use post older than 24 hrs"
+        if not recent_24h_posts:
+            print(f" [STRICT 24H GATE] No posts published within the last 24 hours found for '{channel_name}'. (Rule: Posts older than 24h are prohibited). Skipping channel.")
+            continue
 
         # RULE: "if all of the recent posts (Not older than 24 hrs) is there dont post"
         if not unposted_recent:
-            print(f" [UP TO DATE] All recent posts (< 24 hrs) from sources are already published to '{channel_name}'. Nothing new to post.")
+            print(f" [UP TO DATE] All recent posts (< 24 hrs) are already published across managed channels. Nothing new to post for '{channel_name}'.")
             continue
 
         # 4. STRICT 1-HOUR INTERVAL CADENCE:
@@ -244,6 +273,7 @@ def main():
                     for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
                         if id_val and id_val not in processed_ids:
                             processed_ids.append(id_val)
+                            all_published_ids.add(id_val)
                     continue
 
                 print("     [1/4] Downloading high-resolution source image...")
@@ -253,6 +283,7 @@ def main():
                     for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
                         if id_val and id_val not in processed_ids:
                             processed_ids.append(id_val)
+                            all_published_ids.add(id_val)
                     continue
 
                 # STRICT HD QUALITY GATE: Ensure only super-smooth, high-res images are published
@@ -266,6 +297,7 @@ def main():
                     for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
                         if id_val and id_val not in processed_ids:
                             processed_ids.append(id_val)
+                            all_published_ids.add(id_val)
                     continue
 
                 print(f"           High-resolution source verified: {img_w}x{img_h}px (Super-Smooth HD pass)")
@@ -321,20 +353,28 @@ def main():
                             print(f"     Please generate a fresh Page Access Token on Meta Developers and paste it into Web UI Settings.")
                         raise pub_err
 
-                # Update state & counters with multi-key deduplication
+                # Update channel state & global cross-page deduplication pool
                 for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
-                    if id_val and id_val not in processed_ids:
-                        processed_ids.append(id_val)
+                    if id_val:
+                        if id_val not in processed_ids:
+                            processed_ids.append(id_val)
+                        all_published_ids.add(id_val)
+
+                post_story_fp = compute_story_fingerprint(post.get("caption", ""))
+                if post_story_fp:
+                    global_story_fingerprints.add(post_story_fp)
 
                 channel_stat["count"] += 1
                 channel_stat["timestamps"].append(datetime.now(timezone.utc).isoformat())
                 channel_stat["last_published_time"] = now_current
 
-                # Save state after successful post
+                # Persist state with cross-page uniqueness guarantees
                 processed_ids_map[channel_id] = processed_ids
                 daily_stats[channel_id] = channel_stat
                 state["processed_ids"] = processed_ids_map
                 state["daily_stats"] = daily_stats
+                state["global_processed_ids"] = list(all_published_ids)
+                state["global_story_fingerprints"] = list(global_story_fingerprints)
                 save_state(state)
 
                 posted_successfully = True
@@ -361,4 +401,4 @@ def main():
     print("===================================================================")
 
 if __name__ == "__main__":
-    main()
+    main()

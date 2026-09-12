@@ -63,8 +63,57 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
     html = res.text
     scripts = re.findall(r'<script\s+type="application/json"[^>]*>(.*?)</script>', html)
 
-    posts = []
-    seen = set()
+    # 1. Pre-pass: Extract true post_id -> publish_time (integer) from tracking strings and metadata
+    post_meta = {}
+    for m in re.finditer(r'\\?"publish_time\\?":\s*(\d{9,11}).*?\\"story_fbid\\":\[\\"(\d+)\\"\]', html):
+        ts = int(m.group(1))
+        fbid = str(m.group(2))
+        post_meta[fbid] = ts
+
+    for m in re.finditer(r'\\"story_fbid\\":\[\\"(\d+)\\"\\].*?\\"publish_time\\":\s*(\d{9,11})', html):
+        fbid = str(m.group(1))
+        ts = int(m.group(2))
+        post_meta[fbid] = ts
+
+    for s in scripts:
+        if '"publish_time"' not in s and '"creation_time"' not in s:
+            continue
+        try:
+            data = json.loads(s)
+            def scan_nodes(node):
+                if isinstance(node, dict):
+                    pid = str(node.get("post_id") or node.get("id") or "")
+                    ts = node.get("creation_time") or node.get("publish_time")
+                    if not ts and "tracking" in node:
+                        tm = re.search(r'\\?"publish_time\\?":\s*(\d{9,11})', str(node.get("tracking")))
+                        if tm:
+                            ts = int(tm.group(1))
+                    if pid and ts:
+                        post_meta[pid] = int(ts)
+                    for v in node.values():
+                        scan_nodes(v)
+                elif isinstance(node, list):
+                    for it in node:
+                        scan_nodes(it)
+            scan_nodes(data)
+        except Exception:
+            pass
+
+    # 2. Main pass: Extract stories and attach accurate timestamps and master images
+    def _decode_fb_id(raw):
+        if not raw: return ""
+        s_raw = str(raw).strip()
+        if s_raw.startswith("Uzpf"):
+            try:
+                import base64
+                dec = base64.b64decode(s_raw).decode('utf-8', errors='ignore')
+                nums = re.findall(r'\d{9,18}', dec)
+                if nums: return nums[-1]
+            except Exception:
+                pass
+        return s_raw
+
+    posts_dict = {}
 
     for s in scripts:
         if ('"message"' not in s and '"story"' not in s and '"creation_time"' not in s):
@@ -72,9 +121,12 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
         try:
             data = json.loads(s)
 
-            def extract_stories(node):
+            def extract_stories(node, parent_pid="", parent_ts=0):
                 if isinstance(node, dict):
-                    # Check if this node is a top-level story with message and attachments
+                    node_pid = _decode_fb_id(node.get("post_id") or node.get("id") or "")
+                    cur_pid = node_pid or parent_pid
+                    cur_ts = post_meta.get(cur_pid) or node.get("creation_time") or parent_ts or 0
+
                     msg = None
                     if "message" in node and isinstance(node["message"], dict) and "text" in node["message"]:
                         msg = node["message"]["text"].strip()
@@ -91,7 +143,11 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
                         atts = node.get("attachments", [])
                         if isinstance(atts, list):
                             for a in atts:
-                                # Look for high-res direct CDN image URIs in this attachment
+                                if isinstance(a, dict):
+                                    med = a.get("media") or a.get("target")
+                                    if isinstance(med, dict) and med.get("id"):
+                                        media_id = str(med["id"])
+                                        break
                                 s_a = json.dumps(a)
                                 att_uris = [
                                     bytes(u, "utf-8").decode("unicode_escape", errors="ignore").replace("\\/", "/")
@@ -101,86 +157,70 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
                                 if att_uris and not img_url:
                                     img_url = att_uris[0]
 
-                                media = a.get("media")
-                                if isinstance(media, dict) and media.get("id"):
-                                    media_id = str(media["id"])
-                                    break
-                                # Check subattachments
-                                sub = a.get("all_subattachments")
-                                if isinstance(sub, dict) and "nodes" in sub:
-                                    for sn in sub["nodes"]:
-                                        sm = sn.get("media")
-                                        if isinstance(sm, dict) and sm.get("id"):
-                                            media_id = str(sm["id"])
-                                            break
-                                if media_id:
-                                    break
-
-                        # 2. Check direct media_id or photo_id on the node itself
+                        # 2. Check direct media_id or photo_id
                         if not media_id:
                             if node.get("photo_id"):
                                 media_id = str(node["photo_id"])
                             elif node.get("media_id"):
                                 media_id = str(node["media_id"])
-
-                        # 3. If no direct CDN URI found, check lookaside or scontent
-                        if not img_url:
-                            if media_id:
-                                img_url = f"https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id={media_id}"
                             else:
                                 s_sub = json.dumps(node)
-                                um = re.search(r'"uri":\s*"(https://scontent[^"]+)"', s_sub)
-                                if um:
-                                    img_url = bytes(um.group(1), "utf-8").decode("unicode_escape", errors="ignore").replace("\\/", "/")
+                                pm = re.search(r'"Photo",\s*"id":\s*"(\d+)"', s_sub) or re.search(r'"photo_id":\s*"(\d+)"', s_sub)
+                                if pm:
+                                    media_id = pm.group(1)
 
-                        # Post ID and Timestamp
-                        p_id = node.get("post_id") or node.get("id") or media_id
-                        ts = node.get("creation_time") or node.get("publish_time")
-                        if not ts:
-                            s_sub = json.dumps(node)
-                            tm = re.search(r'"(?:publish_time|creation_time)":\s*(\d{9,11})', s_sub)
-                            if tm:
-                                ts = int(tm.group(1))
+                        # 3. Direct high-resolution crawler lookaside URI
+                        if not img_url and media_id:
+                            img_url = f"https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id={media_id}"
 
-                        if not media_id:
-                            media_id = p_id or hashlib.md5((img_url or "").encode("utf-8")).hexdigest()[:15]
+                        if not cur_ts and media_id:
+                            cur_ts = post_meta.get(str(media_id), 0)
+                        if not cur_ts and "tracking" in node:
+                            tm = re.search(r'\\?"publish_time\\?":\s*(\d{9,11})', str(node.get("tracking")))
+                            if tm: cur_ts = int(tm.group(1))
 
-                        if img_url and media_id:
-                            clean_k = re.sub(r'\s+', ' ', msg[:50])
-                            cap_fp = hashlib.md5(re.sub(r'\s+', '', msg[:60]).lower().encode('utf-8')).hexdigest()
-                            raw_pid = str(p_id or media_id or len(posts) + 1)
-                            processed_set = set(str(x) for x in processed_ids)
+                        clean_k = re.sub(r'\s+', ' ', msg[:50])
+                        cap_fp = hashlib.md5(re.sub(r'\s+', '', msg[:60]).lower().encode('utf-8')).hexdigest()
+                        effective_pid = cur_pid or media_id
+                        processed_set = set(str(x) for x in processed_ids)
 
-                            # Strictly exclude any post that has already been processed/published to this page
-                            is_already_posted = (
-                                raw_pid in processed_set or
-                                str(media_id) in processed_set or
-                                cap_fp in processed_set
-                            )
+                        is_already_posted = (
+                            str(effective_pid) in processed_set or
+                            str(media_id) in processed_set or
+                            cap_fp in processed_set
+                        )
 
-                            if not is_already_posted and media_id not in seen and clean_k not in seen:
-                                seen.add(media_id)
-                                seen.add(clean_k)
-                                posts.append({
-                                    "post_id": raw_pid,
-                                    "photo_id": media_id,
+                        if not is_already_posted and (media_id or img_url):
+                            key = effective_pid or media_id
+                            if key not in posts_dict:
+                                posts_dict[key] = {
+                                    "post_id": str(effective_pid),
+                                    "photo_id": str(media_id or effective_pid),
                                     "caption_fingerprint": cap_fp,
                                     "caption": msg,
                                     "image_url": img_url,
-                                    "created_time": int(ts) if ts else int(datetime.now(timezone.utc).timestamp()),
+                                    "created_time": int(cur_ts) if cur_ts else 0,
                                     "source_gap_hours": 2.0
-                                })
+                                }
+                            else:
+                                if cur_ts > posts_dict[key]["created_time"]:
+                                    posts_dict[key]["created_time"] = int(cur_ts)
+                                if effective_pid and not posts_dict[key]["post_id"]:
+                                    posts_dict[key]["post_id"] = str(effective_pid)
+                                if img_url and not posts_dict[key]["image_url"]:
+                                    posts_dict[key]["image_url"] = img_url
 
                     for v in node.values():
-                        extract_stories(v)
+                        extract_stories(v, cur_pid, cur_ts)
                 elif isinstance(node, list):
                     for it in node:
-                        extract_stories(it)
+                        extract_stories(it, parent_pid, parent_ts)
 
             extract_stories(data)
         except Exception:
             pass
 
+    posts = list(posts_dict.values())
     # Sort strictly by timestamp descending so the newest, real-time posts are always first!
     posts.sort(key=lambda p: p.get("created_time", 0), reverse=True)
 
@@ -193,6 +233,7 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
             posts[i]["source_gap_hours"] = gap
 
     return posts[:limit]
+
 
 def fetch_source_posts(source_page_id: str = "", access_token: str = "", processed_ids: list = None, limit: int = 2, source_url: str = "", source_pages: list = None, **kwargs):
     """

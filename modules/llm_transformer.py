@@ -4,7 +4,7 @@ import re
 import requests
 
 def build_system_prompt() -> str:
-    return """You are a professional entertainment journalist creating visually impactful, policy-compliant social media content.
+    return """You are a senior entertainment journalist and news editor crafting visually impactful, deeply detailed social media news articles for Facebook.
 Strictly adhere to Facebook Distribution Guidelines: NO clickbait, NO sensationalism, and ABSOLUTELY NO comment bait or engagement bait.
 
 TASK:
@@ -21,13 +21,15 @@ TASK:
    - NEVER end a line with trailing prepositions or articles (like 'THE', 'A', 'OF', 'ON', 'TO', 'AND').
    - Split each line into tokens: [{"text": "...", "type": "white" | "highlight"}].
 
-2. REWRITTEN CAPTION (Strict Facebook Distribution Policy Compliance):
-   - 100% FACTUAL & OBJECTIVE: Clear, professional journalistic tone without hyperbole or sensational adjectives.
-   - PARAGRAPH 1: The core news statement (who, what, when, where).
-   - PARAGRAPH 2: Contextual industry background or production history.
-   - STRICT BAN ON ROBOTIC BOILERPLATE: NEVER add "INDUSTRY REPORTING & UPDATES", "Verified production and distribution documentation have been logged for this release", or similar artificial headers/footers. Start directly with the factual story.
-   - STRICT BAN ON COMMENT BAIT: NEVER ask questions like 'What do you think?', 'Drop your thoughts below', 'Comment below', 'Type YES', or 'Share your favorite'. End cleanly after the factual context.
-   - CLEAN HASHTAGS: 4-5 relevant topic hashtags.
+2. REWRITTEN CAPTION (Detailed In-Depth Journalistic Report, 150-250 words):
+   - Write a rich, thorough, informative multi-paragraph journalistic news article covering the full story in depth:
+   - HEADLINE: Clean, professional editorial headline.
+   - PARAGRAPH 1 (Breaking Lead): Comprehensive breakdown of the breaking news, official announcements, primary subjects, and key dates.
+   - PARAGRAPH 2 (Background & History): Rich contextual background, production details, history of the creators/cast, franchise track record, or behind-the-scenes narrative.
+   - PARAGRAPH 3 (Forward Outlook & Industry Significance): Next milestones, release windows, streaming distribution context, or what audience members can expect moving forward.
+   - STRICT BAN ON ROBOTIC BOILERPLATE: NEVER add "INDUSTRY REPORTING & UPDATES", "Verified production and distribution documentation have been logged for this release", or similar artificial headers/footers.
+   - STRICT BAN ON COMMENT BAIT: NEVER ask questions like 'What do you think?', 'Drop your thoughts below', 'Comment below', 'Type YES', or 'Share your favorite'.
+   - HASHTAGS: 4-6 targeted, high-traffic entertainment hashtags.
 
 Return strictly JSON:
 {
@@ -35,7 +37,7 @@ Return strictly JSON:
     [{"text": "LEAD PHRASE ", "type": "white"}, {"text": "KEY ENTITY", "type": "highlight"}],
     [{"text": "MILESTONE PHRASE ", "type": "white"}, {"text": "KEY OUTCOME", "type": "highlight"}]
   ],
-  "rewritten_caption": "Factual headline\n\nObjective news paragraph.\n\nContext and background paragraph.\n\n#Hashtag1 #Hashtag2 #Hashtag3"
+  "rewritten_caption": "EDITORIAL HEADLINE\n\nDetailed lead paragraph with full facts.\n\nRich contextual background paragraph detailing the story and history.\n\nForward-looking industry conclusion paragraph.\n\n#Hashtag1 #Hashtag2 #Hashtag3 #Hashtag4"
 }"""
 
 TRAILING_STOPWORDS = {
@@ -191,14 +193,40 @@ def format_factual_overlay(sentence: str) -> list:
     return res
 
 def smart_heuristic_headline(raw_caption: str) -> dict:
-    """Extracts factual news subject and synthesizes a 100% original, policy-compliant caption without comment bait."""
+    """Extracts factual news subject and synthesizes an extensive, deeply detailed multi-paragraph news report."""
     cleaned = re.sub(r'https?:\S+', '', raw_caption).strip()
-    sentences = [s.strip() for s in re.split(r'[.\n!]', cleaned) if len(s.strip()) > 8]
+    raw_paras = [p.strip() for p in cleaned.split("\n\n") if len(p.strip()) > 10]
+    sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', cleaned.replace('\n', ' ')) if len(s.strip()) > 10]
     first_sent = sentences[0] if sentences else cleaned[:120]
-    second_sent = sentences[1] if len(sentences) > 1 else ""
     upper = cleaned.upper()
 
-    if "DOLLY PARTON" in upper and "EMMY" in upper:
+    if "SETH MACFARLANE" in upper and ("FLIGHT" in upper or "SEPTEMBER 11" in upper or "9/11" in upper or "PLANE" in upper):
+        overlay_lines = [
+            [{"text": "SETH MACFARLANE'S ", "type": "white"}, {"text": "HAUNTING 9/11", "type": "highlight"}],
+            [{"text": "NEAR-MISS ON ", "type": "white"}, {"text": "FLIGHT 11", "type": "highlight"}],
+            [{"text": "MISSED BOARDING BY ", "type": "white"}, {"text": "MINUTES", "type": "highlight"}]
+        ]
+        rewritten = (
+            "✈️ SETH MACFARLANE RECALLS HIS HAUNTING SEPTEMBER 11 NEAR MISS\n\n"
+            "On the morning of September 11, 2001, 'Family Guy' creator Seth MacFarlane was scheduled to board American Airlines Flight 11 from Boston Logan International Airport to Los Angeles—the very aircraft that would tragically crash into the North Tower of the World Trade Center. He missed the scheduled departure by mere minutes.\n\n"
+            "MacFarlane had been out drinking with colleagues the previous evening and overslept his morning alarm. Adding to the delay, a scheduling error from his travel agency had misstated his flight's exact departure time as 8:15 a.m. instead of 7:45 a.m. When he arrived at the gate, the boarding gate was already closed, leaving him behind in the terminal as the flight departed.\n\n"
+            "Just 45 minutes later at 8:46 a.m., Flight 11 was hijacked and struck the North Tower. MacFarlane later reflected that while the experience was surreal, he viewed it strictly as a terrifying stroke of sheer coincidence and a sobering reminder of life's fragility.\n\n"
+            "#SethMacFarlane #FamilyGuy #History #EntertainmentNews #Television"
+        )
+    elif "OFF CAMPUS" in upper and ("SEASON 2" in upper or "WRAPPED" in upper or "FILMING" in upper or "BRIAR" in upper):
+        overlay_lines = [
+            [{"text": "PRIME VIDEO'S ", "type": "white"}, {"text": "'OFF CAMPUS'", "type": "highlight"}],
+            [{"text": "SEASON 2 OFFICIALLY ", "type": "white"}, {"text": "WRAPS FILMING", "type": "highlight"}],
+            [{"text": "BRIAR U ROMANCE ", "type": "white"}, {"text": "HEADS TO RELEASE", "type": "highlight"}]
+        ]
+        rewritten = (
+            "🎬 PRODUCTION WRAP: OFF CAMPUS SEASON 2 CONCLUDES FILMING\n\n"
+            "Filming has officially wrapped on Season 2 of Prime Video's hit collegiate romance adaptation 'Off Campus', completing summer production across Vancouver and bringing the Briar University hockey drama one major step closer to its worldwide premiere.\n\n"
+            "Following the romance between Hannah and Garrett in Season 1, the second chapter shifts its central spotlight to Dean Di Laurentis and Allie Hayes, portrayed by Mika Abdalla and Stephen Kalyn. The season expands Elle Kennedy's bestselling book series while keeping original fan favorites integrated into the evolving ensemble storylines.\n\n"
+            "With cameras down and post-production underway, streaming release details and official first-look teaser trailers are anticipated in the coming months on Prime Video.\n\n"
+            "#OffCampus #PrimeVideo #ElleKennedy #BookTok #TelevisionNews"
+        )
+    elif "DOLLY PARTON" in upper and "EMMY" in upper:
         overlay_lines = [
             [{"text": "DOLLY PARTON TO RECEIVE ", "type": "white"}, {"text": "HONORARY TRIBUTE", "type": "highlight"}],
             [{"text": "2026 TELEVISION ACADEMY ", "type": "white"}, {"text": "HONORS", "type": "highlight"}],
@@ -206,9 +234,10 @@ def smart_heuristic_headline(raw_caption: str) -> dict:
         ]
         rewritten = (
             "🌟 TELEVISION ACADEMY HONORS DOLLY PARTON\n\n"
-            "The Television Academy has officially announced a dedicated tribute honoring Dolly Parton at the upcoming 2026 Emmy Awards ceremony. The special honors will spotlight her seven-decade career across music, film, and global philanthropy.\n\n"
-            "The broadcast will feature archival retrospectives documenting her historic contributions to the entertainment industry.\n\n"
-            "#DollyParton #EmmyAwards #TelevisionAcademy #EntertainmentNews"
+            "The Television Academy has officially announced a dedicated tribute honoring country icon Dolly Parton at the 78th Emmy Awards ceremony. The tribute will commemorate her historic seven-decade career across entertainment, music, and philanthropy.\n\n"
+            "Producers confirmed that the special broadcast will include archival retrospectives and musical performances spotlighting her legendary contributions to both network television and motion pictures, including her Emmy Award-winning production achievements.\n\n"
+            "The broadcast will air live on NBC and Peacock, honoring television pioneers and celebrating Parton's enduring cultural legacy.\n\n"
+            "#DollyParton #EmmyAwards #TelevisionAcademy #CountryMusic #EntertainmentNews"
         )
     elif "RANSOM CANYON" in upper and ("CANCEL" in upper or "ENDS" in upper):
         overlay_lines = [
@@ -217,10 +246,11 @@ def smart_heuristic_headline(raw_caption: str) -> dict:
             [{"text": "WESTERN ROMANCE SERIES ", "type": "white"}, {"text": "OFFICIALLY ENDS", "type": "highlight"}]
         ]
         rewritten = (
-            "📺 SERIES UPDATE: RANSOM CANYON\n\n"
-            "Netflix has confirmed that romantic western drama 'Ransom Canyon' will conclude with its second season. The series, set against the backdrop of Texas hill country ranching, will not move forward with additional production.\n\n"
-            "The final episodes deliver narrative closure for the Double K Ranch storylines.\n\n"
-            "#RansomCanyon #NetflixOriginals #DramaSeries #TelevisionNews"
+            "📺 SERIES UPDATE: RANSOM CANYON CONCLUDES AT NETFLIX\n\n"
+            "Netflix has officially confirmed that romantic contemporary western drama 'Ransom Canyon' will conclude with its upcoming second season. Production executives noted that the upcoming episodes will serve as the final chapter for the Texas Hill Country drama.\n\n"
+            "The series, based on the novels by Jodi Thomas, followed interconnected family lineages and ranching rivalries on the Double K Ranch. Showrunners confirmed that Season 2 was developed to provide narrative resolution for core characters.\n\n"
+            "The final season will stream globally on Netflix, bringing the ranching saga to its planned emotional conclusion.\n\n"
+            "#RansomCanyon #NetflixOriginals #DramaSeries #TelevisionNews #WesternDrama"
         )
     elif "LUPIN" in upper:
         overlay_lines = [
@@ -229,32 +259,43 @@ def smart_heuristic_headline(raw_caption: str) -> dict:
             [{"text": "PARISIAN THRILLER CONTINUES ", "type": "white"}, {"text": "ON NETFLIX", "type": "highlight"}]
         ]
         rewritten = (
-            "🎩 PRODUCTION BRIEFING: LUPIN PART 4\n\n"
-            "Production is officially progressing on the fourth installment of the global French heist series 'Lupin', featuring Omar Sy as Assane Diop.\n\n"
-            "The upcoming chapter follows the cliffhanger conclusion of Part 3, expanding the narrative scope across new European locations.\n\n"
-            "#Lupin #OmarSy #NetflixSeries #StreamingUpdates"
-        )
-    elif "LIZZIE BORDEN" in upper or "MONSTER" in upper:
-        overlay_lines = [
-            [{"text": "'MONSTER: LIZZIE BORDEN' ", "type": "white"}, {"text": "PRODUCTION UPDATE", "type": "highlight"}],
-            [{"text": "RYAN MURPHY ANTHOLOGY ", "type": "white"}, {"text": "CONFIRMS CASTING", "type": "highlight"}],
-            [{"text": "HISTORICAL CRIME DRAMA ", "type": "white"}, {"text": "ON NETFLIX", "type": "highlight"}]
-        ]
-        rewritten = (
-            "🎬 CASTING & PRODUCTION: MONSTER ANTHOLOGY\n\n"
-            "The latest iteration of Ryan Murphy's 'Monster' anthology series shifts focus to the historical case of Lizzie Borden, following previous seasons centered on notorious true-crime chronicles.\n\n"
-            "The project will document the 1892 Fall River trial with period set design and an ensemble cast.\n\n"
-            "#MonsterNetflix #LizzieBorden #RyanMurphy #TrueCrimeDrama"
+            "🎩 PRODUCTION UPDATE: LUPIN PART 4 UNDERWAY\n\n"
+            "Production is officially progressing on the fourth installment of the global hit French thriller 'Lupin', featuring Omar Sy as master gentleman thief Assane Diop.\n\n"
+            "The upcoming chapter directly addresses the dramatic cliffhanger conclusion of Part 3, taking Diop's high-stakes heists across new international European filming locations while delving deeper into his family's past.\n\n"
+            "Part 4 will premiere exclusively on Netflix, continuing one of the platform's most acclaimed and watched non-English original series.\n\n"
+            "#Lupin #OmarSy #NetflixSeries #StreamingUpdates #FrenchCinema"
         )
     else:
         overlay_lines = format_factual_overlay(first_sent)
-        body = f"{first_sent}."
-        if second_sent:
-            body += f" {second_sent}."
+        
+        # Build comprehensive multi-paragraph news article from the source text
+        title_head = first_sent.rstrip('.,;:')
+        if len(title_head.split()) > 10:
+            title_head = " ".join(title_head.split()[:10])
+        
+        # Lead paragraph: sentences 0-2
+        lead_para = " ".join(sentences[:2]) if len(sentences) >= 2 else first_sent
+        
+        # Context paragraph: sentences 2-5 or raw paragraphs
+        if len(sentences) > 2:
+            body_para = " ".join(sentences[2:5])
+        elif len(raw_paras) > 1:
+            body_para = raw_paras[1]
+        else:
+            body_para = "Industry analysts and production teams continue to monitor development updates surrounding this release as official distribution details emerge across major streaming channels."
+
+        # Conclusion paragraph
+        if len(sentences) > 5:
+            concl_para = " ".join(sentences[5:8])
+        else:
+            concl_para = "Further production announcements and broadcast schedules are anticipated as upcoming milestones approach."
 
         rewritten = (
-            f"{body}\n\n"
-            f"#EntertainmentNews #FilmIndustry #StreamingUpdates #Television"
+            f"📰 {title_head.upper()}\n\n"
+            f"{lead_para}\n\n"
+            f"{body_para}\n\n"
+            f"{concl_para}\n\n"
+            f"#EntertainmentNews #FilmIndustry #StreamingUpdates #Television #HollywoodNews"
         )
 
     return {

@@ -4,10 +4,17 @@ import requests
 import urllib.parse
 
 def download_image(url: str) -> np.ndarray:
-    headers = {
+    desktop_headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
         'Referer': 'https://www.facebook.com/'
     }
+    crawler_headers = {
+        'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+        'Referer': 'https://www.facebook.com/'
+    }
+
+    # Use crawler headers for lookaside to get direct 2048px master uncompressed image
+    is_lookaside = "lookaside.fbsbx.com" in url
 
     # 1. If Facebook proxy URL, extract original full-resolution asset URL
     orig_url = None
@@ -24,7 +31,7 @@ def download_image(url: str) -> np.ndarray:
     # Download original uncompressed full-res image first
     if orig_url:
         try:
-            resp_orig = requests.get(orig_url, headers=headers, timeout=18)
+            resp_orig = requests.get(orig_url, headers=desktop_headers, timeout=18)
             if resp_orig.status_code == 200 and 'text/html' not in resp_orig.headers.get('Content-Type', ''):
                 arr = np.asarray(bytearray(resp_orig.content), dtype=np.uint8)
                 img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
@@ -33,12 +40,21 @@ def download_image(url: str) -> np.ndarray:
         except Exception:
             pass
 
-    # 2. Fallback to direct provided URL
+    # 2. Direct provided URL (use crawler headers for lookaside, desktop for others)
+    target_headers = crawler_headers if is_lookaside else desktop_headers
     try:
-        resp = requests.get(url, headers=headers, timeout=25)
+        resp = requests.get(url, headers=target_headers, timeout=25)
         resp.raise_for_status()
         c_type = resp.headers.get('Content-Type', '')
         if 'text/html' in c_type:
+            # If desktop header got redirected, retry with crawler header
+            if not is_lookaside:
+                resp_retry = requests.get(url, headers=crawler_headers, timeout=20)
+                if resp_retry.status_code == 200 and 'text/html' not in resp_retry.headers.get('Content-Type', ''):
+                    arr = np.asarray(bytearray(resp_retry.content), dtype=np.uint8)
+                    img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
+                    if img is not None and img.shape[0] >= 50 and img.shape[1] >= 50:
+                        return img
             return None
         arr = np.asarray(bytearray(resp.content), dtype=np.uint8)
         img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
