@@ -25,6 +25,7 @@ TASK:
    - 100% FACTUAL & OBJECTIVE: Clear, professional journalistic tone without hyperbole or sensational adjectives.
    - PARAGRAPH 1: The core news statement (who, what, when, where).
    - PARAGRAPH 2: Contextual industry background or production history.
+   - STRICT BAN ON ROBOTIC BOILERPLATE: NEVER add "INDUSTRY REPORTING & UPDATES", "Verified production and distribution documentation have been logged for this release", or similar artificial headers/footers. Start directly with the factual story.
    - STRICT BAN ON COMMENT BAIT: NEVER ask questions like 'What do you think?', 'Drop your thoughts below', 'Comment below', 'Type YES', or 'Share your favorite'. End cleanly after the factual context.
    - CLEAN HASHTAGS: 4-5 relevant topic hashtags.
 
@@ -248,19 +249,44 @@ def smart_heuristic_headline(raw_caption: str) -> dict:
             body += f" {second_sent}."
 
         rewritten = (
-            f"🎬 INDUSTRY REPORTING & UPDATES\n\n"
             f"{body}\n\n"
-            f"Verified production and distribution documentation have been logged for this release.\n\n"
             f"#EntertainmentNews #FilmIndustry #StreamingUpdates #Television"
         )
 
     return {
         "overlay_lines": overlay_lines,
-        "rewritten_caption": rewritten
+        "rewritten_caption": sanitize_caption(rewritten)
     }
+
+def sanitize_caption(caption: str) -> str:
+    """
+    Strips out robotic boilerplate headers and disclaimers:
+    - 'INDUSTRY REPORTING & UPDATES' (with or without emojis)
+    - 'Verified production and distribution documentation have been logged for this release.'
+    """
+    if not caption:
+        return ""
+
+    lines = caption.splitlines()
+    filtered = []
+    for line in lines:
+        stripped = line.strip()
+        # Remove any variation of INDUSTRY REPORTING & UPDATES
+        if re.search(r'INDUSTRY\s+REPORTING\s*&?\s*UPDATES', stripped, re.IGNORECASE):
+            continue
+        # Remove verification documentation boilerplate
+        if re.search(r'Verified\s+production\s+and\s+distribution\s+documentation', stripped, re.IGNORECASE):
+            continue
+        filtered.append(line)
+
+    cleaned = "\n".join(filtered).strip()
+    # Normalize multiple newlines
+    cleaned = re.sub(r'\n{3,}', '\n\n', cleaned)
+    return cleaned
 
 def generate_social_payload(raw_caption: str) -> dict:
     prompt = build_system_prompt()
+    payload = None
 
     # Tier 1: Groq Cloud
     groq_key = os.getenv("GROQ_API_KEY")
@@ -280,46 +306,55 @@ def generate_social_payload(raw_caption: str) -> dict:
                 timeout=12
             )
             if res.status_code == 200:
-                return json.loads(res.json()["choices"][0]["message"]["content"])
+                payload = json.loads(res.json()["choices"][0]["message"]["content"])
         except Exception:
             pass
 
     # Tier 2: Google Gemini
-    gemini_key = os.getenv("GEMINI_API_KEY")
-    if gemini_key:
-        try:
-            from google import genai
-            client = genai.Client(api_key=gemini_key)
-            resp = client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=f"{prompt}\n\nRaw post caption:\n{raw_caption}",
-                config={"response_mime_type": "application/json"}
-            )
-            return json.loads(resp.text)
-        except Exception:
-            pass
+    if not payload:
+        gemini_key = os.getenv("GEMINI_API_KEY")
+        if gemini_key:
+            try:
+                from google import genai
+                client = genai.Client(api_key=gemini_key)
+                resp = client.models.generate_content(
+                    model="gemini-2.5-flash",
+                    contents=f"{prompt}\n\nRaw post caption:\n{raw_caption}",
+                    config={"response_mime_type": "application/json"}
+                )
+                payload = json.loads(resp.text)
+            except Exception:
+                pass
 
     # Tier 3: OpenRouter
-    openrouter_key = os.getenv("OPENROUTER_API_KEY")
-    if openrouter_key:
-        try:
-            res = requests.post(
-                "https://openrouter.ai/api/v1/chat/completions",
-                headers={"Authorization": f"Bearer {openrouter_key}", "Content-Type": "application/json"},
-                json={
-                    "model": "meta-llama/llama-3.3-70b-instruct:free",
-                    "messages": [
-                        {"role": "system", "content": prompt},
-                        {"role": "user", "content": f"Raw post:\n{raw_caption}"}
-                    ]
-                },
-                timeout=15
-            )
-            if res.status_code == 200:
-                txt = res.json()["choices"][0]["message"]["content"]
-                return json.loads(txt[txt.find("{"):txt.rfind("}")+1])
-        except Exception:
-            pass
+    if not payload:
+        openrouter_key = os.getenv("OPENROUTER_API_KEY")
+        if openrouter_key:
+            try:
+                res = requests.post(
+                    "https://openrouter.ai/api/v1/chat/completions",
+                    headers={"Authorization": f"Bearer {openrouter_key}", "Content-Type": "application/json"},
+                    json={
+                        "model": "meta-llama/llama-3.3-70b-instruct:free",
+                        "messages": [
+                            {"role": "system", "content": prompt},
+                            {"role": "user", "content": f"Raw post:\n{raw_caption}"}
+                        ]
+                    },
+                    timeout=15
+                )
+                if res.status_code == 200:
+                    txt = res.json()["choices"][0]["message"]["content"]
+                    payload = json.loads(txt[txt.find("{"):txt.rfind("}")+1])
+            except Exception:
+                pass
 
     # Tier 4: Smart Heuristic
-    return smart_heuristic_headline(raw_caption)
+    if not payload:
+        payload = smart_heuristic_headline(raw_caption)
+
+    # Universal Sanitization of Caption
+    if isinstance(payload, dict) and "rewritten_caption" in payload:
+        payload["rewritten_caption"] = sanitize_caption(payload["rewritten_caption"])
+
+    return payload

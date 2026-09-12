@@ -543,6 +543,19 @@ class PipelineHandler(SimpleHTTPRequestHandler):
             self.wfile.write(resp)
             return
 
+        if path == "/api/save-config":
+            if isinstance(body, dict) and "channels" in body:
+                with open("config.json", "w", encoding="utf-8") as f:
+                    json.dump(body, f, indent=2)
+                resp = json.dumps({"success": True}).encode("utf-8")
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(resp)))
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                self.wfile.write(resp)
+                return
+
         self.send_response(404)
         self.end_headers()
 

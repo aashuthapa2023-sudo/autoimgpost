@@ -460,11 +460,19 @@
             </p>
           </div>
 
-          <button onclick="openAddChannelModal()"
-            class="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-neutral-950 font-bold rounded-xl text-xs font-mono flex items-center gap-2 transition-all shadow cursor-pointer">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-            <span>ADD NEW CHANNEL</span>
-          </button>
+          <div class="flex items-center gap-2">
+            <button onclick="forceSyncFromGitHub()" id="btnForceSyncHub"
+              class="px-3.5 py-2 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 hover:text-white rounded-xl text-xs font-mono flex items-center gap-1.5 transition-all border border-neutral-700 cursor-pointer shadow" title="Force re-fetch live configuration directly from GitHub main branch">
+              <svg id="iconSyncSpinner" class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+              <span id="btnForceSyncText">Live Cloud Sync</span>
+            </button>
+
+            <button onclick="openAddChannelModal()"
+              class="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-neutral-950 font-bold rounded-xl text-xs font-mono flex items-center gap-2 transition-all shadow cursor-pointer">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+              <span>ADD NEW CHANNEL</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -569,7 +577,7 @@
       if (tok !== null) {
         localStorage.setItem('autoimgpost_gh_token', tok.trim());
         showToast('GitHub token saved successfully!');
-        renderChannelsHub();
+        loadUnifiedConfig(true).then(() => renderChannelsHub(true));
       }
     }
 
@@ -630,8 +638,8 @@
     }
 
     // --- UNIVERSAL CONFIG & CHANNELS MANAGEMENT ---
-    async function loadUnifiedConfig() {
-      // 1. Try local server endpoint if on localhost
+    async function loadUnifiedConfig(forceLive = false) {
+      // 1. If running locally, query /api/status
       if (isLocalEnv()) {
         try {
           const res = await fetch('/api/status');
@@ -642,13 +650,66 @@
               channels: data.channels || []
             };
             cachedChannels = cachedConfig.channels;
+            localStorage.setItem('autoimgpost_latest_config', JSON.stringify(cachedConfig));
             updateHeaderStatus();
             return cachedConfig;
           }
         } catch(e) {}
       }
 
-      // 2. Fetch config.json directly (GitHub Pages / static fallback - ZERO RATE LIMIT)
+      // 2. Fetch live from GitHub API (INSTANT LIVE STATE on branch main - ZERO CDN DELAY)
+      const token = getGitHubToken();
+      if (token) {
+        try {
+          const headers = {
+            'Authorization': 'token ' + token,
+            'Accept': 'application/vnd.github.v3+json',
+            'Cache-Control': 'no-cache'
+          };
+          const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json?t=${Date.now()}`, { headers });
+          if (res.ok) {
+            const data = await res.json();
+            configSha = data.sha;
+            const decoded = decodeURIComponent(escape(atob(data.content)));
+            cachedConfig = JSON.parse(decoded);
+            cachedChannels = cachedConfig.channels || [];
+            localStorage.setItem('autoimgpost_latest_config', JSON.stringify(cachedConfig));
+            updateHeaderStatus();
+            return cachedConfig;
+          }
+        } catch(e) {
+          console.warn('GitHub API fetch note:', e);
+        }
+      }
+
+      // 3. Fetch from raw.githubusercontent.com (INSTANT LIVE PUBLIC GIT BLOB, bypasses Pages CDN delay)
+      try {
+        const res = await fetch(`https://raw.githubusercontent.com/${GITHUB_REPO}/main/config.json?t=${Date.now()}`, {
+          cache: 'no-store'
+        });
+        if (res.ok) {
+          cachedConfig = await res.json();
+          cachedChannels = cachedConfig.channels || [];
+          localStorage.setItem('autoimgpost_latest_config', JSON.stringify(cachedConfig));
+          updateHeaderStatus();
+          return cachedConfig;
+        }
+      } catch(e) {
+        console.warn('Raw GitHub fetch note:', e);
+      }
+
+      // 4. Try localStorage cache (preserves optimistic updates and offline state)
+      try {
+        const stored = localStorage.getItem('autoimgpost_latest_config');
+        if (stored) {
+          cachedConfig = JSON.parse(stored);
+          cachedChannels = cachedConfig.channels || [];
+          updateHeaderStatus();
+          return cachedConfig;
+        }
+      } catch(e) {}
+
+      // 5. Fallback to ./config.json (GitHub Pages static build)
       try {
         const res = await fetch('./config.json?t=' + Date.now());
         if (res.ok) {
@@ -659,25 +720,24 @@
         }
       } catch(e) {}
 
-      // 3. Fetch from GitHub API with SHA tracking (only if static fallback failed AND token exists)
-      const token = getGitHubToken();
-      if (token) {
-        try {
-          const headers = { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' };
-          const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json?t=${Date.now()}`, { headers });
-          if (res.ok) {
-            const data = await res.json();
-            configSha = data.sha;
-            const decoded = decodeURIComponent(escape(atob(data.content)));
-            cachedConfig = JSON.parse(decoded);
-            cachedChannels = cachedConfig.channels || [];
-            updateHeaderStatus();
-            return cachedConfig;
-          }
-        } catch(e) {}
-      }
-
       return cachedConfig;
+    }
+
+    async function forceSyncFromGitHub() {
+      const btnText = document.getElementById('btnForceSyncText');
+      const icon = document.getElementById('iconSyncSpinner');
+      if (btnText) btnText.innerText = 'Syncing...';
+      if (icon) icon.classList.add('animate-spin');
+      try {
+        await loadUnifiedConfig(true);
+        renderChannelsHub(true);
+        showToast('✓ Live Cloud Sync Complete!');
+      } catch(e) {
+        showToast('Sync updated');
+      } finally {
+        if (btnText) btnText.innerText = 'Live Cloud Sync';
+        if (icon) icon.classList.remove('animate-spin');
+      }
     }
 
     function updateHeaderStatus() {
@@ -727,22 +787,30 @@
 
       const sel = document.getElementById('selectChannel');
       if (sel && cachedChannels.length > 0) {
+        const prev = sel.value;
         sel.innerHTML = '<option value="all">All Configured Channels</option>' + 
           cachedChannels.map(c => `<option value="${c.channel_id}">${c.dest_page_name || c.channel_name} (${c.channel_id})</option>`).join('');
+        if (prev && [...sel.options].some(o => o.value === prev)) sel.value = prev;
       }
     }
 
     // --- INSTANT AUTO-SAVE TO GITHUB & LOCALHOST ---
-    async function saveConfigUniversal(updatedConfig, commitMsg = 'Update channel configuration from 24/7 Web UI [skip ci]') {
+    async function saveConfigUniversal(updatedConfig, commitMsg = 'Update channel configuration from 24/7 Web UI') {
       cachedConfig = updatedConfig;
       cachedChannels = updatedConfig.channels || [];
+      localStorage.setItem('autoimgpost_latest_config', JSON.stringify(updatedConfig));
       updateHeaderStatus();
+      // Optimistically update UI instantly without waiting for network
+      renderChannelsHub(true);
 
       // 1. If running locally, update local config.json via server
       if (isLocalEnv()) {
         try {
-          // If toggle active changed
-          await fetch('/api/toggle-active', { method: 'POST' }).catch(() => {});
+          await fetch('/api/save-config', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedConfig)
+          }).catch(() => {});
         } catch(e) {}
       }
 
@@ -759,7 +827,7 @@
         try {
           // Get latest SHA
           const shaRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json?t=${Date.now()}`, {
-            headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+            headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Cache-Control': 'no-cache' }
           });
           if (shaRes.ok) {
             const fileObj = await shaRes.json();
@@ -790,7 +858,7 @@
           } else {
             const err = await putRes.json();
             console.warn('GitHub Direct Save:', err.message);
-            showToast('✓ Saved locally (GitHub sync: ' + (err.message || 'OK') + ')');
+            showToast('✓ Saved locally (GitHub notice: ' + (err.message || 'OK') + ')');
           }
         } catch(err) {
           console.warn('GitHub API network note:', err);
@@ -798,7 +866,7 @@
         }
       }
 
-      renderChannelsHub();
+      renderChannelsHub(true);
     }
 
     // --- CONCURRENT ACTION EXECUTION & SYNC ---
@@ -1299,9 +1367,11 @@
     }
 
     // --- CHANNELS & MULTI-SOURCE HUB ---
-    async function renderChannelsHub() {
+    async function renderChannelsHub(skipFetch = false) {
       const container = document.getElementById('channelCardsContainer');
-      await loadUnifiedConfig();
+      if (!skipFetch) {
+        await loadUnifiedConfig();
+      }
 
       if (!cachedChannels || cachedChannels.length === 0) {
         container.innerHTML = '<div class="col-span-full p-8 text-center text-xs font-mono text-neutral-500 bg-neutral-900 border border-neutral-800 rounded-2xl">No channels configured. Click "ADD NEW CHANNEL" above!</div>';
@@ -1408,7 +1478,7 @@
       }
 
       if (input) input.value = '';
-      await saveConfigUniversal(cachedConfig, `Add source ${val} to ${channelId} [skip ci]`);
+      await saveConfigUniversal(cachedConfig, `Add source ${val} to ${channelId}`);
     }
 
     async function removeSourceFromChannel(channelId, encodedSrc) {
@@ -1419,13 +1489,13 @@
       if (!ch || !ch.source_pages) return;
 
       ch.source_pages = ch.source_pages.filter(s => s !== src);
-      await saveConfigUniversal(cachedConfig, `Remove source ${src} from ${channelId} [skip ci]`);
+      await saveConfigUniversal(cachedConfig, `Remove source ${src} from ${channelId}`);
     }
 
     async function deleteChannel(channelId) {
       if (!confirm('Are you sure you want to delete channel ' + channelId + '?')) return;
       cachedConfig.channels = (cachedConfig.channels || []).filter(c => c.channel_id !== channelId);
-      await saveConfigUniversal(cachedConfig, `Delete channel ${channelId} [skip ci]`);
+      await saveConfigUniversal(cachedConfig, `Delete channel ${channelId}`);
     }
 
     async function saveChannelInterval(channelId) {
@@ -1439,7 +1509,7 @@
       const ch = cachedChannels.find(c => c.channel_id === channelId);
       if (ch) {
         ch.post_interval_hours = val;
-        await saveConfigUniversal(cachedConfig, `Update post interval for ${channelId} to ${val}h [skip ci]`);
+        await saveConfigUniversal(cachedConfig, `Update post interval for ${channelId} to ${val}h`);
       }
     }
 
@@ -1496,18 +1566,31 @@
       }
 
       closeAddChannelModal();
-      await saveConfigUniversal(cachedConfig, `Create channel ${cid} [skip ci]`);
+      await saveConfigUniversal(cachedConfig, `Create channel ${cid}`);
     }
 
     async function toggleMasterSwitch() {
       cachedConfig.pipeline_active = cachedConfig.pipeline_active === false ? true : false;
-      await saveConfigUniversal(cachedConfig, `Toggle pipeline active to ${cachedConfig.pipeline_active} [skip ci]`);
+      await saveConfigUniversal(cachedConfig, `Toggle pipeline active to ${cachedConfig.pipeline_active}`);
     }
 
     // Start background polling and load unified config on start
     window.addEventListener('DOMContentLoaded', async () => {
+      // 1. Instant 0ms paint from local storage cache
+      try {
+        const stored = localStorage.getItem('autoimgpost_latest_config');
+        if (stored) {
+          cachedConfig = JSON.parse(stored);
+          cachedChannels = cachedConfig.channels || [];
+          updateHeaderStatus();
+          renderChannelsHub(true);
+        }
+      } catch(e) {}
+
+      // 2. Fetch fresh live config from GitHub Cloud (with zero CDN lag)
       await loadUnifiedConfig();
-      renderChannelsHub();
+      renderChannelsHub(true);
+
       if (isLocalEnv()) {
         pollTimer = setInterval(pollLiveLogs, 1500);
       }
