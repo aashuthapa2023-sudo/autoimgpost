@@ -146,29 +146,34 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
 
     # Branding Badge metrics
     branding_name = dest_page_name or badge_label or kwargs.get("source_tag", "")
-    badge_font = get_font(22, bold=True)
+    badge_font = get_font(28, bold=True)
     dest_badge_text = f"●  {branding_name.upper()}  ●" if branding_name else ""
     if branding_name:
         try:
             bbox = temp_draw.textbbox((0, 0), dest_badge_text, font=badge_font)
-            bw = bbox[2] - bbox[0] + 36
-            bh = bbox[3] - bbox[1] + 16
+            text_w = bbox[2] - bbox[0]
+            text_h = bbox[3] - bbox[1]
+            bw = text_w + 52
+            bh = text_h + 22
         except Exception:
-            bw, bh = 250, 40
+            bw, bh = 280, 50
+            text_w, text_h = 220, 30
+        radius = bh // 2
         bx = (target_w - bw) // 2
-        by = start_text_y - bh - 20
+        by = start_text_y - bh - 26
     else:
         bx, by, bw, bh = 0, start_text_y, 0, 0
+        text_w, text_h, radius = 0, 0, 0
 
     # 2. Smooth Exponential Bottom Vignette placed downside
-    # Starts gently at least 68% height (leaving upper ~920px 100% crystal clear)
-    start_y = max(int(target_h * 0.68), by - 55)
-    solid_y = min(target_h - 20, start_text_y - 10)
+    # Starts gently at 58% height, solid black right above the branding badge
+    start_y = max(int(target_h * 0.58), by - 120)
+    solid_y = by - 12
 
     for y in range(start_y, target_h):
         if y < solid_y:
             t = (y - start_y) / float(solid_y - start_y)
-            alpha = (t ** 1.8) * 1.0
+            alpha = (t ** 1.6) * 1.0
         else:
             alpha = 1.0
         resized[y, :] = (1.0 - alpha) * resized[y, :] + alpha * np.array([6, 6, 8])
@@ -186,10 +191,18 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
 
     highlight_rgb = hex_to_rgb(highlight_hex)
 
-    # Render Branding Badge
+    # Render High-Visibility Studio Branding Badge
     if branding_name:
-        draw.rounded_rectangle([bx, by, bx + bw, by + bh], radius=8, fill=(18, 18, 22), outline=highlight_rgb, width=2)
-        draw.text((bx + 18, by + 8), dest_badge_text, font=badge_font, fill=highlight_rgb)
+        # Multi-layer 3D soft drop shadow for depth
+        draw.rounded_rectangle([bx, by + 4, bx + bw, by + bh + 4], radius=radius, fill=(0, 0, 0, 160))
+        # Solid vibrant accent pill container (pops brilliantly on dark gradient)
+        draw.rounded_rectangle([bx, by, bx + bw, by + bh], radius=radius, fill=highlight_rgb, outline=(255, 255, 255), width=2)
+        # Contrast-aware text: Jet black on bright colors, pure white on deep colors
+        luminance = (0.299 * highlight_rgb[0] + 0.587 * highlight_rgb[1] + 0.114 * highlight_rgb[2]) / 255.0
+        badge_text_color = (12, 12, 16) if luminance > 0.45 else (255, 255, 255)
+        tx = bx + (bw - text_w) // 2
+        ty = by + (bh - text_h) // 2 - 2
+        draw.text((tx, ty), dest_badge_text, font=badge_font, fill=badge_text_color)
 
     for line in normalized_lines:
         line_w = measure_line_width(draw, line, title_font)
