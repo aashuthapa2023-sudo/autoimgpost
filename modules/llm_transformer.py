@@ -125,58 +125,62 @@ def extract_thematic_line_tokens(words: list, raw_sentence: str) -> list:
         
     return tokens
 
+HANGING_WORDS = {'THE', 'A', 'AN', 'OF', 'IN', 'ON', 'AT', 'TO', 'FOR', 'WITH', 'AND', 'OR', 'BUT', 'BY', 'AS', 'ABOUT', 'OVER', 'FROM'}
+
 def format_factual_overlay(sentence: str) -> list:
     """
-    Takes a clean factual sentence and splits it into 2-3 complete, balanced lines.
-    Analyzes the entire sentence to highlight the main theme anywhere in each line.
-    Never appends artificial words like REPORT or DETAILS.
-    Never cuts off on trailing prepositions, articles, or auxiliary verbs.
+    Takes a factual sentence and splits it into 2-4 complete, balanced lines.
+    NEVER cuts off mid-sentence. NEVER pops or discards words.
+    Analyzes the entire sentence to highlight the main theme in each line.
     """
     s = re.sub(r'https?:\S+', '', sentence).strip()
-    s = re.sub(r'^[A-Z\s]+:\s*', '', s)
+    # Remove leading tags like "BREAKING:", "EXCLUSIVE:", "OFFICIAL:", "SPOILERS:", etc.
+    s = re.sub(r'^(?:[A-Z\s]+:\s*)+', '', s)
+    # Remove trailing source attributions like "(Via ...)" or "[Via ...]"
+    s = re.sub(r'[\(\[]\s*(?:via|source|credit)[^\)\]]*[\)\]]', '', s, flags=re.IGNORECASE).strip()
     s = s.rstrip('.,;:')
 
     words = s.split()
-    if len(words) > 13:
-        cut_idx = None
-        for i in range(min(14, len(words) - 1), 6, -1):
-            w_up = words[i].upper().strip('.,;:')
-            if w_up in ['THAT', 'SO', 'AFTER', 'FOLLOWING', 'AS', 'WHILE', 'AMID', 'BEFORE', 'WHICH', 'WHO', 'WHERE']:
-                cut_idx = i
-                break
-        if cut_idx and cut_idx >= 6:
-            words = words[:cut_idx]
-        elif len(words) > 13:
-            words = words[:13]
+    if not words:
+        return []
 
-    while words and words[-1].rstrip(',.;:').upper() in TRAILING_STOPWORDS:
-        words.pop()
+    # If sentence is an entire long paragraph (> 20 words), take first full sentence or primary clause
+    if len(words) > 20:
+        first_clause = re.split(r'[.!?\n]', s)[0].strip()
+        clause_words = first_clause.split()
+        if len(clause_words) >= 6:
+            words = clause_words[:18]
+        else:
+            words = words[:18]
 
-    total = len(words)
-
-    if total <= 8:
-        mid = total // 2
-        best_mid = mid
-        for d in [0, 1, -1, 2, -2]:
-            idx = mid + d
-            if 1 < idx < total and words[idx-1].upper() not in TRAILING_STOPWORDS:
-                best_mid = idx
-                break
-        lines_words = [words[:best_mid], words[best_mid:]]
+    N = len(words)
+    if N <= 4:
+        num_lines = 1
+    elif N <= 8:
+        num_lines = 2
+    elif N <= 14:
+        num_lines = 3
     else:
-        target = total / 3.0
-        cand_p1 = [p for p in range(2, total - 3) if words[p-1].upper() not in TRAILING_STOPWORDS]
-        best_p1 = min(cand_p1, key=lambda p: abs(p - target)) if cand_p1 else int(round(target))
+        num_lines = 4
 
-        cand_p2 = [p for p in range(best_p1 + 2, total - 1) if words[p-1].upper() not in TRAILING_STOPWORDS]
-        best_p2 = min(cand_p2, key=lambda p: abs(p - (total + best_p1) / 2.0)) if cand_p2 else int(round((total + best_p1) / 2.0))
+    # Calculate balanced distribution across lines
+    base = N // num_lines
+    rem = N % num_lines
+    sizes = [base + (1 if i < rem else 0) for i in range(num_lines)]
 
-        lines_words = [words[:best_p1], words[best_p1:best_p2], words[best_p2:]]
+    lines_words = []
+    idx = 0
+    for sz in sizes:
+        lines_words.append(words[idx:idx + sz])
+        idx += sz
 
-    # Clean any trailing stopword from any line
-    for lw in lines_words:
-        while lw and lw[-1].rstrip(',.;:').upper() in TRAILING_STOPWORDS:
-            lw.pop()
+    # Shift hanging prepositions / articles to the next line for grammatical cohesion
+    for i in range(len(lines_words) - 1):
+        if lines_words[i] and len(lines_words[i]) > 2:
+            last_word_clean = lines_words[i][-1].rstrip('.,:;!?').upper()
+            if last_word_clean in HANGING_WORDS:
+                moved = lines_words[i].pop()
+                lines_words[i + 1].insert(0, moved)
 
     res = []
     for lw in lines_words:

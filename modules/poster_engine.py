@@ -30,8 +30,11 @@ def hex_to_rgb(hex_str: str) -> tuple:
     return tuple(int(hex_str[i:i+2], 16) for i in (0, 2, 4))
 
 def get_font(size: int, bold: bool = True) -> ImageFont.FreeTypeFont:
+    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    bundled_font = os.path.join(repo_root, "assets", "fonts", "bold_headline.ttf")
     font_candidates = [
-        r"C:\Windows\Fonts\impact.ttf",
+        bundled_font,
+        r"C:\Windows\Fonts\ariblk.ttf",
         r"C:\Windows\Fonts\arialbd.ttf",
         r"C:\Windows\Fonts\segoeuib.ttf",
         r"C:\Windows\Fonts\tahomabd.ttf",
@@ -69,7 +72,7 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     - Destination page branding badge (using individual destination page name).
     - Randomized visible highlight colors: Red, Light Blue, Dark Yellow, Cyan, Emerald, Coral.
     - NO attribution footer line.
-    - Smooth deep gradient fade concealing original captions cleanly.
+    - Smooth deep gradient fade placed downside concealing original captions cleanly.
     """
     target_w, target_h = 1080, 1350
     h, w, _ = base_img.shape
@@ -89,38 +92,11 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
 
     resized = cv2.resize(cropped, (target_w, target_h), interpolation=cv2.INTER_LANCZOS4)
 
-    # 1. Atmospheric Top Vignette (top 12%)
-    top_fade_h = int(target_h * 0.12)
+    # 1. Atmospheric Top Vignette (top 10%)
+    top_fade_h = int(target_h * 0.10)
     for y in range(top_fade_h):
-        alpha = (1.0 - (y / top_fade_h)) * 0.35
+        alpha = (1.0 - (y / top_fade_h)) * 0.25
         resized[y, :] = (1.0 - alpha) * resized[y, :] + alpha * np.array([8, 8, 10])
-
-    # 2. Smooth Exponential Bottom Vignette
-    # Eradicates all source overlay text, source captions, and badges.
-    # Starts gracefully at 48% height and reaches 100% solid, deep black at 66% height,
-    # well above the destination branding badge at 71% height.
-    start_y = int(target_h * 0.48)
-    solid_y = int(target_h * 0.66)
-
-    for y in range(start_y, target_h):
-        if y < solid_y:
-            t = (y - start_y) / float(solid_y - start_y)
-            alpha = (t ** 1.6) * 1.0
-        else:
-            alpha = 1.0
-        resized[y, :] = (1.0 - alpha) * resized[y, :] + alpha * np.array([6, 6, 8])
-
-    pil_img = Image.fromarray(cv2.cvtColor(resized, cv2.COLOR_BGR2RGB))
-    # Dynamic Highlight Color Selection (Red, Light Blue, Dark Yellow, Cyan, Emerald, Coral)
-    if not highlight_hex or highlight_hex == "random" or kwargs.get("randomize_color", True):
-        if highlight_hex and highlight_hex.startswith("#") and highlight_hex.upper() not in ["#FFC83B", "#RANDOM"]:
-            pass # Keep explicit user-configured custom color if non-default
-        else:
-            seed = kwargs.get("post_id") or kwargs.get("seed") or output_path or dest_page_name
-            highlight_hex = pick_highlight_color(seed)
-
-    highlight_rgb = hex_to_rgb(highlight_hex)
-    draw = ImageDraw.Draw(pil_img)
 
     # Normalize lines into lists of token dicts
     normalized_lines = []
@@ -135,17 +111,18 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         elif isinstance(line, list):
             normalized_lines.append(line)
 
-    # 3. Center-Aligned Bold Typography matching user reference image
-    safe_margin = 80
-    safe_max_w = target_w - (safe_margin * 2) # 920px
+    # Pre-calculate typography layout to position the fade precisely downside
+    temp_img = Image.new("RGB", (target_w, target_h))
+    temp_draw = ImageDraw.Draw(temp_img)
+    safe_margin = 55
+    safe_max_w = target_w - (safe_margin * 2) # 970px
 
-    # Calculate optimal font size starting at 56px down to 26px
-    chosen_size = 56
-    for test_size in [56, 52, 48, 44, 40, 36, 32, 28, 26]:
+    chosen_size = 76
+    for test_size in [76, 70, 64, 58, 52, 48, 44]:
         f_test = get_font(test_size, bold=True)
         all_fit = True
         for line in normalized_lines:
-            line_w = measure_line_width(draw, line, f_test)
+            line_w = measure_line_width(temp_draw, line, f_test)
             if line_w > safe_max_w:
                 all_fit = False
                 break
@@ -155,29 +132,58 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         chosen_size = test_size
 
     title_font = get_font(chosen_size, bold=True)
-    line_spacing = int(chosen_size * 1.30)
+    line_spacing = int(chosen_size * 1.25)
     total_text_h = len(normalized_lines) * line_spacing
 
-    # Place text dynamically in the lower section with 90px bottom safe buffer
-    bottom_padding = 90
+    bottom_padding = 65
     start_text_y = target_h - bottom_padding - total_text_h
 
-    # 4. Individual Destination Page Name Branding Badge positioned above headline
+    # Branding Badge metrics
     branding_name = dest_page_name or badge_label or kwargs.get("source_tag", "")
+    badge_font = get_font(22, bold=True)
+    dest_badge_text = f"●  {branding_name.upper()}  ●" if branding_name else ""
     if branding_name:
-        badge_font = get_font(18, bold=True)
-        dest_badge_text = f"●  {branding_name.upper()}  ●"
         try:
-            bbox = draw.textbbox((0, 0), dest_badge_text, font=badge_font)
-            bw = bbox[2] - bbox[0] + 32
+            bbox = temp_draw.textbbox((0, 0), dest_badge_text, font=badge_font)
+            bw = bbox[2] - bbox[0] + 36
             bh = bbox[3] - bbox[1] + 16
         except Exception:
-            bw, bh = 240, 36
-
+            bw, bh = 250, 40
         bx = (target_w - bw) // 2
-        by = start_text_y - bh - 24
+        by = start_text_y - bh - 20
+    else:
+        bx, by, bw, bh = 0, start_text_y, 0, 0
+
+    # 2. Smooth Exponential Bottom Vignette placed downside
+    # Starts gently at least 68% height (leaving upper ~920px 100% crystal clear)
+    start_y = max(int(target_h * 0.68), by - 55)
+    solid_y = min(target_h - 20, start_text_y - 10)
+
+    for y in range(start_y, target_h):
+        if y < solid_y:
+            t = (y - start_y) / float(solid_y - start_y)
+            alpha = (t ** 1.8) * 1.0
+        else:
+            alpha = 1.0
+        resized[y, :] = (1.0 - alpha) * resized[y, :] + alpha * np.array([6, 6, 8])
+
+    pil_img = Image.fromarray(cv2.cvtColor(resized, cv2.COLOR_BGR2RGB))
+    draw = ImageDraw.Draw(pil_img)
+
+    # Dynamic Highlight Color Selection
+    if not highlight_hex or highlight_hex == "random" or kwargs.get("randomize_color", True):
+        if highlight_hex and highlight_hex.startswith("#") and highlight_hex.upper() not in ["#FFC83B", "#RANDOM"]:
+            pass
+        else:
+            seed = kwargs.get("post_id") or kwargs.get("seed") or output_path or dest_page_name
+            highlight_hex = pick_highlight_color(seed)
+
+    highlight_rgb = hex_to_rgb(highlight_hex)
+
+    # Render Branding Badge
+    if branding_name:
         draw.rounded_rectangle([bx, by, bx + bw, by + bh], radius=8, fill=(18, 18, 22), outline=highlight_rgb, width=2)
-        draw.text((bx + 16, by + 8), dest_badge_text, font=badge_font, fill=highlight_rgb)
+        draw.text((bx + 18, by + 8), dest_badge_text, font=badge_font, fill=highlight_rgb)
 
     for line in normalized_lines:
         line_w = measure_line_width(draw, line, title_font)
@@ -188,11 +194,10 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
             t_type = token.get("type", "white") if isinstance(token, dict) else "white"
             color = highlight_rgb if t_type == "highlight" else (255, 255, 255)
 
-            # Drop shadow for intense 3D clarity
-            draw.text((cur_x + 3, start_text_y + 3), t_str, font=title_font, fill=(0, 0, 0))
-            draw.text((cur_x + 1, start_text_y + 1), t_str, font=title_font, fill=(0, 0, 0))
-            # Main bold text
-            draw.text((cur_x, start_text_y), t_str, font=title_font, fill=color)
+            # Drop shadow with stroke for intense 3D clarity
+            draw.text((cur_x + 3, start_text_y + 4), t_str, font=title_font, fill=(0, 0, 0), stroke_width=3, stroke_fill=(0, 0, 0))
+            # Main extra-bold text with subtle dark stroke for razor-sharp legibility
+            draw.text((cur_x, start_text_y), t_str, font=title_font, fill=color, stroke_width=2, stroke_fill=(0, 0, 0))
 
             try:
                 t_bbox = draw.textbbox((cur_x, start_text_y), t_str, font=title_font)
