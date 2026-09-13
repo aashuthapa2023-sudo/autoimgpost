@@ -2,9 +2,11 @@ import os
 import json
 import re
 import requests
-from dotenv import load_dotenv
-
-load_dotenv()
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except Exception:
+    pass
 
 def build_system_prompt() -> str:
     return """You are a senior entertainment journalist and news editor crafting visually impactful, deeply detailed social media news articles for Facebook.

@@ -5,9 +5,11 @@ import time
 import shutil
 import traceback
 from datetime import datetime, timezone
-from dotenv import load_dotenv
-
-load_dotenv()
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except Exception:
+    pass
 
 from modules.ingestion import fetch_source_posts
 from modules.image_cleaner import (
