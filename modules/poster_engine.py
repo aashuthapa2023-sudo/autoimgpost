@@ -96,10 +96,10 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     resized = cv2.resize(cropped, (target_w, target_h), interpolation=cv2.INTER_LANCZOS4)
 
     # Post-upscale Super-Smooth pass: Eliminates all stretch pixelation, smoothing skin & backgrounds
-    resized_smooth = cv2.bilateralFilter(resized, d=7, sigmaColor=28, sigmaSpace=28)
+    resized_smooth = cv2.bilateralFilter(resized, d=5, sigmaColor=20, sigmaSpace=20)
     # Subtle unsharp mask for crystal-clear HD edges (eyes, hair, clothing contours)
-    blurred = cv2.GaussianBlur(resized_smooth, (0, 0), sigmaX=2.0)
-    resized = cv2.addWeighted(resized_smooth, 1.30, blurred, -0.30, 0)
+    blurred = cv2.GaussianBlur(resized_smooth, (0, 0), sigmaX=1.8)
+    resized = cv2.addWeighted(resized_smooth, 1.25, blurred, -0.25, 0)
 
     # 1. Atmospheric Top Vignette (top 10%)
     top_fade_h = int(target_h * 0.10)
@@ -126,8 +126,8 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     safe_margin = 60
     safe_max_w = target_w - (safe_margin * 2) # 960px
 
-    chosen_size = 60
-    for test_size in [60, 56, 52, 48, 44, 40, 36]:
+    chosen_size = 58
+    for test_size in [58, 54, 50, 46, 42, 38]:
         f_test = get_font(test_size, bold=True)
         all_fit = True
         for line in normalized_lines:
@@ -141,45 +141,45 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         chosen_size = test_size
 
     title_font = get_font(chosen_size, bold=True)
-    line_spacing = int(chosen_size * 1.16)
+    line_spacing = int(chosen_size * 1.15)
     total_text_h = len(normalized_lines) * line_spacing
 
     # Branding Badge metrics
     branding_name = dest_page_name or badge_label or kwargs.get("source_tag", "")
     badge_font = get_font(26, bold=True)
-    dest_badge_text = f"\u2022 {branding_name.upper()} \u2022" if branding_name else ""
+    dest_badge_text = f"• {branding_name.upper()} •" if branding_name else ""
     if branding_name:
         try:
             bbox = temp_draw.textbbox((0, 0), dest_badge_text, font=badge_font)
             text_w = bbox[2] - bbox[0]
             text_h = bbox[3] - bbox[1]
             bw = text_w + 36
-            bh = text_h + 16
+            bh = max(text_h + 16, 36)
         except Exception:
             bw, bh = 220, 36
             text_w, text_h = 180, 24
             bbox = (0, 4, 180, 28)
-        radius = 8
+        radius = bh // 2  # Classic smooth stadium pill
         bx = (target_w - bw) // 2
     else:
         bx, bw, bh = 0, 0, 0
         text_w, text_h, radius = 0, 0, 0
         bbox = (0, 0, 0, 0)
 
-    # 2. Smooth Exponential Bottom Vignette shifted down to give maximum space to the subject
+    # 2. Smooth Exponential Bottom Vignette shifted down to maximize visible subject area
     detected_black_y = None
-    y_scan_start = int(target_h * 0.65)
-    for y_chk in range(y_scan_start, target_h - 120):
+    y_scan_start = int(target_h * 0.72)
+    for y_chk in range(y_scan_start, target_h - 100):
         if np.mean(resized[y_chk, :]) < 16:
             detected_black_y = y_chk
             break
 
-    if detected_black_y and detected_black_y >= int(target_h * 0.66) and detected_black_y <= int(target_h * 0.75):
+    if detected_black_y and detected_black_y >= int(target_h * 0.72) and detected_black_y <= int(target_h * 0.80):
         solid_y = detected_black_y
     else:
-        solid_y = int(target_h * 0.71)
+        solid_y = int(target_h * 0.78)
 
-    start_y = int(target_h * 0.62)
+    start_y = int(target_h * 0.70)
 
     for y in range(start_y, target_h):
         if y < solid_y:
@@ -190,19 +190,19 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         resized[y, :] = (1.0 - alpha) * resized[y, :] + alpha * np.array([6, 6, 8])
 
     # Balanced vertical placement inside the solid black zone
-    avail_top = solid_y + 20
-    avail_bottom = target_h - 45
+    avail_top = solid_y + 12
+    avail_bottom = target_h - 32
     avail_h = avail_bottom - avail_top
-    gap = 22
+    gap = 18
     total_content_h = (bh + gap if branding_name else 0) + total_text_h
 
     if total_content_h <= avail_h:
         by = avail_top + (avail_h - total_content_h) // 2
         start_text_y = by + (bh + gap if branding_name else 0)
     else:
-        bottom_padding = 40
+        bottom_padding = 32
         start_text_y = target_h - bottom_padding - total_text_h
-        by = start_text_y - bh - 20
+        by = start_text_y - bh - 16
 
     pil_img = Image.fromarray(cv2.cvtColor(resized, cv2.COLOR_BGR2RGB))
     draw = ImageDraw.Draw(pil_img)
@@ -220,11 +220,9 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     # Render High-Visibility Studio Branding Badge matching reference
     if branding_name:
         # Rounded outline pill container with pure dark background
-        draw.rounded_rectangle([bx, by, bx + bw, by + bh], radius=radius, fill=(6, 6, 8), outline=highlight_rgb, width=2)
-        # Mathematically exact vertical & horizontal centering accounting for glyph offset bbox[0], bbox[1]
-        tx = bx + (bw - text_w) / 2.0 - bbox[0]
-        ty = by + (bh - text_h) / 2.0 - bbox[1]
-        draw.text((tx, ty), dest_badge_text, font=badge_font, fill=highlight_rgb)
+        draw.rounded_rectangle([bx, by, bx + bw, by + bh], radius=radius, fill=(10, 10, 14), outline=highlight_rgb, width=2)
+        # Mathematically exact vertical & horizontal centering in the pill box
+        draw.text((bx + bw / 2.0, by + bh / 2.0), dest_badge_text, font=badge_font, fill=highlight_rgb, anchor="mm")
 
     for line in normalized_lines:
         line_w = measure_line_width(draw, line, title_font)

@@ -235,16 +235,16 @@ def clean_lower_half_text_and_badges(img: np.ndarray) -> np.ndarray:
             center_x = bx + bw / 2.0
             # Centered or near-centered banner
             if abs(center_x - (w / 2.0)) < (w * 0.35):
-                found_badge_bottom = by + bh + 4
+                found_badge_bottom = max(int(h * 0.55), by - 4)
                 break
 
     if found_badge_bottom:
-        # All text below the source badge is wiped completely to pure black
+        # All old source badge and text below it is wiped cleanly to pure black
         out[found_badge_bottom:, :] = 0
         return out
 
-    # 2. If no prominent badge, detect if lower 38% is a dark banner with text edges
-    lower_start_y = int(h * 0.62)
+    # 2. If no prominent badge, detect if lower region is a dark banner with text edges
+    lower_start_y = int(h * 0.70)
     roi = img[lower_start_y:, :]
     gray_roi = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
     dark_ratio = np.count_nonzero(gray_roi < 45) / float(gray_roi.size)
