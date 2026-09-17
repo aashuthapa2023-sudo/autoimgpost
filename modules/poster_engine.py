@@ -95,11 +95,9 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
 
     resized = cv2.resize(cropped, (target_w, target_h), interpolation=cv2.INTER_LANCZOS4)
 
-    # Post-upscale Super-Smooth pass: Eliminates all stretch pixelation, smoothing skin & backgrounds
-    resized_smooth = cv2.bilateralFilter(resized, d=5, sigmaColor=20, sigmaSpace=20)
-    # Subtle unsharp mask for crystal-clear HD edges (eyes, hair, clothing contours)
-    blurred = cv2.GaussianBlur(resized_smooth, (0, 0), sigmaX=1.8)
-    resized = cv2.addWeighted(resized_smooth, 1.25, blurred, -0.25, 0)
+    # Subtle HD unsharp mask for razor-sharp edges and zero lag
+    blurred = cv2.GaussianBlur(resized, (0, 0), sigmaX=1.5)
+    resized = cv2.addWeighted(resized, 1.20, blurred, -0.20, 0)
 
     # 1. Atmospheric Top Vignette (top 10%)
     top_fade_h = int(target_h * 0.10)
@@ -166,20 +164,18 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         text_w, text_h, radius = 0, 0, 0
         bbox = (0, 0, 0, 0)
 
-    # 2. Smooth Exponential Bottom Vignette shifted down to maximize visible subject area
-    detected_black_y = None
-    y_scan_start = int(target_h * 0.72)
-    for y_chk in range(y_scan_start, target_h - 100):
-        if np.mean(resized[y_chk, :]) < 16:
-            detected_black_y = y_chk
-            break
-
-    if detected_black_y and detected_black_y >= int(target_h * 0.72) and detected_black_y <= int(target_h * 0.80):
-        solid_y = detected_black_y
+    # 2. Bottom Content Layout & Smooth Exponential Shadow starting right from red line (above badge)
+    gap = 18
+    bottom_padding = 30
+    start_text_y = target_h - bottom_padding - total_text_h
+    if branding_name:
+        by = start_text_y - bh - gap
     else:
-        solid_y = int(target_h * 0.78)
+        by = start_text_y
 
-    start_y = int(target_h * 0.70)
+    # Faded gradient shadow starts right at the red line (22px above the signature/page name box)
+    start_y = max(int(target_h * 0.68), by - 22)
+    solid_y = start_text_y - 6
 
     for y in range(start_y, target_h):
         if y < solid_y:
@@ -188,21 +184,6 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         else:
             alpha = 1.0
         resized[y, :] = (1.0 - alpha) * resized[y, :] + alpha * np.array([6, 6, 8])
-
-    # Balanced vertical placement inside the solid black zone
-    avail_top = solid_y + 12
-    avail_bottom = target_h - 32
-    avail_h = avail_bottom - avail_top
-    gap = 18
-    total_content_h = (bh + gap if branding_name else 0) + total_text_h
-
-    if total_content_h <= avail_h:
-        by = avail_top + (avail_h - total_content_h) // 2
-        start_text_y = by + (bh + gap if branding_name else 0)
-    else:
-        bottom_padding = 32
-        start_text_y = target_h - bottom_padding - total_text_h
-        by = start_text_y - bh - 16
 
     pil_img = Image.fromarray(cv2.cvtColor(resized, cv2.COLOR_BGR2RGB))
     draw = ImageDraw.Draw(pil_img)

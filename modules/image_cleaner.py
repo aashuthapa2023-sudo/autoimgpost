@@ -231,11 +231,11 @@ def clean_lower_half_text_and_badges(img: np.ndarray) -> np.ndarray:
 
     for c in cnts:
         bx, by, bw, bh = cv2.boundingRect(c)
-        if by >= y_half and 50 <= bw <= int(w * 0.45) and 18 <= bh <= int(h * 0.12):
+        if by >= int(h * 0.72) and 50 <= bw <= int(w * 0.45) and 18 <= bh <= int(h * 0.10):
             center_x = bx + bw / 2.0
             # Centered or near-centered banner
             if abs(center_x - (w / 2.0)) < (w * 0.35):
-                found_badge_bottom = max(int(h * 0.55), by - 4)
+                found_badge_bottom = by - 2
                 break
 
     if found_badge_bottom:
@@ -244,7 +244,7 @@ def clean_lower_half_text_and_badges(img: np.ndarray) -> np.ndarray:
         return out
 
     # 2. If no prominent badge, detect if lower region is a dark banner with text edges
-    lower_start_y = int(h * 0.70)
+    lower_start_y = int(h * 0.76)
     roi = img[lower_start_y:, :]
     gray_roi = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
     dark_ratio = np.count_nonzero(gray_roi < 45) / float(gray_roi.size)
