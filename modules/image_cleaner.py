@@ -231,7 +231,7 @@ def clean_lower_half_text_and_badges(img: np.ndarray) -> np.ndarray:
 
     for c in cnts:
         bx, by, bw, bh = cv2.boundingRect(c)
-        if by >= int(h * 0.72) and 50 <= bw <= int(w * 0.45) and 18 <= bh <= int(h * 0.10):
+        if by >= int(h * 0.58) and 40 <= bw <= int(w * 0.40) and 16 <= bh <= int(h * 0.10):
             center_x = bx + bw / 2.0
             # Centered or near-centered banner
             if abs(center_x - (w / 2.0)) < (w * 0.35):

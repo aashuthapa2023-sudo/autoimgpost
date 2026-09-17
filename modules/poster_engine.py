@@ -80,30 +80,11 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     target_w, target_h = 1080, 1350
     h, w, _ = base_img.shape
 
-    # 4:5 center-weighted crop
-    target_ratio = 4.0 / 5.0
-    current_ratio = w / h
-
-    if current_ratio > target_ratio:
-        new_w = int(h * target_ratio)
-        x_start = (w - new_w) // 2
-        cropped = base_img[:, x_start:x_start + new_w]
-    else:
-        new_h = int(w / target_ratio)
-        y_start = (h - new_h) // 2
-        cropped = base_img[y_start:y_start + new_h, :]
-
-    resized = cv2.resize(cropped, (target_w, target_h), interpolation=cv2.INTER_LANCZOS4)
-
-    # Subtle HD unsharp mask for razor-sharp edges and zero lag
-    blurred = cv2.GaussianBlur(resized, (0, 0), sigmaX=1.5)
-    resized = cv2.addWeighted(resized, 1.20, blurred, -0.20, 0)
-
-    # 1. Atmospheric Top Vignette (top 10%)
-    top_fade_h = int(target_h * 0.10)
-    for y in range(top_fade_h):
-        alpha = (1.0 - (y / top_fade_h)) * 0.25
-        resized[y, :] = (1.0 - alpha) * resized[y, :] + alpha * np.array([8, 8, 10])
+    # Pre-calculate typography & badge layout
+    temp_img = Image.new("RGB", (target_w, target_h))
+    temp_draw = ImageDraw.Draw(temp_img)
+    safe_margin = 60
+    safe_max_w = target_w - (safe_margin * 2) # 960px
 
     # Normalize lines into lists of token dicts
     normalized_lines = []
@@ -118,14 +99,8 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         elif isinstance(line, list):
             normalized_lines.append(line)
 
-    # Pre-calculate typography layout to position the fade precisely downside
-    temp_img = Image.new("RGB", (target_w, target_h))
-    temp_draw = ImageDraw.Draw(temp_img)
-    safe_margin = 60
-    safe_max_w = target_w - (safe_margin * 2) # 960px
-
-    chosen_size = 58
-    for test_size in [58, 54, 50, 46, 42, 38]:
+    chosen_size = 56
+    for test_size in [56, 52, 48, 44, 40, 36]:
         f_test = get_font(test_size, bold=True)
         all_fit = True
         for line in normalized_lines:
@@ -164,9 +139,46 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         text_w, text_h, radius = 0, 0, 0
         bbox = (0, 0, 0, 0)
 
-    # 2. Bottom Content Layout & Smooth Exponential Shadow starting right from red line (above badge)
     gap = 18
     bottom_padding = 30
+    total_bottom_h = total_text_h + (bh + gap if branding_name else 0) + bottom_padding
+
+    # ZERO CROP, ZERO SQUEEZE, ZERO STRETCH:
+    # Scale original image with 100% preserved aspect ratio
+    max_img_h = max(int(target_h * 0.76), target_h - total_bottom_h + 20)
+    scale_w = target_w / float(w)
+    scaled_h = int(h * scale_w)
+
+    if scaled_h <= max_img_h:
+        scale = scale_w
+        scaled_w = target_w
+        scaled_h = int(h * scale)
+        x_offset = 0
+        y_offset = 0
+    else:
+        scale = max_img_h / float(h)
+        scaled_w = int(w * scale)
+        scaled_h = int(h * scale)
+        x_offset = (target_w - scaled_w) // 2
+        y_offset = 0
+
+    resized_art = cv2.resize(base_img, (scaled_w, scaled_h), interpolation=cv2.INTER_LANCZOS4)
+
+    # Subtle HD unsharp mask for crystal-clear edges
+    blurred = cv2.GaussianBlur(resized_art, (0, 0), sigmaX=1.5)
+    resized_art = cv2.addWeighted(resized_art, 1.20, blurred, -0.20, 0)
+
+    canvas = np.zeros((target_h, target_w, 3), dtype=np.uint8)
+    canvas[:, :] = np.array([6, 6, 8]) # Pure dark studio background
+    canvas[y_offset:y_offset + scaled_h, x_offset:x_offset + scaled_w] = resized_art
+
+    # Atmospheric Top Vignette (top 8%)
+    top_fade_h = int(target_h * 0.08)
+    for y in range(top_fade_h):
+        alpha = (1.0 - (y / top_fade_h)) * 0.20
+        canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([8, 8, 10])
+
+    # Bottom Content Layout & Smooth Exponential Shadow starting right from red line (above badge)
     start_text_y = target_h - bottom_padding - total_text_h
     if branding_name:
         by = start_text_y - bh - gap
@@ -174,7 +186,7 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         by = start_text_y
 
     # Faded gradient shadow starts right at the red line (22px above the signature/page name box)
-    start_y = max(int(target_h * 0.68), by - 22)
+    start_y = max(0, by - 22)
     solid_y = start_text_y - 6
 
     for y in range(start_y, target_h):
@@ -183,9 +195,9 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
             alpha = (t ** 1.8)
         else:
             alpha = 1.0
-        resized[y, :] = (1.0 - alpha) * resized[y, :] + alpha * np.array([6, 6, 8])
+        canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([6, 6, 8])
 
-    pil_img = Image.fromarray(cv2.cvtColor(resized, cv2.COLOR_BGR2RGB))
+    pil_img = Image.fromarray(cv2.cvtColor(canvas, cv2.COLOR_BGR2RGB))
     draw = ImageDraw.Draw(pil_img)
 
     # Dynamic Highlight Color Selection
