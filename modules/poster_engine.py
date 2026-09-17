@@ -99,8 +99,8 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         elif isinstance(line, list):
             normalized_lines.append(line)
 
-    chosen_size = 56
-    for test_size in [56, 52, 48, 44, 40, 36]:
+    chosen_size = 58
+    for test_size in [58, 54, 50, 46, 42, 38]:
         f_test = get_font(test_size, bold=True)
         all_fit = True
         for line in normalized_lines:
@@ -114,24 +114,24 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         chosen_size = test_size
 
     title_font = get_font(chosen_size, bold=True)
-    line_spacing = int(chosen_size * 1.15)
+    line_spacing = int(chosen_size * 1.16)
     total_text_h = len(normalized_lines) * line_spacing
 
     # Branding Badge metrics
     branding_name = dest_page_name or badge_label or kwargs.get("source_tag", "")
-    badge_font = get_font(26, bold=True)
+    badge_font = get_font(24, bold=True)
     dest_badge_text = f"• {branding_name.upper()} •" if branding_name else ""
     if branding_name:
         try:
             bbox = temp_draw.textbbox((0, 0), dest_badge_text, font=badge_font)
             text_w = bbox[2] - bbox[0]
             text_h = bbox[3] - bbox[1]
-            bw = text_w + 36
-            bh = max(text_h + 16, 36)
+            bw = text_w + 32
+            bh = max(text_h + 14, 32)
         except Exception:
-            bw, bh = 220, 36
-            text_w, text_h = 180, 24
-            bbox = (0, 4, 180, 28)
+            bw, bh = 220, 32
+            text_w, text_h = 180, 22
+            bbox = (0, 4, 180, 26)
         radius = bh // 2  # Classic smooth stadium pill
         bx = (target_w - bw) // 2
     else:
@@ -139,29 +139,10 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         text_w, text_h, radius = 0, 0, 0
         bbox = (0, 0, 0, 0)
 
-    gap = 18
-    bottom_padding = 30
-    total_bottom_h = total_text_h + (bh + gap if branding_name else 0) + bottom_padding
-
-    # ZERO CROP, ZERO SQUEEZE, ZERO STRETCH:
-    # Scale original image with 100% preserved aspect ratio
-    max_img_h = max(int(target_h * 0.76), target_h - total_bottom_h + 20)
-    scale_w = target_w / float(w)
-    scaled_h = int(h * scale_w)
-
-    if scaled_h <= max_img_h:
-        scale = scale_w
-        scaled_w = target_w
-        scaled_h = int(h * scale)
-        x_offset = 0
-        y_offset = 0
-    else:
-        scale = max_img_h / float(h)
-        scaled_w = int(w * scale)
-        scaled_h = int(h * scale)
-        x_offset = (target_w - scaled_w) // 2
-        y_offset = 0
-
+    # Scale original image to fill canvas width without any crop or distortion
+    scale = target_w / float(w)
+    scaled_w = target_w
+    scaled_h = int(h * scale)
     resized_art = cv2.resize(base_img, (scaled_w, scaled_h), interpolation=cv2.INTER_LANCZOS4)
 
     # Subtle HD unsharp mask for crystal-clear edges
@@ -170,7 +151,7 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
 
     canvas = np.zeros((target_h, target_w, 3), dtype=np.uint8)
     canvas[:, :] = np.array([6, 6, 8]) # Pure dark studio background
-    canvas[y_offset:y_offset + scaled_h, x_offset:x_offset + scaled_w] = resized_art
+    canvas[:min(target_h, scaled_h), :] = resized_art[:min(target_h, scaled_h), :]
 
     # Atmospheric Top Vignette (top 8%)
     top_fade_h = int(target_h * 0.08)
@@ -178,16 +159,9 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         alpha = (1.0 - (y / top_fade_h)) * 0.20
         canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([8, 8, 10])
 
-    # Bottom Content Layout & Smooth Exponential Shadow starting right from red line (above badge)
-    start_text_y = target_h - bottom_padding - total_text_h
-    if branding_name:
-        by = start_text_y - bh - gap
-    else:
-        by = start_text_y
-
-    # Faded gradient shadow starts right at the red line (22px above the signature/page name box)
-    start_y = max(0, by - 22)
-    solid_y = start_text_y - 6
+    # Smooth exponential bottom gradient matching reference (shifted slightly down)
+    start_y = int(target_h * 0.60)
+    solid_y = int(target_h * 0.70)
 
     for y in range(start_y, target_h):
         if y < solid_y:
@@ -196,6 +170,22 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         else:
             alpha = 1.0
         canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([6, 6, 8])
+
+    gap = 22
+    total_content_h = (bh + gap if branding_name else 0) + total_text_h
+
+    # Centered vertical placement inside solid black zone
+    avail_top = solid_y + 16
+    avail_bottom = target_h - 40
+    avail_h = avail_bottom - avail_top
+
+    if total_content_h <= avail_h:
+        by = avail_top + (avail_h - total_content_h) // 2
+        start_text_y = by + (bh + gap if branding_name else 0)
+    else:
+        bottom_padding = 36
+        start_text_y = target_h - bottom_padding - total_text_h
+        by = start_text_y - bh - 18
 
     pil_img = Image.fromarray(cv2.cvtColor(canvas, cv2.COLOR_BGR2RGB))
     draw = ImageDraw.Draw(pil_img)
