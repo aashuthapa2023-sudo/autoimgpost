@@ -159,14 +159,14 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         alpha = (1.0 - (y / top_fade_h)) * 0.20
         canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([8, 8, 10])
 
-    # Smooth exponential bottom gradient matching reference (shifted slightly down)
-    start_y = int(target_h * 0.60)
-    solid_y = int(target_h * 0.70)
+    # Gradient shifted down — fades gently from transparent at top to solid black at bottom
+    start_y = int(target_h * 0.72)   # gradient fade begins at 72% height
+    solid_y = int(target_h * 0.84)   # fully solid black from 84% downward
 
     for y in range(start_y, target_h):
         if y < solid_y:
             t = (y - start_y) / float(solid_y - start_y)
-            alpha = (t ** 1.8)
+            alpha = t ** 2.4   # smooth power curve: transparent up top, solid at bottom
         else:
             alpha = 1.0
         canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([6, 6, 8])
@@ -175,7 +175,7 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     total_content_h = (bh + gap if branding_name else 0) + total_text_h
 
     # Centered vertical placement inside solid black zone
-    avail_top = solid_y + 16
+    avail_top = solid_y + 12
     avail_bottom = target_h - 40
     avail_h = avail_bottom - avail_top
 
@@ -200,25 +200,35 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
 
     highlight_rgb = hex_to_rgb(highlight_hex)
 
-    # Render High-Visibility Studio Branding Badge matching reference
+    # Render High-Visibility Studio Branding Badge — centered pill
     if branding_name:
-        # Rounded outline pill container with pure dark background
         draw.rounded_rectangle([bx, by, bx + bw, by + bh], radius=radius, fill=(10, 10, 14), outline=highlight_rgb, width=2)
-        # Mathematically exact vertical & horizontal centering in the pill box
         draw.text((bx + bw / 2.0, by + bh / 2.0), dest_badge_text, font=badge_font, fill=highlight_rgb, anchor="mm")
 
-    for line in normalized_lines:
-        line_w = measure_line_width(draw, line, title_font)
-        cur_x = (target_w - line_w) // 2  # EXACT CENTER ALIGNMENT
+    center_x = target_w // 2  # Fixed horizontal center for all lines
 
+    for line in normalized_lines:
+        # Collect tokens as (text, type) pairs
+        full_line_tokens = []
         for token in line:
             t_str = token.get("text", "") if isinstance(token, dict) else str(token)
             t_type = token.get("type", "white") if isinstance(token, dict) else "white"
+            full_line_tokens.append((t_str, t_type))
+
+        # Measure total rendered width of this line for perfect center alignment
+        total_line_w = 0
+        for t_str, _ in full_line_tokens:
+            try:
+                bbox = draw.textbbox((0, 0), t_str, font=title_font)
+                total_line_w += bbox[2] - bbox[0]
+            except Exception:
+                total_line_w += len(t_str) * int(chosen_size * 0.55)
+
+        cur_x = center_x - total_line_w // 2  # Offset so the whole line is centered
+
+        for t_str, t_type in full_line_tokens:
             color = highlight_rgb if t_type == "highlight" else (255, 255, 255)
-
-            # Crisp Impact lettering directly on pure solid black background matching reference
             draw.text((cur_x, start_text_y), t_str, font=title_font, fill=color, stroke_width=1, stroke_fill=(0, 0, 0))
-
             try:
                 t_bbox = draw.textbbox((cur_x, start_text_y), t_str, font=title_font)
                 cur_x += (t_bbox[2] - t_bbox[0])

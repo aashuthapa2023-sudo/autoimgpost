@@ -31,6 +31,13 @@ from modules.llm_transformer import generate_social_payload
 from modules.poster_engine import render_final_poster
 from modules.publisher import publish_to_facebook
 from modules.notifier import send_telegram_alert
+try:
+    from modules.web_scraper import fetch_web_news, get_channel_category
+    WEB_SCRAPER_AVAILABLE = True
+except ImportError:
+    WEB_SCRAPER_AVAILABLE = False
+    def fetch_web_news(*a, **kw): return []
+    def get_channel_category(n): return "mixed"
 
 CONFIG_FILE = "config.json"
 STATE_FILE = "state.json"
@@ -241,47 +248,67 @@ def run_pipeline(mode="run", target_channel="all"):
             continue
 
         now_current = int(time.time())
-        cutoff_24h = now_current - 86400
+        cutoff_24h  = now_current - 86400       # 24 hours ago
+        cutoff_72h  = now_current - 259200      # 72 hours ago
 
-        # 2. STRICT 24-HOUR FRESHNESS FILTER: Only consider genuine posts published within the last 24 hours
-        recent_24h_posts = [
-            p for p in candidate_posts
-            if p.get("created_time", 0) >= cutoff_24h
-        ]
+        # 2. FRESHNESS TIERS — fresh first, older as fallback, web as last resort
+        tier1_posts = [p for p in candidate_posts if p.get("created_time", 0) >= cutoff_24h]   # <24h FB posts
+        tier2_posts = [p for p in candidate_posts if cutoff_72h <= p.get("created_time", 0) < cutoff_24h]  # 24-72h FB posts
 
-        # 3. IDENTIFY UNPOSTED RECENT IMAGES (CROSS-PAGE UNIQUE)
-        unposted_recent = []
-        for p in recent_24h_posts:
-            pid = str(p.get("post_id", ""))
-            photo_id = str(p.get("photo_id", ""))
-            cap_fp = str(p.get("caption_fingerprint", ""))
-            story_fp = compute_story_fingerprint(p.get("caption", ""))
-            img_url = str(p.get("image_url", ""))
+        # 3. IDENTIFY UNPOSTED UNIQUE POSTS in each tier (cross-page dedup)
+        def filter_unposted(posts):
+            result = []
+            for p in posts:
+                pid      = str(p.get("post_id", ""))
+                photo_id = str(p.get("photo_id", ""))
+                cap_fp   = str(p.get("caption_fingerprint", ""))
+                story_fp = compute_story_fingerprint(p.get("caption", ""))
+                img_url  = str(p.get("image_url", ""))
+                is_dup = (
+                    pid in all_published_ids or
+                    photo_id in all_published_ids or
+                    cap_fp in all_published_ids or
+                    (img_url and img_url in global_processed_urls) or
+                    (story_fp and story_fp in global_story_fingerprints)
+                )
+                if not is_dup:
+                    result.append(p)
+                else:
+                    print(f"     [CROSS-PAGE DEDUP] Story '{p.get('caption', '')[:42]}...' already published. Skipping.")
+            return result
 
-            # MUST NOT be posted to THIS channel OR ANY OTHER channel!
-            is_duplicate = (
-                pid in all_published_ids or
-                photo_id in all_published_ids or
-                cap_fp in all_published_ids or
-                (img_url and img_url in global_processed_urls) or
-                (story_fp and story_fp in global_story_fingerprints)
+        unposted_t1 = filter_unposted(tier1_posts)
+        unposted_t2 = filter_unposted(tier2_posts)
+
+        print(f" [FRESHNESS AUDIT] FB <24h: {len(tier1_posts)} ({len(unposted_t1)} new)  |  FB 24-72h: {len(tier2_posts)} ({len(unposted_t2)} new)")
+
+        # 4. WEB NEWS FALLBACK — fetch from internet when Facebook sources are dry
+        web_posts = []
+        web_needed = len(unposted_t1) == 0  # primary trigger: no fresh FB posts at all
+        if web_needed and WEB_SCRAPER_AVAILABLE:
+            category = get_channel_category(channel_name)
+            print(f" [WEB FALLBACK] No fresh FB posts available. Fetching {category.upper()} news from internet...")
+            web_posts = fetch_web_news(
+                category=category,
+                processed_ids=list(all_published_ids),
+                global_story_fps=list(global_story_fingerprints),
+                limit=10,
+                max_hours_old=48,
             )
-
-            if not is_duplicate:
-                unposted_recent.append(p)
+            if web_posts:
+                print(f" [WEB FALLBACK] Found {len(web_posts)} fresh internet article(s) to fill the queue.")
             else:
-                print(f"     [CROSS-PAGE DEDUP] Story '{p.get('caption', '')[:42]}...' already published to a channel. Skipping to keep content unique across all pages.")
+                print(f" [WEB FALLBACK] No suitable web articles found either.")
 
-        print(f" [24-HOUR AUDIT] Recent posts (< 24 hrs): {len(recent_24h_posts)} | Unposted & Unique across all channels: {len(unposted_recent)}")
+        # Build final priority-ordered candidate list: fresh FB first → older FB → web
+        unposted_recent = unposted_t1 or unposted_t2 or web_posts
 
-        # RULE: "always use recent post only, dont use post older than 24 hrs"
-        if not recent_24h_posts:
-            print(f" [STRICT 24H GATE] No posts published within the last 24 hours found for '{channel_name}'. (Rule: Posts older than 24h are prohibited). Skipping channel.")
+        if not unposted_t1 and not unposted_t2 and not web_posts:
+            print(f" [UP TO DATE] All content (FB + internet) already published or no new content available for '{channel_name}'.")
             continue
 
-        # RULE: "if all of the recent posts (Not older than 24 hrs) is there dont post"
         if not unposted_recent:
-            print(f" [UP TO DATE] All recent posts (< 24 hrs) are already published across managed channels. Nothing new to post for '{channel_name}'.")
+            print(f" [UP TO DATE] Nothing new to post for '{channel_name}'.")
             continue
 
         # 4. STRICT 1-HOUR INTERVAL CADENCE:
