@@ -159,9 +159,9 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         alpha = (1.0 - (y / top_fade_h)) * 0.20
         canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([8, 8, 10])
 
-    # Cinematic Gradient: Fades smoothly from upward (52%) down to solid black (74%)
-    start_y = int(target_h * 0.52)   # Smooth shadow begins fading from upward at 52% height
-    solid_y = int(target_h * 0.74)   # Solid studio black zone begins at 74% height (shifted downwards)
+    # Cinematic Gradient: Starts fading right above the headline block (67% height) down to solid black (77% height)
+    start_y = int(target_h * 0.67)   # Faded dark gradient starts right above the badge/headline zone (~67%)
+    solid_y = int(target_h * 0.77)   # Solid studio black zone begins at 77% height (shifted downwards)
 
     for y in range(start_y, target_h):
         if y < solid_y:
@@ -171,19 +171,19 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
             alpha = 1.0
         canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([6, 6, 8])
 
-    gap = 20
+    gap = 18
     total_content_h = (bh + gap if branding_name else 0) + total_text_h
 
     # Balanced vertical centering inside the lower solid black zone
-    avail_top = solid_y + 14
-    avail_bottom = target_h - 34
+    avail_top = solid_y + 8
+    avail_bottom = target_h - 32
     avail_h = avail_bottom - avail_top
 
     if total_content_h <= avail_h:
         by = avail_top + (avail_h - total_content_h) // 2
         start_text_y = by + (bh + gap if branding_name else 0)
     else:
-        bottom_padding = 34
+        bottom_padding = 32
         start_text_y = target_h - bottom_padding - total_text_h
         by = start_text_y - bh - 16
 
