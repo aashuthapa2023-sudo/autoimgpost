@@ -99,8 +99,10 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         elif isinstance(line, list):
             normalized_lines.append(line)
 
-    chosen_size = 58
-    for test_size in [58, 54, 50, 46, 42, 38]:
+    # Proportional typography sizing adapted to 50% reduced gradient zone
+    base_target_size = 48 if len(normalized_lines) >= 3 else 52
+    chosen_size = base_target_size
+    for test_size in [base_target_size, 46, 42, 38, 34]:
         f_test = get_font(test_size, bold=True)
         all_fit = True
         for line in normalized_lines:
@@ -114,24 +116,24 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         chosen_size = test_size
 
     title_font = get_font(chosen_size, bold=True)
-    line_spacing = int(chosen_size * 1.16)
+    line_spacing = int(chosen_size * 1.14)
     total_text_h = len(normalized_lines) * line_spacing
 
-    # Branding Badge metrics
+    # Branding Badge metrics (proportional to compact bottom zone)
     branding_name = dest_page_name or badge_label or kwargs.get("source_tag", "")
-    badge_font = get_font(24, bold=True)
+    badge_font = get_font(20, bold=True)
     dest_badge_text = f"• {branding_name.upper()} •" if branding_name else ""
     if branding_name:
         try:
             bbox = temp_draw.textbbox((0, 0), dest_badge_text, font=badge_font)
             text_w = bbox[2] - bbox[0]
             text_h = bbox[3] - bbox[1]
-            bw = text_w + 32
-            bh = max(text_h + 14, 32)
+            bw = text_w + 24
+            bh = max(text_h + 10, 26)
         except Exception:
-            bw, bh = 220, 32
-            text_w, text_h = 180, 22
-            bbox = (0, 4, 180, 26)
+            bw, bh = 180, 26
+            text_w, text_h = 150, 18
+            bbox = (0, 4, 150, 22)
         radius = bh // 2  # Classic smooth stadium pill
         bx = (target_w - bw) // 2
     else:
@@ -153,39 +155,40 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     canvas[:, :] = np.array([6, 6, 8]) # Pure dark studio background
     canvas[:min(target_h, scaled_h), :] = resized_art[:min(target_h, scaled_h), :]
 
-    # Atmospheric Top Vignette (top 8%)
-    top_fade_h = int(target_h * 0.08)
+    # Atmospheric Top Vignette (top 6%)
+    top_fade_h = int(target_h * 0.06)
     for y in range(top_fade_h):
-        alpha = (1.0 - (y / top_fade_h)) * 0.20
+        alpha = (1.0 - (y / top_fade_h)) * 0.15
         canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([8, 8, 10])
 
-    # Cinematic Gradient: Starts fading right above the headline block (67% height) down to solid black (77% height)
-    start_y = int(target_h * 0.67)   # Faded dark gradient starts right above the badge/headline zone (~67%)
-    solid_y = int(target_h * 0.77)   # Solid studio black zone begins at 77% height (shifted downwards)
+    # 50% REDUCED BLACK GRADIENT HEIGHT:
+    # Frees top 83.5% (1127px) for 100% full original poster artwork visibility!
+    start_y = int(target_h * 0.835)  # Gradient begins at 83.5% (reduced by 50%)
+    solid_y = int(target_h * 0.895)  # Solid black zone begins at 89.5%
 
     for y in range(start_y, target_h):
         if y < solid_y:
             t = (y - start_y) / float(solid_y - start_y)
-            alpha = t ** 1.8   # Smooth cinematic power curve: transparent up top, deep solid at bottom
+            alpha = t ** 1.6   # Smooth cinematic fade
         else:
             alpha = 1.0
         canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([6, 6, 8])
 
-    gap = 18
+    gap = 10
     total_content_h = (bh + gap if branding_name else 0) + total_text_h
 
-    # Balanced vertical centering inside the lower solid black zone
-    avail_top = solid_y + 8
-    avail_bottom = target_h - 32
+    # Balanced vertical centering inside the compact bottom zone
+    avail_top = start_y + 8
+    avail_bottom = target_h - 24
     avail_h = avail_bottom - avail_top
 
     if total_content_h <= avail_h:
         by = avail_top + (avail_h - total_content_h) // 2
         start_text_y = by + (bh + gap if branding_name else 0)
     else:
-        bottom_padding = 32
+        bottom_padding = 24
         start_text_y = target_h - bottom_padding - total_text_h
-        by = start_text_y - bh - 16
+        by = start_text_y - bh - gap
 
     pil_img = Image.fromarray(cv2.cvtColor(canvas, cv2.COLOR_BGR2RGB))
     draw = ImageDraw.Draw(pil_img)
@@ -220,7 +223,7 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
 
         for t_str, t_type in full_line_tokens:
             color = highlight_rgb if t_type == "highlight" else (255, 255, 255)
-            draw.text((cur_x, start_text_y), t_str, font=title_font, fill=color, stroke_width=1, stroke_fill=(0, 0, 0))
+            draw.text((cur_x, start_text_y), t_str, font=title_font, fill=color, stroke_width=2, stroke_fill=(0, 0, 0))
             cur_x += draw.textlength(t_str, font=title_font)
 
         start_text_y += line_spacing
