@@ -99,10 +99,9 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         elif isinstance(line, list):
             normalized_lines.append(line)
 
-    # Proportional typography sizing adapted to 50% reduced gradient zone
-    base_target_size = 48 if len(normalized_lines) >= 3 else 52
-    chosen_size = base_target_size
-    for test_size in [base_target_size, 46, 42, 38, 34]:
+    # Typography sizing matching exact reference style
+    chosen_size = 54 if len(normalized_lines) >= 3 else 58
+    for test_size in [chosen_size, 50, 46, 42, 38]:
         f_test = get_font(test_size, bold=True)
         all_fit = True
         for line in normalized_lines:
@@ -116,24 +115,24 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         chosen_size = test_size
 
     title_font = get_font(chosen_size, bold=True)
-    line_spacing = int(chosen_size * 1.14)
+    line_spacing = int(chosen_size * 1.15)
     total_text_h = len(normalized_lines) * line_spacing
 
-    # Branding Badge metrics (proportional to compact bottom zone)
+    # Branding Badge metrics matching exact reference style
     branding_name = dest_page_name or badge_label or kwargs.get("source_tag", "")
-    badge_font = get_font(20, bold=True)
+    badge_font = get_font(22, bold=True)
     dest_badge_text = f"• {branding_name.upper()} •" if branding_name else ""
     if branding_name:
         try:
             bbox = temp_draw.textbbox((0, 0), dest_badge_text, font=badge_font)
             text_w = bbox[2] - bbox[0]
             text_h = bbox[3] - bbox[1]
-            bw = text_w + 24
-            bh = max(text_h + 10, 26)
+            bw = text_w + 30
+            bh = max(text_h + 12, 30)
         except Exception:
-            bw, bh = 180, 26
-            text_w, text_h = 150, 18
-            bbox = (0, 4, 150, 22)
+            bw, bh = 220, 30
+            text_w, text_h = 180, 20
+            bbox = (0, 4, 180, 24)
         radius = bh // 2  # Classic smooth stadium pill
         bx = (target_w - bw) // 2
     else:
@@ -155,38 +154,37 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     canvas[:, :] = np.array([6, 6, 8]) # Pure dark studio background
     canvas[:min(target_h, scaled_h), :] = resized_art[:min(target_h, scaled_h), :]
 
-    # Atmospheric Top Vignette (top 6%)
-    top_fade_h = int(target_h * 0.06)
+    # Atmospheric Top Vignette (top 8%)
+    top_fade_h = int(target_h * 0.08)
     for y in range(top_fade_h):
-        alpha = (1.0 - (y / top_fade_h)) * 0.15
+        alpha = (1.0 - (y / top_fade_h)) * 0.20
         canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([8, 8, 10])
 
-    # 50% REDUCED BLACK GRADIENT HEIGHT:
-    # Frees top 83.5% (1127px) for 100% full original poster artwork visibility!
-    start_y = int(target_h * 0.835)  # Gradient begins at 83.5% (reduced by 50%)
-    solid_y = int(target_h * 0.895)  # Solid black zone begins at 89.5%
+    # EXACT REFERENCE FADED DARK GRADIENT:
+    # Starts fading at 52.5% height (709px), transitions smoothly into solid black by 66.0% (891px)
+    start_y = int(target_h * 0.525)  # 709px (52.5%)
+    solid_y = int(target_h * 0.660)  # 891px (66.0%)
 
+    import math
     for y in range(start_y, target_h):
         if y < solid_y:
             t = (y - start_y) / float(solid_y - start_y)
-            alpha = t ** 1.6   # Smooth cinematic fade
+            alpha = math.sin(t * (math.pi / 2.0))
+            canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([6, 6, 8])
         else:
-            alpha = 1.0
-        canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([6, 6, 8])
+            canvas[y, :] = np.array([6, 6, 8])
 
-    gap = 10
+    gap = 26
     total_content_h = (bh + gap if branding_name else 0) + total_text_h
 
-    # Balanced vertical centering inside the compact bottom zone
-    avail_top = start_y + 8
-    avail_bottom = target_h - 24
-    avail_h = avail_bottom - avail_top
-
-    if total_content_h <= avail_h:
-        by = avail_top + (avail_h - total_content_h) // 2
+    # Exact reference vertical positioning:
+    # Badge at 76.6% (1034px), text starts at ~1090px, leaving ~102px bottom margin
+    by_target = int(target_h * 0.766)
+    if by_target + total_content_h <= target_h - 40:
+        by = by_target
         start_text_y = by + (bh + gap if branding_name else 0)
     else:
-        bottom_padding = 24
+        bottom_padding = 48
         start_text_y = target_h - bottom_padding - total_text_h
         by = start_text_y - bh - gap
 
