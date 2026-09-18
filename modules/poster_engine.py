@@ -160,31 +160,35 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         alpha = (1.0 - (y / top_fade_h)) * 0.20
         canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([8, 8, 10])
 
-    # EXACT REFERENCE FADED DARK GRADIENT:
-    # Starts fading at 52.5% height (709px), transitions smoothly into solid black by 66.0% (891px)
-    start_y = int(target_h * 0.525)  # 709px (52.5%)
-    solid_y = int(target_h * 0.660)  # 891px (66.0%)
+    # FADED DARK BLACK GRADIENT:
+    # Starts fading softly from 50% height (675px) down to the black base at 68% (918px)
+    start_y = int(target_h * 0.50)  # 675px (50%)
+    base_top = int(target_h * 0.68) # 918px (68%) — top of the Black Base
 
-    import math
+    # Soft, faded dark black: max_alpha is 0.94 to 0.97 so the black base stays atmospheric and faded
+    max_alpha = 0.94
+
     for y in range(start_y, target_h):
-        if y < solid_y:
-            t = (y - start_y) / float(solid_y - start_y)
-            alpha = math.sin(t * (math.pi / 2.0))
-            canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([6, 6, 8])
+        if y < base_top:
+            t = (y - start_y) / float(base_top - start_y)
+            alpha = (t ** 1.6) * max_alpha
         else:
-            canvas[y, :] = np.array([6, 6, 8])
+            t_base = (y - base_top) / float(target_h - base_top)
+            alpha = max_alpha + 0.03 * t_base
+        canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([6, 6, 8])
 
-    gap = 26
+    gap = 20
     total_content_h = (bh + gap if branding_name else 0) + total_text_h
 
-    # Exact reference vertical positioning:
-    # Badge at 76.6% (1034px), text starts at ~1090px, leaving ~102px bottom margin
-    by_target = int(target_h * 0.766)
-    if by_target + total_content_h <= target_h - 40:
-        by = by_target
+    # EXACT VERTICAL CENTERING OF LOGO & TEXT IN BLACK BASE:
+    # Black base spans from base_top (918px) to target_h (1350px) = 432px
+    base_h = target_h - base_top
+    if total_content_h <= base_h:
+        pad = (base_h - total_content_h) // 2
+        by = base_top + pad
         start_text_y = by + (bh + gap if branding_name else 0)
     else:
-        bottom_padding = 48
+        bottom_padding = 28
         start_text_y = target_h - bottom_padding - total_text_h
         by = start_text_y - bh - gap
 
