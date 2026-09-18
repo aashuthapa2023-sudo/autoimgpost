@@ -165,13 +165,13 @@ def _parse_rss_feed(feed_url, max_items=15):
         if resp.status_code != 200:
             return []
 
-        # Strip unknown namespace prefixes that cause "unbound prefix" errors in ET
-        raw = resp.content
-        raw_text = raw.decode("utf-8", errors="replace")
-        # Remove xmlns declarations and prefixed tags that ET can't handle
-        raw_text = re.sub(r'\s+xmlns:[a-z0-9]+="[^"]+"', "", raw_text)
-        raw_text = re.sub(r'<[a-z0-9]+:[a-z0-9]+[^>]*/>', "", raw_text)  # self-closing prefixed tags
-        raw_text = re.sub(r'<(/)?[a-z]{2,10}:(?!feed|entry|link|title|updated|id)[a-z]+[^>]*>', "", raw_text)
+        # Robustly strip ALL unknown XML namespace declarations and prefixed tags
+        # so ET.fromstring never throws "unbound prefix" on any feed (Variety, Decider, TheWrap etc.)
+        raw_text = resp.content.decode("utf-8", errors="replace")
+        raw_text = re.sub(r'\s+xmlns:[a-zA-Z0-9_-]+="[^"]*"', "", raw_text)    # xmlns:xx="..." attrs
+        raw_text = re.sub(r"\s+xmlns:[a-zA-Z0-9_-]+='[^']*'", "", raw_text)    # xmlns:xx='...' attrs
+        raw_text = re.sub(r'<(/)?[a-zA-Z0-9_-]+:[a-zA-Z0-9_-]+(\s[^>]*)?\s*/>', "", raw_text)  # self-closing
+        raw_text = re.sub(r'<(/)?[a-zA-Z0-9_-]+:[a-zA-Z0-9_-]+(\s[^>]*)?>', "", raw_text)      # open/close
         raw = raw_text.encode("utf-8")
         root = ET.fromstring(raw)
         channel = root.find("channel")
