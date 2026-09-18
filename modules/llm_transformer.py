@@ -216,7 +216,10 @@ def format_factual_overlay(sentence: str) -> list:
 
 def smart_heuristic_headline(raw_caption: str) -> dict:
     """Extracts factual news subject and synthesizes an extensive, deeply detailed multi-paragraph news report."""
-    cleaned = re.sub(r'https?:\S+', '', raw_caption).strip()
+    # Normalize Windows-1252 and unicode smart quotes to clean ASCII
+    normalized = raw_caption.replace('\x91', "'").replace('\x92', "'").replace('\x93', '"').replace('\x94', '"')
+    normalized = normalized.replace('’', "'").replace('‘', "'").replace('“', '"').replace('”', '"')
+    cleaned = re.sub(r'https?:\S+', '', normalized).strip()
     raw_paras = [p.strip() for p in cleaned.split("\n\n") if len(p.strip()) > 10]
     sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', cleaned.replace('\n', ' ')) if len(s.strip()) > 10]
     first_sent = sentences[0] if sentences else cleaned[:120]
