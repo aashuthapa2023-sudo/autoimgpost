@@ -152,68 +152,40 @@ def nepali_heuristic_payload(raw_caption: str) -> dict:
     sentences = [s.strip() for s in re.split(r'[।!?\n]+', cleaned) if len(s.strip()) > 8]
     first_sent = sentences[0] if sentences else cleaned[:100]
 
-    NEPALI_HANGING_WORDS = {'र', 'मा', 'को', 'का', 'की', 'ले', 'लाई', 'बाट', 'तथा', 'वा', 'समेत', 'पनि', 'भने', 'अब', 'छ', 'छन्', 'भएको', 'गरेको', 'गर्ने'}
+    NEPALI_HANGING_WORDS = {
+        'र', 'मा', 'को', 'का', 'की', 'ले', 'लाई', 'बाट', 'तथा', 'वा', 'समेत',
+        'पनि', 'भने', 'अब', 'छ', 'छन्', 'भएको', 'गरेको', 'गर्ने', 'हुने', 'दिएका', 'परेका', 'बनेका', 'भएका'
+    }
 
-    # Strong Hook Line (Line 1) + Main Headline (Line 2) curated pairs
-    upper = cleaned
-    if 'बालेन' in upper and ('नागरिकता' in upper or 'प्रतिलिपि' in upper):
-        overlay_lines = [
-            [{"text": "बालेनको ", "type": "white"}, {"text": "नयाँ निर्णय", "type": "highlight"}],
-            [{"text": "नागरिकता ", "type": "white"}, {"text": "जिल्लाबाटै", "type": "highlight"}]
-        ]
-    elif 'इरान' in upper and ('चेतावनी' in upper or 'ट्रम्प' in upper or 'नेतन्याहू' in upper or 'होर्मुज' in upper):
-        overlay_lines = [
-            [{"text": "इरानको ", "type": "white"}, {"text": "कडा चेतावनी", "type": "highlight"}],
-            [{"text": "होर्मुज मार्ग ", "type": "white"}, {"text": "बन्द", "type": "highlight"}]
-        ]
-    elif any(k in upper for k in ['सुरुङ', 'उद्धार', 'शव', 'पहिरो', 'बाढी', 'दुर्घटना']):
-        overlay_lines = [
-            [{"text": "सुरुङभित्र ", "type": "white"}, {"text": "भयानक दृश्य", "type": "highlight"}],
-            [{"text": "११ जनाको ", "type": "white"}, {"text": "शव फेला", "type": "highlight"}]
-        ]
-    elif any(k in upper for k in ['अर्थमन्त्री', 'स्वर्णिम', 'वाग्ले', 'भारत', 'भ्रमण']):
-        overlay_lines = [
-            [{"text": "अर्थमन्त्रीको ", "type": "white"}, {"text": "विशेष भ्रमण", "type": "highlight"}],
-            [{"text": "भारतमा ", "type": "white"}, {"text": "उच्च भेटवार्ता", "type": "highlight"}]
-        ]
-    elif 'हात्ती' in upper and 'रोनाल्डो' in upper:
-        overlay_lines = [
-            [{"text": "चितवनमा ", "type": "white"}, {"text": "जंगली हात्ती", "type": "highlight"}],
-            [{"text": "‘रोनाल्डो’ ", "type": "highlight"}, {"text": "फेरि देखियो", "type": "white"}]
-        ]
-    elif 'कांग्रेस' in upper and ('ठगी' in upper or 'पक्राउ' in upper or 'चौलागाईं' in upper):
-        overlay_lines = [
-            [{"text": "वैदेशिक रोजगारीमा ", "type": "white"}, {"text": "ठगी", "type": "highlight"}],
-            [{"text": "कांग्रेस नेता ", "type": "white"}, {"text": "पक्राउ", "type": "highlight"}]
-        ]
-    elif 'बालेन' in upper and ('सैनिक' in upper or 'प्रतिबद्धता' in upper or 'भाषण' in upper):
-        overlay_lines = [
-            [{"text": "सैनिक मञ्चबाट ", "type": "white"}, {"text": "बालेनको गर्जन", "type": "highlight"}],
-            [{"text": "शीर्ष नेताहरू ", "type": "white"}, {"text": "अगाडि कडा भाषण", "type": "highlight"}]
-        ]
+    # Purely dynamic extraction directly from the post's actual story:
+    # Line 1 = Strong Hook / Context (2-3 words), Line 2 = Main Subject / Action (2-3 words)
+    parts = [p.strip() for p in re.split(r'[-—,:।!?–]', first_sent) if len(p.strip().split()) >= 2]
+    if len(parts) >= 2:
+        w1 = [w for w in parts[0].split() if w not in {'अब', 'यस', 'भने', 'तथा', 'र'}][:3]
+        w2 = [w for w in parts[1].split() if w not in {'अब', 'यस', 'भने', 'तथा', 'र', 'भएको', 'छ', 'थियो'}][:3]
     else:
-        # Dynamic extraction: Line 1 = Strong Hook (2-3 words), Line 2 = Main Headline (2-3 words)
-        parts = [p.strip() for p in re.split(r'[-—,:।!?]', first_sent) if len(p.strip().split()) >= 2]
-        if len(parts) >= 2:
-            w1 = [w for w in parts[0].split() if w not in {'अब', 'यस', 'भने', 'तथा', 'र'}][:3]
-            w2 = [w for w in parts[1].split() if w not in {'अब', 'यस', 'भने', 'तथा', 'र', 'भएको', 'छ', 'थियो'}][:3]
+        all_w = first_sent.split()
+        if len(all_w) <= 6:
+            mid = max(1, len(all_w) // 2)
+            w1 = all_w[:mid][:3]
+            w2 = all_w[mid:][:3]
         else:
-            all_w = first_sent.split()
-            if len(all_w) <= 6:
-                mid = max(1, len(all_w) // 2)
-                w1 = all_w[:mid][:3]
-                w2 = all_w[mid:][:3]
-            else:
-                w1 = all_w[:3]
-                w2 = all_w[3:6]
+            w1 = all_w[:3]
+            w2 = all_w[3:6]
 
-        while w1 and re.sub(r'[^\u0900-\u097F]', '', w1[-1]) in NEPALI_HANGING_WORDS:
-            w1.pop()
-        while w2 and re.sub(r'[^\u0900-\u097F]', '', w2[-1]) in NEPALI_HANGING_WORDS:
-            w2.pop()
+    while w1 and re.sub(r'[^\u0900-\u097F]', '', w1[-1]) in NEPALI_HANGING_WORDS:
+        w1.pop()
+    while w2 and re.sub(r'[^\u0900-\u097F]', '', w2[-1]) in NEPALI_HANGING_WORDS:
+        w2.pop()
 
-        lines_words = [w1, w2]
-        overlay_lines = [format_nepali_thematic_tokens(lw) for lw in lines_words if lw]
+    # Ensure each line has at least 1 word if possible
+    if not w1 and all_w:
+        w1 = all_w[:2]
+    if not w2 and len(all_w) > 2:
+        w2 = all_w[2:4]
+
+    lines_words = [w1, w2]
+    overlay_lines = [format_nepali_thematic_tokens(lw) for lw in lines_words if lw]
 
     rewritten = analyze_and_rewrite_nepali_caption(raw_caption)
 

@@ -99,13 +99,13 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
         except Exception:
             pass
 
-    # 2. Main pass: Extract stories and attach accurate timestamps and master images
+    # 2. Main pass: Strictly extract stories guaranteeing 1:1 caption & photo pairing
     def _decode_fb_id(raw):
         if not raw: return ""
         s_raw = str(raw).strip()
         if s_raw.startswith("Uzpf"):
+            import base64
             try:
-                import base64
                 dec = base64.b64decode(s_raw).decode('utf-8', errors='ignore')
                 nums = re.findall(r'\d{9,18}', dec)
                 if nums: return nums[-1]
@@ -113,125 +113,131 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
                 pass
         return s_raw
 
+    def extract_single_story(story_node):
+        """
+        Extracts post_id, message, photo_id, and image_url STRICTLY from this single story node.
+        Guarantees 100% that caption and image belong to each other and NEVER cross-contaminate.
+        """
+        if not isinstance(story_node, dict):
+            return None
+
+        # 1. Message text directly belonging to THIS story
+        msg = None
+        if "message" in story_node and isinstance(story_node["message"], dict) and "text" in story_node["message"]:
+            msg = story_node["message"]["text"].strip()
+        elif "story" in story_node and isinstance(story_node["story"], dict):
+            st = story_node["story"]
+            if "message" in st and isinstance(st["message"], dict) and "text" in st["message"]:
+                msg = st["message"]["text"].strip()
+
+        if not msg or len(msg) < 8:
+            return None
+
+        # 2. Post ID
+        raw_pid = story_node.get("post_id") or story_node.get("id") or ""
+        pid_str = _decode_fb_id(raw_pid)
+
+        # 3. Photo ID and Image URI strictly from THIS story's direct attachments
+        photo_id = None
+        img_url = None
+
+        atts = story_node.get("attachments", [])
+        if isinstance(atts, list):
+            for a in atts:
+                if not isinstance(a, dict):
+                    continue
+                styles_att = a.get("styles", {}).get("attachment", {}) if isinstance(a.get("styles"), dict) else {}
+                med = styles_att.get("media") or a.get("media") or a.get("target") or {}
+                if isinstance(med, dict):
+                    if med.get("id"):
+                        photo_id = str(med["id"])
+                    img_obj = med.get("image") or med.get("photo_image") or {}
+                    if isinstance(img_obj, dict) and img_obj.get("uri"):
+                        img_url = img_obj["uri"]
+                if photo_id:
+                    break
+
+        if not photo_id and story_node.get("photo_id"):
+            photo_id = str(story_node["photo_id"])
+
+        # Construct high-resolution crawler lookaside URI
+        if photo_id:
+            img_url = f"https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id={photo_id}"
+        elif not img_url:
+            # Text-only or video-only story without photo — skip to prevent pairing with unrelated photos!
+            return None
+
+        final_pid = pid_str or photo_id
+        if not final_pid:
+            return None
+
+        created_time = post_meta.get(final_pid, 0)
+        if not created_time and photo_id:
+            created_time = post_meta.get(photo_id, 0)
+        if not created_time:
+            created_time = story_node.get("creation_time") or story_node.get("publish_time") or 0
+
+        cap_fp = hashlib.md5(re.sub(r'\s+', '', msg[:60]).lower().encode('utf-8')).hexdigest()
+
+        return {
+            "post_id": str(final_pid),
+            "photo_id": str(photo_id or final_pid),
+            "caption_fingerprint": cap_fp,
+            "caption": msg,
+            "image_url": img_url,
+            "created_time": int(created_time) if created_time else 0,
+            "source_gap_hours": 2.0
+        }
+
     posts_dict = {}
+    processed_set = set(str(x) for x in processed_ids)
 
     for s in scripts:
-        if ('"message"' not in s and '"story"' not in s and '"creation_time"' not in s):
+        if '"message"' not in s and '"creation_time"' not in s and '"timeline_list_feed_units"' not in s:
             continue
         try:
             data = json.loads(s)
-
-            def extract_stories(node, parent_pid="", parent_ts=0):
-                if isinstance(node, dict):
-                    node_pid = _decode_fb_id(node.get("post_id") or node.get("id") or "")
-                    cur_pid = node_pid or parent_pid
-                    cur_ts = post_meta.get(cur_pid) or node.get("creation_time") or parent_ts or 0
-
-                    msg = None
-                    if "message" in node and isinstance(node["message"], dict) and "text" in node["message"]:
-                        msg = node["message"]["text"].strip()
-                    elif "story" in node and isinstance(node["story"], dict):
-                        st = node["story"]
-                        if "message" in st and isinstance(st["message"], dict):
-                            msg = st["message"].get("text", "").strip()
-
-                    if msg and len(msg) > 8:
-                        media_id = None
-                        img_url = None
-
-                        # 1. Check direct attachments
-                        atts = node.get("attachments", [])
-                        if isinstance(atts, list):
-                            for a in atts:
-                                if isinstance(a, dict):
-                                    med = a.get("media") or a.get("target")
-                                    if isinstance(med, dict) and med.get("id"):
-                                        media_id = str(med["id"])
-                                        break
-                                s_a = json.dumps(a)
-                                att_uris = [
-                                    bytes(u, "utf-8").decode("unicode_escape", errors="ignore").replace("\\/", "/")
-                                    for u in re.findall(r'"uri":\s*"([^"]+)"', s_a)
-                                    if "rsrc.php" not in u and "static.xx" not in u and ("fbcdn.net" in u or "scontent" in u)
-                                ]
-                                if att_uris and not img_url:
-                                    img_url = att_uris[0]
-
-                        # 2. Check direct media_id or photo_id
-                        if not media_id:
-                            if node.get("photo_id"):
-                                media_id = str(node["photo_id"])
-                            elif node.get("media_id"):
-                                media_id = str(node["media_id"])
-                            else:
-                                s_sub = json.dumps(node)
-                                pm = re.search(r'"Photo",\s*"id":\s*"(\d+)"', s_sub) or re.search(r'"photo_id":\s*"(\d+)"', s_sub)
-                                if pm:
-                                    media_id = pm.group(1)
-
-                        # 3. Direct uncompressed crawler lookaside URI (highest resolution master JPEG)
-                        if media_id:
-                            img_url = f"https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id={media_id}"
-
-                        if not cur_ts and media_id:
-                            cur_ts = post_meta.get(str(media_id), 0)
-                        if not cur_ts and "tracking" in node:
-                            tm = re.search(r'\\?"publish_time\\?":\s*(\d{9,11})', str(node.get("tracking")))
-                            if tm: cur_ts = int(tm.group(1))
-
-                        clean_k = re.sub(r'\s+', ' ', msg[:50])
-                        cap_fp = hashlib.md5(re.sub(r'\s+', '', msg[:60]).lower().encode('utf-8')).hexdigest()
-                        effective_pid = cur_pid or media_id
-                        processed_set = set(str(x) for x in processed_ids)
-
-                        is_already_posted = (
-                            str(effective_pid) in processed_set or
-                            str(media_id) in processed_set or
-                            cap_fp in processed_set
-                        )
-
-                        if not is_already_posted and (media_id or img_url):
-                            key = effective_pid or media_id
-                            if key not in posts_dict:
-                                posts_dict[key] = {
-                                    "post_id": str(effective_pid),
-                                    "photo_id": str(media_id or effective_pid),
-                                    "caption_fingerprint": cap_fp,
-                                    "caption": msg,
-                                    "image_url": img_url,
-                                    "created_time": int(cur_ts) if cur_ts else 0,
-                                    "source_gap_hours": 2.0
-                                }
-                            else:
-                                if cur_ts > posts_dict[key]["created_time"]:
-                                    posts_dict[key]["created_time"] = int(cur_ts)
-                                if effective_pid and not posts_dict[key]["post_id"]:
-                                    posts_dict[key]["post_id"] = str(effective_pid)
-                                if img_url and not posts_dict[key]["image_url"]:
-                                    posts_dict[key]["image_url"] = img_url
-
-                    for v in node.values():
-                        extract_stories(v, cur_pid, cur_ts)
-                elif isinstance(node, list):
-                    for it in node:
-                        extract_stories(it, parent_pid, parent_ts)
-
-            extract_stories(data)
         except Exception:
-            pass
+            continue
+
+        def scan_story_nodes(node):
+            if isinstance(node, dict):
+                # Check for standard feed story containers
+                if "comet_sections" in node and isinstance(node["comet_sections"], dict):
+                    content = node["comet_sections"].get("content", {})
+                    if isinstance(content, dict) and "story" in content and isinstance(content["story"], dict):
+                        st = extract_single_story(content["story"])
+                        if st:
+                            pid = st["post_id"]
+                            phid = st["photo_id"]
+                            fp = st["caption_fingerprint"]
+                            if pid not in processed_set and phid not in processed_set and fp not in processed_set:
+                                if pid not in posts_dict:
+                                    posts_dict[pid] = st
+                                    return
+
+                # Check direct story node with message and attachments
+                if ("message" in node and "attachments" in node) or (node.get("__typename") in ["Story", "CometFeedStoryDefaultContentStrategy"]):
+                    st = extract_single_story(node)
+                    if st:
+                        pid = st["post_id"]
+                        phid = st["photo_id"]
+                        fp = st["caption_fingerprint"]
+                        if pid not in processed_set and phid not in processed_set and fp not in processed_set:
+                            if pid not in posts_dict:
+                                posts_dict[pid] = st
+                                return
+
+                for v in node.values():
+                    scan_story_nodes(v)
+            elif isinstance(node, list):
+                for it in node:
+                    scan_story_nodes(it)
+
+        scan_story_nodes(data)
 
     posts = list(posts_dict.values())
-    # Sort strictly by timestamp descending so the newest, real-time posts are always first!
     posts.sort(key=lambda p: p.get("created_time", 0), reverse=True)
-
-    # Calculate gap hours between successive posts
-    for i in range(len(posts) - 1):
-        t1 = posts[i].get("created_time")
-        t2 = posts[i + 1].get("created_time")
-        if t1 and t2:
-            gap = max(1.0, round(abs(t1 - t2) / 3600.0, 2))
-            posts[i]["source_gap_hours"] = gap
-
     return posts[:limit]
 
 

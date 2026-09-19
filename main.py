@@ -284,7 +284,8 @@ def run_pipeline(mode="run", target_channel="all"):
 
         # 4. WEB NEWS FALLBACK — fetch from internet when Facebook sources are dry
         web_posts = []
-        web_needed = len(unposted_t1) == 0  # primary trigger: no fresh FB posts at all
+        is_nepali_ch = (ch.get("language") == "ne" or channel_id == "nepal_speaks")
+        web_needed = (len(unposted_t1) == 0 and not is_nepali_ch)  # Strictly disable English web fallback for Nepali channels!
         if web_needed and WEB_SCRAPER_AVAILABLE:
             category = get_channel_category(channel_name)
             print(f" [WEB FALLBACK] No fresh FB posts available. Fetching {category.upper()} news from internet...")
@@ -300,11 +301,11 @@ def run_pipeline(mode="run", target_channel="all"):
             else:
                 print(f" [WEB FALLBACK] No suitable web articles found either.")
 
-        # Build final priority-ordered candidate list: fresh FB first → older FB → web
-        unposted_recent = unposted_t1 or unposted_t2 or web_posts
+        # Build final priority-ordered candidate list: fresh FB first → older FB → web (strictly excluded for Nepali channels)
+        unposted_recent = unposted_t1 or unposted_t2 or (web_posts if not is_nepali_ch else [])
 
-        if not unposted_t1 and not unposted_t2 and not web_posts:
-            print(f" [UP TO DATE] All content (FB + internet) already published or no new content available for '{channel_name}'.")
+        if not unposted_t1 and not unposted_t2 and (not web_posts or is_nepali_ch):
+            print(f" [UP TO DATE] All content already published or no new content available for '{channel_name}'.")
             continue
 
         if not unposted_recent:
@@ -341,6 +342,8 @@ def run_pipeline(mode="run", target_channel="all"):
         # 5. TAKE EXACTLY 1 VALID UNPOSTED RECENT PHOTO POST FOR THIS 1-HOUR CYCLE (chronological order)
         posted_successfully = False
         candidates_to_try = list(reversed(unposted_recent))
+        if is_nepali_ch:
+            candidates_to_try = [p for p in candidates_to_try if p.get("source_tag") != "Internet Web Scraper"]
 
         for post in candidates_to_try:
             post_id = post.get("post_id", "unknown")
@@ -348,6 +351,18 @@ def run_pipeline(mode="run", target_channel="all"):
             print(f"     Destination: {channel_name} ({dest_id}) | Interval: {post_interval_hours}h | Mode: INSTANT LIVE POST ONLY")
 
             try:
+                # STRICT SOURCE LANGUAGE GATE FOR NEPALI CHANNELS:
+                if is_nepali_ch:
+                    from modules.llm_transformer import is_devanagari_text
+                    post_cap = post.get("caption", "")
+                    if not is_devanagari_text(post_cap):
+                        print(f"     [LANGUAGE REJECT] Channel '{channel_name}' requires 100% Nepali content. Skipping non-Nepali post {post_id}.")
+                        for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
+                            if id_val and id_val not in processed_ids:
+                                processed_ids.append(id_val)
+                                all_published_ids.add(id_val)
+                        continue
+
                 # 1. Image Download & Smart Cleaner (strictly below center, faces & subjects 100% protected)
                 image_url = post.get("image_url")
                 if not image_url:
@@ -403,6 +418,18 @@ def run_pipeline(mode="run", target_channel="all"):
                 ch_lang = ch.get("language", "en")
                 print(f"     [3/4] Generating dual-tone headline & policy-compliant caption (lang={ch_lang})...")
                 ai_data = generate_social_payload(post.get("caption", ""), language=ch_lang)
+
+                # STRICT OVERLAY LANGUAGE GATE FOR NEPALI CHANNELS:
+                if is_nepali_ch:
+                    from modules.llm_transformer import is_devanagari_text
+                    overlay_all = "".join(t.get("text", "") for line in ai_data.get("overlay_lines", []) for t in line)
+                    if not is_devanagari_text(overlay_all):
+                        print(f"     [LANGUAGE REJECT] Generated non-Devanagari overlay text for '{channel_name}'. Skipping post {post_id}.")
+                        for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
+                            if id_val and id_val not in processed_ids:
+                                processed_ids.append(id_val)
+                                all_published_ids.add(id_val)
+                        continue
 
                 # 4. Composite 4:5 Poster
                 rendered_file = os.path.join(OUTPUT_DIR, f"{channel_id}_{post_id}.jpg")
