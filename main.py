@@ -462,28 +462,32 @@ def run_pipeline(mode="run", target_channel="all"):
 
                 # 5. Live Publish (INSTANT POST ONLY)
                 if mode == "dry_run":
-                    print(f"     [DRY RUN] Skipping live post to Facebook ID {dest_id}.")
+                    print(f"     [DRY RUN] Skipping live post to Facebook ID {dest_id}. State preserved.")
+                    posted_successfully = True
+                    break
                 elif mode == "test":
-                    print(f"     [TEST MODE] Live post skipped for {channel_id}.")
-                else:
-                    print(f"     [5/5] Publishing INSTANT photo post to Facebook (Page ID: {dest_id})...")
-                    try:
-                        published_id = publish_to_facebook(
-                            dest_page_id=dest_id,
-                            access_token=token,
-                            image_path=rendered_file,
-                            caption=ai_data["rewritten_caption"],
-                            scheduled_publish_time=None  # ALWAYS INSTANT POST ONLY!
-                        )
-                        print(f"     [SUCCESS] Live Instant Post Published! Meta ID: {published_id}")
-                    except Exception as pub_err:
-                        print(f"     [PUBLISH REJECTED BY META] Graph API Error: {pub_err}")
-                        if "deleted" in str(pub_err).lower() or "190" in str(pub_err):
-                            print(f"     [ACTION REQUIRED] The Meta Facebook App for '{dest_name}' (ID: {dest_id}) was deleted or token expired.")
-                            print(f"     Please generate a fresh Page Access Token on Meta Developers and paste it into Web UI Settings.")
-                        raise pub_err
+                    print(f"     [TEST MODE] Live post skipped for {channel_id}. State preserved.")
+                    posted_successfully = True
+                    break
 
-                # Update channel state & channel deduplication pool
+                print(f"     [5/5] Publishing INSTANT photo post to Facebook (Page ID: {dest_id})...")
+                try:
+                    published_id = publish_to_facebook(
+                        dest_page_id=dest_id,
+                        access_token=token,
+                        image_path=rendered_file,
+                        caption=ai_data["rewritten_caption"],
+                        scheduled_publish_time=None  # ALWAYS INSTANT POST ONLY!
+                    )
+                    print(f"     [SUCCESS] Live Instant Post Published! Meta ID: {published_id}")
+                except Exception as pub_err:
+                    print(f"     [PUBLISH REJECTED BY META] Graph API Error: {pub_err}")
+                    if "deleted" in str(pub_err).lower() or "190" in str(pub_err):
+                        print(f"     [ACTION REQUIRED] The Meta Facebook App for '{dest_name}' (ID: {dest_id}) was deleted or token expired.")
+                        print(f"     Please generate a fresh Page Access Token on Meta Developers and paste it into Web UI Settings.")
+                    raise pub_err
+
+                # Update channel state ONLY after actual live publish succeeds
                 for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
                     if id_val:
                         if id_val not in processed_ids:

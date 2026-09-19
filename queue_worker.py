@@ -87,27 +87,27 @@ def process_queue_or_poll():
         with open(QUEUE_FILE, "w", encoding="utf-8") as f:
             json.dump(queue, f, ensure_ascii=False, indent=2)
 
-    else:
-        print("Queue is empty. Running main pipeline for 'nepal_speaks' to check for any fresh source posts from HimaliMedia...")
-        try:
-            run_pipeline(mode="run", target_channel="nepal_speaks")
-        except Exception as ex:
-            print(f"Error running pipeline: {ex}")
-            traceback.print_exc()
+    # Always execute main pipeline for all channels so Daily Netflix, Music Store, Daily Hollywood, Anisha, and Nepal Speaks are all continuously serviced on cadence
+    print("\n--- Running Multi-Page Pipeline for All Channels ---")
+    try:
+        run_pipeline(mode="run", target_channel="all")
+    except Exception as ex:
+        print(f"Error running pipeline across all channels: {ex}")
+        traceback.print_exc()
 
 def run_loop():
     print("===================================================================")
-    print("  Nepal Speaks 30-Minute Interval Automation Worker Started")
-    print("  Post 1 was published live. Next queued post in 30 minutes.")
+    print("  Multi-Page Automated Publisher Worker Started")
+    print("  Monitoring cadence for all channels every 10 minutes (600s)")
     print("===================================================================")
     while True:
-        print(f"\nSleeping for 30 minutes (1800s) until next publication cycle...")
-        time.sleep(1800)
         try:
             process_queue_or_poll()
         except Exception as e:
             print(f"Loop iteration error: {e}")
             traceback.print_exc()
+        print(f"\nSleeping for 10 minutes (600s) until next publication check cycle...\n")
+        time.sleep(600)
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--once":
