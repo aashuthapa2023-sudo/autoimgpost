@@ -290,24 +290,24 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     # Branding Badge metrics matching exact reference style
     branding_name = dest_page_name or badge_label or kwargs.get("source_tag", "")
     badge_is_deva = is_devanagari(branding_name)
-    badge_font = get_font(22, bold=True)
+    badge_font = get_font(26, bold=True)
     dest_badge_text = f"• {branding_name if badge_is_deva else branding_name.upper()} •" if branding_name else ""
     if branding_name:
         if badge_is_deva and os.name == 'nt':
-            _, text_w, text_h = render_gdi_token(dest_badge_text, 22, bold=True)
-            bw = text_w + 30
-            bh = max(text_h + 12, 30)
+            _, text_w, text_h = render_gdi_token(dest_badge_text, 26, bold=True)
+            bw = text_w + 34
+            bh = max(text_h + 14, 34)
         else:
             try:
                 bbox = temp_draw.textbbox((0, 0), dest_badge_text, font=badge_font)
                 text_w = bbox[2] - bbox[0]
                 text_h = bbox[3] - bbox[1]
-                bw = text_w + 30
-                bh = max(text_h + 12, 30)
+                bw = text_w + 34
+                bh = max(text_h + 14, 34)
             except Exception:
-                bw, bh = 220, 30
-                text_w, text_h = 180, 20
-                bbox = (0, 4, 180, 24)
+                bw, bh = 240, 34
+                text_w, text_h = 200, 24
+                bbox = (0, 4, 200, 28)
         radius = bh // 2  # Classic smooth stadium pill
         bx = (target_w - bw) // 2
     else:
@@ -315,12 +315,14 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         text_w, text_h, radius = 0, 0, 0
         bbox = (0, 0, 0, 0)
 
-    # Typography sizing matching exact reference style
-    chosen_size = 56 if len(normalized_lines) <= 2 else 50
-    for test_size in [chosen_size, 52, 48, 44, 40, 36]:
-        line_spacing_test = int(test_size * 1.38)
+    # Typography sizing: 100% INCREASED FONT SIZE (Doubled from 50-56px to 100-108px)
+    safe_margin = 45
+    safe_max_w = target_w - (safe_margin * 2) # 990px
+    chosen_size = 108 if len(normalized_lines) <= 2 else 96
+    for test_size in [chosen_size, 100, 92, 84, 76, 68, 60, 52]:
+        line_spacing_test = int(test_size * 1.30)
         total_text_h_test = len(normalized_lines) * line_spacing_test
-        total_content_h_test = (bh + 22 if branding_name else 0) + total_text_h_test
+        total_content_h_test = (bh + 24 if branding_name else 0) + total_text_h_test
 
         f_test = get_font(test_size, bold=True)
         all_fit = True
@@ -329,13 +331,13 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
             if line_w > safe_max_w:
                 all_fit = False
                 break
-        if all_fit and total_content_h_test <= (target_h - int(target_h * 0.68) - 16):
+        if all_fit and total_content_h_test <= (target_h - int(target_h * 0.62) - 16):
             chosen_size = test_size
             break
         chosen_size = test_size
 
     title_font = get_font(chosen_size, bold=True)
-    line_spacing = int(chosen_size * 1.38)  # Generous line height ensures top & bottom matras never collide
+    line_spacing = int(chosen_size * 1.30)  # Generous line height ensures top & bottom matras never collide
     total_text_h = len(normalized_lines) * line_spacing
 
     # ALWAYS USE SOURCE AS 4:5 ASPECT RATIO IMAGE (Fill entire 1080x1350 canvas)
@@ -390,8 +392,8 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     dark_black = np.array([6, 6, 8], dtype=np.uint8)
 
     if text_position == "top":
-        # Base covers entire detected top text with solid dark black (100% blocked)
-        base_bottom = max(int(target_h * 0.33), min(int(target_h * 0.38), top_text_max_y + 40))
+        # Base covers entire detected top text with solid dark black (100% blocked), ensuring enough room for large typography
+        base_bottom = max(int(target_h * 0.36), min(int(target_h * 0.45), max(total_content_h + 60, top_text_max_y + 40)))
         fade_end = min(target_h - 200, base_bottom + 180)
 
         # 1. Solid dark black covering all original text so zero ghost text shows through
@@ -418,10 +420,10 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         base_h = base_bottom
         if total_content_h <= base_h:
             pad = (base_h - total_content_h) // 2
-            by = max(24, pad)
+            by = max(28, pad)
             start_text_y = by + (bh + gap if branding_name else 0)
         else:
-            by = 24
+            by = 28
             start_text_y = by + (bh + gap if branding_name else 0)
 
     else:
@@ -431,8 +433,8 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
             alpha = (1.0 - (y / top_fade_h)) * 0.20
             canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([8, 8, 10])
 
-        # Base covers entire detected bottom text with solid dark black (100% blocked)
-        base_top = min(int(target_h * 0.67), max(int(target_h * 0.60), bot_text_min_y - 40))
+        # Base covers entire detected bottom text with solid dark black (100% blocked), ensuring room for large typography
+        base_top = min(int(target_h * 0.64), max(int(target_h * 0.55), min(target_h - total_content_h - 60, bot_text_min_y - 40)))
         fade_start = max(100, base_top - 180)
 
         # 1. Smooth faded gradient leading into black base

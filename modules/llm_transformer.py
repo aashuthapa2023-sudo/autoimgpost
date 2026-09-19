@@ -14,15 +14,12 @@ def build_system_prompt(language: str = "en") -> str:
 Facebook Distribution Guidelines को पूर्ण पालना गर्नुहोस्: कुनै क्लिकबेट छैन, कुनै अतिरञ्जना छैन, र कुनै कमेन्ट बेट (comment bait) छैन।
 
 कार्य:
-१. ओभरले हेडलाइन्स (Centered Dual-Tone Headline, 2 देखि 3 छोटा र सन्तुलित लाइनहरू):
-   - लाइन १: मुख्य विषय / नेतृत्व वाक्यांश (Lead Subject)
-   - लाइन २: मुख्य कार्य / निर्णय / रेकर्ड (Action / Milestone)
-   - लाइन ३ (वैकल्पिक): नतिजा वा सन्दर्भ (Outcome / Context)
+१. ओभरले हेडलाइन्स (STRONG HOOK LINE + MAIN HEADLINE, strictly 2 lines, 2-3 words per line, large impactful typography):
+   - लाइन १: STRONG HOOK LINE (उच्च प्रभाव भएको हुक लाइन, २ देखि ३ शब्द, e.g. "बालेनको नयाँ निर्णय", "इरानको कडा चेतावनी", "सुरुङभित्र भयानक दृश्य", "अर्थमन्त्रीको विशेष भ्रमण")
+   - लाइन २: MAIN HEADLINE (मुख्य घटना, नतिजा वा फैसला, २ देखि ३ शब्द, e.g. "नागरिकता जिल्लाबाटै", "होर्मुज मार्ग नखोल्ने", "११ वटा शव फेला", "भारतमा उच्च भेटवार्ता")
    महत्त्वपूर्ण हाइलाइटिङ नियम:
    - पूरै वाक्यको मुख्य विषय (Proper noun, निर्णय, व्यक्ति वा ठाउँको नाम, मुख्य उपलब्धि) पहिचान गर्नुहोस् र त्यसलाई HIGHLIGHT गर्नुहोस्।
-   - मुख्य विषय लाइनको सुरु, बीच वा अन्त्य जहाँ भए पनि हाइलाइट गर्न सकिन्छ।
    - टोकन विभाजन गर्नुहोस्: [{"text": "पहिलो शब्द ", "type": "white"}, {"text": "मुख्य विषय", "type": "highlight"}]
-   - अनावश्यक कृत्रिम शब्दहरू (BREAKING, हेर्नुहोस् आदि) नथप्नुहोस्।
 
 २. नेपाली समाचार क्याप्सन (Detailed Journalistic Report, 150-250 शब्दहरू):
    - तीनवटा स्पष्ट अनुच्छेदमा व्यावसायिक र तथ्यपरक समाचार लेख्नुहोस्:
@@ -36,8 +33,8 @@ Facebook Distribution Guidelines को पूर्ण पालना गर�
 Return strictly JSON:
 {
   "overlay_lines": [
-    [{"text": "पहिलो वाक्यांश ", "type": "white"}, {"text": "मुख्य विषय", "type": "highlight"}],
-    [{"text": "कार्य वाक्यांश ", "type": "white"}, {"text": "नयाँ निर्णय", "type": "highlight"}]
+    [{"text": "हुक वाक्यांश ", "type": "white"}, {"text": "नयाँ निर्णय", "type": "highlight"}],
+    [{"text": "मुख्य घटना ", "type": "white"}, {"text": "जिल्लाबाटै", "type": "highlight"}]
   ],
   "rewritten_caption": "समाचार शीर्षक\n\nपहिलो अनुच्छेद तथ्यपरक विवरण...\n\nदोस्रो अनुच्छेद पृष्ठभूमि र महत्व...\n\nतेस्रो अनुच्छेद प्रभाव र आगामी चरण...\n\n#NepalSpeaks #NepaliNews #NepalUpdates"
 }"""
@@ -46,17 +43,12 @@ Return strictly JSON:
 Strictly adhere to Facebook Distribution Guidelines: NO clickbait, NO sensationalism, and ABSOLUTELY NO comment bait or engagement bait.
 
 TASK:
-1. OVERLAY HEADLINES (Centered Dual-Tone):
-   Generate 2 to 3 natural, balanced lines extracted from the factual core of the news:
-   - Line 1: Subject / Franchise / Headline Lead
-   - Line 2: Action / Key Milestone / Record
-   - Line 3 (Optional): Context / Key Date / Outcome
+1. OVERLAY HEADLINES (STRONG HOOK LINE + MAIN HEADLINE, strictly 2 lines, 2-3 words per line):
+   - Line 1: STRONG HOOK LINE (High-impact, curiosity-inducing hook phrase, 2-3 words)
+   - Line 2: MAIN HEADLINE (Core breaking event, milestone or outcome, 2-3 words)
    CRITICAL THEMATIC HIGHLIGHTING RULES:
    - Analyze the whole sentence and identify the MAIN THEMES (entity names, show titles, awards, milestones, key actions).
    - HIGHLIGHT THE MAIN THEME WHEREVER IT APPEARS IN THE LINE (beginning, middle, or end).
-   - DO NOT always highlight the last word. Highlight the key proper noun or milestone entity (e.g. [{"text": "PREMIERED ", "type": "white"}, {"text": "THE VAMPIRE DIARIES", "type": "highlight"}] or [{"text": "WINS ANOTHER ", "type": "white"}, {"text": "EMMY AWARD", "type": "highlight"}, {"text": " FOR PERFORMANCE", "type": "white"}]).
-   - NEVER add artificial filler words like 'REPORT', 'DETAILS', 'CONFIRMED', or 'BREAKING'.
-   - NEVER end a line with trailing prepositions or articles (like 'THE', 'A', 'OF', 'ON', 'TO', 'AND').
    - Split each line into tokens: [{"text": "...", "type": "white" | "highlight"}].
 
 2. REWRITTEN CAPTION (Detailed In-Depth Journalistic Report, 150-250 words):
@@ -65,15 +57,15 @@ TASK:
    - PARAGRAPH 1 (Breaking Lead): Comprehensive breakdown of the breaking news, official announcements, primary subjects, and key dates.
    - PARAGRAPH 2 (Background & History): Rich contextual background, production details, history of the creators/cast, franchise track record, or behind-the-scenes narrative.
    - PARAGRAPH 3 (Forward Outlook & Industry Significance): Next milestones, release windows, streaming distribution context, or what audience members can expect moving forward.
-   - STRICT BAN ON ROBOTIC BOILERPLATE: NEVER add "INDUSTRY REPORTING & UPDATES", "Verified production and distribution documentation have been logged for this release", or similar artificial headers/footers.
-   - STRICT BAN ON COMMENT BAIT: NEVER ask questions like 'What do you think?', 'Drop your thoughts below', 'Comment below', 'Type YES', or 'Share your favorite'.
+   - STRICT BAN ON ROBOTIC BOILERPLATE: NEVER add "INDUSTRY REPORTING & UPDATES" or similar artificial headers/footers.
+   - STRICT BAN ON COMMENT BAIT: NEVER ask questions like 'What do you think?', 'Drop your thoughts below', or 'Comment below'.
    - HASHTAGS: 4-6 targeted, high-traffic entertainment hashtags.
 
 Return strictly JSON:
 {
   "overlay_lines": [
-    [{"text": "LEAD PHRASE ", "type": "white"}, {"text": "KEY ENTITY", "type": "highlight"}],
-    [{"text": "MILESTONE PHRASE ", "type": "white"}, {"text": "KEY OUTCOME", "type": "highlight"}]
+    [{"text": "STRONG HOOK ", "type": "white"}, {"text": "KEY ENTITY", "type": "highlight"}],
+    [{"text": "MAIN HEADLINE ", "type": "white"}, {"text": "KEY OUTCOME", "type": "highlight"}]
   ],
   "rewritten_caption": "EDITORIAL HEADLINE\n\nDetailed lead paragraph with full facts.\n\nRich contextual background paragraph detailing the story and history.\n\nForward-looking industry conclusion paragraph.\n\n#Hashtag1 #Hashtag2 #Hashtag3 #Hashtag4"
 }"""
@@ -160,19 +152,29 @@ def nepali_heuristic_payload(raw_caption: str) -> dict:
     sentences = [s.strip() for s in re.split(r'[।!?\n]+', cleaned) if len(s.strip()) > 8]
     first_sent = sentences[0] if sentences else cleaned[:100]
 
-    NEPALI_HANGING_WORDS = {'र', 'मा', 'को', 'का', 'की', 'ले', 'लाई', 'बाट', 'तथा', 'वा', 'समेत', 'पनि', 'भने', 'अब', 'छ', 'छन्', 'भएको'}
+    NEPALI_HANGING_WORDS = {'र', 'मा', 'को', 'का', 'की', 'ले', 'लाई', 'बाट', 'तथा', 'वा', 'समेत', 'पनि', 'भने', 'अब', 'छ', 'छन्', 'भएको', 'गरेको', 'गर्ने'}
 
-    # Check for curated high-impact topics to guarantee punchy 2-line headlines
+    # Strong Hook Line (Line 1) + Main Headline (Line 2) curated pairs
     upper = cleaned
     if 'बालेन' in upper and ('नागरिकता' in upper or 'प्रतिलिपि' in upper):
         overlay_lines = [
-            [{"text": "बालेन सरकारको ", "type": "white"}, {"text": "नयाँ निर्णय", "type": "highlight"}],
-            [{"text": "जिल्लाबाटै ", "type": "white"}, {"text": "नागरिकता प्रतिलिपि", "type": "highlight"}]
+            [{"text": "बालेनको ", "type": "white"}, {"text": "नयाँ निर्णय", "type": "highlight"}],
+            [{"text": "नागरिकता ", "type": "white"}, {"text": "जिल्लाबाटै", "type": "highlight"}]
         ]
-    elif 'इरान' in upper and ('चेतावनी' in upper or 'ट्रम्प' in upper or 'नेतन्याहू' in upper):
+    elif 'इरान' in upper and ('चेतावनी' in upper or 'ट्रम्प' in upper or 'नेतन्याहू' in upper or 'होर्मुज' in upper):
         overlay_lines = [
             [{"text": "इरानको ", "type": "white"}, {"text": "कडा चेतावनी", "type": "highlight"}],
-            [{"text": "ट्रम्प र नेतन्याहू ", "type": "highlight"}, {"text": "लक्षित", "type": "white"}]
+            [{"text": "होर्मुज मार्ग ", "type": "white"}, {"text": "बन्द", "type": "highlight"}]
+        ]
+    elif any(k in upper for k in ['सुरुङ', 'उद्धार', 'शव', 'पहिरो', 'बाढी', 'दुर्घटना']):
+        overlay_lines = [
+            [{"text": "सुरुङभित्र ", "type": "white"}, {"text": "भयानक दृश्य", "type": "highlight"}],
+            [{"text": "११ जनाको ", "type": "white"}, {"text": "शव फेला", "type": "highlight"}]
+        ]
+    elif any(k in upper for k in ['अर्थमन्त्री', 'स्वर्णिम', 'वाग्ले', 'भारत', 'भ्रमण']):
+        overlay_lines = [
+            [{"text": "अर्थमन्त्रीको ", "type": "white"}, {"text": "विशेष भ्रमण", "type": "highlight"}],
+            [{"text": "भारतमा ", "type": "white"}, {"text": "उच्च भेटवार्ता", "type": "highlight"}]
         ]
     elif 'हात्ती' in upper and 'रोनाल्डो' in upper:
         overlay_lines = [
@@ -190,17 +192,17 @@ def nepali_heuristic_payload(raw_caption: str) -> dict:
             [{"text": "शीर्ष नेताहरू ", "type": "white"}, {"text": "अगाडि कडा भाषण", "type": "highlight"}]
         ]
     else:
-        # Dynamic short & punchy extraction (strictly 2 to 3 words per line, 2 lines)
-        parts = re.split(r'[-—,]', first_sent)
-        if len(parts) >= 2 and len(parts[0].strip().split()) >= 2:
-            w1 = [w for w in parts[0].strip().split() if w not in {'अब', 'यस', 'भने', 'तथा', 'र'}][:3]
-            w2 = [w for w in parts[1].strip().split() if w not in {'अब', 'यस', 'भने', 'तथा', 'र', 'भएको', 'छ', 'थियो'}][:3]
+        # Dynamic extraction: Line 1 = Strong Hook (2-3 words), Line 2 = Main Headline (2-3 words)
+        parts = [p.strip() for p in re.split(r'[-—,:।!?]', first_sent) if len(p.strip().split()) >= 2]
+        if len(parts) >= 2:
+            w1 = [w for w in parts[0].split() if w not in {'अब', 'यस', 'भने', 'तथा', 'र'}][:3]
+            w2 = [w for w in parts[1].split() if w not in {'अब', 'यस', 'भने', 'तथा', 'र', 'भएको', 'छ', 'थियो'}][:3]
         else:
             all_w = first_sent.split()
-            if len(all_w) <= 5:
+            if len(all_w) <= 6:
                 mid = max(1, len(all_w) // 2)
-                w1 = all_w[:mid]
-                w2 = all_w[mid:]
+                w1 = all_w[:mid][:3]
+                w2 = all_w[mid:][:3]
             else:
                 w1 = all_w[:3]
                 w2 = all_w[3:6]
