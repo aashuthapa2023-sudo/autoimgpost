@@ -32,9 +32,11 @@ def hex_to_rgb(hex_str: str) -> tuple:
 def get_font(size: int, bold: bool = True) -> ImageFont.FreeTypeFont:
     repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     font_candidates = [
+        os.path.join(repo_root, "assets", "fonts", "Akshar-Bold.ttf"),
         os.path.join(repo_root, "assets", "fonts", "impact.ttf"),
         os.path.join(repo_root, "assets", "fonts", "bold_headline.ttf"),
         r"C:\Windows\Fonts\impact.ttf",
+        r"C:\Windows\Fonts\Nirmala.ttc",
         r"C:\Windows\Fonts\ariblk.ttf",
         r"C:\Windows\Fonts\arialbd.ttf",
         r"C:\Windows\Fonts\segoeuib.ttf",
@@ -89,14 +91,29 @@ if os.name == 'nt':
     gdi32.GetTextExtentPoint32W.argtypes = [wintypes.HDC, wintypes.LPCWSTR, ctypes.c_int, ctypes.POINTER(SIZE)]
     gdi32.GetTextExtentPoint32W.restype = wintypes.BOOL
 
+AKSHAR_REGISTERED = False
+
+def ensure_akshar_font():
+    global AKSHAR_REGISTERED
+    if not AKSHAR_REGISTERED and os.name == 'nt':
+        repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        akshar_path = os.path.join(repo_root, "assets", "fonts", "Akshar-Bold.ttf")
+        if os.path.exists(akshar_path):
+            try:
+                gdi32.AddFontResourceExW(os.path.abspath(akshar_path), 0x10, 0)
+                AKSHAR_REGISTERED = True
+            except Exception:
+                pass
+
 def is_devanagari(text: str) -> bool:
     """Returns True if string contains any Devanagari script characters."""
     return any('\u0900' <= char <= '\u097F' for char in str(text or ""))
 
-def render_gdi_token(text: str, font_size: int, font_name: str = 'Nirmala UI', bold: bool = True):
-    """Renders text with Windows native Uniscribe/GDI to guarantee 100% accurate Devanagari conjuncts & ligatures."""
+def render_gdi_token(text: str, font_size: int, font_name: str = 'Akshar', bold: bool = True):
+    """Renders text with Windows native Uniscribe/GDI using Akshar Bold to guarantee 100% accurate Devanagari conjuncts & ligatures."""
     if not text or os.name != 'nt':
         return None, 0, 0
+    ensure_akshar_font()
     try:
         hdc = user32.GetDC(0)
         memdc = gdi32.CreateCompatibleDC(hdc)
@@ -106,7 +123,7 @@ def render_gdi_token(text: str, font_size: int, font_name: str = 'Nirmala UI', b
 
         size = SIZE()
         gdi32.GetTextExtentPoint32W(memdc, text, len(text), ctypes.byref(size))
-        w, h = size.cx + 20, size.cy + 20
+        w, h = size.cx + 40, size.cy + 40
 
         bmi = BITMAPINFO()
         bmi.bmiHeader.biSize = ctypes.sizeof(BITMAPINFOHEADER)
@@ -125,7 +142,7 @@ def render_gdi_token(text: str, font_size: int, font_name: str = 'Nirmala UI', b
         gdi32.SetBkColor(memdc, 0x00000000)
         gdi32.SetBkMode(memdc, 2)
 
-        rect = wintypes.RECT(10, 10, w, h)
+        rect = wintypes.RECT(20, 20, w, h)
         user32.DrawTextW(memdc, text, -1, ctypes.byref(rect), 0x00000000)
 
         buf = (ctypes.c_ubyte * (w * h * 4)).from_address(p_bits.value)
@@ -136,8 +153,10 @@ def render_gdi_token(text: str, font_size: int, font_name: str = 'Nirmala UI', b
         gdi32.DeleteDC(memdc)
         user32.ReleaseDC(0, hdc)
 
-        mask = arr[10:10+size.cy, 10:10+size.cx, 0]
+        mask = arr[20:20+size.cy, 20:20+size.cx, 0]
         return mask, size.cx, size.cy
+    except Exception:
+        return None, 0, 0
     except Exception:
         return None, 0, 0
 
@@ -223,25 +242,6 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         elif isinstance(line, list):
             normalized_lines.append(line)
 
-    # Typography sizing matching exact reference style
-    chosen_size = 54 if len(normalized_lines) >= 3 else 58
-    for test_size in [chosen_size, 50, 46, 42, 38]:
-        f_test = get_font(test_size, bold=True)
-        all_fit = True
-        for line in normalized_lines:
-            line_w = measure_line_width(temp_draw, line, f_test, font_size=test_size)
-            if line_w > safe_max_w:
-                all_fit = False
-                break
-        if all_fit:
-            chosen_size = test_size
-            break
-        chosen_size = test_size
-
-    title_font = get_font(chosen_size, bold=True)
-    line_spacing = int(chosen_size * 1.15)
-    total_text_h = len(normalized_lines) * line_spacing
-
     # Branding Badge metrics matching exact reference style
     branding_name = dest_page_name or badge_label or kwargs.get("source_tag", "")
     badge_is_deva = is_devanagari(branding_name)
@@ -269,6 +269,29 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         bx, bw, bh = 0, 0, 0
         text_w, text_h, radius = 0, 0, 0
         bbox = (0, 0, 0, 0)
+
+    # Typography sizing matching exact reference style
+    chosen_size = 56 if len(normalized_lines) <= 2 else 50
+    for test_size in [chosen_size, 52, 48, 44, 40, 36]:
+        line_spacing_test = int(test_size * 1.38)
+        total_text_h_test = len(normalized_lines) * line_spacing_test
+        total_content_h_test = (bh + 22 if branding_name else 0) + total_text_h_test
+
+        f_test = get_font(test_size, bold=True)
+        all_fit = True
+        for line in normalized_lines:
+            line_w = measure_line_width(temp_draw, line, f_test, font_size=test_size)
+            if line_w > safe_max_w:
+                all_fit = False
+                break
+        if all_fit and total_content_h_test <= (target_h - int(target_h * 0.68) - 16):
+            chosen_size = test_size
+            break
+        chosen_size = test_size
+
+    title_font = get_font(chosen_size, bold=True)
+    line_spacing = int(chosen_size * 1.38)  # Generous line height ensures top & bottom matras never collide
+    total_text_h = len(normalized_lines) * line_spacing
 
     # ALWAYS USE SOURCE AS 4:5 ASPECT RATIO IMAGE (Fill entire 1080x1350 canvas)
     scale = max(target_w / float(w), target_h / float(h))
