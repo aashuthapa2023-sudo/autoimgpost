@@ -290,21 +290,80 @@ def validate_image_quality(img: np.ndarray, min_dim: int = 720, min_sharpness: f
     return True, f"Passed HD quality check (Resolution: {w}x{h}px, Sharpness: {lap_var:.1f})"
 
 def apply_cinematic_grade(img: np.ndarray) -> np.ndarray:
+    """
+    Applies professional cinematic & editorial color grading:
+    1. Edge-preserving bilateral filter (denoising without loss of edge sharpness).
+    2. CIE-LAB Dynamic Contrast CLAHE (deepens local contrast & texture).
+    3. Cinematic S-Curve Tonal Mapping (deep blacks, punchy midtones, luminous highlights).
+    4. Smart Color Vibrance in HSV space (protects skin tones, enlivens flat colors).
+    5. Split-Toning (subtle cool teal/navy shadows + warm golden highlight pop).
+    6. Micro-Contrast & Dual-Frequency Unsharp Mask (crystal-clear 4K detail).
+    7. Subtle Optical Vignette (focuses viewer gaze on central editorial subject).
+    """
     if img is None:
         return None
-    # 1. Edge-preserving bilateral denoising to remove JPEG compression blocks & pixelation noise
-    smoothed = cv2.bilateralFilter(img, d=5, sigmaColor=25, sigmaSpace=25)
 
-    # 2. CIE-LAB Dynamic Contrast CLAHE
-    lab = cv2.cvtColor(smoothed, cv2.COLOR_BGR2LAB)
+    # 1. Edge-preserving bilateral denoising to remove JPEG compression noise
+    denoised = cv2.bilateralFilter(img, d=5, sigmaColor=20, sigmaSpace=20)
+
+    # 2. CIE-LAB Color Space Local Contrast & Dynamic Range (CLAHE)
+    lab = cv2.cvtColor(denoised, cv2.COLOR_BGR2LAB)
     l, a, b = cv2.split(lab)
-    clahe = cv2.createCLAHE(clipLimit=1.7, tileGridSize=(8, 8))
-    cl = clahe.apply(l)
-    merged = cv2.merge((cl, a, b))
-    graded = cv2.cvtColor(merged, cv2.COLOR_LAB2BGR)
-    graded = cv2.convertScaleAbs(graded, alpha=1.02, beta=1)
+    clahe = cv2.createCLAHE(clipLimit=2.2, tileGridSize=(8, 8))
+    l_clahe = clahe.apply(l)
 
-    # 3. Micro-texture preservation: unsharp mask to ensure edges stay crisp
-    gaussian = cv2.GaussianBlur(graded, (0, 0), sigmaX=1.5)
-    graded = cv2.addWeighted(graded, 1.15, gaussian, -0.15, 0)
-    return graded
+    # 3. Cinematic S-Curve Tonal Mapping on Luminance Channel
+    lut_s_curve = np.zeros(256, dtype=np.uint8)
+    for i in range(256):
+        x = i / 255.0
+        y = 1.0 / (1.0 + np.exp(-10.0 * (x - 0.5)))
+        y_blend = 0.35 * x + 0.65 * y
+        lut_s_curve[i] = np.clip(y_blend * 255.0, 0, 255).astype(np.uint8)
+
+    l_graded = cv2.LUT(l_clahe, lut_s_curve)
+    lab_graded = cv2.merge((l_graded, a, b))
+    graded_bgr = cv2.cvtColor(lab_graded, cv2.COLOR_LAB2BGR)
+
+    # 4. Smart Color Vibrance in HSV Space (boosts dull tones, protects skin tones)
+    hsv = cv2.cvtColor(graded_bgr, cv2.COLOR_BGR2HSV).astype(np.float32)
+    h_chan, s_chan, v_chan = cv2.split(hsv)
+    s_norm = s_chan / 255.0
+    vibrance_boost = 1.0 + (1.0 - s_norm) * 0.35
+    s_boosted = np.clip(s_chan * vibrance_boost * 1.10, 0, 255.0)
+    hsv_boosted = cv2.merge((h_chan, s_boosted, v_chan))
+    graded_bgr = cv2.cvtColor(hsv_boosted.astype(np.uint8), cv2.COLOR_HSV2BGR)
+
+    # 5. Cinematic Split-Toning (Warm Midtones / Cool Teal Shadow Balance)
+    f_img = graded_bgr.astype(np.float32) / 255.0
+    b_c, g_c, r_c = cv2.split(f_img)
+    lum = 0.299 * r_c + 0.587 * g_c + 0.114 * b_c
+
+    # Shadows: subtle cool teal tone
+    shadow_mask = np.clip((0.45 - lum) / 0.45, 0.0, 1.0)
+    b_c += shadow_mask * 0.025
+    g_c += shadow_mask * 0.008
+
+    # Midtones & Highlights: warm golden cinematic glow
+    high_mask = np.clip((lum - 0.35) / 0.65, 0.0, 1.0)
+    r_c += high_mask * 0.028
+    g_c += high_mask * 0.012
+
+    split_toned = cv2.merge((np.clip(b_c * 255.0, 0, 255),
+                             np.clip(g_c * 255.0, 0, 255),
+                             np.clip(r_c * 255.0, 0, 255))).astype(np.uint8)
+
+    # 6. Micro-Contrast & Razor Sharp Clarity (Dual-frequency unsharp mask)
+    blur_fine = cv2.GaussianBlur(split_toned, (0, 0), sigmaX=1.2)
+    sharpened = cv2.addWeighted(split_toned, 1.30, blur_fine, -0.30, 0)
+
+    # 7. Subtle Editorial Vignette (Gentle edge falloff focusing on central subject)
+    h, w = sharpened.shape[:2]
+    X = np.linspace(-1.0, 1.0, w, dtype=np.float32)
+    Y = np.linspace(-1.0, 1.0, h, dtype=np.float32)
+    xx, yy = np.meshgrid(X, Y)
+    dist = np.sqrt(xx * xx + yy * yy)
+    vignette = np.clip(1.0 - 0.18 * (dist ** 1.8), 0.78, 1.0)
+    vignette_3c = cv2.merge([vignette, vignette, vignette])
+
+    final_graded = np.clip(sharpened.astype(np.float32) * vignette_3c, 0, 255).astype(np.uint8)
+    return final_graded

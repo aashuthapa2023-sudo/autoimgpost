@@ -351,9 +351,13 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     y_off = (scaled_h - target_h) // 2
     canvas = resized_art[y_off:y_off+target_h, x_off:x_off+target_w].copy()
 
-    # Subtle HD unsharp mask for crystal-clear edges
-    blurred = cv2.GaussianBlur(canvas, (0, 0), sigmaX=1.5)
-    canvas = cv2.addWeighted(canvas, 1.15, blurred, -0.15, 0)
+    # Always apply Pro Color Grading to source image before composite
+    try:
+        from modules.image_cleaner import apply_cinematic_grade
+        canvas = apply_cinematic_grade(canvas)
+    except Exception:
+        blurred = cv2.GaussianBlur(canvas, (0, 0), sigmaX=1.5)
+        canvas = cv2.addWeighted(canvas, 1.15, blurred, -0.15, 0)
 
     # Identify where original text is: TOP or BOTTOM
     text_position = kwargs.get("text_position")
