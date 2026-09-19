@@ -213,27 +213,82 @@ def nepali_heuristic_payload(raw_caption: str) -> dict:
         lines_words = [w1, w2]
         overlay_lines = [format_nepali_thematic_tokens(lw) for lw in lines_words if lw]
 
-    lead_clean = first_sent.replace('—', ' - ').strip()
-    headline = "🇳🇵 " + lead_clean.split(' - ')[0].strip()
-    lead_para = f"नागरिक सेवा तथा सार्वजनिक सरोकारलाई सहज बनाउने उद्देश्यका साथ {lead_clean}।"
-
-    if len(sentences) > 2:
-        body_para = " ".join(sentences[1:3]) + "।"
-    else:
-        body_para = "यस व्यवस्थाले देशका विभिन्न भागमा रहेका सर्वसाधारण नागरिकलाई आवश्यक प्रशासनिक सेवा लिन निकै सहज हुने र समय तथा खर्चको ठूलो बचत हुने विश्वास गरिएको छ।"
-
-    if len(sentences) > 3:
-        concl_para = " ".join(sentences[3:6]) + "।"
-    else:
-        concl_para = "सम्बन्धित निकायले उक्त निर्णय र नीतिगत व्यवस्था तुरुन्त कार्यान्वयनमा ल्याउन आवश्यक निर्देशन तथा तयारी पूरा गरिसकेको छ।"
-
-    hashtags = "#NepalSpeaks #NepaliNews #NepalUpdates #Nepal #BreakingNewsNepal"
-    rewritten = f"{headline}\n\n{lead_para}\n\n{body_para}\n\n{concl_para}\n\n{hashtags}"
+    rewritten = analyze_and_rewrite_nepali_caption(raw_caption)
 
     return {
         "overlay_lines": overlay_lines,
         "rewritten_caption": sanitize_caption(rewritten)
     }
+
+def analyze_and_rewrite_nepali_caption(raw_caption: str) -> str:
+    """
+    Intelligently analyzes the source caption's news domain, primary entities,
+    and factual content, and rewrites it into a 3-paragraph journalistic article.
+    """
+    cleaned = re.sub(r'https?:\S+', '', raw_caption).strip()
+    paras = [p.strip() for p in cleaned.split('\n\n') if len(p.strip()) > 15]
+    sentences = [s.strip() for s in re.split(r'[।!?\n]\s*', cleaned) if len(s.strip()) > 10]
+    first_sent = sentences[0] if sentences else cleaned[:100]
+
+    combined = cleaned.lower()
+    if any(k in combined for k in ['बालेन', 'नागरिकता', 'मन्त्रिपरिषद्', 'मन्त्रालय', 'सुशासन', 'प्रशासन', 'राजपत्र', 'विधेयक']):
+        domain = 'governance'
+        emoji = '🇳🇵'
+        tags = ['#BalenShah', '#GovernanceNepal', '#PolicyUpdate']
+    elif any(k in combined for k in ['इरान', 'अमेरिका', 'ट्रम्प', 'इजरायल', 'युद्ध', 'होर्मुज', 'नेतन्याहू', 'गाजा', 'तेहरान', 'युक्रेन', 'रूस']):
+        domain = 'geopolitics'
+        emoji = '🌍'
+        tags = ['#Geopolitics', '#WorldNews', '#MiddleEast']
+    elif any(k in combined for k in ['हात्ती', 'निकुञ्ज', 'चितवन', 'वन्यजन्तु', 'गैंडा', 'बाघ', 'चिडियाखाना', 'प्रजनन केन्द्र']):
+        domain = 'wildlife'
+        emoji = '🐘'
+        tags = ['#WildlifeNepal', '#ChitwanNationalPark', '#Conservation']
+    elif any(k in combined for k in ['सुरुङ', 'उद्धार', 'सुरुङ्बाट', 'विपद्', 'बाढी', 'पहिरो', 'दुर्घटना']):
+        domain = 'rescue'
+        emoji = '🚨'
+        tags = ['#NepalRescue', '#EmergencyUpdate', '#DisasterManagement']
+    elif any(k in combined for k in ['अदालत', 'सर्वोच्च', 'सम्पत्ति', 'जफत', 'मुद्दा', 'फैसला', 'अख्तियार', 'रोक्का', 'लिलामी', 'अपराध']):
+        domain = 'law'
+        emoji = '⚖️'
+        tags = ['#NepalLaw', '#Governance', '#AntiCorruption']
+    elif any(k in combined for k in ['निर्वाचन', 'आयोग', 'मतदान', 'मतदाता', 'उम्मेदवार', 'फागुन', 'चुनाव']):
+        domain = 'elections'
+        emoji = '🗳️'
+        tags = ['#NepalElections', '#ElectionCommission', '#Democracy']
+    elif any(k in combined for k in ['संविधान', 'सैनिक मञ्च', 'राष्ट्रपति', 'टुँडिखेल', 'समारोह', 'राष्ट्रिय दिवस']):
+        domain = 'national'
+        emoji = '🇳🇵'
+        tags = ['#ConstitutionDay', '#NationalDay', '#Nepal']
+    else:
+        domain = 'news'
+        emoji = '📢'
+        tags = ['#NepalNews', '#CurrentAffairs']
+
+    # 1. Headline
+    hl_text = first_sent.replace('—', ' - ').replace('!', '').strip()
+    headline = f"{emoji} {hl_text}"
+
+    # 2. Paragraph 1 (Breaking Lead)
+    lead_para = first_sent.rstrip('।') + "।"
+
+    # 3. Paragraph 2 (Background & In-Depth Facts)
+    if len(paras) > 1:
+        body_para = paras[1].rstrip('।') + "।"
+    elif len(sentences) > 2:
+        body_para = " ".join(sentences[1:3]).rstrip('।') + "।"
+    else:
+        body_para = "यस विषयमा सम्बन्धित निकाय तथा सरोकारवालाहरूले आवश्यक अध्ययन र थप प्रक्रिया अगाडि बढाएका छन्।"
+
+    # 4. Paragraph 3 (Public Significance & Forward Outlook)
+    if len(paras) > 2:
+        concl_para = paras[2].rstrip('।') + "।"
+    elif len(sentences) > 3:
+        concl_para = " ".join(sentences[3:5]).rstrip('।') + "।"
+    else:
+        concl_para = "यस विकासक्रमले दीर्घकालीन रूपमा सकारात्मक प्रभाव पार्ने र आगामी कार्ययोजनालाई थप प्रभावकारी बनाउने अपेक्षा गरिएको छ।"
+
+    hashtags = " ".join(['#NepalSpeaks', '#NepaliNews', '#NepalUpdates'] + tags)
+    return f"{headline}\n\n{lead_para}\n\n{body_para}\n\n{concl_para}\n\n{hashtags}"
 
 def _is_capitalized_in_raw(word: str, raw_sentence: str) -> bool:
     clean = word.strip('.,;:!?\'"()[]')

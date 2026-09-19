@@ -210,6 +210,51 @@ def measure_line_width(draw, tokens, font, font_size: int = 54):
                 w += len(t_str) * (font.size * 0.55 if hasattr(font, 'size') else 24)
     return w
 
+def detect_image_text_position(img: np.ndarray) -> str:
+    """
+    Identifies whether prominent text/headlines in the source image are located
+    in the TOP region or the BOTTOM region using OpenCV morphological gradient density.
+    Returns: 'top' or 'bottom'
+    """
+    if img is None:
+        return 'bottom'
+
+    h, w = img.shape[:2]
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # Text in social media graphics/posters has high gradient energy and distinct aspect ratios
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
+    grad = cv2.morphologyEx(gray, cv2.MORPH_GRADIENT, kernel)
+    _, thresh = cv2.threshold(grad, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+
+    # Horizontal morphological closing to group characters into text lines
+    h_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (max(15, int(w * 0.035)), 3))
+    connected = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, h_kernel)
+
+    contours, _ = cv2.findContours(connected, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    top_score = 0.0
+    bot_score = 0.0
+
+    for c in contours:
+        x, y, cw, ch = cv2.boundingRect(c)
+        aspect = cw / float(ch + 1e-5)
+        # Headline/title candidate: wide horizontal block, reasonable height
+        if cw > w * 0.15 and ch > h * 0.015 and ch < h * 0.25 and aspect > 1.8:
+            y_center = y + ch / 2.0
+            area = cw * ch
+            # Top 42% vs Bottom 42%
+            if y_center < h * 0.42:
+                dist_weight = 1.0 + (1.0 - (y_center / (h * 0.42)))
+                top_score += area * dist_weight
+            elif y_center > h * 0.58:
+                dist_weight = 1.0 + ((y_center - h * 0.58) / (h * 0.42))
+                bot_score += area * dist_weight
+
+    if top_score > bot_score * 1.2:
+        return 'top'
+    return 'bottom'
+
 def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex: str = "random", badge_label: str = "", dest_page_name: str = "", output_path: str = "output/poster.jpg", **kwargs):
     """
     Renders 4:5 visual poster strictly matching user reference layout:
@@ -218,7 +263,7 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     - Destination page branding badge (using individual destination page name).
     - Randomized visible highlight colors: Red, Light Blue, Dark Yellow, Cyan, Emerald, Coral.
     - NO attribution footer line.
-    - Smooth deep gradient fade placed downside concealing original captions cleanly.
+    - Smooth faded dark black gradient placed on TOP or BOTTOM to block original source text cleanly.
     """
     target_w, target_h = 1080, 1350
     h, w, _ = base_img.shape
@@ -308,43 +353,108 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     blurred = cv2.GaussianBlur(canvas, (0, 0), sigmaX=1.5)
     canvas = cv2.addWeighted(canvas, 1.15, blurred, -0.15, 0)
 
-    # Atmospheric Top Vignette (top 8%)
-    top_fade_h = int(target_h * 0.08)
-    for y in range(top_fade_h):
-        alpha = (1.0 - (y / top_fade_h)) * 0.20
-        canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([8, 8, 10])
+    # Identify where original text is: TOP or BOTTOM
+    text_position = kwargs.get("text_position")
+    if not text_position or text_position == "auto":
+        text_position = detect_image_text_position(canvas)
+    text_position = str(text_position).lower()
+    if text_position not in ["top", "bottom"]:
+        text_position = "bottom"
+    print(f"           [Text Placement] Detected original text position: {text_position.upper()} -> Placing faded black gradient at {text_position.upper()} to block original text cleanly.")
 
-    # FADED DARK BLACK GRADIENT:
-    # Starts fading softly from 50% height (675px) down to the black base at 68% (918px)
-    start_y = int(target_h * 0.50)  # 675px (50%)
-    base_top = int(target_h * 0.68) # 918px (68%) — top of the Black Base
-
-    # Soft, faded dark black: max_alpha is 0.94 to 0.97 so the black base stays atmospheric and faded
     max_alpha = 0.94
-
-    for y in range(start_y, target_h):
-        if y < base_top:
-            t = (y - start_y) / float(base_top - start_y)
-            alpha = (t ** 1.6) * max_alpha
-        else:
-            t_base = (y - base_top) / float(target_h - base_top)
-            alpha = max_alpha + 0.03 * t_base
-        canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([6, 6, 8])
-
     gap = 20
     total_content_h = (bh + gap if branding_name else 0) + total_text_h
 
-    # EXACT VERTICAL CENTERING OF LOGO & TEXT IN BLACK BASE:
-    # Black base spans from base_top (918px) to target_h (1350px) = 432px
-    base_h = target_h - base_top
-    if total_content_h <= base_h:
-        pad = (base_h - total_content_h) // 2
-        by = base_top + pad
-        start_text_y = by + (bh + gap if branding_name else 0)
+    # Detect exact bounding boxes of text in canvas to ensure 100% blocking coverage
+    gray_canvas = cv2.cvtColor(canvas, cv2.COLOR_BGR2GRAY)
+    k_el = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
+    m_grad = cv2.morphologyEx(gray_canvas, cv2.MORPH_GRADIENT, k_el)
+    _, m_thresh = cv2.threshold(m_grad, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+    k_h = cv2.getStructuringElement(cv2.MORPH_RECT, (max(15, int(target_w * 0.035)), 3))
+    m_conn = cv2.morphologyEx(m_thresh, cv2.MORPH_CLOSE, k_h)
+    m_cnts, _ = cv2.findContours(m_conn, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    top_text_max_y = int(target_h * 0.32)
+    bot_text_min_y = int(target_h * 0.68)
+    for c in m_cnts:
+        bx_t, by_t, bw_t, bh_t = cv2.boundingRect(c)
+        aspect = bw_t / float(bh_t + 1e-5)
+        if bw_t > target_w * 0.12 and bh_t > target_h * 0.012 and bh_t < target_h * 0.25 and aspect > 1.6:
+            y_mid = by_t + bh_t / 2.0
+            if y_mid < target_h * 0.45:
+                top_text_max_y = max(top_text_max_y, by_t + bh_t)
+            elif y_mid > target_h * 0.55:
+                bot_text_min_y = min(bot_text_min_y, by_t)
+
+    dark_black = np.array([6, 6, 8], dtype=np.uint8)
+
+    if text_position == "top":
+        # Base covers entire detected top text with solid dark black (100% blocked)
+        base_bottom = max(int(target_h * 0.33), min(int(target_h * 0.38), top_text_max_y + 40))
+        fade_end = min(target_h - 200, base_bottom + 180)
+
+        # 1. Solid dark black covering all original text so zero ghost text shows through
+        for y in range(base_bottom):
+            canvas[y, :] = dark_black
+
+        # 2. Smooth faded gradient transitioning into the image
+        for y in range(base_bottom, fade_end):
+            t = (fade_end - y) / float(fade_end - base_bottom)
+            alpha = (t ** 1.8)
+            canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * dark_black
+
+        # 3. Clean any source watermark footer bar at bottom edge (bottom 6% with soft fade)
+        bot_strip_h = int(target_h * 0.06) # 81px
+        fade_strip_h = 15
+        strip_start = target_h - bot_strip_h
+        for y in range(strip_start - fade_strip_h, strip_start):
+            alpha = (y - (strip_start - fade_strip_h)) / float(fade_strip_h)
+            canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * dark_black
+        for y in range(strip_start, target_h):
+            canvas[y, :] = dark_black
+
+        # Vertically center badge and text inside top black base [0, base_bottom]
+        base_h = base_bottom
+        if total_content_h <= base_h:
+            pad = (base_h - total_content_h) // 2
+            by = max(24, pad)
+            start_text_y = by + (bh + gap if branding_name else 0)
+        else:
+            by = 24
+            start_text_y = by + (bh + gap if branding_name else 0)
+
     else:
-        bottom_padding = 28
-        start_text_y = target_h - bottom_padding - total_text_h
-        by = start_text_y - bh - gap
+        # Atmospheric Top Vignette (top 8%)
+        top_fade_h = int(target_h * 0.08)
+        for y in range(top_fade_h):
+            alpha = (1.0 - (y / top_fade_h)) * 0.20
+            canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([8, 8, 10])
+
+        # Base covers entire detected bottom text with solid dark black (100% blocked)
+        base_top = min(int(target_h * 0.67), max(int(target_h * 0.60), bot_text_min_y - 40))
+        fade_start = max(100, base_top - 180)
+
+        # 1. Smooth faded gradient leading into black base
+        for y in range(fade_start, base_top):
+            t = (y - fade_start) / float(base_top - fade_start)
+            alpha = (t ** 1.8)
+            canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * dark_black
+
+        # 2. Solid dark black covering all original text so zero ghost text shows through
+        for y in range(base_top, target_h):
+            canvas[y, :] = dark_black
+
+        # EXACT VERTICAL CENTERING OF LOGO & TEXT IN BLACK BASE:
+        base_h = target_h - base_top
+        if total_content_h <= base_h:
+            pad = (base_h - total_content_h) // 2
+            by = base_top + pad
+            start_text_y = by + (bh + gap if branding_name else 0)
+        else:
+            bottom_padding = 28
+            start_text_y = target_h - bottom_padding - total_text_h
+            by = start_text_y - bh - gap
 
     pil_img = Image.fromarray(cv2.cvtColor(canvas, cv2.COLOR_BGR2RGB))
     draw = ImageDraw.Draw(pil_img)
