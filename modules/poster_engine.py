@@ -140,19 +140,20 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         text_w, text_h, radius = 0, 0, 0
         bbox = (0, 0, 0, 0)
 
-    # Scale original image to fill canvas width without any crop or distortion
-    scale = target_w / float(w)
-    scaled_w = target_w
+    # ALWAYS USE SOURCE AS 4:5 ASPECT RATIO IMAGE (Fill entire 1080x1350 canvas)
+    scale = max(target_w / float(w), target_h / float(h))
+    scaled_w = int(w * scale)
     scaled_h = int(h * scale)
     resized_art = cv2.resize(base_img, (scaled_w, scaled_h), interpolation=cv2.INTER_LANCZOS4)
 
-    # Subtle HD unsharp mask for crystal-clear edges
-    blurred = cv2.GaussianBlur(resized_art, (0, 0), sigmaX=1.5)
-    resized_art = cv2.addWeighted(resized_art, 1.20, blurred, -0.20, 0)
+    # Center crop to exact 1080x1350 (4:5 canvas)
+    x_off = (scaled_w - target_w) // 2
+    y_off = (scaled_h - target_h) // 2
+    canvas = resized_art[y_off:y_off+target_h, x_off:x_off+target_w].copy()
 
-    canvas = np.zeros((target_h, target_w, 3), dtype=np.uint8)
-    canvas[:, :] = np.array([6, 6, 8]) # Pure dark studio background
-    canvas[:min(target_h, scaled_h), :] = resized_art[:min(target_h, scaled_h), :]
+    # Subtle HD unsharp mask for crystal-clear edges
+    blurred = cv2.GaussianBlur(canvas, (0, 0), sigmaX=1.5)
+    canvas = cv2.addWeighted(canvas, 1.15, blurred, -0.15, 0)
 
     # Atmospheric Top Vignette (top 8%)
     top_fade_h = int(target_h * 0.08)
