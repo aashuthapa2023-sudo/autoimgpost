@@ -50,7 +50,7 @@ jobs:
       - name: Install System Dependencies (OpenCV & Fonts)
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgl1 libglib2.0-0 fonts-dejavu-core
+          sudo apt-get install -y libgl1 libglib2.0-0 fonts-dejavu-core fonts-noto-core fonts-deva libraqm0
 
       - name: Install Python Dependencies
         run: pip install -r requirements.txt
@@ -69,6 +69,8 @@ jobs:
           FB_TOKEN_TECH: ${{ secrets.FB_TOKEN_TECH }}
           FB_TOKEN_MUSIC_STORE: ${{ secrets.FB_TOKEN_MUSIC_STORE }}
           MUSIC_STORE_TOKEN: ${{ secrets.MUSIC_STORE_TOKEN }}
+          NEPAL_SPEAKS_ACCESS_TOKEN: ${{ secrets.NEPAL_SPEAKS_ACCESS_TOKEN }}
+          FB_TOKEN_NEPAL_SPEAKS: ${{ secrets.FB_TOKEN_NEPAL_SPEAKS }}
         run: |
           ACTION="${{ github.event.inputs.action }}"
           CHANNEL="${{ github.event.inputs.channel }}"
