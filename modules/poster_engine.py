@@ -214,7 +214,8 @@ def measure_line_width(draw, tokens, font, font_size: int = 54):
 def detect_image_text_position(img: np.ndarray) -> str:
     """
     Identifies whether prominent text/headlines in the source image are located
-    in the TOP region or the BOTTOM region using OpenCV morphological gradient density.
+    in the TOP region or the BOTTOM region using OpenCV morphological gradient density,
+    color/saturation analysis (cyan, yellow, white text), and human face protection.
     Returns: 'top' or 'bottom'
     """
     if img is None:
@@ -223,7 +224,23 @@ def detect_image_text_position(img: np.ndarray) -> str:
     h, w = img.shape[:2]
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # Text in social media graphics/posters has high gradient energy and distinct aspect ratios
+    # 1. Human Face Detection Safeguard:
+    # If prominent human faces exist in the upper 48% of the image (e.g. Balen Shah, public figures, actors),
+    # graphic designers position headline banners at the BOTTOM to avoid covering heads/faces.
+    top_face_detected = False
+    try:
+        cascade_path = cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
+        face_cascade = cv2.CascadeClassifier(cascade_path)
+        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.15, minNeighbors=3, minSize=(int(w*0.08), int(h*0.08)))
+        for (fx, fy, fw, fh) in faces:
+            face_center_y = fy + fh / 2.0
+            if face_center_y < h * 0.48:
+                top_face_detected = True
+                break
+    except Exception:
+        pass
+
+    # 2. Text in social media graphics/posters has high gradient energy and distinct aspect ratios
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
     grad = cv2.morphologyEx(gray, cv2.MORPH_GRADIENT, kernel)
     _, thresh = cv2.threshold(grad, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
@@ -232,7 +249,17 @@ def detect_image_text_position(img: np.ndarray) -> str:
     h_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (max(15, int(w * 0.035)), 3))
     connected = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, h_kernel)
 
-    contours, _ = cv2.findContours(connected, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    # 3. Vibrant Colored Headline Detection (Cyan, Yellow, White headlines on news cards)
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    # Cyan / Blue text mask: H [80, 110], S > 80, V > 100
+    cyan_mask = cv2.inRange(hsv, np.array([80, 80, 100]), np.array([115, 255, 255]))
+    # Yellow / Gold text mask: H [15, 35], S > 100, V > 120
+    yellow_mask = cv2.inRange(hsv, np.array([15, 100, 120]), np.array([38, 255, 255]))
+    color_text = cv2.bitwise_or(cyan_mask, yellow_mask)
+    c_connected = cv2.morphologyEx(color_text, cv2.MORPH_CLOSE, h_kernel)
+
+    combined_text_map = cv2.bitwise_or(connected, c_connected)
+    contours, _ = cv2.findContours(combined_text_map, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     top_score = 0.0
     bot_score = 0.0
@@ -241,7 +268,7 @@ def detect_image_text_position(img: np.ndarray) -> str:
         x, y, cw, ch = cv2.boundingRect(c)
         aspect = cw / float(ch + 1e-5)
         # Headline/title candidate: wide horizontal block, reasonable height
-        if cw > w * 0.15 and ch > h * 0.015 and ch < h * 0.25 and aspect > 1.8:
+        if cw > w * 0.14 and ch > h * 0.015 and ch < h * 0.28 and aspect > 1.6:
             y_center = y + ch / 2.0
             area = cw * ch
             # Top 42% vs Bottom 42%
@@ -252,7 +279,11 @@ def detect_image_text_position(img: np.ndarray) -> str:
                 dist_weight = 1.0 + ((y_center - h * 0.58) / (h * 0.42))
                 bot_score += area * dist_weight
 
-    if top_score > bot_score * 1.2:
+    # If a prominent human face is in the top half, heavily bias towards bottom
+    if top_face_detected:
+        bot_score = max(bot_score, 1000.0) * 3.5
+
+    if top_score > bot_score * 1.3:
         return 'top'
     return 'bottom'
 

@@ -409,6 +409,12 @@ def run_pipeline(mode="run", target_channel="all"):
 
                 img_h, img_w = raw_img.shape[:2]
                 print(f"           High-resolution source verified: {img_w}x{img_h}px ({quality_msg})")
+
+                # Detect original headline/text position ON THE UNTOUCHED RAW SOURCE IMAGE
+                from modules.poster_engine import detect_image_text_position
+                detected_text_pos = detect_image_text_position(raw_img)
+                print(f"           [Text Placement Audit] Detected original source text position: {detected_text_pos.upper()}")
+
                 cleaned_img = erase_text_and_watermarks(raw_img)
 
                 # 2. Cinematic Color Grading
@@ -451,7 +457,8 @@ def run_pipeline(mode="run", target_channel="all"):
                     highlight_hex=highlight_hex,
                     dest_page_name=dest_name,
                     output_path=rendered_file,
-                    post_id=post_id
+                    post_id=post_id,
+                    text_position=detected_text_pos
                 )
                 print(f"           Poster created successfully: 1080x1350px")
                 try:
@@ -536,6 +543,9 @@ def run_pipeline(mode="run", target_channel="all"):
                     error_message=str(err),
                     traceback_str=tb_str
                 )
+                if "validating access token" in str(err).lower() or "session has been invalidated" in str(err).lower():
+                    print(f"     [TOKEN EXPIRED] Access token for '{channel_name}' is invalid. Skipping channel.")
+                    break
 
         processed_ids_map[channel_id] = processed_ids
         daily_stats[channel_id] = channel_stat
