@@ -1,4 +1,5 @@
 import os
+import re
 import cv2
 import numpy as np
 import hashlib
@@ -290,6 +291,21 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     # Branding Badge metrics matching exact reference style
     branding_name = dest_page_name or badge_label or kwargs.get("source_tag", "")
     badge_is_deva = is_devanagari(branding_name)
+
+    # For all Nepali news pages/overlays, ensure the text overlay ending has '...'
+    is_deva_overlay = badge_is_deva or any(
+        any(is_devanagari(t.get("text", "") if isinstance(t, dict) else str(t)) for t in line)
+        for line in normalized_lines
+    )
+    if is_deva_overlay and normalized_lines and normalized_lines[-1]:
+        last_tok = normalized_lines[-1][-1]
+        if isinstance(last_tok, dict) and "text" in last_tok:
+            t = re.sub(r'[।!?.…—\-]+$', '', str(last_tok["text"])).rstrip()
+            last_tok["text"] = t + "..."
+        elif isinstance(last_tok, str):
+            t = re.sub(r'[।!?.…—\-]+$', '', str(last_tok)).rstrip()
+            normalized_lines[-1][-1] = t + "..."
+
     badge_font = get_font(26, bold=True)
     dest_badge_text = f"• {branding_name if badge_is_deva else branding_name.upper()} •" if branding_name else ""
     if branding_name:

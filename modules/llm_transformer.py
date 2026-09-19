@@ -8,39 +8,42 @@ try:
 except Exception:
     pass
 
-def build_system_prompt(language: str = "en") -> str:
+def build_system_prompt(language: str = "en", channel_name: str = "") -> str:
+    target_str = f" for '{channel_name}'" if channel_name else ""
     if language == "ne":
-        return """तपाईं एक वरिष्ठ नेपाली पत्रकार र समाचार सम्पादक हुनुहुन्छ जो फेसबुकका लागि दृश्य रूपमा प्रभावकारी र तथ्यमा आधारित नेपाली समाचार लेख र पोस्टर शीर्षक तयार गर्नुहुन्छ।
+        return f"""तपाईं एक वरिष्ठ नेपाली पत्रकार र समाचार सम्पादक हुनुहुन्छ जो फेसबुकका लागि दृश्य रूपमा प्रभावकारी र तथ्यमा आधारित नेपाली समाचार लेख र पोस्टर शीर्षक तयार गर्नुहुन्छ{target_str}।
 Facebook Distribution Guidelines को पूर्ण पालना गर्नुहोस्: कुनै क्लिकबेट छैन, कुनै अतिरञ्जना छैन, र कुनै कमेन्ट बेट (comment bait) छैन।
+यदि यो समाचार अन्य कुनै पेज वा च्यानलमा पनि पोस्ट भएको छ भने, यो च्यानल{target_str} को लागि नयाँ टेक्स्ट ओभरले र नयाँ भेरियसनको क्याप्सन बनाउनुहोस्।
 
 कार्य:
 १. ओभरले हेडलाइन्स (STRONG HOOK LINE + MAIN HEADLINE, strictly 2 lines, 2-3 words per line, large impactful typography):
-   - लाइन १: STRONG HOOK LINE (उच्च प्रभाव भएको हुक लाइन, २ देखि ३ शब्द, e.g. "बालेनको नयाँ निर्णय", "इरानको कडा चेतावनी", "सुरुङभित्र भयानक दृश्य", "अर्थमन्त्रीको विशेष भ्रमण")
-   - लाइन २: MAIN HEADLINE (मुख्य घटना, नतिजा वा फैसला, २ देखि ३ शब्द, e.g. "नागरिकता जिल्लाबाटै", "होर्मुज मार्ग नखोल्ने", "११ वटा शव फेला", "भारतमा उच्च भेटवार्ता")
+   - लाइन १: STRONG HOOK LINE (उच्च प्रभाव भएको हुक लाइन, २ देखि ३ शब्द)
+   - लाइन २: MAIN HEADLINE (मुख्य घटना वा नतिजा, २ देखि ३ शब्द)
+   - अनिवार्य नियम: ओभरलेको दोस्रो लाइनको अन्तिम शब्दको पछाडि अनिवार्य रूपमा तीनवटा थोप्लो (...) राख्नुहोस् (e.g. "जिल्लाबाटै...", "शव फेला...", "कडा चेतावनी...")।
    महत्त्वपूर्ण हाइलाइटिङ नियम:
    - पूरै वाक्यको मुख्य विषय (Proper noun, निर्णय, व्यक्ति वा ठाउँको नाम, मुख्य उपलब्धि) पहिचान गर्नुहोस् र त्यसलाई HIGHLIGHT गर्नुहोस्।
-   - टोकन विभाजन गर्नुहोस्: [{"text": "पहिलो शब्द ", "type": "white"}, {"text": "मुख्य विषय", "type": "highlight"}]
+    - टोकन विभाजन गर्नुहोस्: [{{"text": "पहिलो शब्द ", "type": "white"}}, {{"text": "मुख्य विषय...", "type": "highlight"}}]
 
 २. नेपाली समाचार क्याप्सन (Detailed Journalistic Report, 150-250 शब्दहरू):
    - तीनवटा स्पष्ट अनुच्छेदमा व्यावसायिक र तथ्यपरक समाचार लेख्नुहोस्:
-   - शीर्षक: सफा, स्पष्ट र तथ्यपरक समाचार शीर्षक (e.g. 🇳🇵 बालेन सरकारको नयाँ निर्णय: जुनसुकै जिल्लाबाट नागरिकताको प्रतिलिपि पाइने)।
+   - शीर्षक: सफा, स्पष्ट र तथ्यपरक समाचार शीर्षक।
    - अनुच्छेद १ (ताजा विवरण): मुख्य समाचार, आधिकारिक निर्णय, सम्बन्धित निकाय र मिति।
    - अनुच्छेद २ (पृष्ठभूमि र सन्दर्भ): विगतको पृष्ठभूमि, कारण र निर्णयको महत्व।
    - अनुच्छेद ३ (अगाडिको बाटो र प्रभाव): जनतालाई हुने सुविधा, कार्यान्वयनको चरण र आगामी प्रभाव।
-   - कमेन्ट बेट पूर्ण निषेध: 'तपाईंको विचार के छ?', 'तल कमेन्ट गर्नुहोस्', जस्ता प्रश्नहरू कत्ति पनि नलेख्नुहोस्।
-   - ह्यासट्यागहरू: ४-६ वटा सान्दर्भिक ह्यासट्यागहरू (#NepalSpeaks #NepaliNews #NepalUpdates #Nepal)।
+   - ह्यासट्यागहरू: ४-६ वटा सान्दर्भिक ह्यासट्यागहरू।
 
 Return strictly JSON:
-{
+{{
   "overlay_lines": [
-    [{"text": "हुक वाक्यांश ", "type": "white"}, {"text": "नयाँ निर्णय", "type": "highlight"}],
-    [{"text": "मुख्य घटना ", "type": "white"}, {"text": "जिल्लाबाटै", "type": "highlight"}]
+    [{{"text": "हुक वाक्यांश ", "type": "white"}}, {{"text": "नयाँ निर्णय", "type": "highlight"}}],
+    [{{"text": "मुख्य घटना ", "type": "white"}}, {{"text": "जिल्लाबाटै...", "type": "highlight"}}]
   ],
-  "rewritten_caption": "समाचार शीर्षक\n\nपहिलो अनुच्छेद तथ्यपरक विवरण...\n\nदोस्रो अनुच्छेद पृष्ठभूमि र महत्व...\n\nतेस्रो अनुच्छेद प्रभाव र आगामी चरण...\n\n#NepalSpeaks #NepaliNews #NepalUpdates"
-}"""
+  "rewritten_caption": "समाचार शीर्षक\\n\\nपहिलो अनुच्छेद तथ्यपरक विवरण...\\n\\nदोस्रो अनुच्छेद पृष्ठभूमि र महत्व...\\n\\nतेस्रो अनुच्छेद प्रभाव र आगामी चरण...\\n\\n#NepalSpeaks #NepaliNews #NepalUpdates"
+}}"""
 
-    return """You are a senior entertainment journalist and news editor crafting visually impactful, deeply detailed social media news articles for Facebook.
+    return f"""You are a senior entertainment journalist and news editor crafting visually impactful, deeply detailed social media news articles for Facebook{target_str}.
 Strictly adhere to Facebook Distribution Guidelines: NO clickbait, NO sensationalism, and ABSOLUTELY NO comment bait or engagement bait.
+If this news item is syndicated across multiple media pages, craft a fresh, unique angle, new text overlay, and a distinct variation of the caption tailored specifically{target_str}.
 
 TASK:
 1. OVERLAY HEADLINES (STRONG HOOK LINE + MAIN HEADLINE, strictly 2 lines, 2-3 words per line):
@@ -49,26 +52,20 @@ TASK:
    CRITICAL THEMATIC HIGHLIGHTING RULES:
    - Analyze the whole sentence and identify the MAIN THEMES (entity names, show titles, awards, milestones, key actions).
    - HIGHLIGHT THE MAIN THEME WHEREVER IT APPEARS IN THE LINE (beginning, middle, or end).
-   - Split each line into tokens: [{"text": "...", "type": "white" | "highlight"}].
+   - Split each line into tokens: [{{"text": "...", "type": "white"}}].
 
 2. REWRITTEN CAPTION (Detailed In-Depth Journalistic Report, 150-250 words):
-   - Write a rich, thorough, informative multi-paragraph journalistic news article covering the full story in depth:
-   - HEADLINE: Clean, professional editorial headline.
-   - PARAGRAPH 1 (Breaking Lead): Comprehensive breakdown of the breaking news, official announcements, primary subjects, and key dates.
-   - PARAGRAPH 2 (Background & History): Rich contextual background, production details, history of the creators/cast, franchise track record, or behind-the-scenes narrative.
-   - PARAGRAPH 3 (Forward Outlook & Industry Significance): Next milestones, release windows, streaming distribution context, or what audience members can expect moving forward.
-   - STRICT BAN ON ROBOTIC BOILERPLATE: NEVER add "INDUSTRY REPORTING & UPDATES" or similar artificial headers/footers.
-   - STRICT BAN ON COMMENT BAIT: NEVER ask questions like 'What do you think?', 'Drop your thoughts below', or 'Comment below'.
+   - Write a rich, thorough, informative multi-paragraph journalistic news article covering the full story in depth.
    - HASHTAGS: 4-6 targeted, high-traffic entertainment hashtags.
 
 Return strictly JSON:
-{
+{{
   "overlay_lines": [
-    [{"text": "STRONG HOOK ", "type": "white"}, {"text": "KEY ENTITY", "type": "highlight"}],
-    [{"text": "MAIN HEADLINE ", "type": "white"}, {"text": "KEY OUTCOME", "type": "highlight"}]
+    [{{"text": "STRONG HOOK ", "type": "white"}}, {{"text": "KEY ENTITY", "type": "highlight"}}],
+    [{{"text": "MAIN HEADLINE ", "type": "white"}}, {{"text": "KEY OUTCOME", "type": "highlight"}}]
   ],
-  "rewritten_caption": "EDITORIAL HEADLINE\n\nDetailed lead paragraph with full facts.\n\nRich contextual background paragraph detailing the story and history.\n\nForward-looking industry conclusion paragraph.\n\n#Hashtag1 #Hashtag2 #Hashtag3 #Hashtag4"
-}"""
+  "rewritten_caption": "EDITORIAL HEADLINE\\n\\nDetailed lead paragraph with full facts.\\n\\nRich contextual background paragraph detailing the story and history.\\n\\nForward-looking industry conclusion paragraph.\\n\\n#Hashtag1 #Hashtag2 #Hashtag3 #Hashtag4"
+}}"""
 
 TRAILING_STOPWORDS = {
     'THE', 'A', 'AN', 'OF', 'IN', 'ON', 'AT', 'TO', 'FOR', 'WITH', 'AND', 'OR',
@@ -147,7 +144,22 @@ def format_nepali_thematic_tokens(words: list) -> list:
         tokens.append({"text": " ".join(words[end_hl:]), "type": "white"})
     return tokens
 
-def nepali_heuristic_payload(raw_caption: str) -> dict:
+def ensure_nepali_overlay_ellipsis(overlay_lines: list) -> list:
+    """Ensures that for all Nepali news pages, the text overlay ending has '...' appended."""
+    if not overlay_lines:
+        return overlay_lines
+    last_line = overlay_lines[-1]
+    if last_line:
+        last_tok = last_line[-1]
+        if isinstance(last_tok, dict) and "text" in last_tok:
+            t = re.sub(r'[।!?.…—\-]+$', '', str(last_tok["text"])).rstrip()
+            last_tok["text"] = t + "..."
+        elif isinstance(last_tok, str):
+            t = re.sub(r'[।!?.…—\-]+$', '', str(last_tok)).rstrip()
+            last_line[-1] = t + "..."
+    return overlay_lines
+
+def nepali_heuristic_payload(raw_caption: str, channel_name: str = "", channel_id: str = "") -> dict:
     cleaned = re.sub(r'https?:\S+', '', raw_caption).strip()
     sentences = [s.strip() for s in re.split(r'[।!?\n]+', cleaned) if len(s.strip()) > 8]
     first_sent = sentences[0] if sentences else cleaned[:100]
@@ -157,28 +169,41 @@ def nepali_heuristic_payload(raw_caption: str) -> dict:
         'पनि', 'भने', 'अब', 'छ', 'छन्', 'भएको', 'गरेको', 'गर्ने', 'हुने', 'दिएका', 'परेका', 'बनेका', 'भएका'
     }
 
-    # Purely dynamic extraction directly from the post's actual story:
-    # Line 1 = Strong Hook / Context (2-3 words), Line 2 = Main Subject / Action (2-3 words)
+    # Derive variation index to generate distinct overlays when different channels post the same news:
+    var_seed = str(channel_id or channel_name or "nepal_speaks").strip().lower()
+    var_idx = (abs(hash(var_seed)) % 3)
+
     parts = [p.strip() for p in re.split(r'[-—,:।!?–]', first_sent) if len(p.strip().split()) >= 2]
-    if len(parts) >= 2:
-        w1 = [w for w in parts[0].split() if w not in {'अब', 'यस', 'भने', 'तथा', 'र'}][:3]
-        w2 = [w for w in parts[1].split() if w not in {'अब', 'यस', 'भने', 'तथा', 'र', 'भएको', 'छ', 'थियो'}][:3]
+    all_w = first_sent.split()
+
+    if var_idx == 1 and len(parts) >= 2:
+        # Variation 1: Emphasizes the main action/outcome clause first, followed by the subject
+        w1 = [w for w in parts[1].split() if w not in {'अब', 'यस', 'भने', 'तथा', 'र', 'भएको', 'छ', 'थियो'}][:3]
+        w2 = [w for w in parts[0].split() if w not in {'अब', 'यस', 'भने', 'तथा', 'र'}][:3]
+    elif var_idx == 2 and len(all_w) >= 6:
+        # Variation 2: Impact entity focus + outcome
+        w1 = [w for w in all_w[:3] if w not in {'अब', 'यस', 'भने', 'तथा', 'र'}]
+        w2 = [w for w in all_w[3:6] if w not in {'भएको', 'छ', 'थियो', 'गरेको'}]
     else:
-        all_w = first_sent.split()
-        if len(all_w) <= 6:
-            mid = max(1, len(all_w) // 2)
-            w1 = all_w[:mid][:3]
-            w2 = all_w[mid:][:3]
+        # Variation 0 (Standard): Leading clause + secondary clause
+        if len(parts) >= 2:
+            w1 = [w for w in parts[0].split() if w not in {'अब', 'यस', 'भने', 'तथा', 'र'}][:3]
+            w2 = [w for w in parts[1].split() if w not in {'अब', 'यस', 'भने', 'तथा', 'र', 'भएको', 'छ', 'थियो'}][:3]
         else:
-            w1 = all_w[:3]
-            w2 = all_w[3:6]
+            if len(all_w) <= 6:
+                mid = max(1, len(all_w) // 2)
+                w1 = all_w[:mid][:3]
+                w2 = all_w[mid:][:3]
+            else:
+                w1 = all_w[:3]
+                w2 = all_w[3:6]
 
     while w1 and re.sub(r'[^\u0900-\u097F]', '', w1[-1]) in NEPALI_HANGING_WORDS:
         w1.pop()
     while w2 and re.sub(r'[^\u0900-\u097F]', '', w2[-1]) in NEPALI_HANGING_WORDS:
         w2.pop()
 
-    # Ensure each line has at least 1 word if possible
+    # Ensure each line has words
     if not w1 and all_w:
         w1 = all_w[:2]
     if not w2 and len(all_w) > 2:
@@ -187,22 +212,29 @@ def nepali_heuristic_payload(raw_caption: str) -> dict:
     lines_words = [w1, w2]
     overlay_lines = [format_nepali_thematic_tokens(lw) for lw in lines_words if lw]
 
-    rewritten = analyze_and_rewrite_nepali_caption(raw_caption)
+    # Mandate ellipsis (...) at the end of text overlay for all Nepali news pages:
+    overlay_lines = ensure_nepali_overlay_ellipsis(overlay_lines)
+
+    rewritten = analyze_and_rewrite_nepali_caption(raw_caption, channel_name=channel_name, channel_id=channel_id)
 
     return {
         "overlay_lines": overlay_lines,
         "rewritten_caption": sanitize_caption(rewritten)
     }
 
-def analyze_and_rewrite_nepali_caption(raw_caption: str) -> str:
+def analyze_and_rewrite_nepali_caption(raw_caption: str, channel_name: str = "", channel_id: str = "") -> str:
     """
     Intelligently analyzes the source caption's news domain, primary entities,
     and factual content, and rewrites it into a 3-paragraph journalistic article.
+    Produces channel-specific angles and phrasing when multiple channels share stories.
     """
     cleaned = re.sub(r'https?:\S+', '', raw_caption).strip()
     paras = [p.strip() for p in cleaned.split('\n\n') if len(p.strip()) > 15]
     sentences = [s.strip() for s in re.split(r'[।!?\n]\s*', cleaned) if len(s.strip()) > 10]
     first_sent = sentences[0] if sentences else cleaned[:100]
+
+    var_seed = str(channel_id or channel_name or "nepal_speaks").strip().lower()
+    var_idx = (abs(hash(var_seed)) % 3)
 
     combined = cleaned.lower()
     if any(k in combined for k in ['बालेन', 'नागरिकता', 'मन्त्रिपरिषद्', 'मन्त्रालय', 'सुशासन', 'प्रशासन', 'राजपत्र', 'विधेयक']):
@@ -238,12 +270,22 @@ def analyze_and_rewrite_nepali_caption(raw_caption: str) -> str:
         emoji = '📢'
         tags = ['#NepalNews', '#CurrentAffairs']
 
-    # 1. Headline
+    # 1. Headline Variation
     hl_text = first_sent.replace('—', ' - ').replace('!', '').strip()
-    headline = f"{emoji} {hl_text}"
+    if var_idx == 1:
+        headline = f"⚡ ताजा रिपोर्ट: {hl_text}"
+    elif var_idx == 2:
+        headline = f"📢 विशेष कभरेज: {hl_text}"
+    else:
+        headline = f"{emoji} {hl_text}"
 
-    # 2. Paragraph 1 (Breaking Lead)
-    lead_para = first_sent.rstrip('।') + "।"
+    # 2. Paragraph 1 (Breaking Lead Variation)
+    if var_idx == 1:
+        lead_para = f"प्राप्त पछिल्लो विवरण अनुसार {first_sent.rstrip('।')}।"
+    elif var_idx == 2:
+        lead_para = f"सार्वजनिक जानकारी अनुसार {first_sent.rstrip('।')}।"
+    else:
+        lead_para = first_sent.rstrip('।') + "।"
 
     # 3. Paragraph 2 (Background & In-Depth Facts)
     if len(paras) > 1:
@@ -253,15 +295,23 @@ def analyze_and_rewrite_nepali_caption(raw_caption: str) -> str:
     else:
         body_para = "यस विषयमा सम्बन्धित निकाय तथा सरोकारवालाहरूले आवश्यक अध्ययन र थप प्रक्रिया अगाडि बढाएका छन्।"
 
-    # 4. Paragraph 3 (Public Significance & Forward Outlook)
-    if len(paras) > 2:
-        concl_para = paras[2].rstrip('।') + "।"
-    elif len(sentences) > 3:
-        concl_para = " ".join(sentences[3:5]).rstrip('।') + "।"
+    # 4. Paragraph 3 (Public Significance & Forward Outlook Variation)
+    if var_idx == 1:
+        concl_para = "यस घटना तथा निर्णयका आगामी प्रभाव र पछिल्ला घटनाक्रमहरूलाई हामी निरन्तर पछ्याइरहनेछौं।"
+    elif var_idx == 2:
+        concl_para = "यस सम्बन्धी थप विवरण र सार्वजनिक प्रतिक्रियाबारे आफ्नो धारणा कमेन्ट बक्समा साझा गर्नुहोस्।"
     else:
-        concl_para = "यस विकासक्रमले दीर्घकालीन रूपमा सकारात्मक प्रभाव पार्ने र आगामी कार्ययोजनालाई थप प्रभावकारी बनाउने अपेक्षा गरिएको छ।"
+        if len(paras) > 2:
+            concl_para = paras[2].rstrip('।') + "।"
+        elif len(sentences) > 3:
+            concl_para = " ".join(sentences[3:5]).rstrip('।') + "।"
+        else:
+            concl_para = "यस विकासक्रमले दीर्घकालीन रूपमा सकारात्मक प्रभाव पार्ने र आगामी कार्ययोजनालाई थप प्रभावकारी बनाउने अपेक्षा गरिएको छ।"
 
-    hashtags = " ".join(['#NepalSpeaks', '#NepaliNews', '#NepalUpdates'] + tags)
+    # Channel-specific Branding Hashtags
+    branding_clean = re.sub(r'[^a-zA-Z0-9\u0900-\u097F]', '', str(channel_name or channel_id or ""))
+    ch_tag = f"#{branding_clean}" if branding_clean else "#NepalSpeaks"
+    hashtags = " ".join([ch_tag, '#NepaliNews', '#NepalUpdates'] + tags)
     return f"{headline}\n\n{lead_para}\n\n{body_para}\n\n{concl_para}\n\n{hashtags}"
 
 def _is_capitalized_in_raw(word: str, raw_sentence: str) -> bool:
@@ -416,10 +466,10 @@ def format_factual_overlay(sentence: str) -> list:
         res.append(line_tokens)
     return res
 
-def smart_heuristic_headline(raw_caption: str, language: str = "en") -> dict:
+def smart_heuristic_headline(raw_caption: str, language: str = "en", channel_name: str = "", channel_id: str = "") -> dict:
     """Extracts factual news subject and synthesizes an extensive, deeply detailed multi-paragraph news report."""
     if language == "ne" or is_devanagari_text(raw_caption):
-        return nepali_heuristic_payload(raw_caption)
+        return nepali_heuristic_payload(raw_caption, channel_name=channel_name, channel_id=channel_id)
 
     # Normalize Windows-1252 and unicode smart quotes to clean ASCII
     normalized = raw_caption.replace('\x91', "'").replace('\x92', "'").replace('\x93', '"').replace('\x94', '"')
@@ -557,9 +607,9 @@ def sanitize_caption(caption: str) -> str:
     cleaned = re.sub(r'\n{3,}', '\n\n', cleaned)
     return cleaned
 
-def generate_social_payload(raw_caption: str, language: str = "en") -> dict:
+def generate_social_payload(raw_caption: str, language: str = "en", channel_name: str = "", channel_id: str = "") -> dict:
     effective_lang = "ne" if language == "ne" or is_devanagari_text(raw_caption) else (language or "en")
-    prompt = build_system_prompt(effective_lang)
+    prompt = build_system_prompt(effective_lang, channel_name=channel_name)
     payload = None
 
     # Tier 1: Groq Cloud
@@ -573,7 +623,7 @@ def generate_social_payload(raw_caption: str, language: str = "en") -> dict:
                     "model": "llama-3.3-70b-versatile",
                     "messages": [
                         {"role": "system", "content": prompt},
-                        {"role": "user", "content": f"Raw post caption to rewrite for originality and centered headline:\n{raw_caption}"}
+                        {"role": "user", "content": f"Raw post caption to rewrite for originality and centered headline for channel '{channel_name or channel_id}':\n{raw_caption}"}
                     ],
                     "response_format": {"type": "json_object"}
                 },
@@ -593,7 +643,7 @@ def generate_social_payload(raw_caption: str, language: str = "en") -> dict:
                 client = genai.Client(api_key=gemini_key)
                 resp = client.models.generate_content(
                     model="gemini-2.5-flash",
-                    contents=f"{prompt}\n\nRaw post caption:\n{raw_caption}",
+                    contents=f"{prompt}\n\nRaw post caption (Channel: {channel_name or channel_id}):\n{raw_caption}",
                     config={"response_mime_type": "application/json"}
                 )
                 payload = json.loads(resp.text)
@@ -612,7 +662,7 @@ def generate_social_payload(raw_caption: str, language: str = "en") -> dict:
                         "model": "meta-llama/llama-3.3-70b-instruct:free",
                         "messages": [
                             {"role": "system", "content": prompt},
-                            {"role": "user", "content": f"Raw post:\n{raw_caption}"}
+                            {"role": "user", "content": f"Raw post (Channel: {channel_name or channel_id}):\n{raw_caption}"}
                         ]
                     },
                     timeout=15
@@ -625,10 +675,14 @@ def generate_social_payload(raw_caption: str, language: str = "en") -> dict:
 
     # Tier 4: Smart Heuristic
     if not payload:
-        payload = smart_heuristic_headline(raw_caption, language=effective_lang)
+        payload = smart_heuristic_headline(raw_caption, language=effective_lang, channel_name=channel_name, channel_id=channel_id)
 
     # Universal Sanitization of Caption
     if isinstance(payload, dict) and "rewritten_caption" in payload:
         payload["rewritten_caption"] = sanitize_caption(payload["rewritten_caption"])
+
+    # Guarantee ellipsis (...) on Nepali overlays ending
+    if effective_lang == "ne" and isinstance(payload, dict) and "overlay_lines" in payload:
+        payload["overlay_lines"] = ensure_nepali_overlay_ellipsis(payload["overlay_lines"])
 
     return payload

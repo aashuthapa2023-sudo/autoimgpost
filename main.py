@@ -130,6 +130,10 @@ def run_pipeline(mode="run", target_channel="all"):
 
     # UNIVERSAL CROSS-PAGE DEDUPLICATION POOL:
     # Guarantees that any news item or image published to ANY channel is NEVER posted to another channel
+    # UNIVERSAL & CHANNEL DEDUPLICATION POOLS:
+    # Allows cross-channel syndication (e.g. Nepal Speaks & other outlets can both cover a story)
+    # while strictly enforcing per-channel uniqueness (no repeats on the same channel).
+    channel_image_hashes_map = state.get("channel_image_hashes", {})
     all_published_ids = set(str(x) for x in state.get("global_processed_ids", []))
     for cid, id_list in processed_ids_map.items():
         all_published_ids.update(str(x) for x in id_list)
@@ -207,6 +211,8 @@ def run_pipeline(mode="run", target_channel="all"):
                 continue
 
         processed_ids = processed_ids_map.get(channel_id, [])
+        channel_processed_ids = set(str(x) for x in processed_ids)
+        channel_image_hashes = set(str(x) for x in channel_image_hashes_map.get(channel_id, []))
 
         try:
             # 1. Fetch recent candidates across all linked source pages
@@ -255,26 +261,23 @@ def run_pipeline(mode="run", target_channel="all"):
         tier1_posts = [p for p in candidate_posts if p.get("created_time", 0) >= cutoff_24h]   # <24h FB posts
         tier2_posts = [p for p in candidate_posts if cutoff_72h <= p.get("created_time", 0) < cutoff_24h]  # 24-72h FB posts
 
-        # 3. IDENTIFY UNPOSTED UNIQUE POSTS in each tier (cross-page dedup)
+        # 3. IDENTIFY UNPOSTED UNIQUE POSTS in each tier for THIS channel
+        # Allows cross-channel syndication (e.g. Nepal Speaks & other outlets can both post the same news with distinct overlays & captions)
         def filter_unposted(posts):
             result = []
             for p in posts:
                 pid      = str(p.get("post_id", ""))
                 photo_id = str(p.get("photo_id", ""))
                 cap_fp   = str(p.get("caption_fingerprint", ""))
-                story_fp = compute_story_fingerprint(p.get("caption", ""))
-                img_url  = str(p.get("image_url", ""))
                 is_dup = (
-                    pid in all_published_ids or
-                    photo_id in all_published_ids or
-                    cap_fp in all_published_ids or
-                    (img_url and img_url in global_processed_urls) or
-                    (story_fp and story_fp in global_story_fingerprints)
+                    pid in channel_processed_ids or
+                    photo_id in channel_processed_ids or
+                    cap_fp in channel_processed_ids
                 )
                 if not is_dup:
                     result.append(p)
                 else:
-                    print(f"     [CROSS-PAGE DEDUP] Story '{p.get('caption', '')[:42]}...' already published. Skipping.")
+                    print(f"     [CHANNEL DEDUP] Story '{p.get('caption', '')[:42]}...' already published by {channel_id}. Skipping.")
             return result
 
         unposted_t1 = filter_unposted(tier1_posts)
@@ -393,17 +396,15 @@ def run_pipeline(mode="run", target_channel="all"):
                             all_published_ids.add(id_val)
                     continue
 
-                # STRICT CROSS-PAGE VISUAL IMAGE DEDUPLICATION:
-                # Verifies that this exact photo/image was NEVER published to any other channel
+                # STRICT CHANNEL VISUAL IMAGE DEDUPLICATION:
+                # Verifies that this exact photo/image was NEVER published to THIS channel before
                 img_dhash = compute_image_dhash(raw_img)
-                if img_dhash and is_duplicate_dhash(img_dhash, global_image_hashes):
-                    print(f"     [CROSS-PAGE IMAGE DEDUP] Image visually matches an image already published to a channel (dHash: {img_dhash}). Skipping to guarantee 100% unique images across all pages!")
+                if img_dhash and is_duplicate_dhash(img_dhash, channel_image_hashes):
+                    print(f"     [CHANNEL IMAGE DEDUP] Image visually matches an image already published to {channel_id} (dHash: {img_dhash}). Skipping duplicate.")
                     for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
                         if id_val and id_val not in processed_ids:
                             processed_ids.append(id_val)
-                            all_published_ids.add(id_val)
-                    if image_url:
-                        global_processed_urls.add(image_url)
+                            channel_processed_ids.add(id_val)
                     continue
 
                 img_h, img_w = raw_img.shape[:2]
@@ -416,8 +417,17 @@ def run_pipeline(mode="run", target_channel="all"):
 
                 # 3. AI Caption & Dual-Tone Headline
                 ch_lang = ch.get("language", "en")
-                print(f"     [3/4] Generating dual-tone headline & policy-compliant caption (lang={ch_lang})...")
-                ai_data = generate_social_payload(post.get("caption", ""), language=ch_lang)
+                is_nepali_ch = (ch_lang == "ne" or "nepal" in channel_id.lower() or "nepal" in channel_name.lower())
+                if is_nepali_ch:
+                    ch_lang = "ne"
+                dest_name = ch.get("badge_label") or ch.get("dest_page_name") or ch.get("channel_name") or channel_id
+                print(f"     [3/4] Generating dual-tone headline & policy-compliant caption (lang={ch_lang}, page={dest_name})...")
+                ai_data = generate_social_payload(
+                    post.get("caption", ""),
+                    language=ch_lang,
+                    channel_name=dest_name,
+                    channel_id=channel_id
+                )
 
                 # STRICT OVERLAY LANGUAGE GATE FOR NEPALI CHANNELS:
                 if is_nepali_ch:
@@ -428,13 +438,13 @@ def run_pipeline(mode="run", target_channel="all"):
                         for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
                             if id_val and id_val not in processed_ids:
                                 processed_ids.append(id_val)
+                                channel_processed_ids.add(id_val)
                                 all_published_ids.add(id_val)
                         continue
 
                 # 4. Composite 4:5 Poster
                 rendered_file = os.path.join(OUTPUT_DIR, f"{channel_id}_{post_id}.jpg")
                 print(f"     [4/4] Compositing 4:5 studio poster to {rendered_file}...")
-                dest_name = ch.get("badge_label") or ch.get("dest_page_name") or ch.get("channel_name") or channel_id
                 render_final_poster(
                     base_img=graded_img,
                     overlay_lines=ai_data["overlay_lines"],
@@ -450,13 +460,13 @@ def run_pipeline(mode="run", target_channel="all"):
                 except Exception:
                     pass
 
-                # 5. INSTANT LIVE PUBLISHING ONLY (NO FB API SCHEDULING)
-                print(f"     [PUBLISH] INSTANT LIVE POST to {dest_name} (Meta Graph API ID: {dest_id})")
-
-                if mode in ["dry_run", "test"]:
-                    print(f"     [DRY RUN] Simulated instant live publish to Facebook Page {dest_id}")
-                    published_id = f"simulated_{post_id}"
+                # 5. Live Publish (INSTANT POST ONLY)
+                if mode == "dry_run":
+                    print(f"     [DRY RUN] Skipping live post to Facebook ID {dest_id}.")
+                elif mode == "test":
+                    print(f"     [TEST MODE] Live post skipped for {channel_id}.")
                 else:
+                    print(f"     [5/5] Publishing INSTANT photo post to Facebook (Page ID: {dest_id})...")
                     try:
                         published_id = publish_to_facebook(
                             dest_page_id=dest_id,
@@ -473,17 +483,20 @@ def run_pipeline(mode="run", target_channel="all"):
                             print(f"     Please generate a fresh Page Access Token on Meta Developers and paste it into Web UI Settings.")
                         raise pub_err
 
-                # Update channel state & global cross-page deduplication pool
+                # Update channel state & channel deduplication pool
                 for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
                     if id_val:
                         if id_val not in processed_ids:
                             processed_ids.append(id_val)
+                            channel_processed_ids.add(id_val)
                         all_published_ids.add(id_val)
+
+                if img_dhash:
+                    channel_image_hashes.add(img_dhash)
+                    global_image_hashes.add(img_dhash)
 
                 if image_url:
                     global_processed_urls.add(image_url)
-                if img_dhash:
-                    global_image_hashes.add(img_dhash)
 
                 post_story_fp = compute_story_fingerprint(post.get("caption", ""))
                 if post_story_fp:
@@ -493,7 +506,9 @@ def run_pipeline(mode="run", target_channel="all"):
                 channel_stat["timestamps"].append(datetime.now(timezone.utc).isoformat())
                 channel_stat["last_published_time"] = now_current
 
-                # Persist state with cross-page uniqueness guarantees
+                # Persist state with per-channel tracking & cross-channel syndication support
+                channel_image_hashes_map[channel_id] = list(channel_image_hashes)
+                state["channel_image_hashes"] = channel_image_hashes_map
                 processed_ids_map[channel_id] = processed_ids
                 daily_stats[channel_id] = channel_stat
                 state["processed_ids"] = processed_ids_map

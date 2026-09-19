@@ -92,7 +92,13 @@ def execute_pipeline_task(action="dry_run", channel="all", specific_post=None):
             graded = apply_cinematic_grade(cleaned)
 
             log_message("Stage 5: Generating original, policy-compliant caption & centered headline...", stage=5)
-            ai_data = generate_social_payload(specific_post["caption"])
+            ch_lang = ch.get("language", "ne" if ("nepal" in channel_id.lower() or "nepal" in dest_name.lower()) else "en")
+            ai_data = generate_social_payload(
+                specific_post["caption"],
+                language=ch_lang,
+                channel_name=dest_name,
+                channel_id=channel_id
+            )
             CURRENT_RUN["rewritten_caption"] = ai_data["rewritten_caption"]
 
             out_poster = f"output/{channel_id}_{specific_post['post_id']}.jpg"
@@ -397,6 +403,7 @@ class PipelineHandler(SimpleHTTPRequestHandler):
                 "dest_access_token_env": body.get("dest_access_token_env", f"FB_TOKEN_{cid.upper()}"),
                 "badge_label": dest_name,
                 "highlight_color": body.get("highlight_color", "#FFC83B"),
+                "language": body.get("language", "ne" if "nepal" in cid.lower() else "en"),
                 "max_posts_per_run": int(body.get("max_posts_per_run", 1)),
                 "post_interval_hours": float(body.get("post_interval_hours", 1.0)),
                 "cadence_mirror_enabled": True,
@@ -449,6 +456,8 @@ class PipelineHandler(SimpleHTTPRequestHandler):
                 ch["badge_label"] = str(body["badge_label"])
             if "highlight_color" in body:
                 ch["highlight_color"] = str(body["highlight_color"])
+            if "language" in body:
+                ch["language"] = str(body["language"])
 
             with open("config.json", "w", encoding="utf-8") as f:
                 json.dump(config, f, indent=2)
