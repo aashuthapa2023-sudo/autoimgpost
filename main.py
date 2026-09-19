@@ -400,13 +400,14 @@ def run_pipeline(mode="run", target_channel="all"):
                 graded_img = apply_cinematic_grade(cleaned_img)
 
                 # 3. AI Caption & Dual-Tone Headline
-                print("     [3/4] Generating dual-tone headline & policy-compliant caption...")
-                ai_data = generate_social_payload(post.get("caption", ""))
+                ch_lang = ch.get("language", "en")
+                print(f"     [3/4] Generating dual-tone headline & policy-compliant caption (lang={ch_lang})...")
+                ai_data = generate_social_payload(post.get("caption", ""), language=ch_lang)
 
                 # 4. Composite 4:5 Poster
                 rendered_file = os.path.join(OUTPUT_DIR, f"{channel_id}_{post_id}.jpg")
                 print(f"     [4/4] Compositing 4:5 studio poster to {rendered_file}...")
-                dest_name = ch.get("dest_page_name") or ch.get("channel_name") or channel_id
+                dest_name = ch.get("badge_label") or ch.get("dest_page_name") or ch.get("channel_name") or channel_id
                 render_final_poster(
                     base_img=graded_img,
                     overlay_lines=ai_data["overlay_lines"],

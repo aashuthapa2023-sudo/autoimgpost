@@ -87,6 +87,27 @@
         "https://www.facebook.com/whatsonnetflix"
       ],
       "source_page_url": "https://www.facebook.com/whatsonnetflix"
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "channel_name": "Nepal Speaks",
+      "dest_page_name": "Nepal Speaks",
+      "dest_page_id": "NEPAL_SPEAKS_PAGE_ID",
+      "dest_access_token_env": "NEPAL_SPEAKS_ACCESS_TOKEN",
+      "badge_label": "NEPAL SPEAKS",
+      "highlight_color": "#FFC83B",
+      "post_interval_hours": 1.5,
+      "max_posts_per_run": 1,
+      "cadence_mirror_enabled": true,
+      "fetch_frequency": "hourly",
+      "policy_compliance_mode": "strict_fb_standard",
+      "max_daily_posts": 15,
+      "min_gap_hours": 1,
+      "language": "ne",
+      "source_pages": [
+        "https://www.facebook.com/HimaliMedia"
+      ],
+      "source_page_url": "https://www.facebook.com/HimaliMedia"
     }
   ]
 }

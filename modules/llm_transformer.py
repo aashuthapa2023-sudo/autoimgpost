@@ -8,7 +8,40 @@ try:
 except Exception:
     pass
 
-def build_system_prompt() -> str:
+def build_system_prompt(language: str = "en") -> str:
+    if language == "ne":
+        return """तपाईं एक वरिष्ठ नेपाली पत्रकार र समाचार सम्पादक हुनुहुन्छ जो फेसबुकका लागि दृश्य रूपमा प्रभावकारी र तथ्यमा आधारित नेपाली समाचार लेख र पोस्टर शीर्षक तयार गर्नुहुन्छ।
+Facebook Distribution Guidelines को पूर्ण पालना गर्नुहोस्: कुनै क्लिकबेट छैन, कुनै अतिरञ्जना छैन, र कुनै कमेन्ट बेट (comment bait) छैन।
+
+कार्य:
+१. ओभरले हेडलाइन्स (Centered Dual-Tone Headline, 2 देखि 3 छोटा र सन्तुलित लाइनहरू):
+   - लाइन १: मुख्य विषय / नेतृत्व वाक्यांश (Lead Subject)
+   - लाइन २: मुख्य कार्य / निर्णय / रेकर्ड (Action / Milestone)
+   - लाइन ३ (वैकल्पिक): नतिजा वा सन्दर्भ (Outcome / Context)
+   महत्त्वपूर्ण हाइलाइटिङ नियम:
+   - पूरै वाक्यको मुख्य विषय (Proper noun, निर्णय, व्यक्ति वा ठाउँको नाम, मुख्य उपलब्धि) पहिचान गर्नुहोस् र त्यसलाई HIGHLIGHT गर्नुहोस्।
+   - मुख्य विषय लाइनको सुरु, बीच वा अन्त्य जहाँ भए पनि हाइलाइट गर्न सकिन्छ।
+   - टोकन विभाजन गर्नुहोस्: [{"text": "पहिलो शब्द ", "type": "white"}, {"text": "मुख्य विषय", "type": "highlight"}]
+   - अनावश्यक कृत्रिम शब्दहरू (BREAKING, हेर्नुहोस् आदि) नथप्नुहोस्।
+
+२. नेपाली समाचार क्याप्सन (Detailed Journalistic Report, 150-250 शब्दहरू):
+   - तीनवटा स्पष्ट अनुच्छेदमा व्यावसायिक र तथ्यपरक समाचार लेख्नुहोस्:
+   - शीर्षक: सफा, स्पष्ट र तथ्यपरक समाचार शीर्षक (e.g. 🇳🇵 बालेन सरकारको नयाँ निर्णय: जुनसुकै जिल्लाबाट नागरिकताको प्रतिलिपि पाइने)।
+   - अनुच्छेद १ (ताजा विवरण): मुख्य समाचार, आधिकारिक निर्णय, सम्बन्धित निकाय र मिति।
+   - अनुच्छेद २ (पृष्ठभूमि र सन्दर्भ): विगतको पृष्ठभूमि, कारण र निर्णयको महत्व।
+   - अनुच्छेद ३ (अगाडिको बाटो र प्रभाव): जनतालाई हुने सुविधा, कार्यान्वयनको चरण र आगामी प्रभाव।
+   - कमेन्ट बेट पूर्ण निषेध: 'तपाईंको विचार के छ?', 'तल कमेन्ट गर्नुहोस्', जस्ता प्रश्नहरू कत्ति पनि नलेख्नुहोस्।
+   - ह्यासट्यागहरू: ४-६ वटा सान्दर्भिक ह्यासट्यागहरू (#NepalSpeaks #NepaliNews #NepalUpdates #Nepal)।
+
+Return strictly JSON:
+{
+  "overlay_lines": [
+    [{"text": "पहिलो वाक्यांश ", "type": "white"}, {"text": "मुख्य विषय", "type": "highlight"}],
+    [{"text": "कार्य वाक्यांश ", "type": "white"}, {"text": "नयाँ निर्णय", "type": "highlight"}]
+  ],
+  "rewritten_caption": "समाचार शीर्षक\n\nपहिलो अनुच्छेद तथ्यपरक विवरण...\n\nदोस्रो अनुच्छेद पृष्ठभूमि र महत्व...\n\nतेस्रो अनुच्छेद प्रभाव र आगामी चरण...\n\n#NepalSpeaks #NepaliNews #NepalUpdates"
+}"""
+
     return """You are a senior entertainment journalist and news editor crafting visually impactful, deeply detailed social media news articles for Facebook.
 Strictly adhere to Facebook Distribution Guidelines: NO clickbait, NO sensationalism, and ABSOLUTELY NO comment bait or engagement bait.
 
@@ -61,6 +94,134 @@ HIGH_THEME_KEYWORDS = {
     'FINALE', 'TRAILER', 'TEASER', 'CASTING', 'CONFIRMED', 'RECORD', 'HISTORIC',
     'MOVIE', 'SERIES', 'SEASON', 'SEQUEL', 'REBOOT', 'STAR', 'STARS'
 }
+
+NEPALI_STOPWORDS = {
+    'र', 'मा', 'को', 'का', 'की', 'ले', 'लाई', 'बाट', 'छ', 'छन्', 'थियो', 'थिए',
+    'भयो', 'भए', 'हुने', 'गरेको', 'गर्ने', 'भने', 'तर', 'पनि', 'यो', 'त्यो',
+    'यी', 'ती', 'एक', 'दुई', 'भएको', 'गरेका', 'रहेको', 'रहेका', 'हुन्', 'हुन्थ्यो',
+    'भनेर', 'भनी', 'बारे', 'साथै', 'भित्र', 'पछि', 'अघि', 'अनुसार', 'समेत', 'तथा',
+    'हुन', 'हुनु', 'गर्न', 'दिन', 'लिने', 'लिन', 'आफ्नो', 'आफू', 'सबै', 'अन्य', 'अब'
+}
+
+HIGH_THEME_NEPALI_KEYWORDS = {
+    'बालेन', 'सरकार', 'सरकारको', 'निर्णय', 'नागरिकता', 'नागरिकताको', 'प्रतिलिपि',
+    'प्रशासन', 'कार्यालय', 'अदालत', 'फैसला', 'निर्वाचन', 'संसद', 'विधेयक',
+    'प्रधानमन्त्री', 'मन्त्री', 'काठमाडौं', 'नेपाल', 'नयाँ', 'नियम', 'राहत',
+    'सहज', 'व्यवस्था', 'बजेट', 'शुल्क', 'सडक', 'यातायात', 'विमान', 'दुर्घटना',
+    'खेलकुद', 'क्रिकेट', 'फुटबल', 'जीत', 'रेकर्ड', 'पुरस्कार', 'ऐतिहासिक'
+}
+
+def is_devanagari_text(text: str) -> bool:
+    return any('\u0900' <= char <= '\u097F' for char in str(text or ""))
+
+def format_nepali_thematic_tokens(words: list) -> list:
+    if not words:
+        return []
+    if len(words) == 1:
+        return [{"text": words[0], "type": "highlight"}]
+
+    scores = []
+    for w in words:
+        clean = re.sub(r'[^\u0900-\u097F]', '', w)
+        if not clean or clean in NEPALI_STOPWORDS:
+            scores.append(0.0)
+        elif clean in HIGH_THEME_NEPALI_KEYWORDS:
+            scores.append(6.0)
+        else:
+            scores.append(1.0 + len(clean) * 0.4)
+
+    max_score = max(scores)
+    if max_score <= 1.0:
+        best_idx = len(words) - 1
+    else:
+        best_idx = scores.index(max_score)
+
+    start_hl = best_idx
+    end_hl = best_idx + 1
+
+    while end_hl < len(words) and scores[end_hl] >= 4.0:
+        end_hl += 1
+    while start_hl > 0 and scores[start_hl - 1] >= 4.0:
+        start_hl -= 1
+
+    tokens = []
+    if start_hl > 0:
+        tokens.append({"text": " ".join(words[:start_hl]) + " ", "type": "white"})
+    hl_str = " ".join(words[start_hl:end_hl])
+    if end_hl < len(words):
+        hl_str += " "
+    tokens.append({"text": hl_str, "type": "highlight"})
+    if end_hl < len(words):
+        tokens.append({"text": " ".join(words[end_hl:]), "type": "white"})
+    return tokens
+
+def nepali_heuristic_payload(raw_caption: str) -> dict:
+    cleaned = re.sub(r'https?:\S+', '', raw_caption).strip()
+    sentences = [s.strip() for s in re.split(r'[।!?\n]+', cleaned) if len(s.strip()) > 8]
+    first_sent = sentences[0] if sentences else cleaned[:100]
+
+    clauses = re.split(r'[-—]', first_sent)
+    if len(clauses) >= 2 and len(clauses[0].split()) >= 3 and len(clauses[1].split()) >= 3:
+        line1_words = clauses[0].strip().split()
+        rem_words = clauses[1].strip().split()
+        if len(rem_words) > 7:
+            mid = len(rem_words) // 2
+            line2_words = rem_words[:mid]
+            line3_words = rem_words[mid:min(len(rem_words), mid + 5)]
+            lines_words = [line1_words[:5], line2_words, line3_words]
+        else:
+            lines_words = [line1_words[:5], rem_words]
+    else:
+        words = first_sent.split()
+        if len(words) > 12:
+            words = words[:12]
+        N = len(words)
+        n_lines = 2 if N <= 7 else 3
+        sz = N // n_lines
+        lines_words = [words[i * sz:(i + 1) * sz if i < n_lines - 1 else N] for i in range(n_lines)]
+
+    NEPALI_HANGING_WORDS = {'र', 'मा', 'को', 'का', 'की', 'ले', 'लाई', 'बाट', 'तथा', 'वा', 'समेत', 'पनि', 'भने'}
+
+    # Shift hanging conjunctions / prepositions forward between lines
+    for i in range(len(lines_words) - 1):
+        if lines_words[i] and len(lines_words[i]) > 1:
+            clean_last = re.sub(r'[^\u0900-\u097F]', '', lines_words[i][-1])
+            if clean_last in NEPALI_HANGING_WORDS:
+                moved = lines_words[i].pop()
+                lines_words[i + 1].insert(0, moved)
+
+    # Clean hanging conjunctions from the very last line
+    if lines_words and lines_words[-1]:
+        while lines_words[-1]:
+            clean_last = re.sub(r'[^\u0900-\u097F]', '', lines_words[-1][-1])
+            if clean_last in NEPALI_HANGING_WORDS:
+                lines_words[-1].pop()
+            else:
+                break
+
+    overlay_lines = [format_nepali_thematic_tokens(lw) for lw in lines_words if lw]
+
+    lead_clean = first_sent.replace('—', ' - ').strip()
+    headline = "🇳🇵 " + lead_clean.split(' - ')[0].strip()
+    lead_para = f"नागरिक सेवा तथा सार्वजनिक सरोकारलाई सहज बनाउने उद्देश्यका साथ {lead_clean}।"
+
+    if len(sentences) > 2:
+        body_para = " ".join(sentences[1:3]) + "।"
+    else:
+        body_para = "यस व्यवस्थाले देशका विभिन्न भागमा रहेका सर्वसाधारण नागरिकलाई आवश्यक प्रशासनिक सेवा लिन निकै सहज हुने र समय तथा खर्चको ठूलो बचत हुने विश्वास गरिएको छ।"
+
+    if len(sentences) > 3:
+        concl_para = " ".join(sentences[3:6]) + "।"
+    else:
+        concl_para = "सम्बन्धित निकायले उक्त निर्णय र नीतिगत व्यवस्था तुरुन्त कार्यान्वयनमा ल्याउन आवश्यक निर्देशन तथा तयारी पूरा गरिसकेको छ।"
+
+    hashtags = "#NepalSpeaks #NepaliNews #NepalUpdates #Nepal #BreakingNewsNepal"
+    rewritten = f"{headline}\n\n{lead_para}\n\n{body_para}\n\n{concl_para}\n\n{hashtags}"
+
+    return {
+        "overlay_lines": overlay_lines,
+        "rewritten_caption": sanitize_caption(rewritten)
+    }
 
 def _is_capitalized_in_raw(word: str, raw_sentence: str) -> bool:
     clean = word.strip('.,;:!?\'"()[]')
@@ -214,8 +375,11 @@ def format_factual_overlay(sentence: str) -> list:
         res.append(line_tokens)
     return res
 
-def smart_heuristic_headline(raw_caption: str) -> dict:
+def smart_heuristic_headline(raw_caption: str, language: str = "en") -> dict:
     """Extracts factual news subject and synthesizes an extensive, deeply detailed multi-paragraph news report."""
+    if language == "ne" or is_devanagari_text(raw_caption):
+        return nepali_heuristic_payload(raw_caption)
+
     # Normalize Windows-1252 and unicode smart quotes to clean ASCII
     normalized = raw_caption.replace('\x91', "'").replace('\x92', "'").replace('\x93', '"').replace('\x94', '"')
     normalized = normalized.replace('’', "'").replace('‘', "'").replace('“', '"').replace('”', '"')
@@ -352,8 +516,9 @@ def sanitize_caption(caption: str) -> str:
     cleaned = re.sub(r'\n{3,}', '\n\n', cleaned)
     return cleaned
 
-def generate_social_payload(raw_caption: str) -> dict:
-    prompt = build_system_prompt()
+def generate_social_payload(raw_caption: str, language: str = "en") -> dict:
+    effective_lang = "ne" if language == "ne" or is_devanagari_text(raw_caption) else (language or "en")
+    prompt = build_system_prompt(effective_lang)
     payload = None
 
     # Tier 1: Groq Cloud
@@ -419,7 +584,7 @@ def generate_social_payload(raw_caption: str) -> dict:
 
     # Tier 4: Smart Heuristic
     if not payload:
-        payload = smart_heuristic_headline(raw_caption)
+        payload = smart_heuristic_headline(raw_caption, language=effective_lang)
 
     # Universal Sanitization of Caption
     if isinstance(payload, dict) and "rewritten_caption" in payload:

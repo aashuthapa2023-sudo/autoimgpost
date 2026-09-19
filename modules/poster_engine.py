@@ -56,15 +56,139 @@ def get_font(size: int, bold: bool = True) -> ImageFont.FreeTypeFont:
     except Exception:
         return ImageFont.load_default()
 
-def measure_line_width(draw, tokens, font):
+if os.name == 'nt':
+    import ctypes
+    from ctypes import wintypes
+    gdi32 = ctypes.windll.gdi32
+    user32 = ctypes.windll.user32
+
+    class SIZE(ctypes.Structure):
+        _fields_ = [('cx', wintypes.LONG), ('cy', wintypes.LONG)]
+
+    class BITMAPINFOHEADER(ctypes.Structure):
+        _fields_ = [
+            ('biSize', wintypes.DWORD),
+            ('biWidth', wintypes.LONG),
+            ('biHeight', wintypes.LONG),
+            ('biPlanes', wintypes.WORD),
+            ('biBitCount', wintypes.WORD),
+            ('biCompression', wintypes.DWORD),
+            ('biSizeImage', wintypes.DWORD),
+            ('biXPelsPerMeter', wintypes.LONG),
+            ('biYPelsPerMeter', wintypes.LONG),
+            ('biClrUsed', wintypes.DWORD),
+            ('biClrImportant', wintypes.DWORD)
+        ]
+
+    class BITMAPINFO(ctypes.Structure):
+        _fields_ = [('bmiHeader', BITMAPINFOHEADER), ('bmiColors', wintypes.DWORD * 3)]
+
+    user32.DrawTextW.argtypes = [wintypes.HDC, wintypes.LPCWSTR, ctypes.c_int, ctypes.POINTER(wintypes.RECT), wintypes.UINT]
+    user32.DrawTextW.restype = ctypes.c_int
+
+    gdi32.GetTextExtentPoint32W.argtypes = [wintypes.HDC, wintypes.LPCWSTR, ctypes.c_int, ctypes.POINTER(SIZE)]
+    gdi32.GetTextExtentPoint32W.restype = wintypes.BOOL
+
+def is_devanagari(text: str) -> bool:
+    """Returns True if string contains any Devanagari script characters."""
+    return any('\u0900' <= char <= '\u097F' for char in str(text or ""))
+
+def render_gdi_token(text: str, font_size: int, font_name: str = 'Nirmala UI', bold: bool = True):
+    """Renders text with Windows native Uniscribe/GDI to guarantee 100% accurate Devanagari conjuncts & ligatures."""
+    if not text or os.name != 'nt':
+        return None, 0, 0
+    try:
+        hdc = user32.GetDC(0)
+        memdc = gdi32.CreateCompatibleDC(hdc)
+        weight = 700 if bold else 400
+        hfont = gdi32.CreateFontW(-font_size, 0, 0, 0, weight, 0, 0, 0, 1, 0, 0, 5, 0, font_name)
+        gdi32.SelectObject(memdc, hfont)
+
+        size = SIZE()
+        gdi32.GetTextExtentPoint32W(memdc, text, len(text), ctypes.byref(size))
+        w, h = size.cx + 20, size.cy + 20
+
+        bmi = BITMAPINFO()
+        bmi.bmiHeader.biSize = ctypes.sizeof(BITMAPINFOHEADER)
+        bmi.bmiHeader.biWidth = w
+        bmi.bmiHeader.biHeight = -h
+        bmi.bmiHeader.biPlanes = 1
+        bmi.bmiHeader.biBitCount = 32
+        bmi.bmiHeader.biCompression = 0
+
+        p_bits = ctypes.c_void_p()
+        hbmp = gdi32.CreateDIBSection(hdc, ctypes.byref(bmi), 0, ctypes.byref(p_bits), 0, 0)
+        gdi32.SelectObject(memdc, hbmp)
+        gdi32.SelectObject(memdc, hfont)
+
+        gdi32.SetTextColor(memdc, 0x00FFFFFF)
+        gdi32.SetBkColor(memdc, 0x00000000)
+        gdi32.SetBkMode(memdc, 2)
+
+        rect = wintypes.RECT(10, 10, w, h)
+        user32.DrawTextW(memdc, text, -1, ctypes.byref(rect), 0x00000000)
+
+        buf = (ctypes.c_ubyte * (w * h * 4)).from_address(p_bits.value)
+        arr = np.ctypeslib.as_array(buf).reshape((h, w, 4)).copy()
+
+        gdi32.DeleteObject(hfont)
+        gdi32.DeleteObject(hbmp)
+        gdi32.DeleteDC(memdc)
+        user32.ReleaseDC(0, hdc)
+
+        mask = arr[10:10+size.cy, 10:10+size.cx, 0]
+        return mask, size.cx, size.cy
+    except Exception:
+        return None, 0, 0
+
+def composite_mask_on_pil(pil_img: Image.Image, mask: np.ndarray, x: int, y: int, color_rgb: tuple, stroke: bool = True):
+    """Composites a grayscale glyph mask onto PIL image with optional dilated black outline."""
+    if mask is None or mask.size == 0:
+        return
+    mh, mw = mask.shape
+    img_w, img_h = pil_img.size
+
+    if x >= img_w or y >= img_h or x + mw <= 0 or y + mh <= 0:
+        return
+
+    x1, y1 = max(0, x), max(0, y)
+    x2, y2 = min(img_w, x + mw), min(img_h, y + mh)
+
+    mx1, my1 = x1 - x, y1 - y
+    mx2, my2 = mx1 + (x2 - x1), my1 + (y2 - y1)
+
+    sub_mask = mask[my1:my2, mx1:mx2]
+
+    box = (x1, y1, x2, y2)
+    roi_pil = pil_img.crop(box)
+    roi_arr = np.array(roi_pil, dtype=np.float32)
+
+    if stroke:
+        kernel = np.ones((3, 3), np.uint8)
+        s_mask = cv2.dilate(sub_mask, kernel, iterations=1)
+        s_alpha = (s_mask.astype(np.float32) / 255.0)[:, :, None]
+        roi_arr = (1.0 - s_alpha) * roi_arr + s_alpha * np.array([0.0, 0.0, 0.0], dtype=np.float32)
+
+    t_alpha = (sub_mask.astype(np.float32) / 255.0)[:, :, None]
+    col_arr = np.array([float(color_rgb[0]), float(color_rgb[1]), float(color_rgb[2])], dtype=np.float32)
+    roi_arr = (1.0 - t_alpha) * roi_arr + t_alpha * col_arr
+
+    res_pil = Image.fromarray(np.clip(roi_arr, 0, 255).astype(np.uint8))
+    pil_img.paste(res_pil, box)
+
+def measure_line_width(draw, tokens, font, font_size: int = 54):
     w = 0
     for t in tokens:
         t_str = t.get("text", "") if isinstance(t, dict) else str(t)
-        try:
-            bbox = draw.textbbox((0, 0), t_str, font=font)
-            w += (bbox[2] - bbox[0])
-        except Exception:
-            w += len(t_str) * (font.size * 0.55 if hasattr(font, 'size') else 24)
+        if is_devanagari(t_str) and os.name == 'nt':
+            _, tw, _ = render_gdi_token(t_str, font_size, bold=True)
+            w += tw
+        else:
+            try:
+                bbox = draw.textbbox((0, 0), t_str, font=font)
+                w += (bbox[2] - bbox[0])
+            except Exception:
+                w += len(t_str) * (font.size * 0.55 if hasattr(font, 'size') else 24)
     return w
 
 def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex: str = "random", badge_label: str = "", dest_page_name: str = "", output_path: str = "output/poster.jpg", **kwargs):
@@ -105,7 +229,7 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         f_test = get_font(test_size, bold=True)
         all_fit = True
         for line in normalized_lines:
-            line_w = measure_line_width(temp_draw, line, f_test)
+            line_w = measure_line_width(temp_draw, line, f_test, font_size=test_size)
             if line_w > safe_max_w:
                 all_fit = False
                 break
@@ -120,19 +244,25 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
 
     # Branding Badge metrics matching exact reference style
     branding_name = dest_page_name or badge_label or kwargs.get("source_tag", "")
+    badge_is_deva = is_devanagari(branding_name)
     badge_font = get_font(22, bold=True)
-    dest_badge_text = f"• {branding_name.upper()} •" if branding_name else ""
+    dest_badge_text = f"• {branding_name if badge_is_deva else branding_name.upper()} •" if branding_name else ""
     if branding_name:
-        try:
-            bbox = temp_draw.textbbox((0, 0), dest_badge_text, font=badge_font)
-            text_w = bbox[2] - bbox[0]
-            text_h = bbox[3] - bbox[1]
+        if badge_is_deva and os.name == 'nt':
+            _, text_w, text_h = render_gdi_token(dest_badge_text, 22, bold=True)
             bw = text_w + 30
             bh = max(text_h + 12, 30)
-        except Exception:
-            bw, bh = 220, 30
-            text_w, text_h = 180, 20
-            bbox = (0, 4, 180, 24)
+        else:
+            try:
+                bbox = temp_draw.textbbox((0, 0), dest_badge_text, font=badge_font)
+                text_w = bbox[2] - bbox[0]
+                text_h = bbox[3] - bbox[1]
+                bw = text_w + 30
+                bh = max(text_h + 12, 30)
+            except Exception:
+                bw, bh = 220, 30
+                text_w, text_h = 180, 20
+                bbox = (0, 4, 180, 24)
         radius = bh // 2  # Classic smooth stadium pill
         bx = (target_w - bw) // 2
     else:
@@ -210,24 +340,45 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     if branding_name:
         bx = (target_w - bw) // 2
         draw.rounded_rectangle([bx, by, bx + bw, by + bh], radius=radius, fill=(10, 10, 14), outline=highlight_rgb, width=2)
-        draw.text((target_w / 2.0, by + bh / 2.0), dest_badge_text, font=badge_font, fill=highlight_rgb, anchor="mm")
+        if badge_is_deva and os.name == 'nt':
+            b_mask, bw_act, bh_act = render_gdi_token(dest_badge_text, 22, bold=True)
+            bx_text = int((target_w - bw_act) / 2.0)
+            by_text = int(by + (bh - bh_act) / 2.0)
+            composite_mask_on_pil(pil_img, b_mask, bx_text, by_text, highlight_rgb, stroke=False)
+        else:
+            draw.text((target_w / 2.0, by + bh / 2.0), dest_badge_text, font=badge_font, fill=highlight_rgb, anchor="mm")
 
     # Render Headline Typography — each line mathematically centered
     for line in normalized_lines:
+        line_is_deva = any(is_devanagari(t.get("text", "") if isinstance(t, dict) else str(t)) for t in line)
         full_line_tokens = []
         for token in line:
             t_str = token.get("text", "") if isinstance(token, dict) else str(token)
             t_type = token.get("type", "white") if isinstance(token, dict) else "white"
             full_line_tokens.append((t_str, t_type))
 
-        # Use exact font typographical advance width for subpixel centering
-        total_line_w = sum(draw.textlength(t_str, font=title_font) for t_str, _ in full_line_tokens)
-        cur_x = (target_w - total_line_w) / 2.0
+        if line_is_deva and os.name == 'nt':
+            rendered_tokens = []
+            total_line_w = 0
+            for t_str, t_type in full_line_tokens:
+                m, tw, th = render_gdi_token(t_str, chosen_size, bold=True)
+                rendered_tokens.append((m, tw, th, t_type))
+                total_line_w += tw
 
-        for t_str, t_type in full_line_tokens:
-            color = highlight_rgb if t_type == "highlight" else (255, 255, 255)
-            draw.text((cur_x, start_text_y), t_str, font=title_font, fill=color, stroke_width=2, stroke_fill=(0, 0, 0))
-            cur_x += draw.textlength(t_str, font=title_font)
+            cur_x = (target_w - total_line_w) / 2.0
+            for m, tw, th, t_type in rendered_tokens:
+                color = highlight_rgb if t_type == "highlight" else (255, 255, 255)
+                composite_mask_on_pil(pil_img, m, int(cur_x), int(start_text_y), color, stroke=True)
+                cur_x += tw
+        else:
+            # Use exact font typographical advance width for subpixel centering
+            total_line_w = sum(draw.textlength(t_str, font=title_font) for t_str, _ in full_line_tokens)
+            cur_x = (target_w - total_line_w) / 2.0
+
+            for t_str, t_type in full_line_tokens:
+                color = highlight_rgb if t_type == "highlight" else (255, 255, 255)
+                draw.text((cur_x, start_text_y), t_str, font=title_font, fill=color, stroke_width=2, stroke_fill=(0, 0, 0))
+                cur_x += draw.textlength(t_str, font=title_font)
 
         start_text_y += line_spacing
 
