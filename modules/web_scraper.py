@@ -17,31 +17,44 @@ from email.utils import parsedate_to_datetime
 # Direct publisher RSS feeds work better than Google News because their
 # article pages have proper og:image tags and don't redirect to google.com
 NETFLIX_RSS_FEEDS = [
-    "https://deadline.com/category/streaming/feed/",
-    "https://screenrant.com/tag/netflix/feed/",
-    "https://www.thewrap.com/category/streaming/feed/",
+    "https://www.whats-on-netflix.com/feed/",
     "https://variety.com/t/netflix/feed/",
+    "https://variety.com/v/tv/feed/",
     "https://decider.com/feed/",
+    "https://collider.com/feed/",
+    "https://deadline.com/v/tv/feed/",
+    "https://www.hollywoodreporter.com/c/tv/tv-news/feed/",
+    "https://news.google.com/rss/search?q=Netflix+news+when:48h&hl=en-US&gl=US&ceid=US:en",
 ]
 
 HOLLYWOOD_RSS_FEEDS = [
-    "https://deadline.com/category/film/feed/",
     "https://variety.com/v/film/feed/",
-    "https://screenrant.com/tag/movies/feed/",
-    "https://www.thewrap.com/category/movies/feed/",
+    "https://deadline.com/v/film/feed/",
     "https://collider.com/feed/",
+    "https://www.hollywoodreporter.com/c/movies/movie-news/feed/",
+    "https://news.google.com/rss/search?q=movie+news+hollywood+when:48h&hl=en-US&gl=US&ceid=US:en",
+]
+
+MUSIC_RSS_FEEDS = [
+    "https://www.billboard.com/feed/",
+    "https://variety.com/v/music/feed/",
+    "https://consequence.net/category/music/feed/",
+    "https://www.hollywoodreporter.com/c/music/music-news/feed/",
+    "https://news.google.com/rss/search?q=music+news+OR+billboard+OR+concert+when:48h&hl=en-US&gl=US&ceid=US:en",
 ]
 
 MIXED_RSS_FEEDS = [
-    "https://deadline.com/feed/",
+    "https://www.whats-on-netflix.com/feed/",
     "https://variety.com/feed/",
-    "https://screenrant.com/feed/",
-    "https://www.thewrap.com/feed/",
+    "https://deadline.com/feed/",
+    "https://collider.com/feed/",
+    "https://www.billboard.com/feed/",
 ]
 
 CATEGORY_MAP = {
     "netflix": NETFLIX_RSS_FEEDS,
     "hollywood": HOLLYWOOD_RSS_FEEDS,
+    "music": MUSIC_RSS_FEEDS,
     "mixed": MIXED_RSS_FEEDS,
 }
 
@@ -338,8 +351,10 @@ def fetch_web_news(category="mixed", processed_ids=None, global_story_fps=None, 
 def get_channel_category(channel_name):
     """Map a channel name to a content category for RSS sourcing."""
     name = channel_name.lower()
+    if any(k in name for k in ["music", "song", "audio", "track", "billboard"]):
+        return "music"
     if any(k in name for k in ["hollywood", "movie", "film", "cinema"]):
         return "hollywood"
-    if any(k in name for k in ["netflix", "streaming", "music", "anisha"]):
+    if any(k in name for k in ["netflix", "streaming", "anisha"]):
         return "netflix"
     return "mixed"

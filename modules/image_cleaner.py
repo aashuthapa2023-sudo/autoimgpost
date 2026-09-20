@@ -227,9 +227,9 @@ def validate_image_quality(img: np.ndarray, min_dim: int = 720, min_sharpness: f
 
     h, w = img.shape[:2]
     total_pixels = h * w
-    # Strict resolution gate: short dimension >= 640px and total pixels >= 518,400 (e.g. 720x720)
-    if min(w, h) < 640 or total_pixels < 518400:
-        return False, f"Low resolution: {w}x{h}px ({total_pixels:,} pixels; minimum required is 640px short-edge & 518,400px area)"
+    # Strict resolution gate: short dimension >= 500px and total pixels >= 400,000 (e.g. 1000x563 or 720x720)
+    if min(w, h) < 500 or total_pixels < 400000:
+        return False, f"Low resolution: {w}x{h}px ({total_pixels:,} pixels; minimum required is 500px short-edge & 400,000px area)"
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     lap_var = float(cv2.Laplacian(gray, cv2.CV_64F).var())

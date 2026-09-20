@@ -318,10 +318,10 @@ def run_pipeline(mode="run", target_channel="all"):
             print(f" [WEB FALLBACK] No fresh FB posts available. Fetching {category.upper()} news from internet...")
             raw_web_posts = fetch_web_news(
                 category=category,
-                processed_ids=list(all_published_ids),
-                global_story_fps=list(global_story_fingerprints),
-                limit=10,
-                max_hours_old=48,
+                processed_ids=list(channel_processed_ids),
+                global_story_fps=list(channel_story_fps),
+                limit=20,
+                max_hours_old=72,
             )
             web_posts = filter_unposted(raw_web_posts)
             if web_posts:
