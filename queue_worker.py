@@ -98,7 +98,7 @@ def process_queue_or_poll():
 def run_loop():
     print("===================================================================")
     print("  Multi-Page Automated Publisher Worker Started")
-    print("  Monitoring cadence for all channels every 10 minutes (600s)")
+    print("  Monitoring cadence for all channels every 15 minutes (900s)")
     print("===================================================================")
     while True:
         try:
@@ -106,8 +106,8 @@ def run_loop():
         except Exception as e:
             print(f"Loop iteration error: {e}")
             traceback.print_exc()
-        print(f"\nSleeping for 10 minutes (600s) until next publication check cycle...\n")
-        time.sleep(600)
+        print(f"\nSleeping for 15 minutes (900s) until next publication check cycle...\n")
+        time.sleep(900)
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--once":

@@ -37,10 +37,131 @@ def extract_identifier(url_or_id: str) -> str:
 
     return url
 
+def parse_relative_time(time_str: str) -> int:
+    import time
+    now = int(time.time())
+    if not time_str:
+        return now
+    s = time_str.strip().lower()
+    if 'just now' in s or 'now' in s:
+        return now
+    m = re.search(r'(\d+)\s*m', s)
+    if m:
+        return now - int(m.group(1)) * 60
+    h = re.search(r'(\d+)\s*h', s)
+    if h:
+        return now - int(h.group(1)) * 3600
+    d = re.search(r'(\d+)\s*d', s)
+    if d:
+        return now - int(d.group(1)) * 86400
+    return now
+
+def fetch_facebook_mobile_playwright(page_url_or_slug: str, processed_ids: list = None, limit: int = 15):
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        return []
+
+    ident = extract_identifier(page_url_or_slug)
+    mobile_url = f"https://m.facebook.com/{ident}"
+    processed_set = set(str(x) for x in (processed_ids or []))
+    print(f" [PLAYWRIGHT FB] Ingesting {mobile_url} via mobile Chromium bypass...")
+
+    posts = []
+    try:
+        with sync_playwright() as p:
+            iphone = p.devices['iPhone 13']
+            browser = p.chromium.launch(headless=True)
+            context = browser.new_context(**iphone)
+            page = context.new_page()
+            page.goto(mobile_url, wait_until="domcontentloaded", timeout=25000)
+            page.wait_for_timeout(3000)
+
+            cards = page.evaluate('''() => {
+                const results = [];
+                const imgs = Array.from(document.querySelectorAll('img[src*="/v/t39.30808-6/"]'));
+                imgs.forEach(img => {
+                    const src = img.src;
+                    const m = src.match(/\\/v\\/t39\\.30808-6\\/\\d+_(\\d{14,18})_/);
+                    if (!m) return;
+                    const photoId = m[1];
+                    if ((img.alt && (img.alt.includes('Cover') || img.alt.includes('profile'))) || img.naturalWidth < 150) return;
+
+                    let cur = img;
+                    let text = "";
+                    let timeStr = "";
+                    for (let i = 0; i < 9; i++) {
+                        if (!cur || cur === document.body) break;
+                        const tEls = cur.querySelectorAll('span, div, p');
+                        for (const el of tEls) {
+                            let t = (el.innerText || "").trim();
+                            if (!timeStr) {
+                                const tm = t.match(/^(\\d+[mhdw]|Just now)$/i);
+                                if (tm) timeStr = tm[1];
+                            }
+                            t = t.replace(/\\.\\.\\.\\s*See\\s*more/gi, '').replace(/See\\s*more/gi, '').trim();
+                            if (/[\\u0900-\\u097F]{4,}/.test(t) && t.length > 25) {
+                                if (!t.includes("Himali Patrika") && !t.includes("News & media website") && !t.includes("others") && !t.includes("Abhi Raj")) {
+                                    if (t.length > text.length && t.length < 600) {
+                                        text = t;
+                                    }
+                                }
+                            }
+                        }
+                        if (text.length > 35) break;
+                        cur = cur.parentElement;
+                    }
+                    results.push({
+                        photoId: photoId,
+                        imgUrl: src,
+                        caption: text,
+                        timeStr: timeStr,
+                        alt: img.alt || ""
+                    });
+                });
+                return results;
+            }''')
+            browser.close()
+
+        seen_pids = set()
+        for c in cards:
+            pid = c.get("photoId")
+            cap = c.get("caption", "").strip()
+            if not cap and c.get("alt"):
+                alt_m = re.findall(r'[\u0900-\u097F]{4,}', c.get("alt"))
+                if len(alt_m) >= 2:
+                    cap = re.sub(r'^May be an image of [^\n\']*(?:text that says)?[\'"]?', '', c.get("alt")).strip().rstrip("'\"")
+
+            if not pid or pid in seen_pids or pid in processed_set or len(cap) < 15:
+                continue
+            seen_pids.add(pid)
+
+            created_ts = parse_relative_time(c.get("timeStr", ""))
+            cap_fp = hashlib.md5(re.sub(r'\s+', '', cap[:60]).lower().encode('utf-8')).hexdigest()
+            if cap_fp in processed_set:
+                continue
+
+            posts.append({
+                "post_id": pid,
+                "photo_id": pid,
+                "caption_fingerprint": cap_fp,
+                "caption": cap,
+                "image_url": c.get("imgUrl"),
+                "created_time": created_ts,
+                "source_gap_hours": 0.25,
+                "source_tag": "Himali Patrika"
+            })
+            if len(posts) >= limit:
+                break
+    except Exception as e:
+        print(f" [PLAYWRIGHT FB ERROR] Error scraping {mobile_url}: {e}")
+
+    return posts
+
 def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = None, limit: int = 15):
     """
     Universally scrapes and extracts real-time posts from ANY public Facebook URL
-    (page URLs, direct post links, profile IDs, or slugs) using Googlebot SSR routing.
+    (page URLs, direct post links, profile IDs, or slugs) using Googlebot SSR routing with Playwright fallback.
     """
     processed_ids = processed_ids or []
     target = page_url_or_slug.strip()
@@ -53,15 +174,23 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
     try:
         res = requests.get(url, headers=FB_BOT_HEADERS, timeout=20)
     except Exception as e:
-        print(f" [FB INGEST ERROR] Network request to {url} failed: {e}")
-        return []
+        print(f" [FB INGEST ERROR] Network request to {url} failed: {e}. Trying Playwright fallback...")
+        return fetch_facebook_mobile_playwright(page_url_or_slug, processed_ids=processed_ids, limit=limit)
 
-    if res.status_code != 200:
-        print(f" [FB INGEST ERROR] Facebook URL {url} returned HTTP {res.status_code}")
+    if res.status_code != 200 or "facebook.com/login" in res.url.lower():
+        print(f" [FB INGEST] URL {url} redirected to login or returned {res.status_code}. Engaging Playwright mobile bypass...")
+        pw_posts = fetch_facebook_mobile_playwright(page_url_or_slug, processed_ids=processed_ids, limit=limit)
+        if pw_posts:
+            return pw_posts
         return []
 
     html = res.text
     scripts = re.findall(r'<script\s+type="application/json"[^>]*>(.*?)</script>', html)
+    if len(scripts) < 3:
+        print(f" [FB INGEST] Insufficient JSON scripts ({len(scripts)}) on {url}. Engaging Playwright mobile bypass...")
+        pw_posts = fetch_facebook_mobile_playwright(page_url_or_slug, processed_ids=processed_ids, limit=limit)
+        if pw_posts:
+            return pw_posts
 
     # 1. Pre-pass: Extract true post_id -> publish_time (integer) from tracking strings and metadata
     post_meta = {}
@@ -234,7 +363,11 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
                 for it in node:
                     scan_story_nodes(it)
 
-        scan_story_nodes(data)
+    if not posts_dict:
+        print(f" [FB INGEST] Standard SSR yielded 0 posts for {url}. Engaging Playwright mobile bypass...")
+        pw_posts = fetch_facebook_mobile_playwright(page_url_or_slug, processed_ids=processed_ids, limit=limit)
+        if pw_posts:
+            return pw_posts
 
     posts = list(posts_dict.values())
     posts.sort(key=lambda p: p.get("created_time", 0), reverse=True)

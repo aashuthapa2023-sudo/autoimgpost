@@ -215,12 +215,13 @@ def run_pipeline(mode="run", target_channel="all"):
         if channel_stat.get("date") != today_str:
             channel_stat = {"date": today_str, "count": 0, "timestamps": [], "last_published_time": channel_stat.get("last_published_time", 0)}
 
+        channel_max_daily = ch.get("max_daily_posts", config_data.get("max_images_per_day_per_page", MAX_DAILY_LIMIT_PER_PAGE))
         current_count = channel_stat.get("count", 0)
-        remaining_today = MAX_DAILY_LIMIT_PER_PAGE - current_count
-        print(f" [DAILY CAP CHECK] {current_count} / {MAX_DAILY_LIMIT_PER_PAGE} posts published today ({remaining_today} remaining)")
+        remaining_today = max(0, channel_max_daily - current_count)
+        print(f" [DAILY CAP CHECK] {current_count} / {channel_max_daily} posts published today ({remaining_today} remaining)")
 
-        if current_count >= MAX_DAILY_LIMIT_PER_PAGE:
-            print(f" [HALT] Channel '{channel_name}' has reached its strict limit of {MAX_DAILY_LIMIT_PER_PAGE} images today.")
+        if current_count >= channel_max_daily:
+            print(f" [HALT] Channel '{channel_name}' has reached its limit of {channel_max_daily} images today.")
             continue
 
         if not token:
@@ -369,7 +370,7 @@ def run_pipeline(mode="run", target_channel="all"):
 
         # 5. TAKE EXACTLY 1 VALID UNPOSTED RECENT PHOTO POST FOR THIS 1-HOUR CYCLE (chronological order)
         posted_successfully = False
-        candidates_to_try = list(reversed(unposted_recent))
+        candidates_to_try = unposted_recent
         if is_nepali_ch:
             candidates_to_try = [p for p in candidates_to_try if p.get("source_tag") != "Internet Web Scraper"]
 

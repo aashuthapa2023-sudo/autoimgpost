@@ -58,8 +58,14 @@ def download_image(url: str) -> np.ndarray:
             return None
         arr = np.asarray(bytearray(resp.content), dtype=np.uint8)
         img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
-        if img is not None and (img.shape[0] < 50 or img.shape[1] < 50):
-            return None
+        if img is not None:
+            if img.shape[0] < 50 or img.shape[1] < 50:
+                return None
+            h_cur, w_cur = img.shape[:2]
+            if min(w_cur, h_cur) < 500:
+                scale = 720.0 / float(min(w_cur, h_cur))
+                new_w, new_h = int(w_cur * scale), int(h_cur * scale)
+                img = cv2.resize(img, (new_w, new_h), interpolation=cv2.INTER_LANCZOS4)
         return img
     except Exception:
         return None
@@ -215,21 +221,20 @@ def erase_text_and_watermarks(img: np.ndarray) -> np.ndarray:
     cleaned = detect_and_remove_watermarks(img)
     return cleaned
 
-def validate_image_quality(img: np.ndarray, min_dim: int = 720, min_sharpness: float = 160.0) -> tuple:
+def validate_image_quality(img: np.ndarray, min_dim: int = 500, min_sharpness: float = 100.0) -> tuple:
     """
     Validates image resolution and clarity to strictly eliminate blurry or pixelated images:
-    - Verifies dimensions are at least min_dim x min_dim (or sufficient HD area >= 518,400 px)
+    - Verifies dimensions are at least min_dim x min_dim (or sufficient HD area >= 350,000 px)
     - Verifies sharpness variance using Laplacian operator >= min_sharpness
-    - Verifies color / contrast standard deviation >= 22 (rejects blank, washed out, or corrupted images)
+    - Verifies color / contrast standard deviation >= 20 (rejects blank, washed out, or corrupted images)
     """
     if img is None:
         return False, "Image is None or corrupt"
 
     h, w = img.shape[:2]
     total_pixels = h * w
-    # Strict resolution gate: short dimension >= 500px and total pixels >= 400,000 (e.g. 1000x563 or 720x720)
-    if min(w, h) < 500 or total_pixels < 400000:
-        return False, f"Low resolution: {w}x{h}px ({total_pixels:,} pixels; minimum required is 500px short-edge & 400,000px area)"
+    if min(w, h) < 450 or total_pixels < 350000:
+        return False, f"Low resolution: {w}x{h}px ({total_pixels:,} pixels; minimum required is 450px short-edge & 350,000px area)"
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     lap_var = float(cv2.Laplacian(gray, cv2.CV_64F).var())
