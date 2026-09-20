@@ -206,59 +206,13 @@ def compute_image_dhash(img: np.ndarray, hash_size: int = 8) -> str:
 
 def clean_lower_half_text_and_badges(img: np.ndarray) -> np.ndarray:
     """
-    Detects lower-half source badges (e.g. 'NEWS', 'EXCLUSIVE', 'REPORT') and wipes out
-    all residual source headline text below the badge or in the lower 38% dark region to solid black.
-    Strictly preserves human subjects, faces, and top-half artwork.
+    Safely preserves source image without destructively hard-wiping regions to black.
+    Actual gradient feathering and text backing is handled organically by the poster engine.
     """
-    if img is None:
-        return None
-    h, w = img.shape[:2]
-    out = img.copy()
-
-    # 1. Search for top-most lower-half badge (NEWS / EXCLUSIVE / UPDATE pills)
-    y_half = int(h * 0.50)
-    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-    
-    # Red, Orange, Yellow, Crimson saturated badge detection
-    mask_r1 = cv2.inRange(hsv, np.array([0, 110, 90]), np.array([25, 255, 255]))
-    mask_r2 = cv2.inRange(hsv, np.array([165, 110, 90]), np.array([180, 255, 255]))
-    badge_mask = cv2.bitwise_or(mask_r1, mask_r2)
-    badge_mask[:y_half, :] = 0
-
-    cnts, _ = cv2.findContours(badge_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    cnts = sorted(cnts, key=lambda c: cv2.boundingRect(c)[1])
-    found_badge_bottom = None
-
-    for c in cnts:
-        bx, by, bw, bh = cv2.boundingRect(c)
-        if by >= int(h * 0.58) and 40 <= bw <= int(w * 0.40) and 16 <= bh <= int(h * 0.10):
-            center_x = bx + bw / 2.0
-            # Centered or near-centered banner
-            if abs(center_x - (w / 2.0)) < (w * 0.35):
-                found_badge_bottom = by - 2
-                break
-
-    if found_badge_bottom:
-        # All old source badge and text below it is wiped cleanly to pure black
-        out[found_badge_bottom:, :] = 0
-        return out
-
-    # 2. If no prominent badge, detect if lower region is a dark banner with text edges
-    lower_start_y = int(h * 0.76)
-    roi = img[lower_start_y:, :]
-    gray_roi = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
-    dark_ratio = np.count_nonzero(gray_roi < 45) / float(gray_roi.size)
-    edges = cv2.Canny(gray_roi, 50, 150)
-    edge_ratio = np.count_nonzero(edges > 0) / float(edges.size)
-
-    if dark_ratio > 0.55 and edge_ratio > 0.035:
-        out[lower_start_y:, :] = 0
-
-    return out
+    return img
 
 def erase_text_and_watermarks(img: np.ndarray) -> np.ndarray:
     cleaned = detect_and_remove_watermarks(img)
-    cleaned = clean_lower_half_text_and_badges(cleaned)
     return cleaned
 
 def validate_image_quality(img: np.ndarray, min_dim: int = 720, min_sharpness: float = 160.0) -> tuple:
@@ -291,78 +245,81 @@ def validate_image_quality(img: np.ndarray, min_dim: int = 720, min_sharpness: f
 
 def apply_cinematic_grade(img: np.ndarray) -> np.ndarray:
     """
-    Applies professional cinematic & editorial color grading:
-    1. Edge-preserving bilateral filter (denoising without loss of edge sharpness).
-    2. CIE-LAB Dynamic Contrast CLAHE (deepens local contrast & texture).
-    3. Cinematic S-Curve Tonal Mapping (deep blacks, punchy midtones, luminous highlights).
-    4. Smart Color Vibrance in HSV space (protects skin tones, enlivens flat colors).
-    5. Split-Toning (subtle cool teal/navy shadows + warm golden highlight pop).
-    6. Micro-Contrast & Dual-Frequency Unsharp Mask (crystal-clear 4K detail).
-    7. Subtle Optical Vignette (focuses viewer gaze on central editorial subject).
+    Applies subtle, natural studio editorial color grading:
+    - Gentle bilateral denoising to remove compression artifacts without losing skin texture.
+    - Subtle CLAHE contrast enhancement (clipLimit=1.15) blended 75/25 with original luminance.
+    - Gentle film S-curve with soft highlight roll-off (never blows out skin or crushes shadows).
+    - Skin-tone protected vibrance (HSV): protects human faces from orange/red shifts.
+    - Clean micro-contrast (unsharp mask: 1.10x) for crisp editorial detail with zero halos.
+    - Seamless, unnoticeable corner falloff (no heavy dark vignette).
     """
     if img is None:
         return None
 
-    # 1. Edge-preserving bilateral denoising to remove JPEG compression noise
-    denoised = cv2.bilateralFilter(img, d=5, sigmaColor=20, sigmaSpace=20)
+    # 1. Gentle edge-preserving bilateral denoising (smooth compression noise while keeping edges sharp)
+    denoised = cv2.bilateralFilter(img, d=5, sigmaColor=12, sigmaSpace=12)
 
-    # 2. CIE-LAB Color Space Local Contrast & Dynamic Range (CLAHE)
+    # 2. CIE-LAB Color Space: Subtle Dynamic Contrast (CLAHE)
     lab = cv2.cvtColor(denoised, cv2.COLOR_BGR2LAB)
     l, a, b = cv2.split(lab)
-    clahe = cv2.createCLAHE(clipLimit=2.2, tileGridSize=(8, 8))
+    
+    # Mild clip limit 1.15 avoids micro-contrast noise or harsh textures
+    clahe = cv2.createCLAHE(clipLimit=1.15, tileGridSize=(8, 8))
     l_clahe = clahe.apply(l)
+    
+    # Blend 75% original + 25% CLAHE for natural, non-processed look
+    l_blended = cv2.addWeighted(l, 0.75, l_clahe, 0.25, 0)
 
-    # 3. Cinematic S-Curve Tonal Mapping on Luminance Channel
-    lut_s_curve = np.zeros(256, dtype=np.uint8)
+    # 3. Smooth Film Tone Curve with Gentle Highlight Roll-Off
+    # Soft contrast adjustment: lift midtone clarity without crushing blacks or blowing whites
+    lut_curve = np.zeros(256, dtype=np.uint8)
     for i in range(256):
         x = i / 255.0
-        y = 1.0 / (1.0 + np.exp(-10.0 * (x - 0.5)))
-        y_blend = 0.35 * x + 0.65 * y
-        lut_s_curve[i] = np.clip(y_blend * 255.0, 0, 255).astype(np.uint8)
+        # Gentle cubic film contrast curve
+        if x < 0.5:
+            y = 0.5 * ((2.0 * x) ** 1.06)
+        else:
+            y = 1.0 - 0.5 * ((2.0 * (1.0 - x)) ** 1.06)
+        # Soft highlight roll-off above 0.85
+        if y > 0.85:
+            y = 0.85 + (y - 0.85) * 0.88
+        lut_curve[i] = np.clip(y * 255.0, 0, 255).astype(np.uint8)
 
-    l_graded = cv2.LUT(l_clahe, lut_s_curve)
+    l_graded = cv2.LUT(l_blended, lut_curve)
     lab_graded = cv2.merge((l_graded, a, b))
     graded_bgr = cv2.cvtColor(lab_graded, cv2.COLOR_LAB2BGR)
 
-    # 4. Smart Color Vibrance in HSV Space (boosts dull tones, protects skin tones)
+    # 4. Skin-Tone Protected Vibrance in HSV Space
     hsv = cv2.cvtColor(graded_bgr, cv2.COLOR_BGR2HSV).astype(np.float32)
     h_chan, s_chan, v_chan = cv2.split(hsv)
+
+    # Human skin hues in OpenCV HSV are typically [5, 26]
+    # Calculate skin-tone mask to strictly avoid oversaturating human faces
+    is_skin = (h_chan >= 5.0) & (h_chan <= 26.0) & (s_chan >= 30.0) & (v_chan >= 50.0)
+    
+    # Normal vibrance: slightly boost dull/washed-out non-skin tones (+4% to +8% max)
     s_norm = s_chan / 255.0
-    vibrance_boost = 1.0 + (1.0 - s_norm) * 0.35
-    s_boosted = np.clip(s_chan * vibrance_boost * 1.10, 0, 255.0)
+    vibrance_factor = 1.0 + (1.0 - s_norm) * 0.08
+    vibrance_factor = np.clip(vibrance_factor, 1.0, 1.08)
+    
+    # Protect skin: keep factor near 1.00 (neutral natural skin)
+    vibrance_factor = np.where(is_skin, 1.01, vibrance_factor)
+    
+    s_boosted = np.clip(s_chan * vibrance_factor, 0, 255.0)
     hsv_boosted = cv2.merge((h_chan, s_boosted, v_chan))
     graded_bgr = cv2.cvtColor(hsv_boosted.astype(np.uint8), cv2.COLOR_HSV2BGR)
 
-    # 5. Cinematic Split-Toning (Warm Midtones / Cool Teal Shadow Balance)
-    f_img = graded_bgr.astype(np.float32) / 255.0
-    b_c, g_c, r_c = cv2.split(f_img)
-    lum = 0.299 * r_c + 0.587 * g_c + 0.114 * b_c
+    # 5. Subtle Micro-Clarity (Razor sharp without pixel halos or fringing)
+    blur_fine = cv2.GaussianBlur(graded_bgr, (0, 0), sigmaX=1.0)
+    sharpened = cv2.addWeighted(graded_bgr, 1.12, blur_fine, -0.12, 0)
 
-    # Shadows: subtle cool teal tone
-    shadow_mask = np.clip((0.45 - lum) / 0.45, 0.0, 1.0)
-    b_c += shadow_mask * 0.025
-    g_c += shadow_mask * 0.008
-
-    # Midtones & Highlights: warm golden cinematic glow
-    high_mask = np.clip((lum - 0.35) / 0.65, 0.0, 1.0)
-    r_c += high_mask * 0.028
-    g_c += high_mask * 0.012
-
-    split_toned = cv2.merge((np.clip(b_c * 255.0, 0, 255),
-                             np.clip(g_c * 255.0, 0, 255),
-                             np.clip(r_c * 255.0, 0, 255))).astype(np.uint8)
-
-    # 6. Micro-Contrast & Razor Sharp Clarity (Dual-frequency unsharp mask)
-    blur_fine = cv2.GaussianBlur(split_toned, (0, 0), sigmaX=1.2)
-    sharpened = cv2.addWeighted(split_toned, 1.30, blur_fine, -0.30, 0)
-
-    # 7. Subtle Editorial Vignette (Gentle edge falloff focusing on central subject)
+    # 6. Ultra-Subtle Natural Corner Falloff (Max 5% only at extreme outer corners)
     h, w = sharpened.shape[:2]
     X = np.linspace(-1.0, 1.0, w, dtype=np.float32)
     Y = np.linspace(-1.0, 1.0, h, dtype=np.float32)
     xx, yy = np.meshgrid(X, Y)
     dist = np.sqrt(xx * xx + yy * yy)
-    vignette = np.clip(1.0 - 0.18 * (dist ** 1.8), 0.78, 1.0)
+    vignette = np.clip(1.0 - 0.06 * (dist ** 2.5), 0.94, 1.0)
     vignette_3c = cv2.merge([vignette, vignette, vignette])
 
     final_graded = np.clip(sharpened.astype(np.float32) * vignette_3c, 0, 255).astype(np.uint8)

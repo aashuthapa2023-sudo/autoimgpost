@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 import hashlib
 import random
+import math
 from PIL import Image, ImageDraw, ImageFont
 
 CURATED_HIGHLIGHT_PALETTE = [
@@ -279,12 +280,22 @@ def detect_image_text_position(img: np.ndarray) -> str:
                 dist_weight = 1.0 + ((y_center - h * 0.58) / (h * 0.42))
                 bot_score += area * dist_weight
 
-    # If a prominent human face is in the top half, heavily bias towards bottom
-    if top_face_detected:
-        bot_score = max(bot_score, 1000.0) * 3.5
-
-    if top_score > bot_score * 1.3:
+    # 1. Clear winner when one region has text and the other does not:
+    if top_score > 300 and bot_score < 150:
         return 'top'
+    if bot_score > 300 and top_score < 150:
+        return 'bottom'
+
+    # 2. Both regions have detectable text:
+    if top_score > 300 and bot_score > 300:
+        if top_face_detected:
+            return 'bottom'
+        if top_score > bot_score * 1.3:
+            return 'top'
+        return 'bottom'
+
+    # 3. Clean editorial image with no significant text overlay:
+    # Default to 'bottom' (standard professional graphic layout)
     return 'bottom'
 
 def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex: str = "random", badge_label: str = "", dest_page_name: str = "", output_path: str = "output/poster.jpg", **kwargs):
@@ -398,13 +409,14 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     y_off = (scaled_h - target_h) // 2
     canvas = resized_art[y_off:y_off+target_h, x_off:x_off+target_w].copy()
 
-    # Always apply Pro Color Grading to source image before composite
-    try:
-        from modules.image_cleaner import apply_cinematic_grade
-        canvas = apply_cinematic_grade(canvas)
-    except Exception:
-        blurred = cv2.GaussianBlur(canvas, (0, 0), sigmaX=1.5)
-        canvas = cv2.addWeighted(canvas, 1.15, blurred, -0.15, 0)
+    # Pro color grading is already applied once by the upstream pipeline caller (main.py / server.py)
+    # Only grade here if explicitly requested or if base_img was not pre-graded
+    if kwargs.get("apply_grade", False):
+        try:
+            from modules.image_cleaner import apply_cinematic_grade
+            canvas = apply_cinematic_grade(canvas)
+        except Exception:
+            pass
 
     # Identify where original text is: TOP or BOTTOM
     text_position = kwargs.get("text_position")
@@ -413,13 +425,12 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     text_position = str(text_position).lower()
     if text_position not in ["top", "bottom"]:
         text_position = "bottom"
-    print(f"           [Text Placement] Detected original text position: {text_position.upper()} -> Placing faded black gradient at {text_position.upper()} to block original text cleanly.")
+    print(f"           [Text Placement] Placement: {text_position.upper()} -> Rendering seamless filmic photographic fade.")
 
-    max_alpha = 0.94
     gap = 20
     total_content_h = (bh + gap if branding_name else 0) + total_text_h
 
-    # Detect exact bounding boxes of text in canvas to ensure 100% blocking coverage
+    # Detect exact bounding boxes of text in canvas to ensure full coverage if source had text
     gray_canvas = cv2.cvtColor(canvas, cv2.COLOR_BGR2GRAY)
     k_el = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
     m_grad = cv2.morphologyEx(gray_canvas, cv2.MORPH_GRADIENT, k_el)
@@ -428,8 +439,10 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     m_conn = cv2.morphologyEx(m_thresh, cv2.MORPH_CLOSE, k_h)
     m_cnts, _ = cv2.findContours(m_conn, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    top_text_max_y = int(target_h * 0.32)
-    bot_text_min_y = int(target_h * 0.68)
+    top_text_max_y = int(target_h * 0.30)
+    bot_text_min_y = int(target_h * 0.70)
+    has_bot_text = False
+    has_top_text = False
     for c in m_cnts:
         bx_t, by_t, bw_t, bh_t = cv2.boundingRect(c)
         aspect = bw_t / float(bh_t + 1e-5)
@@ -437,77 +450,79 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
             y_mid = by_t + bh_t / 2.0
             if y_mid < target_h * 0.45:
                 top_text_max_y = max(top_text_max_y, by_t + bh_t)
+                has_top_text = True
             elif y_mid > target_h * 0.55:
                 bot_text_min_y = min(bot_text_min_y, by_t)
+                has_bot_text = True
 
-    dark_black = np.array([6, 6, 8], dtype=np.uint8)
+    dark_black = np.array([8, 8, 10], dtype=np.float32)
 
     if text_position == "top":
-        # Base covers entire detected top text with solid dark black (100% blocked), ensuring enough room for large typography
-        base_bottom = max(int(target_h * 0.36), min(int(target_h * 0.45), max(total_content_h + 60, top_text_max_y + 40)))
-        fade_end = min(target_h - 200, base_bottom + 180)
+        top_margin = 48
+        by = top_margin
+        start_text_y = by + (bh + gap if branding_name else 0)
+        content_bottom = start_text_y + total_text_h
+        
+        # Solid dark backing covers text region + detected original top text
+        text_floor = max(content_bottom + 35, (top_text_max_y + 15) if has_top_text else (content_bottom + 35))
+        fade_depth = max(180, int(total_content_h * 0.65))
+        grad_bottom = min(target_h, text_floor + fade_depth)
 
-        # 1. Solid dark black covering all original text so zero ghost text shows through
-        for y in range(base_bottom):
-            canvas[y, :] = dark_black
+        # 1. Dark backing across text area [0, text_floor] (100% opaque, zero ghost text)
+        for y in range(text_floor):
+            canvas[y, :] = dark_black.astype(np.uint8)
 
-        # 2. Smooth faded gradient transitioning into the image
-        for y in range(base_bottom, fade_end):
-            t = (fade_end - y) / float(fade_end - base_bottom)
-            alpha = (t ** 1.8)
-            canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * dark_black
+        # 2. Filmic cosine smoothstep feathering into the photography [text_floor, grad_bottom]
+        for y in range(text_floor, grad_bottom):
+            t = (grad_bottom - y) / float(grad_bottom - text_floor + 1e-5)
+            ease = 0.5 * (1.0 - math.cos(math.pi * t))
+            alpha = ease
+            canvas[y, :] = ((1.0 - alpha) * canvas[y, :].astype(np.float32) + alpha * dark_black).astype(np.uint8)
 
-        # 3. Clean any source watermark footer bar at bottom edge (bottom 6% with soft fade)
-        bot_strip_h = int(target_h * 0.06) # 81px
-        fade_strip_h = 15
+        # Subtle clean at bottom edge for watermarks (bottom 5%)
+        bot_strip_h = int(target_h * 0.05)
         strip_start = target_h - bot_strip_h
-        for y in range(strip_start - fade_strip_h, strip_start):
-            alpha = (y - (strip_start - fade_strip_h)) / float(fade_strip_h)
-            canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * dark_black
         for y in range(strip_start, target_h):
-            canvas[y, :] = dark_black
-
-        # Vertically center badge and text inside top black base [0, base_bottom]
-        base_h = base_bottom
-        if total_content_h <= base_h:
-            pad = (base_h - total_content_h) // 2
-            by = max(28, pad)
-            start_text_y = by + (bh + gap if branding_name else 0)
-        else:
-            by = 28
-            start_text_y = by + (bh + gap if branding_name else 0)
+            t = (y - strip_start) / float(bot_strip_h)
+            alpha = t * 0.75
+            canvas[y, :] = ((1.0 - alpha) * canvas[y, :].astype(np.float32) + alpha * dark_black).astype(np.uint8)
 
     else:
-        # Atmospheric Top Vignette (top 8%)
-        top_fade_h = int(target_h * 0.08)
+        # Bottom placement:
+        # Subtle atmospheric top vignette (gentle 5% top edge frame)
+        top_fade_h = int(target_h * 0.06)
         for y in range(top_fade_h):
-            alpha = (1.0 - (y / top_fade_h)) * 0.20
-            canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * np.array([8, 8, 10])
+            alpha = (1.0 - (y / float(top_fade_h))) * 0.12
+            canvas[y, :] = ((1.0 - alpha) * canvas[y, :].astype(np.float32) + alpha * np.array([8, 8, 10], dtype=np.float32)).astype(np.uint8)
 
-        # Base covers entire detected bottom text with solid dark black (100% blocked), ensuring room for large typography
-        base_top = min(int(target_h * 0.64), max(int(target_h * 0.55), min(target_h - total_content_h - 60, bot_text_min_y - 40)))
-        fade_start = max(100, base_top - 180)
+        # Position text with clean bottom breathing margin
+        bottom_margin = 55
+        start_text_y = target_h - bottom_margin - total_text_h
+        by = start_text_y - bh - gap if branding_name else start_text_y
+        content_top = by
 
-        # 1. Smooth faded gradient leading into black base
-        for y in range(fade_start, base_top):
-            t = (y - fade_start) / float(base_top - fade_start)
-            alpha = (t ** 1.8)
-            canvas[y, :] = (1.0 - alpha) * canvas[y, :] + alpha * dark_black
-
-        # 2. Solid dark black covering all original text so zero ghost text shows through
-        for y in range(base_top, target_h):
-            canvas[y, :] = dark_black
-
-        # EXACT VERTICAL CENTERING OF LOGO & TEXT IN BLACK BASE:
-        base_h = target_h - base_top
-        if total_content_h <= base_h:
-            pad = (base_h - total_content_h) // 2
-            by = base_top + pad
-            start_text_y = by + (bh + gap if branding_name else 0)
+        # Determine where dark backing starts:
+        # If original bottom text was detected, cover it; otherwise start comfortably above badge
+        if has_bot_text and bot_text_min_y < target_h * 0.85:
+            text_roof = min(content_top - 25, bot_text_min_y - 20)
         else:
-            bottom_padding = 28
-            start_text_y = target_h - bottom_padding - total_text_h
-            by = start_text_y - bh - gap
+            text_roof = content_top - 35
+        text_roof = max(int(target_h * 0.45), text_roof)
+
+        # Filmic cosine smoothstep feather zone extending upward into the photo
+        fade_depth = max(180, int(total_content_h * 0.65))
+        grad_top = max(0, text_roof - fade_depth)
+
+        # 1. Filmic cosine smoothstep feather zone [grad_top, text_roof]
+        for y in range(grad_top, text_roof):
+            t = (y - grad_top) / float(text_roof - grad_top + 1e-5)
+            ease = 0.5 * (1.0 - math.cos(math.pi * t))
+            alpha = ease
+            canvas[y, :] = ((1.0 - alpha) * canvas[y, :].astype(np.float32) + alpha * dark_black).astype(np.uint8)
+
+        # 2. 100% Solid dark backing behind text & badge [text_roof, target_h] (zero ghost text)
+        for y in range(text_roof, target_h):
+            canvas[y, :] = dark_black.astype(np.uint8)
 
     pil_img = Image.fromarray(cv2.cvtColor(canvas, cv2.COLOR_BGR2RGB))
     draw = ImageDraw.Draw(pil_img)

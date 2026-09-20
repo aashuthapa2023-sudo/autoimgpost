@@ -60,10 +60,36 @@ def _caption_fingerprint(text):
     return hashlib.md5(re.sub(r"\s+", "", text[:80]).lower().encode("utf-8")).hexdigest()
 
 
+def compute_story_fingerprint(text: str) -> str:
+    """
+    Extracts core thematic keyword tokens for fuzzy story deduplication
+    across both English and Nepali / Devanagari text.
+    """
+    if not text:
+        return ""
+    words = re.findall(r'[^\s\.,!?;:\"\'।\(\)\[\]\{\}\-\—\–\/\\«»“”‘’#@]+', text.lower())
+    stop_words = {
+        'this', 'that', 'with', 'from', 'have', 'been', 'will', 'about', 'after', 
+        'season', 'series', 'netflix', 'movie', 'first', 'look', 'what', 'know',
+        'breaking', 'revealed', 'reportedly', 'officially', 'watch', 'upcoming',
+        'could', 'would', 'should', 'their', 'there', 'they', 'them', 'these', 'those',
+        'star', 'stars', 'show', 'shows', 'here', 'when', 'more', 'just', 'over', 'into',
+        'than', 'also', 'some', 'were', 'very', 'even', 'most', 'such', 'only', 'same',
+        'भनेका', 'भएको', 'गर्ने', 'हुने', 'गरेको', 'गरेका', 'रहेको', 'रहेका', 'छन्', 
+        'थियो', 'थिए', 'पनि', 'लागि', 'भने', 'तथा', 'र', 'तर', 'भनेर', 'भनी',
+        'आज', 'नयाँ', 'समाचार', 'अपडेट', 'नेपाल', 'गर्न', 'भई', 'हुन'
+    }
+    tokens = []
+    for w in words:
+        if len(w) >= 3 and w not in stop_words and not w.isdigit():
+            if w not in tokens:
+                tokens.append(w)
+        if len(tokens) >= 8:
+            break
+    return "_".join(sorted(tokens)) if tokens else ""
+
 def _story_fingerprint(text):
-    words = re.findall(r"[a-z]{4,}", text.lower())
-    top = sorted(set(words), key=lambda w: -words.count(w))[:8]
-    return "_".join(sorted(top))
+    return compute_story_fingerprint(text)
 
 
 def _parse_pub_date(date_str):

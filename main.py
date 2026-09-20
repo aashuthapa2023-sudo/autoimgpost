@@ -55,10 +55,29 @@ def load_config():
     return data
 
 def compute_story_fingerprint(text: str) -> str:
-    """Extracts core thematic keyword tokens for fuzzy cross-page story deduplication."""
+    """Extracts core thematic keyword tokens for fuzzy story deduplication across both English and Nepali."""
     import re
-    cleaned = re.sub(r'[^a-zA-Z0-9\s]', '', (text or "").lower())
-    tokens = [w for w in cleaned.split() if len(w) > 3 and w not in {'this', 'that', 'with', 'from', 'have', 'been', 'will', 'about', 'after', 'season', 'series', 'netflix'}][:8]
+    if not text:
+        return ""
+    words = re.findall(r'[^\s\.,!?;:\"\'।\(\)\[\]\{\}\-\—\–\/\\«»“”‘’#@]+', text.lower())
+    stop_words = {
+        'this', 'that', 'with', 'from', 'have', 'been', 'will', 'about', 'after', 
+        'season', 'series', 'netflix', 'movie', 'first', 'look', 'what', 'know',
+        'breaking', 'revealed', 'reportedly', 'officially', 'watch', 'upcoming',
+        'could', 'would', 'should', 'their', 'there', 'they', 'them', 'these', 'those',
+        'star', 'stars', 'show', 'shows', 'here', 'when', 'more', 'just', 'over', 'into',
+        'than', 'also', 'some', 'were', 'very', 'even', 'most', 'such', 'only', 'same',
+        'भनेका', 'भएको', 'गर्ने', 'हुने', 'गरेको', 'गरेका', 'रहेको', 'रहेका', 'छन्', 
+        'थियो', 'थिए', 'पनि', 'लागि', 'भने', 'तथा', 'र', 'तर', 'भनेर', 'भनी',
+        'आज', 'नयाँ', 'समाचार', 'अपडेट', 'नेपाल', 'गर्न', 'भई', 'हुन'
+    }
+    tokens = []
+    for w in words:
+        if len(w) >= 3 and w not in stop_words and not w.isdigit():
+            if w not in tokens:
+                tokens.append(w)
+        if len(tokens) >= 8:
+            break
     return "_".join(sorted(tokens)) if tokens else ""
 
 def is_duplicate_dhash(cand_hash: str, hash_pool: set, max_hamming: int = 6) -> bool:
@@ -82,6 +101,7 @@ def load_state():
         "daily_stats": {},
         "global_processed_ids": [],
         "global_story_fingerprints": [],
+        "channel_story_fingerprints": {},
         "global_image_hashes": [],
         "global_processed_urls": []
     }
@@ -134,6 +154,7 @@ def run_pipeline(mode="run", target_channel="all"):
     # Allows cross-channel syndication (e.g. Nepal Speaks & other outlets can both cover a story)
     # while strictly enforcing per-channel uniqueness (no repeats on the same channel).
     channel_image_hashes_map = state.get("channel_image_hashes", {})
+    channel_story_fingerprints_map = state.get("channel_story_fingerprints", {})
     all_published_ids = set(str(x) for x in state.get("global_processed_ids", []))
     for cid, id_list in processed_ids_map.items():
         all_published_ids.update(str(x) for x in id_list)
@@ -213,6 +234,7 @@ def run_pipeline(mode="run", target_channel="all"):
         processed_ids = processed_ids_map.get(channel_id, [])
         channel_processed_ids = set(str(x) for x in processed_ids)
         channel_image_hashes = set(str(x) for x in channel_image_hashes_map.get(channel_id, []))
+        channel_story_fps = set(channel_story_fingerprints_map.get(channel_id, []))
 
         try:
             # 1. Fetch recent candidates across all linked source pages
@@ -262,22 +284,24 @@ def run_pipeline(mode="run", target_channel="all"):
         tier2_posts = [p for p in candidate_posts if cutoff_72h <= p.get("created_time", 0) < cutoff_24h]  # 24-72h FB posts
 
         # 3. IDENTIFY UNPOSTED UNIQUE POSTS in each tier for THIS channel
-        # Allows cross-channel syndication (e.g. Nepal Speaks & other outlets can both post the same news with distinct overlays & captions)
+        # Strictly enforce per-channel story uniqueness (no repeats of the same story on this channel)
         def filter_unposted(posts):
             result = []
             for p in posts:
                 pid      = str(p.get("post_id", ""))
                 photo_id = str(p.get("photo_id", ""))
                 cap_fp   = str(p.get("caption_fingerprint", ""))
+                story_fp = str(p.get("story_fingerprint") or compute_story_fingerprint(p.get("caption", "")))
                 is_dup = (
                     pid in channel_processed_ids or
                     photo_id in channel_processed_ids or
-                    cap_fp in channel_processed_ids
+                    cap_fp in channel_processed_ids or
+                    (story_fp and story_fp in channel_story_fps)
                 )
                 if not is_dup:
                     result.append(p)
                 else:
-                    print(f"     [CHANNEL DEDUP] Story '{p.get('caption', '')[:42]}...' already published by {channel_id}. Skipping.")
+                    print(f"     [CHANNEL DEDUP] Story '{p.get('caption', '')[:42]}...' already published by {channel_id}. Skipping duplicate.")
             return result
 
         unposted_t1 = filter_unposted(tier1_posts)
@@ -292,17 +316,18 @@ def run_pipeline(mode="run", target_channel="all"):
         if web_needed and WEB_SCRAPER_AVAILABLE:
             category = get_channel_category(channel_name)
             print(f" [WEB FALLBACK] No fresh FB posts available. Fetching {category.upper()} news from internet...")
-            web_posts = fetch_web_news(
+            raw_web_posts = fetch_web_news(
                 category=category,
                 processed_ids=list(all_published_ids),
                 global_story_fps=list(global_story_fingerprints),
                 limit=10,
                 max_hours_old=48,
             )
+            web_posts = filter_unposted(raw_web_posts)
             if web_posts:
-                print(f" [WEB FALLBACK] Found {len(web_posts)} fresh internet article(s) to fill the queue.")
+                print(f" [WEB FALLBACK] Found {len(web_posts)} fresh unposted internet article(s) to fill the queue.")
             else:
-                print(f" [WEB FALLBACK] No suitable web articles found either.")
+                print(f" [WEB FALLBACK] No suitable unposted web articles found either.")
 
         # Build final priority-ordered candidate list: fresh FB first → older FB → web (strictly excluded for Nepali channels)
         unposted_recent = unposted_t1 or unposted_t2 or (web_posts if not is_nepali_ch else [])
@@ -509,9 +534,10 @@ def run_pipeline(mode="run", target_channel="all"):
                 if image_url:
                     global_processed_urls.add(image_url)
 
-                post_story_fp = compute_story_fingerprint(post.get("caption", ""))
+                post_story_fp = str(post.get("story_fingerprint") or compute_story_fingerprint(post.get("caption", "")))
                 if post_story_fp:
                     global_story_fingerprints.add(post_story_fp)
+                    channel_story_fps.add(post_story_fp)
 
                 channel_stat["count"] += 1
                 channel_stat["timestamps"].append(datetime.now(timezone.utc).isoformat())
@@ -519,7 +545,9 @@ def run_pipeline(mode="run", target_channel="all"):
 
                 # Persist state with per-channel tracking & cross-channel syndication support
                 channel_image_hashes_map[channel_id] = list(channel_image_hashes)
+                channel_story_fingerprints_map[channel_id] = list(channel_story_fps)
                 state["channel_image_hashes"] = channel_image_hashes_map
+                state["channel_story_fingerprints"] = channel_story_fingerprints_map
                 processed_ids_map[channel_id] = processed_ids
                 daily_stats[channel_id] = channel_stat
                 state["processed_ids"] = processed_ids_map
