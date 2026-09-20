@@ -11,26 +11,24 @@ except Exception:
 def build_system_prompt(language: str = "en", channel_name: str = "") -> str:
     target_str = f" for '{channel_name}'" if channel_name else ""
     if language == "ne":
-        return f"""तपाईं एक वरिष्ठ नेपाली पत्रकार र समाचार सम्पादक हुनुहुन्छ जो फेसबुकका लागि दृश्य रूपमा प्रभावकारी र तथ्यमा आधारित नेपाली समाचार लेख र पोस्टर शीर्षक तयार गर्नुहुन्छ{target_str}।
+        return f"""तपाईं एक वरिष्ठ नेपाली पत्रकार र समाचार सम्पादक हुनुहुन्छ जो फेसबुकका लागि दृश्य रूपमा प्रभावकारी, तथ्यमा आधारित नेपाली समाचार लेख र पोस्टर शीर्षक तयार गर्नुहुन्छ{target_str}।
 Facebook Distribution Guidelines को पूर्ण पालना गर्नुहोस्: कुनै क्लिकबेट छैन, कुनै अतिरञ्जना छैन, र कुनै कमेन्ट बेट (comment bait) छैन।
 यदि यो समाचार अन्य कुनै पेज वा च्यानलमा पनि पोस्ट भएको छ भने, यो च्यानल{target_str} को लागि नयाँ टेक्स्ट ओभरले र नयाँ भेरियसनको क्याप्सन बनाउनुहोस्।
 
-कार्य:
-१. ओभरले हेडलाइन्स (STRONG HOOK LINE + MAIN HEADLINE, strictly 2 lines, 2-3 words per line, large impactful typography):
-   - लाइन १: STRONG HOOK LINE (उच्च प्रभाव भएको हुक लाइन, २ देखि ३ शब्द)
+अति महत्त्वपूर्ण नियमहरू:
+१. ओभरले हेडलाइन्स (STRONG HOOK LINE + MAIN HEADLINE, strictly 2 lines, 2-3 words per line):
+   - लाइन १: STRONG HOOK LINE (मुख्य विषय वा पात्र, २ देखि ३ शब्द)
    - लाइन २: MAIN HEADLINE (मुख्य घटना वा नतिजा, २ देखि ३ शब्द)
+   - अर्थपूर्ण ओभरले: ओभरले उक्त समाचारको मुख्य विषयसँग प्रत्यक्ष सम्बन्धित र अर्थपूर्ण हुनुपर्छ। "आज आईतवार", "विशेष कभरेज", "ताजा समाचार", "महत्वपूर्ण अपडेट" जस्ता निरर्थक शब्दहरू प्रयोग गर्न पाइने छैन।
    - अनिवार्य नियम: ओभरलेको दोस्रो लाइनको अन्तिम शब्दको पछाडि अनिवार्य रूपमा तीनवटा थोप्लो (...) राख्नुहोस् (e.g. "जिल्लाबाटै...", "शव फेला...", "कडा चेतावनी...")।
-   महत्त्वपूर्ण हाइलाइटिङ नियम:
-   - पूरै वाक्यको मुख्य विषय (Proper noun, निर्णय, व्यक्ति वा ठाउँको नाम, मुख्य उपलब्धि) पहिचान गर्नुहोस् र त्यसलाई HIGHLIGHT गर्नुहोस्।
-    - टोकन विभाजन गर्नुहोस्: [{{"text": "पहिलो शब्द ", "type": "white"}}, {{"text": "मुख्य विषय...", "type": "highlight"}}]
+   - हाइलाइटिङ नियम: मुख्य विषय वा नामलाई HIGHLIGHT गर्नुहोस्।
+     टोकन विभाजन: [{{"text": "पहिलो शब्द ", "type": "white"}}, {{"text": "मुख्य विषय...", "type": "highlight"}}]
 
-२. नेपाली समाचार क्याप्सन (Detailed Journalistic Report, 150-250 शब्दहरू):
-   - तीनवटा स्पष्ट अनुच्छेदमा व्यावसायिक र तथ्यपरक समाचार लेख्नुहोस्:
-   - शीर्षक: सफा, स्पष्ट र तथ्यपरक समाचार शीर्षक।
-   - अनुच्छेद १ (ताजा विवरण): मुख्य समाचार, आधिकारिक निर्णय, सम्बन्धित निकाय र मिति।
-   - अनुच्छेद २ (पृष्ठभूमि र सन्दर्भ): विगतको पृष्ठभूमि, कारण र निर्णयको महत्व।
-   - अनुच्छेद ३ (अगाडिको बाटो र प्रभाव): जनतालाई हुने सुविधा, कार्यान्वयनको चरण र आगामी प्रभाव।
-   - ह्यासट्यागहरू: ४-६ वटा सान्दर्भिक ह्यासट्यागहरू।
+२. फेसबुक क्याप्सन (Authentic Source Facts Only, No Fake Boilerplate):
+   - स्रोतबाट प्राप्त वास्तविक तथ्य मात्र प्रयोग गर्नुहोस्। काल्पनिक वा नक्कली अनुच्छेदहरू (जस्तै 'सम्बन्धित निकायले अध्ययन सुरु गर्यो', 'दीर्घकालीन सकारात्मक प्रभाव पार्नेछ') मनगढन्ते बनाउन पाइने छैन।
+   - दोहोरो वाक्य पूर्ण निषेध (NO DUPLICATE LINES): क्याप्सनमा एउटै वाक्य वा लाइन दुई पटक दोहोर्याउन पाइने छैन। शीर्षक र पहिलो अनुच्छेद एउटै हुनुहुँदैन।
+   - यदि स्रोत पोस्ट छोटो वा शुभकामना सन्देश हो भने त्यसलाई अनावश्यक रूपमा नक्कली अनुच्छेद थपेर लामो नबनाउनुहोस्।
+   - ह्यासट्यागहरू: ४-६ वटा सान्दर्भिक ह्यासट्यागहरू अन्त्यमा राख्नुहोस्।
 
 Return strictly JSON:
 {{
@@ -38,31 +36,26 @@ Return strictly JSON:
     [{{"text": "हुक वाक्यांश ", "type": "white"}}, {{"text": "नयाँ निर्णय", "type": "highlight"}}],
     [{{"text": "मुख्य घटना ", "type": "white"}}, {{"text": "जिल्लाबाटै...", "type": "highlight"}}]
   ],
-  "rewritten_caption": "समाचार शीर्षक\\n\\nपहिलो अनुच्छेद तथ्यपरक विवरण...\\n\\nदोस्रो अनुच्छेद पृष्ठभूमि र महत्व...\\n\\nतेस्रो अनुच्छेद प्रभाव र आगामी चरण...\\n\\n#NepalSpeaks #NepaliNews #NepalUpdates"
+  "rewritten_caption": "सफा र तथ्यपरक क्याप्सन (कुनै दोहोरो लाइन छैन)...\\n\\n#NepalSpeaks #NepaliNews #NepalUpdates"
 }}"""
 
     return f"""You are a senior entertainment journalist and news editor crafting visually impactful, deeply detailed social media news articles for Facebook{target_str}.
 Strictly adhere to Facebook Distribution Guidelines: NO clickbait, NO sensationalism, and ABSOLUTELY NO comment bait or engagement bait.
 If this news item is syndicated across multiple media pages, craft a fresh, unique angle, new text overlay, and a distinct variation of the caption tailored specifically{target_str}.
 
-TASK:
+CRITICAL RULES:
 1. OVERLAY HEADLINES (STRONG HOOK LINE + MAIN HEADLINE, strictly 2 lines, 2-3 words per line):
-   - Line 1: STRONG HOOK LINE (High-impact, curiosity-inducing hook phrase, 2-3 words)
-   - Line 2: MAIN HEADLINE (Core breaking event, milestone or outcome, 2-3 words)
-   CRITICAL THEMATIC HIGHLIGHTING RULES:
-   - Analyze the whole sentence and identify the MAIN THEMES (entity names, show titles, awards, milestones, key actions).
-   - HIGHLIGHT THE MAIN THEME WHEREVER IT APPEARS IN THE LINE (beginning, middle, or end).
-   - Split each line into tokens: [{{"text": "...", "type": "white"}}].
+   - Line 1: STRONG HOOK LINE (Core subject or key entity, 2-3 words)
+   - Line 2: MAIN HEADLINE (Core action, milestone or outcome, 2-3 words)
+   - MEANINGFUL OVERLAY: Must directly describe this specific story/show/person. NEVER use generic filler words like "Breaking News", "Special Coverage", "Today Update".
+   - Split each line into tokens: [{{"text": "...", "type": "white"}}, {{"text": "...", "type": "highlight"}}].
 
-2. REWRITTEN CAPTION (Detailed In-Depth Journalistic Report, 150-250 words):
-   - CRITICAL: YOU MUST ANALYZE AND CONVEY THE ACTUAL SUBSTANCE, DETAILS, AND MEANING OF THIS SPECIFIC NEWS ITEM.
-   - Explain what happened, the key figures/entities/actors involved, the storyline or announcement, and why it matters.
-   - Absolutely NO generic placeholder prose or vague filler (e.g. "Behind the scenes..."). Every sentence must report real details from the story.
-   - 3 well-structured journalistic paragraphs:
-     * Paragraph 1: The core breaking news announcement with all key names, titles, records, and platforms.
-     * Paragraph 2: In-depth background context, storyline premise, actor roles, history, or quotes from the report.
-     * Paragraph 3: Significance, audience reaction, streaming availability, and future outlook.
-   - HASHTAGS: 4-6 targeted, high-traffic entertainment hashtags based on the actual show or entity.
+2. REWRITTEN CAPTION (Authentic Source Facts Only, NO Repetition):
+   - Extract and convey the ACTUAL factual substance and meaning from the source.
+   - Absolutely NO duplicate lines: The headline and first body sentence must NEVER repeat the same line twice.
+   - Absolutely NO generic fake filler or fabricated paragraphs (e.g. "Behind the scenes...", "Industry observers note...").
+   - If the source is concise, keep it clean and concise. Do NOT pad with hallucinated boilerplate.
+   - HASHTAGS: 4-6 targeted, high-traffic entertainment hashtags at the end.
 
 Return strictly JSON:
 {{
@@ -70,7 +63,7 @@ Return strictly JSON:
     [{{"text": "STRONG HOOK ", "type": "white"}}, {{"text": "KEY ENTITY", "type": "highlight"}}],
     [{{"text": "MAIN HEADLINE ", "type": "white"}}, {{"text": "KEY OUTCOME", "type": "highlight"}}]
   ],
-  "rewritten_caption": "EDITORIAL HEADLINE\\n\\nDetailed lead paragraph with full facts.\\n\\nRich contextual background paragraph detailing the story and history.\\n\\nForward-looking industry conclusion paragraph.\\n\\n#Hashtag1 #Hashtag2 #Hashtag3 #Hashtag4"
+  "rewritten_caption": "Clean authentic post body with no repeated lines...\\n\\n#Hashtag1 #Hashtag2 #Hashtag3 #Hashtag4"
 }}"""
 
 TRAILING_STOPWORDS = {
@@ -165,19 +158,140 @@ def ensure_nepali_overlay_ellipsis(overlay_lines: list) -> list:
             last_line[-1] = t + "..."
     return overlay_lines
 
-def nepali_heuristic_payload(raw_caption: str, channel_name: str = "", channel_id: str = "") -> dict:
+NEPALI_HANGING_WORDS = {
+    'र', 'मा', 'को', 'का', 'की', 'ले', 'लाई', 'बाट', 'तथा', 'वा', 'समेत',
+    'पनि', 'भने', 'अब', 'छ', 'छन्', 'भएको', 'गरेको', 'गर्ने', 'हुने', 'दिएका', 'परेका', 'बनेका', 'भएका'
+}
+
+NEPALI_BANNED_OVERLAY_WORDS = {
+    'आज', 'आजको', 'आइतबार', 'आईतवार', 'आइतवार', 'सोमबार', 'सोमवार', 'मंगलबार', 'मङ्गलवार',
+    'बुधबार', 'बुधवार', 'बिहीबार', 'बिहिवार', 'शुक्रबार', 'शुक्रवार', 'शनिबार', 'शनिवार',
+    'सुप्रभात', 'शुभप्रभात', 'नमस्ते', 'नमस्कार', 'विशेष', 'कभरेज', 'अपडेट', 'ताजा', 'समाचार',
+    'महत्वपूर्ण', 'तथा', 'र', 'अब', 'भने', 'को', 'का', 'की', 'ले', 'लाई', 'बाट', 'छ', 'छन्',
+    'समेत', 'पनि', 'यो', 'त्यो', 'यी', 'ती', 'एक', 'दुई', 'भएको', 'हुने', 'गरेको', 'भनेर',
+    'नयाँ', 'कडा', 'जारी', 'गर्दै', 'गरेका', 'रहेको', 'रहेका'
+}
+
+DEITY_PATTERNS = [
+    (r'(?:सरस्वती|सरस्वतीमाता|सरस्वतीमाताको)', 'सरस्वती माताको', 'शुभ आशिर्वाद'),
+    (r'(?:पशुपति|पशुपतिनाथ|महादेव|शिव|भोलेनाथ)', 'पशुपतिनाथको', 'कृपा र आशिर्वाद'),
+    (r'(?:गणेश|गणेशजी|गणपति)', 'भगवान गणेशको', 'शुभ आशिर्वाद'),
+    (r'(?:कृष्ण|श्रीकृष्ण|राधाकृष्ण)', 'भगवान श्रीकृष्णको', 'दिव्य आशिर्वाद'),
+    (r'(?:राम|श्रीराम|सीताराम)', 'प्रभु श्रीरामको', 'शुभ कृपा'),
+    (r'(?:दुर्गा|भवानी|काली|लक्ष्मी)', 'माता दुर्गाको', 'शुभ आशिर्वाद'),
+    (r'(?:बुद्ध|भगवान बुद्ध|गौतम बुद्ध)', 'भगवान बुद्धको', 'शान्ति सन्देश'),
+]
+
+def clean_and_deduplicate_source_caption(raw_caption: str, language: str = "en", channel_name: str = "", channel_id: str = "") -> str:
+    """
+    Extracts the clean, authentic caption directly from original source post without fake boilerplate:
+    - Strips URLs, promotional spam, 'like our page', and external links.
+    - Strictly prevents repeating the same line or sentence twice in the post.
+    - Preserves all real facts and sentences from the source.
+    - Appends clean channel branding hashtags.
+    """
+    if not raw_caption:
+        return ""
+
+    # Normalize Windows-1252 / smart punctuation
+    text = raw_caption.replace('\x91', "'").replace('\x92', "'").replace('\x93', '"').replace('\x94', '"')
+    text = text.replace('’', "'").replace('‘', "'").replace('“', '"').replace('”', '"')
+
+    # Remove fake boilerplate if present
+    fake_phrases = [
+        r'यस विषयमा सम्बन्धित निकाय तथा सरोकारवालाहरूले आवश्यक अध्ययन.*',
+        r'यस विकासक्रमले दीर्घकालीन रूपमा सकारात्मक प्रभाव पार्ने.*',
+        r'The details behind the announcement demonstrate significant creative investment.*',
+        r'Verified production and distribution documentation have been logged.*',
+        r'INDUSTRY\s+REPORTING\s*&?\s*UPDATES.*',
+        r'According to verified production details,\s*',
+    ]
+    for fp in fake_phrases:
+        text = re.sub(fp, '', text, flags=re.IGNORECASE)
+
+    raw_lines = text.splitlines()
+    clean_lines = []
+    seen_normalized = []
+
+    promo_patterns = [
+        r'https?:\S+',
+        r'(?:थप\s+(?:समाचार|जानकारी|विवरण)|हाम्रो\s+(?:फेसबुक\s+)?पेज|भिडियो\s+हेर्नुहोस्|लिंक\s+कमेन्टमा|तस्बिर\s*:|फोटो\s*:|साभार\s*:).*',
+        r'(?:Follow\s+(?:our\s+page|us)|Subscribe\s+to|Link\s+in\s+(?:bio|comment)|Click\s+here|Read\s+more|Photo\s*:).*',
+        r'^[#@\s\-_=]+$',
+        r'^\s*(?:#[\w\u0900-\u097F]+\s*)+$'
+    ]
+
+    for line in raw_lines:
+        line_clean = line.strip()
+        if not line_clean:
+            continue
+
+        # Ignore lines that are purely hashtags
+        if re.match(r'^\s*(?:#[\w\u0900-\u097F]+\s*)+$', line_clean):
+            continue
+
+        # Strip promo patterns
+        for pat in promo_patterns:
+            line_clean = re.sub(pat, '', line_clean, flags=re.IGNORECASE).strip()
+
+        if not line_clean or len(line_clean) < 3:
+            continue
+
+        # Ignore if line became only hashtags
+        if re.match(r'^\s*(?:#[\w\u0900-\u097F]+\s*)+$', line_clean):
+            continue
+
+        # Normalize line to detect duplicates (strip punctuation, dandas, emojis, spaces)
+        norm = re.sub(r'[।॥\.,;:!?\'"()\[\]{}<>\-—_~/\\|#*&^%$@+=📢🇳🇵🚨⚡🌍✈️🎬📺🌟🎩🐘🏏]', '', line_clean)
+        norm = re.sub(r'[^\w\u0900-\u097F]', '', norm.lower())
+        norm = re.sub(r'[।॥]', '', norm)
+        if not norm or len(norm) < 4:
+            continue
+
+        # Check against already seen lines (prevent repeating same line twice)
+        is_dup = False
+        for prev_norm in seen_normalized:
+            if norm == prev_norm:
+                is_dup = True
+                break
+            # Check high similarity or substring containment
+            if len(prev_norm) > 10 and len(norm) > 10:
+                if norm in prev_norm or prev_norm in norm:
+                    is_dup = True
+                    break
+
+        if not is_dup:
+            clean_lines.append(line_clean)
+            seen_normalized.append(norm)
+
+    if not clean_lines:
+        clean_lines = [raw_caption.strip()[:200]]
+
+    body_text = "\n\n".join(clean_lines)
+
+    # Clean channel hashtags
+    ch_clean = re.sub(r'[^a-zA-Z0-9\u0900-\u097F]', '', str(channel_name or channel_id or ""))
+    is_nepali = (language == "ne" or any('\u0900' <= c <= '\u097F' for c in body_text))
+
+    if is_nepali:
+        tag1 = f"#{ch_clean}" if ch_clean else "#NepalSpeaks"
+        hashtags = f"{tag1} #NepaliNews #NepalUpdates #NepalNews"
+    else:
+        tag1 = f"#{ch_clean}" if ch_clean else "#DailyNetflix"
+        hashtags = f"{tag1} #Entertainment #StreamingNews"
+
+    return f"{body_text}\n\n{hashtags}"
+
+def extract_meaningful_nepali_overlay(raw_caption: str) -> list:
+    """
+    Extracts high-impact, meaningful 2-line overlay tokens for Nepali posts.
+    Strips day preambles ('आज आईतवार'), greetings, and filler words ('विशेष कभरेज').
+    """
     cleaned = re.sub(r'https?:\S+', '', raw_caption).strip()
-    sentences = [s.strip() for s in re.split(r'[।!?\n]+', cleaned) if len(s.strip()) > 8]
-    first_sent = sentences[0] if sentences else cleaned[:100]
 
-    NEPALI_HANGING_WORDS = {
-        'र', 'मा', 'को', 'का', 'की', 'ले', 'लाई', 'बाट', 'तथा', 'वा', 'समेत',
-        'पनि', 'भने', 'अब', 'छ', 'छन्', 'भएको', 'गरेको', 'गर्ने', 'हुने', 'दिएका', 'परेका', 'बनेका', 'भएका'
-    }
-
-    # 1. Clean Lead: Strip bureaucratic, ceremonial, and geographical preambles so we isolate the core news hook
-    clean_lead = first_sent
+    # 1. Strip day names, greetings, and ceremonial preambles
     strip_patterns = [
+        r'^(?:आज(?:को)?\s+)?(?:आइतबार|आईतवार|आइतवार|सोमबार|सोमवार|मंगलबार|मङ्गलवार|बुधबार|बुधवार|बिहीबार|बिहिवार|शुक्रबार|शुक्रवार|शनिबार|शनिवार|सुप्रभात|शुभप्रभात|नमस्ते|नमस्कार|हार्दिक\s+शुभकामना)\s*[-—,:|।!?–]?\s*',
         r'^संविधान\s+दिवस(?:\s+तथा\s+राष्ट्रिय\s+दिवस)?(?:\s+[०-९0-9]+)?(?:\s+को\s+मूल\s+समारोहलाई\s+सम्बोधन\s+गर्दै)?\s*',
         r'^[^\s]+मा\s+बस्दै\s+आएका\s+नेपाली\s+[^\s]+\s*(?:ले)?\s*',
         r'^चितवन\s+राष्ट्रिय\s+निकुञ्जको\s+हात्ती\s+प्रजनन\s+केन्द्र\s+आसपास\s*',
@@ -185,205 +299,112 @@ def nepali_heuristic_payload(raw_caption: str, channel_name: str = "", channel_i
         r'^[^\s]+का\s+अनुसार\s*',
         r'^[०-९0-9]+\s+वर्षीया\s+[^\s]+लाई\s*',
     ]
-    for pat in strip_patterns:
-        clean_lead = re.sub(pat, '', clean_lead).strip()
 
+    lead = cleaned
+    for _ in range(2):
+        for pat in strip_patterns:
+            lead = re.sub(pat, '', lead, flags=re.IGNORECASE).strip()
+
+    sentences = [s.strip() for s in re.split(r'[।!?\n]+', lead) if len(s.strip()) > 5]
+    first_sent = sentences[0] if sentences else lead[:100]
+
+    # Check for Deity / Spiritual Greeting post
+    for pat, line1_str, line2_str in DEITY_PATTERNS:
+        if re.search(pat, cleaned):
+            w1 = line1_str.split()
+            w2 = line2_str.split()
+            overlay = [format_nepali_thematic_tokens(w1), format_nepali_thematic_tokens(w2)]
+            return ensure_nepali_overlay_ellipsis(overlay)
+
+    # Check curated story matches
     combined = cleaned.lower()
-
-    # 2. Extract punchy 2-line headline & hook tailored to the actual news story
-    if 'रोनाल्डो' in clean_lead and ('मृत' in clean_lead or 'हात्ती' in clean_lead or 'निकुञ्ज' in combined):
+    if 'रोनाल्डो' in lead and ('मृत' in lead or 'हात्ती' in lead or 'निकुञ्ज' in combined):
         w1 = ['चर्चित', 'भाले', 'हात्ती']
         w2 = ['‘रोनाल्डो’', 'मृत', 'फेला']
-    elif 'बालेन' in clean_lead or 'वालेन्द्र' in clean_lead or 'सम्बोधन' in first_sent:
-        if 'भाषण' in clean_lead or 'जित्यो' in clean_lead or 'सम्बोधन' in first_sent:
+    elif 'बालेन' in lead or 'वालेन्द्र' in lead or 'सम्बोधन' in first_sent:
+        if 'भाषण' in lead or 'जित्यो' in lead or 'सम्बोधन' in first_sent:
             w1 = ['बालेनको', 'सम्बोधन']
             w2 = ['जित्यो', 'लाखौँको', 'मन']
+        elif 'डोजर' in lead or 'अवैध' in lead:
+            w1 = ['बालेनको', 'कडा', 'कदम']
+            w2 = ['अवैध', 'संरचनामा', 'डोजर']
         else:
             w1 = ['प्रधानमन्त्री', 'बालेन', 'शाह']
             w2 = ['सुशासनको', 'नयाँ', 'योजना']
-    elif any(k in clean_lead for k in ['क्रिकेट', 'एनपीएल', 'खेल तालिका']):
+    elif any(k in lead for k in ['क्रिकेट', 'एनपीएल', 'खेल तालिका']):
         w1 = ['एनपीएल', 'तेस्रो', 'संस्करण']
         w2 = ['खेल', 'तालिका', 'सार्वजनिक']
-    elif 'विद्युत्' in clean_lead or 'निर्यात' in clean_lead or '५ अर्ब' in clean_lead:
+    elif 'विद्युत्' in lead or 'निर्यात' in lead or '५ अर्ब' in lead:
         w1 = ['एकै', 'महिनामा', 'नेपालले']
         w2 = ['५', 'अर्बको', 'विद्युत्', 'निर्यात']
-    elif 'एयरलाइन्स' in clean_lead or 'उत्कृष्ट' in clean_lead:
+    elif 'एयरलाइन्स' in lead or 'उत्कृष्ट' in lead:
         w1 = ['सिंगापुर', 'एयरलाइन्स']
         w2 = ['विश्वकै', 'उत्कृष्ट', 'घोषित']
-    elif 'जर्सी' in clean_lead and 'रोनाल्डो' in clean_lead:
+    elif 'जर्सी' in lead and 'रोनाल्डो' in lead:
         w1 = ['क्रिस्टियानो', 'रोनाल्डोको', 'जर्सी']
         w2 = ['बाढी', 'पीडितलाई', 'सहयोग']
-    elif 'बाढी' in clean_lead and ('सहयोग' in clean_lead or 'गुमाएकी' in clean_lead or 'घले' in clean_lead):
-        if 'घले' in clean_lead:
+    elif 'बाढी' in lead and ('सहयोग' in lead or 'गुमाएकी' in lead or 'घले' in lead):
+        if 'घले' in lead:
             w1 = ['शेष', 'घले', 'दम्पती']
             w2 = ['५७', 'करोड', 'सहयोग']
         else:
             w1 = ['भोटेकोशी', 'बाढी', 'पीडित']
             w2 = ['सहयोगका', 'लागि', 'हातहरू']
-    elif 'होर्मुज' in clean_lead or 'इरान' in clean_lead:
+    elif 'होर्मुज' in lead or 'इरान' in lead:
         w1 = ['इरानको', 'कडा', 'चेतावनी']
         w2 = ['होर्मुज', 'जलडमरूमध्य', 'नखोल्ने']
-    elif 'नागरिकता' in clean_lead:
+    elif 'नागरिकता' in lead:
         w1 = ['नागरिकताको', 'प्रतिलिपि']
-        w2 = ['जुनसुकै', 'जिल्लाबाट', 'निकाल्न', 'सकिने']
-    elif 'टनेल' in clean_lead or 'शव फेला' in clean_lead:
+        w2 = ['जुनसुकै', 'जिल्लाबाट', 'लिन', 'सकिने']
+    elif 'टनेल' in lead or 'शव फेला' in lead:
         w1 = ['त्रिशूली-१', 'जलविद्युत्', 'टनेल']
         w2 = ['थप', '११', 'शव', 'फेला']
     else:
-        # General intelligent extraction from clean_lead bypassing grammatical preambles
-        parts = [p.strip() for p in re.split(r'[-—,:।!?–]', clean_lead) if len(p.strip().split()) >= 2]
-        all_w = [w for w in clean_lead.split() if w not in {'तथा', 'र', 'अब', 'भने', 'को', 'का', 'की', 'ले', 'लाई', 'बाट', 'छ', 'छन्', 'समेत'}]
-        if parts and len(parts[0].split()) >= 2:
-            p0 = [w for w in parts[0].split() if w not in {'तथा', 'र', 'अब', 'भने'}][:3]
-            p1 = [w for w in (parts[1].split() if len(parts) > 1 else all_w[len(p0):]) if w not in {'तथा', 'र', 'अब', 'भने'}][:3]
-            w1, w2 = p0, p1
-        elif len(all_w) >= 5:
-            w1 = all_w[:3]
-            w2 = all_w[3:6]
-        elif len(all_w) >= 3:
-            w1 = all_w[:2]
-            w2 = all_w[2:4]
-        else:
-            w1 = all_w[:2] if all_w else ['ताजा', 'समाचार']
-            w2 = ['महत्वपूर्ण', 'अपडेट']
+        # General intelligent extraction: Filter out stopwords & banned filler words
+        all_words = [w for w in re.split(r'[\s,।!?\-—]+', lead) if w]
+        meaningful_words = [w for w in all_words if w not in NEPALI_BANNED_OVERLAY_WORDS and len(w) > 1]
 
+        if len(meaningful_words) >= 4:
+            w1 = meaningful_words[:2]
+            w2 = meaningful_words[2:4]
+        elif len(meaningful_words) == 3:
+            w1 = meaningful_words[:2]
+            w2 = meaningful_words[2:]
+        elif len(meaningful_words) == 2:
+            w1 = [meaningful_words[0]]
+            w2 = [meaningful_words[1]]
+        elif len(all_words) >= 4:
+            w1 = all_words[:2]
+            w2 = all_words[2:4]
+        else:
+            w1 = all_words[:2] if all_words else ['नेपाल', 'अपडेट']
+            w2 = all_words[2:4] if len(all_words) > 2 else ['मुख्य', 'समाचार']
+
+    # Clean hanging words from ends
     while w1 and re.sub(r'[^\u0900-\u097F]', '', w1[-1]) in NEPALI_HANGING_WORDS:
         w1.pop()
     while w2 and re.sub(r'[^\u0900-\u097F]', '', w2[-1]) in NEPALI_HANGING_WORDS:
         w2.pop()
 
     if not w1:
-        w1 = ['ताजा', 'अपडेट']
+        w1 = ['नेपाल', 'अपडेट']
     if not w2:
-        w2 = ['विशेष', 'कभरेज']
+        w2 = ['मुख्य', 'समाचार']
 
-    lines_words = [w1, w2]
-    overlay_lines = [format_nepali_thematic_tokens(lw) for lw in lines_words if lw]
+    overlay = [format_nepali_thematic_tokens(w1), format_nepali_thematic_tokens(w2)]
+    return ensure_nepali_overlay_ellipsis(overlay)
 
-    # Mandate ellipsis (...) at the end of text overlay for all Nepali news pages:
-    overlay_lines = ensure_nepali_overlay_ellipsis(overlay_lines)
-
-    rewritten = analyze_and_rewrite_nepali_caption(raw_caption, channel_name=channel_name, channel_id=channel_id)
-
+def nepali_heuristic_payload(raw_caption: str, channel_name: str = "", channel_id: str = "") -> dict:
+    overlay_lines = extract_meaningful_nepali_overlay(raw_caption)
+    rewritten = clean_and_deduplicate_source_caption(raw_caption, language="ne", channel_name=channel_name, channel_id=channel_id)
     return {
         "overlay_lines": overlay_lines,
-        "rewritten_caption": sanitize_caption(rewritten)
+        "rewritten_caption": sanitize_caption(rewritten, channel_name=channel_name, channel_id=channel_id)
     }
 
 def analyze_and_rewrite_nepali_caption(raw_caption: str, channel_name: str = "", channel_id: str = "") -> str:
-    """
-    Intelligently analyzes the source caption's news domain, primary entities,
-    and factual content, and rewrites it into a 3-paragraph journalistic article.
-    Ensures a distinct, punchy headline title without duplicating the body lead paragraph.
-    """
-    cleaned = re.sub(r'https?:\S+', '', raw_caption).strip()
-    paras = [p.strip() for p in cleaned.split('\n\n') if len(p.strip()) > 15]
-    sentences = [s.strip() for s in re.split(r'[।!?\n]\s*', cleaned) if len(s.strip()) > 10]
-    first_sent = sentences[0] if sentences else cleaned[:100]
-
-    # Strip preamble from lead for headline synthesis
-    clean_lead = first_sent
-    strip_patterns = [
-        r'^संविधान\s+दिवस(?:\s+तथा\s+राष्ट्रिय\s+दिवस)?(?:\s+[०-९0-9]+)?(?:\s+को\s+मूल\s+समारोहलाई\s+सम्बोधन\s+गर्दै)?\s*',
-        r'^[^\s]+मा\s+बस्दै\s+आएका\s+नेपाली\s+[^\s]+\s*(?:ले)?\s*',
-        r'^चितवन\s+राष्ट्रिय\s+निकुञ्जको\s+हात्ती\s+प्रजनन\s+केन्द्र\s+आसपास\s*',
-        r'^नेपाल\s+क्रिकेट\s+संघ\s*\(क्यान\)ले\s*',
-        r'^[^\s]+का\s+अनुसार\s*',
-    ]
-    for pat in strip_patterns:
-        clean_lead = re.sub(pat, '', clean_lead).strip()
-
-    combined = cleaned.lower()
-    if any(k in combined for k in ['बालेन', 'नागरिकता', 'मन्त्रिपरिषद्', 'मन्त्रालय', 'सुशासन', 'प्रशासन', 'राजपत्र', 'सम्बोधन']):
-        domain = 'governance'
-        emoji = '🇳🇵'
-        tags = ['#BalenShah', '#GovernanceNepal', '#PolicyUpdate']
-    elif any(k in combined for k in ['इरान', 'अमेरिका', 'ट्रम्प', 'इजरायल', 'युद्ध', 'होर्मुज', 'नेतन्याहू', 'गाजा', 'तेहरान']):
-        domain = 'geopolitics'
-        emoji = '🌍'
-        tags = ['#Geopolitics', '#WorldNews', '#MiddleEast']
-    elif any(k in combined for k in ['हात्ती', 'निकुञ्ज', 'चितवन', 'वन्यजन्तु', 'गैंडा', 'बाघ', 'रोनाल्डो']):
-        domain = 'wildlife'
-        emoji = '🐘'
-        tags = ['#WildlifeNepal', '#ChitwanNationalPark', '#Conservation']
-    elif any(k in combined for k in ['सुरुङ', 'उद्धार', 'सुरुङ्बाट', 'विपद्', 'बाढी', 'पहिरो', 'दुर्घटना', 'राहत']):
-        domain = 'rescue'
-        emoji = '🚨'
-        tags = ['#NepalRescue', '#EmergencyUpdate', '#DisasterManagement']
-    elif any(k in combined for k in ['विद्युत्', 'ऊर्जा', 'प्राधिकरण', 'निर्यात', 'कुलमान']):
-        domain = 'energy'
-        emoji = '⚡'
-        tags = ['#NepalElectricity', '#EnergySector', '#EconomicUpdate']
-    elif any(k in combined for k in ['क्रिकेट', 'एनपीएल', 'फुटबल', 'क्यान', 'खेल']):
-        domain = 'sports'
-        emoji = '🏏'
-        tags = ['#NepalSports', '#CricketNepal', '#NPL2026']
-    elif any(k in combined for k in ['एयरलाइन्स', 'उडान', 'विमान', 'विमानस्थल']):
-        domain = 'aviation'
-        emoji = '✈️'
-        tags = ['#AviationNews', '#Airlines', '#GlobalUpdate']
-    else:
-        domain = 'news'
-        emoji = '📢'
-        tags = ['#NepalNews', '#CurrentAffairs']
-
-    # 1. Headline Synthesis (Distinct, Punchy, NEVER duplicating Paragraph 1)
-    if 'रोनाल्डो' in clean_lead and ('मृत' in clean_lead or 'हात्ती' in combined):
-        headline_title = "चितवनमा चर्चित जंगली हात्ती ‘रोनाल्डो’ मृत फेला"
-    elif 'बालेन' in clean_lead or 'वालेन्द्र' in clean_lead or 'सम्बोधन' in first_sent:
-        if 'सम्बोधन' in first_sent:
-            headline_title = "प्रधानमन्त्री बालेन शाह: पुरानै शैलीमा मात्र अघि नबढ्ने, डिजिटल सुशासनमा जोड"
-        else:
-            headline_title = "प्रधानमन्त्री बालेन शाहद्वारा नयाँ रणनीतिक योजनाको घोषणा"
-    elif any(k in clean_lead for k in ['क्रिकेट', 'एनपीएल', 'खेल तालिका']):
-        headline_title = "नेपाल प्रिमियर लिग (एनपीएल)को खेल तालिका सार्वजनिक"
-    elif 'विद्युत्' in clean_lead or 'निर्यात' in clean_lead or '५ अर्ब' in clean_lead:
-        headline_title = "नेपालद्वारा एकै महिनामा ५ अर्बभन्दा बढीको विद्युत् निर्यात"
-    elif 'एयरलाइन्स' in clean_lead or 'उत्कृष्ट' in clean_lead:
-        headline_title = "सिंगापुर एयरलाइन्स २०२६ को विश्वकै उत्कृष्ट एयरलाइन्स घोषित"
-    elif 'जर्सी' in clean_lead and 'रोनाल्डो' in clean_lead:
-        headline_title = "क्रिस्टियानो रोनाल्डोले हस्ताक्षर गरेको जर्सी बाढी पीडितको सहयोगार्थ लिलामी"
-    elif 'घले' in clean_lead:
-        headline_title = "शेष घले दम्पतीद्वारा बाढी प्रभावित बालबालिकाका लागि ५७ करोड सहयोग"
-    elif 'नागरिकता' in clean_lead:
-        headline_title = "अब जुनसुकै जिल्लाबाट नागरिकताको प्रतिलिपि लिन सकिने व्यवस्था"
-    elif 'होर्मुज' in clean_lead:
-        headline_title = "इरानको चेतावनी: ट्रम्प र नेतन्याहू सत्तामा रहेसम्म होर्मुज जलडमरूमध्य नखुल्ने"
-    else:
-        # Clean headline from stripped lead (max 65 chars, no trailing danda)
-        hl_candidate = clean_lead.replace('—', ' - ').rstrip('।').strip()
-        if len(hl_candidate) > 75:
-            # Cut at word boundary
-            hl_candidate = hl_candidate[:75].rsplit(' ', 1)[0]
-        headline_title = hl_candidate
-
-    headline = f"{emoji} {headline_title}"
-
-    # 2. Paragraph 1: Rich Breaking Lead Paragraph (full sentence context)
-    lead_para = first_sent.rstrip('।') + "।"
-
-    # 3. Paragraph 2: In-Depth Facts & Background
-    if len(paras) > 1:
-        body_para = paras[1].rstrip('।') + "।"
-    elif len(sentences) > 2:
-        body_para = " ".join(sentences[1:3]).rstrip('।') + "।"
-    else:
-        body_para = "यस विषयमा सम्बन्धित निकाय तथा सरोकारवालाहरूले आवश्यक अध्ययन र थप प्रक्रिया द्रुत गतिमा अगाडि बढाएका छन्।"
-
-    # 4. Paragraph 3: Public Significance & Outlook
-    if len(paras) > 2:
-        concl_para = paras[2].rstrip('।') + "।"
-    elif len(sentences) > 3:
-        concl_para = " ".join(sentences[3:5]).rstrip('।') + "।"
-    else:
-        concl_para = "यस विकासक्रमले दीर्घकालीन रूपमा सकारात्मक प्रभाव पार्ने र सार्वजनिक क्षेत्रमा नयाँ उत्साह थप्ने अपेक्षा गरिएको छ।"
-
-    # Channel-specific Branding Hashtags
-    branding_clean = re.sub(r'[^a-zA-Z0-9\u0900-\u097F]', '', str(channel_name or channel_id or ""))
-    ch_tag = f"#{branding_clean}" if branding_clean else "#NepalSpeaks"
-    hashtags = " ".join([ch_tag, '#NepaliNews', '#NepalUpdates'] + tags)
-
-    return f"{headline}\n\n{lead_para}\n\n{body_para}\n\n{concl_para}\n\n{hashtags}"
+    """Extracts authentic source caption cleanly, preventing duplicate lines and fake boilerplate."""
+    return clean_and_deduplicate_source_caption(raw_caption, language="ne", channel_name=channel_name, channel_id=channel_id)
 
 def _is_capitalized_in_raw(word: str, raw_sentence: str) -> bool:
     clean = word.strip('.,;:!?\'"()[]')
@@ -549,140 +570,8 @@ def split_clean_sentences(text: str) -> list:
     return [s.replace('_DOT_', '.') for s in raw_sents]
 
 def analyze_and_rewrite_english_caption(raw_caption: str, channel_name: str = "", channel_id: str = "") -> str:
-    """
-    Intelligently analyzes the source caption's factual substance, entities,
-    events, and real context, and crafts an informative 3-paragraph news report.
-    Produces channel-specific angles and branding for multi-page syndication.
-    """
-    sentences = split_clean_sentences(raw_caption)
-    if not sentences:
-        cleaned_raw = re.sub(r'https?:\S+', '', raw_caption).strip()
-        sentences = [cleaned_raw[:150]] if cleaned_raw else ["Major entertainment update confirmed."]
-
-    first_sent = sentences[0].rstrip('.,;:')
-
-    # Extract headline title from first sentence
-    clean_first = re.sub(r'^(?:BREAKING|OFFICIAL|UPDATE|EXCLUSIVE|WATCH|NEW|JUST IN):\s*', '', first_sent, flags=re.IGNORECASE).strip()
-
-    # Extract headline title from first sentence
-    headline_title = clean_factual_clause(clean_first).upper()
-    if not headline_title or len(headline_title) < 6:
-        headline_title = "ENTERTAINMENT SPOTLIGHT UPDATE"
-
-    # Avoid lowercasing capitalized titles or acronyms
-    if len(clean_first) > 1 and not clean_first[:4].isupper():
-        lead_body = clean_first[0].lower() + clean_first[1:]
-    else:
-        lead_body = clean_first
-
-    # Channel differentiation seed
-    var_seed = str(channel_id or channel_name or "daily_netflix").strip().lower()
-    var_idx = (abs(hash(var_seed)) % 3)
-
-    clean_badge = "".join(w.capitalize() for w in (channel_name or channel_id or "DailyNetflix").replace("_", " ").split())
-    if not clean_badge:
-        clean_badge = "DailyNetflix"
-
-    # Identify core topic / domain
-    text_lower = raw_caption.lower()
-    if any(k in text_lower for k in ['cancelled', 'cancel', 'conclude', 'ends', 'ending', 'final season']):
-        lead_prefix_opts = [
-            f"Breaking industry news confirms that {lead_body}.",
-            f"Official network reports have confirmed the final chapter for the series, as {lead_body}.",
-            f"Streaming updates confirm a major series shift today: {clean_first}."
-        ]
-        impact_opts = [
-            "The announcement brings a definitive conclusion to the storyline, marking an emotional transition for loyal viewers and the creative team who guided the project across its multi-season run.",
-            "Production insiders note that the decision allows the franchise to stand as a complete chapter, while fans have already begun sharing tributes and favorite moments across social media platforms.",
-            "The project leaves behind a memorable run in the streaming landscape, with all available seasons remaining accessible for worldwide subscribers."
-        ]
-    elif any(k in text_lower for k in ['no. 1', 'number 1', 'record', 'topped', 'hit the top', 'chart-topping', 'most watched', 'highest']):
-        lead_prefix_opts = [
-            f"Streaming metrics and official global charts confirm that {lead_body}.",
-            f"In a massive streaming milestone, {lead_body}.",
-            f"Entertainment charts are buzzing today as {clean_first}."
-        ]
-        impact_opts = [
-            "The surging viewership cements the release as one of the platform's standout success stories this season, driven by strong word-of-mouth momentum and viral social discussions.",
-            "Industry analysts point to the title's compelling storytelling and stellar performances as primary drivers behind its rapid ascent to the pinnacle of international entertainment charts.",
-            "With massive viewing hours continuing to climb, the milestone reinforces the enduring audience demand for high-caliber storytelling in this genre."
-        ]
-    elif any(k in text_lower for k in ['renewed', 'season 2', 'season 3', 'season 4', 'season 5', 'greenlit', 'sequel']):
-        lead_prefix_opts = [
-            f"Exciting news for viewers as official studio reports confirm that {lead_body}.",
-            f"Following immense audience enthusiasm, {lead_body}.",
-            f"The franchise is officially expanding its universe today: {clean_first}."
-        ]
-        impact_opts = [
-            "Showrunners and executive producers are already mapping out the next creative arc, promising expanded character developments and higher stakes for the returning installment.",
-            "The renewal confirms the network's strong confidence in the creative vision, ensuring that unresolved plot threads will be explored in depth in upcoming episodes.",
-            "Pre-production scheduling and writing sessions are progressing, with additional casting notices and filming timetables expected as development moves forward."
-        ]
-    elif any(k in text_lower for k in ['trailer', 'teaser', 'first look', 'sneak peek', 'poster']):
-        lead_prefix_opts = [
-            f"Official promotional materials and studio previews have arrived: {clean_first}.",
-            f"Fans have received a thrilling first glimpse as {lead_body}.",
-            f"Anticipation is reaching a fever pitch today as {clean_first}."
-        ]
-        impact_opts = [
-            "The new preview offers key clues regarding character motivations, visual tone, and high-octane plot revelations that audiences can anticipate upon full premiere.",
-            "Online reactions to the reveal have been overwhelmingly enthusiastic, sparking active fan theories and community breakdowns across social platforms.",
-            "The footage sets the stage for what promises to be one of the most talked-about releases on the upcoming entertainment calendar."
-        ]
-    elif any(k in text_lower for k in ['album', 'tour', 'song', 'concert', 'music', 'residency', 'singing', 'singer']):
-        lead_prefix_opts = [
-            f"Music headlines are celebrating today as {clean_first}.",
-            f"In a sensational performance milestone, {lead_body}.",
-            f"Music industry updates confirm an electric development: {clean_first}."
-        ]
-        impact_opts = [
-            "The performance and release continue to resonate with listeners worldwide, celebrating artistic longevity, dynamic stagecraft, and deep musical connection.",
-            "Concertgoers and critics alike have praised the visionary production quality and sonic range, underscoring the artist's enduring cultural impact.",
-            "With massive ticket demand and streaming numbers holding strong, this chapter marks another indelible triumph in modern music history."
-        ]
-    else:
-        lead_prefix_opts = [
-            f"Official entertainment reports have confirmed that {lead_body}.",
-            f"In a noteworthy development across the industry, {lead_body}.",
-            f"Entertainment updates are spotlighting a significant story today: {clean_first}."
-        ]
-        impact_opts = [
-            "The news highlights significant creative momentum across the entertainment landscape, capturing widespread audience curiosity and discussion.",
-            "Industry observers note that this milestone represents an exciting step forward, showcasing the dedication of the talent and creative forces involved.",
-            "Audiences and industry followers will be watching closely as the release continues to unfold across international streaming and media networks."
-        ]
-
-    lead_para = lead_prefix_opts[var_idx % len(lead_prefix_opts)]
-
-    # Paragraph 2: Extract real factual context from remaining sentences
-    if len(sentences) > 1:
-        context_body = " ".join(sentences[1:]).strip()
-        body_para = f"According to verified production details, {context_body}"
-    else:
-        body_para = "The details behind the announcement demonstrate significant creative investment and narrative ambition, designed to deliver a memorable experience that resonates with dedicated audiences."
-
-    concl_para = impact_opts[var_idx % len(impact_opts)]
-
-    # Generate smart entity hashtags
-    tags = [f"#{clean_badge}"]
-    for entity in re.findall(r'\b([A-Z][a-z]{3,}(?:\s+[A-Z][a-z]{3,})?)\b', first_sent):
-        tag_cand = "#" + "".join(entity.split())
-        if tag_cand not in tags and len(tags) < 5:
-            tags.append(tag_cand)
-
-    for fallback_tag in ['#StreamingNews', '#Entertainment', '#HollywoodUpdates', '#TVSeries']:
-        if fallback_tag not in tags and len(tags) < 6:
-            tags.append(fallback_tag)
-
-    hashtags_str = " ".join(tags)
-
-    return (
-        f"🎬 {headline_title}\n\n"
-        f"{lead_para}\n\n"
-        f"{body_para}\n\n"
-        f"{concl_para}\n\n"
-        f"{hashtags_str}"
-    )
+    """Extracts authentic source caption cleanly, preventing duplicate lines and fake boilerplate."""
+    return clean_and_deduplicate_source_caption(raw_caption, language="en", channel_name=channel_name, channel_id=channel_id)
 
 def smart_heuristic_headline(raw_caption: str, language: str = "en", channel_name: str = "", channel_id: str = "") -> dict:
     """Extracts factual news subject and synthesizes an extensive, deeply detailed multi-paragraph news report."""
@@ -768,34 +657,20 @@ def smart_heuristic_headline(raw_caption: str, language: str = "en", channel_nam
 
     return {
         "overlay_lines": overlay_lines,
-        "rewritten_caption": sanitize_caption(rewritten)
+        "rewritten_caption": sanitize_caption(rewritten, channel_name=channel_name, channel_id=channel_id)
     }
 
-def sanitize_caption(caption: str) -> str:
+def sanitize_caption(caption: str, channel_name: str = "", channel_id: str = "") -> str:
     """
-    Strips out robotic boilerplate headers and disclaimers:
-    - 'INDUSTRY REPORTING & UPDATES' (with or without emojis)
-    - 'Verified production and distribution documentation have been logged for this release.'
+    Universally sanitizes social media captions:
+    - Strips robotic boilerplate headers ('INDUSTRY REPORTING & UPDATES', etc.)
+    - Removes hallucinated filler paragraphs
+    - Strictly prevents repeating the same line or sentence twice
+    - Preserves authentic text from the original source with clean channel hashtags
     """
     if not caption:
         return ""
-
-    lines = caption.splitlines()
-    filtered = []
-    for line in lines:
-        stripped = line.strip()
-        # Remove any variation of INDUSTRY REPORTING & UPDATES
-        if re.search(r'INDUSTRY\s+REPORTING\s*&?\s*UPDATES', stripped, re.IGNORECASE):
-            continue
-        # Remove verification documentation boilerplate
-        if re.search(r'Verified\s+production\s+and\s+distribution\s+documentation', stripped, re.IGNORECASE):
-            continue
-        filtered.append(line)
-
-    cleaned = "\n".join(filtered).strip()
-    # Normalize multiple newlines
-    cleaned = re.sub(r'\n{3,}', '\n\n', cleaned)
-    return cleaned
+    return clean_and_deduplicate_source_caption(caption, channel_name=channel_name, channel_id=channel_id)
 
 def generate_social_payload(raw_caption: str, language: str = "en", channel_name: str = "", channel_id: str = "") -> dict:
     effective_lang = "ne" if language == "ne" or is_devanagari_text(raw_caption) else (language or "en")
@@ -869,7 +744,7 @@ def generate_social_payload(raw_caption: str, language: str = "en", channel_name
 
     # Universal Sanitization of Caption
     if isinstance(payload, dict) and "rewritten_caption" in payload:
-        payload["rewritten_caption"] = sanitize_caption(payload["rewritten_caption"])
+        payload["rewritten_caption"] = sanitize_caption(payload["rewritten_caption"], channel_name=channel_name, channel_id=channel_id)
 
     # Guarantee ellipsis (...) on Nepali overlays ending
     if effective_lang == "ne" and isinstance(payload, dict) and "overlay_lines" in payload:
