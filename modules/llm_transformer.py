@@ -308,77 +308,25 @@ def extract_meaningful_nepali_overlay(raw_caption: str) -> list:
     sentences = [s.strip() for s in re.split(r'[।!?\n]+', lead) if len(s.strip()) > 5]
     first_sent = sentences[0] if sentences else lead[:100]
 
-    # Check for Deity / Spiritual Greeting post
-    for pat, line1_str, line2_str in DEITY_PATTERNS:
-        if re.search(pat, cleaned):
-            w1 = line1_str.split()
-            w2 = line2_str.split()
-            overlay = [format_nepali_thematic_tokens(w1), format_nepali_thematic_tokens(w2)]
-            return ensure_nepali_overlay_ellipsis(overlay)
+    # General intelligent extraction: Strictly from the actual source caption headline
+    all_words = [w.strip("‘'\"“”") for w in re.split(r'[\s,।!?\-—:]+', first_sent or lead) if w.strip("‘'\"“”")]
+    meaningful_words = [w for w in all_words if w not in NEPALI_BANNED_OVERLAY_WORDS and len(w) > 1]
 
-    # Check curated story matches
-    combined = cleaned.lower()
-    if 'रोनाल्डो' in lead and ('मृत' in lead or 'हात्ती' in lead or 'निकुञ्ज' in combined):
-        w1 = ['चर्चित', 'भाले', 'हात्ती']
-        w2 = ['‘रोनाल्डो’', 'मृत', 'फेला']
-    elif 'बालेन' in lead or 'वालेन्द्र' in lead or 'सम्बोधन' in first_sent:
-        if 'भाषण' in lead or 'जित्यो' in lead or 'सम्बोधन' in first_sent:
-            w1 = ['बालेनको', 'सम्बोधन']
-            w2 = ['जित्यो', 'लाखौँको', 'मन']
-        elif 'डोजर' in lead or 'अवैध' in lead:
-            w1 = ['बालेनको', 'कडा', 'कदम']
-            w2 = ['अवैध', 'संरचनामा', 'डोजर']
-        else:
-            w1 = ['प्रधानमन्त्री', 'बालेन', 'शाह']
-            w2 = ['सुशासनको', 'नयाँ', 'योजना']
-    elif any(k in lead for k in ['क्रिकेट', 'एनपीएल', 'खेल तालिका']):
-        w1 = ['एनपीएल', 'तेस्रो', 'संस्करण']
-        w2 = ['खेल', 'तालिका', 'सार्वजनिक']
-    elif 'विद्युत्' in lead or 'निर्यात' in lead or '५ अर्ब' in lead:
-        w1 = ['एकै', 'महिनामा', 'नेपालले']
-        w2 = ['५', 'अर्बको', 'विद्युत्', 'निर्यात']
-    elif 'एयरलाइन्स' in lead or 'उत्कृष्ट' in lead:
-        w1 = ['सिंगापुर', 'एयरलाइन्स']
-        w2 = ['विश्वकै', 'उत्कृष्ट', 'घोषित']
-    elif 'जर्सी' in lead and 'रोनाल्डो' in lead:
-        w1 = ['क्रिस्टियानो', 'रोनाल्डोको', 'जर्सी']
-        w2 = ['बाढी', 'पीडितलाई', 'सहयोग']
-    elif 'बाढी' in lead and ('सहयोग' in lead or 'गुमाएकी' in lead or 'घले' in lead):
-        if 'घले' in lead:
-            w1 = ['शेष', 'घले', 'दम्पती']
-            w2 = ['५७', 'करोड', 'सहयोग']
-        else:
-            w1 = ['भोटेकोशी', 'बाढी', 'पीडित']
-            w2 = ['सहयोगका', 'लागि', 'हातहरू']
-    elif 'होर्मुज' in lead or 'इरान' in lead:
-        w1 = ['इरानको', 'कडा', 'चेतावनी']
-        w2 = ['होर्मुज', 'जलडमरूमध्य', 'नखोल्ने']
-    elif 'नागरिकता' in lead:
-        w1 = ['नागरिकताको', 'प्रतिलिपि']
-        w2 = ['जुनसुकै', 'जिल्लाबाट', 'लिन', 'सकिने']
-    elif 'टनेल' in lead or 'शव फेला' in lead:
-        w1 = ['त्रिशूली-१', 'जलविद्युत्', 'टनेल']
-        w2 = ['थप', '११', 'शव', 'फेला']
+    if len(meaningful_words) >= 4:
+        w1 = meaningful_words[:2]
+        w2 = meaningful_words[2:4]
+    elif len(meaningful_words) == 3:
+        w1 = meaningful_words[:2]
+        w2 = meaningful_words[2:]
+    elif len(meaningful_words) == 2:
+        w1 = [meaningful_words[0]]
+        w2 = [meaningful_words[1]]
+    elif len(all_words) >= 4:
+        w1 = all_words[:2]
+        w2 = all_words[2:4]
     else:
-        # General intelligent extraction: Filter out stopwords & banned filler words
-        all_words = [w for w in re.split(r'[\s,।!?\-—]+', lead) if w]
-        meaningful_words = [w for w in all_words if w not in NEPALI_BANNED_OVERLAY_WORDS and len(w) > 1]
-
-        if len(meaningful_words) >= 4:
-            w1 = meaningful_words[:2]
-            w2 = meaningful_words[2:4]
-        elif len(meaningful_words) == 3:
-            w1 = meaningful_words[:2]
-            w2 = meaningful_words[2:]
-        elif len(meaningful_words) == 2:
-            w1 = [meaningful_words[0]]
-            w2 = [meaningful_words[1]]
-        elif len(all_words) >= 4:
-            w1 = all_words[:2]
-            w2 = all_words[2:4]
-        else:
-            w1 = all_words[:2] if all_words else ['नेपाल', 'अपडेट']
-            w2 = all_words[2:4] if len(all_words) > 2 else ['मुख्य', 'समाचार']
+        w1 = all_words[:2] if all_words else ['नेपाल', 'अपडेट']
+        w2 = all_words[2:4] if len(all_words) > 2 else ['मुख्य', 'समाचार']
 
     # Clean hanging words from ends
     while w1 and re.sub(r'[^\u0900-\u097F]', '', w1[-1]) in NEPALI_HANGING_WORDS:
@@ -586,74 +534,8 @@ def smart_heuristic_headline(raw_caption: str, language: str = "en", channel_nam
     first_sent = sentences[0] if sentences else cleaned[:120]
     upper = cleaned.upper()
 
-    if "SETH MACFARLANE" in upper and ("FLIGHT" in upper or "SEPTEMBER 11" in upper or "9/11" in upper or "PLANE" in upper):
-        overlay_lines = [
-            [{"text": "SETH MACFARLANE'S ", "type": "white"}, {"text": "HAUNTING 9/11", "type": "highlight"}],
-            [{"text": "NEAR-MISS ON ", "type": "white"}, {"text": "FLIGHT 11", "type": "highlight"}],
-            [{"text": "MISSED BOARDING BY ", "type": "white"}, {"text": "MINUTES", "type": "highlight"}]
-        ]
-        rewritten = (
-            "✈️ SETH MACFARLANE RECALLS HIS HAUNTING SEPTEMBER 11 NEAR MISS\n\n"
-            "On the morning of September 11, 2001, 'Family Guy' creator Seth MacFarlane was scheduled to board American Airlines Flight 11 from Boston Logan International Airport to Los Angeles—the very aircraft that would tragically crash into the North Tower of the World Trade Center. He missed the scheduled departure by mere minutes.\n\n"
-            "MacFarlane had been out drinking with colleagues the previous evening and overslept his morning alarm. Adding to the delay, a scheduling error from his travel agency had misstated his flight's exact departure time as 8:15 a.m. instead of 7:45 a.m. When he arrived at the gate, the boarding gate was already closed, leaving him behind in the terminal as the flight departed.\n\n"
-            "Just 45 minutes later at 8:46 a.m., Flight 11 was hijacked and struck the North Tower. MacFarlane later reflected that while the experience was surreal, he viewed it strictly as a terrifying stroke of sheer coincidence and a sobering reminder of life's fragility.\n\n"
-            "#SethMacFarlane #FamilyGuy #History #EntertainmentNews #Television"
-        )
-    elif "OFF CAMPUS" in upper and ("SEASON 2" in upper or "WRAPPED" in upper or "FILMING" in upper or "BRIAR" in upper):
-        overlay_lines = [
-            [{"text": "PRIME VIDEO'S ", "type": "white"}, {"text": "'OFF CAMPUS'", "type": "highlight"}],
-            [{"text": "SEASON 2 OFFICIALLY ", "type": "white"}, {"text": "WRAPS FILMING", "type": "highlight"}],
-            [{"text": "BRIAR U ROMANCE ", "type": "white"}, {"text": "HEADS TO RELEASE", "type": "highlight"}]
-        ]
-        rewritten = (
-            "🎬 PRODUCTION WRAP: OFF CAMPUS SEASON 2 CONCLUDES FILMING\n\n"
-            "Filming has officially wrapped on Season 2 of Prime Video's hit collegiate romance adaptation 'Off Campus', completing summer production across Vancouver and bringing the Briar University hockey drama one major step closer to its worldwide premiere.\n\n"
-            "Following the romance between Hannah and Garrett in Season 1, the second chapter shifts its central spotlight to Dean Di Laurentis and Allie Hayes, portrayed by Mika Abdalla and Stephen Kalyn. The season expands Elle Kennedy's bestselling book series while keeping original fan favorites integrated into the evolving ensemble storylines.\n\n"
-            "With cameras down and post-production underway, streaming release details and official first-look teaser trailers are anticipated in the coming months on Prime Video.\n\n"
-            "#OffCampus #PrimeVideo #ElleKennedy #BookTok #TelevisionNews"
-        )
-    elif "DOLLY PARTON" in upper and "EMMY" in upper:
-        overlay_lines = [
-            [{"text": "DOLLY PARTON TO RECEIVE ", "type": "white"}, {"text": "HONORARY TRIBUTE", "type": "highlight"}],
-            [{"text": "2026 TELEVISION ACADEMY ", "type": "white"}, {"text": "HONORS", "type": "highlight"}],
-            [{"text": "CELEBRATING SEVEN DECADES ", "type": "white"}, {"text": "OF LEGACY", "type": "highlight"}]
-        ]
-        rewritten = (
-            "🌟 TELEVISION ACADEMY HONORS DOLLY PARTON\n\n"
-            "The Television Academy has officially announced a dedicated tribute honoring country icon Dolly Parton at the 78th Emmy Awards ceremony. The tribute will commemorate her historic seven-decade career across entertainment, music, and philanthropy.\n\n"
-            "Producers confirmed that the special broadcast will include archival retrospectives and musical performances spotlighting her legendary contributions to both network television and motion pictures, including her Emmy Award-winning production achievements.\n\n"
-            "The broadcast will air live on NBC and Peacock, honoring television pioneers and celebrating Parton's enduring cultural legacy.\n\n"
-            "#DollyParton #EmmyAwards #TelevisionAcademy #CountryMusic #EntertainmentNews"
-        )
-    elif "RANSOM CANYON" in upper and ("CANCEL" in upper or "ENDS" in upper):
-        overlay_lines = [
-            [{"text": "NETFLIX DRAMA ", "type": "white"}, {"text": "'RANSOM CANYON'", "type": "highlight"}],
-            [{"text": "CONCLUDES FOLLOWING ", "type": "white"}, {"text": "SEASON TWO", "type": "highlight"}],
-            [{"text": "WESTERN ROMANCE SERIES ", "type": "white"}, {"text": "OFFICIALLY ENDS", "type": "highlight"}]
-        ]
-        rewritten = (
-            "📺 SERIES UPDATE: RANSOM CANYON CONCLUDES AT NETFLIX\n\n"
-            "Netflix has officially confirmed that romantic contemporary western drama 'Ransom Canyon' will conclude with its upcoming second season. Production executives noted that the upcoming episodes will serve as the final chapter for the Texas Hill Country drama.\n\n"
-            "The series, based on the novels by Jodi Thomas, followed interconnected family lineages and ranching rivalries on the Double K Ranch. Showrunners confirmed that Season 2 was developed to provide narrative resolution for core characters.\n\n"
-            "The final season will stream globally on Netflix, bringing the ranching saga to its planned emotional conclusion.\n\n"
-            "#RansomCanyon #NetflixOriginals #DramaSeries #TelevisionNews #WesternDrama"
-        )
-    elif "LUPIN" in upper:
-        overlay_lines = [
-            [{"text": "OMAR SY RETURNS IN ", "type": "white"}, {"text": "'LUPIN' PART 4", "type": "highlight"}],
-            [{"text": "PRODUCTION UNDERWAY ON ", "type": "white"}, {"text": "NEW SEASON", "type": "highlight"}],
-            [{"text": "PARISIAN THRILLER CONTINUES ", "type": "white"}, {"text": "ON NETFLIX", "type": "highlight"}]
-        ]
-        rewritten = (
-            "🎩 PRODUCTION UPDATE: LUPIN PART 4 UNDERWAY\n\n"
-            "Production is officially progressing on the fourth installment of the global hit French thriller 'Lupin', featuring Omar Sy as master gentleman thief Assane Diop.\n\n"
-            "The upcoming chapter directly addresses the dramatic cliffhanger conclusion of Part 3, taking Diop's high-stakes heists across new international European filming locations while delving deeper into his family's past.\n\n"
-            "Part 4 will premiere exclusively on Netflix, continuing one of the platform's most acclaimed and watched non-English original series.\n\n"
-            "#Lupin #OmarSy #NetflixSeries #StreamingUpdates #FrenchCinema"
-        )
-    else:
-        overlay_lines = format_factual_overlay(first_sent)
-        rewritten = analyze_and_rewrite_english_caption(raw_caption, channel_name=channel_name, channel_id=channel_id)
+    overlay_lines = format_factual_overlay(first_sent)
+    rewritten = analyze_and_rewrite_english_caption(raw_caption, channel_name=channel_name, channel_id=channel_id)
 
     return {
         "overlay_lines": overlay_lines,
@@ -674,6 +556,12 @@ def sanitize_caption(caption: str, channel_name: str = "", channel_id: str = "")
 
 def generate_social_payload(raw_caption: str, language: str = "en", channel_name: str = "", channel_id: str = "") -> dict:
     effective_lang = "ne" if language == "ne" or is_devanagari_text(raw_caption) else (language or "en")
+
+    # For Nepal Speaks / Nepali channels, strictly follow user requirement:
+    # Use source's exact caption & exact overlay lines from that caption to match 100%
+    if effective_lang == "ne" or channel_id == "nepal_speaks" or "nepal" in str(channel_name).lower():
+        return nepali_heuristic_payload(raw_caption, channel_name=channel_name, channel_id=channel_id)
+
     prompt = build_system_prompt(effective_lang, channel_name=channel_name)
     payload = None
 

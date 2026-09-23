@@ -118,8 +118,12 @@ def load_state():
     return defaults
 
 def save_state(state):
-    with open(STATE_FILE, "w", encoding="utf-8") as f:
+    temp_path = STATE_FILE + ".tmp"
+    with open(temp_path, "w", encoding="utf-8") as f:
         json.dump(state, f, indent=2)
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(temp_path, STATE_FILE)
 
 def run_pipeline(mode="run", target_channel="all"):
     if not mode or str(mode).strip().lower() in ["true", "none", ""]:
@@ -242,8 +246,8 @@ def run_pipeline(mode="run", target_channel="all"):
             candidate_posts = fetch_source_posts(
                 page_id=source_id,
                 access_token=token,
-                processed_ids=[],  # scan raw to evaluate 24-hr status
-                limit=15,
+                processed_ids=list(channel_processed_ids),
+                limit=60,
                 source_urls=source_pages
             )
             print(f" [INGEST] Scanned {len(candidate_posts)} recent post(s) across {len(source_pages)} source page(s)")
@@ -281,7 +285,7 @@ def run_pipeline(mode="run", target_channel="all"):
         cutoff_72h  = now_current - 259200      # 72 hours ago
 
         # 2. FRESHNESS TIERS — fresh first, older as fallback, web as last resort
-        tier1_posts = [p for p in candidate_posts if p.get("created_time", 0) >= cutoff_24h]   # <24h FB posts
+        tier1_posts = [p for p in candidate_posts if p.get("created_time", 0) >= cutoff_24h or p.get("created_time", 0) == 0]   # <24h FB posts (or live feed posts without explicit timestamp)
         tier2_posts = [p for p in candidate_posts if cutoff_72h <= p.get("created_time", 0) < cutoff_24h]  # 24-72h FB posts
 
         # 3. IDENTIFY UNPOSTED UNIQUE POSTS in each tier for THIS channel
@@ -331,7 +335,7 @@ def run_pipeline(mode="run", target_channel="all"):
                 print(f" [WEB FALLBACK] No suitable unposted web articles found either.")
 
         # Build final priority-ordered candidate list: fresh FB first → older FB → web (strictly excluded for Nepali channels)
-        unposted_recent = unposted_t1 or unposted_t2 or (web_posts if not is_nepali_ch else [])
+        unposted_recent = unposted_t1 + unposted_t2 + (web_posts if not is_nepali_ch else [])
 
         if not unposted_t1 and not unposted_t2 and (not web_posts or is_nepali_ch):
             print(f" [UP TO DATE] All content already published or no new content available for '{channel_name}'.")
@@ -368,8 +372,9 @@ def run_pipeline(mode="run", target_channel="all"):
             print(f"                Waiting {remaining_mins}m before next post. Automated pipeline will post on next cycle.")
             continue
 
-        # 5. TAKE EXACTLY 1 VALID UNPOSTED RECENT PHOTO POST FOR THIS 1-HOUR CYCLE (chronological order)
+        # 5. TAKE UP TO max_posts_per_run VALID UNPOSTED RECENT PHOTO POSTS FOR THIS CYCLE
         posted_successfully = False
+        posts_published_this_run = 0
         candidates_to_try = unposted_recent
         if is_nepali_ch:
             candidates_to_try = [p for p in candidates_to_try if p.get("source_tag") != "Internet Web Scraper"]
@@ -386,40 +391,24 @@ def run_pipeline(mode="run", target_channel="all"):
                     post_cap = post.get("caption", "")
                     if not is_devanagari_text(post_cap):
                         print(f"     [LANGUAGE REJECT] Channel '{channel_name}' requires 100% Nepali content. Skipping non-Nepali post {post_id}.")
-                        for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
-                            if id_val and id_val not in processed_ids:
-                                processed_ids.append(id_val)
-                                all_published_ids.add(id_val)
                         continue
 
                 # 1. Image Download & Smart Cleaner (strictly below center, faces & subjects 100% protected)
                 image_url = post.get("image_url")
                 if not image_url:
                     print(f"     [SKIP] Post {post_id} has no image URL. Skipping.")
-                    for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
-                        if id_val and id_val not in processed_ids:
-                            processed_ids.append(id_val)
-                            all_published_ids.add(id_val)
                     continue
 
                 print("     [1/4] Downloading high-resolution source image...")
                 raw_img = download_image(image_url)
                 if raw_img is None:
-                    print(f"     [SKIP] Post {post_id} returned non-image or invalid media content. Marking processed and checking next candidate.")
-                    for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
-                        if id_val and id_val not in processed_ids:
-                            processed_ids.append(id_val)
-                            all_published_ids.add(id_val)
+                    print(f"     [SKIP] Post {post_id} returned non-image or invalid media content. Will retry on a later scan; checking next candidate.")
                     continue
 
-                # STRICT HD QUALITY GATE: Reject any low-resolution, blurry, or pixelated images
-                is_valid_quality, quality_msg = validate_image_quality(raw_img, min_dim=720, min_sharpness=160.0)
+                # STRICT HD QUALITY GATE: Reject very low-resolution, blank, or excessively blurry images
+                is_valid_quality, quality_msg = validate_image_quality(raw_img, min_dim=500, min_sharpness=80.0)
                 if not is_valid_quality:
                     print(f"     [QUALITY REJECT] Post {post_id} rejected: {quality_msg}. Skipping to guarantee zero blur and zero pixelation.")
-                    for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
-                        if id_val and id_val not in processed_ids:
-                            processed_ids.append(id_val)
-                            all_published_ids.add(id_val)
                     continue
 
                 # STRICT CHANNEL VISUAL IMAGE DEDUPLICATION:
@@ -427,10 +416,6 @@ def run_pipeline(mode="run", target_channel="all"):
                 img_dhash = compute_image_dhash(raw_img)
                 if img_dhash and is_duplicate_dhash(img_dhash, channel_image_hashes):
                     print(f"     [CHANNEL IMAGE DEDUP] Image visually matches an image already published to {channel_id} (dHash: {img_dhash}). Skipping duplicate.")
-                    for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
-                        if id_val and id_val not in processed_ids:
-                            processed_ids.append(id_val)
-                            channel_processed_ids.add(id_val)
                     continue
 
                 img_h, img_w = raw_img.shape[:2]
@@ -467,11 +452,6 @@ def run_pipeline(mode="run", target_channel="all"):
                     overlay_all = "".join(t.get("text", "") for line in ai_data.get("overlay_lines", []) for t in line)
                     if not is_devanagari_text(overlay_all):
                         print(f"     [LANGUAGE REJECT] Generated non-Devanagari overlay text for '{channel_name}'. Skipping post {post_id}.")
-                        for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
-                            if id_val and id_val not in processed_ids:
-                                processed_ids.append(id_val)
-                                channel_processed_ids.add(id_val)
-                                all_published_ids.add(id_val)
                         continue
 
                 # 4. Composite 4:5 Poster
@@ -484,7 +464,7 @@ def run_pipeline(mode="run", target_channel="all"):
                     dest_page_name=dest_name,
                     output_path=rendered_file,
                     post_id=post_id,
-                    text_position=detected_text_pos
+                    text_position="bottom"
                 )
                 print(f"           Poster created successfully: 1080x1350px")
                 try:
@@ -494,14 +474,20 @@ def run_pipeline(mode="run", target_channel="all"):
                     pass
 
                 # 5. Live Publish (INSTANT POST ONLY)
-                if mode == "dry_run":
+                if mode in ("dry_run", "health_check"):
                     print(f"     [DRY RUN] Skipping live post to Facebook ID {dest_id}. State preserved.")
                     posted_successfully = True
-                    break
+                    posts_published_this_run += 1
+                    if posts_published_this_run >= max_posts or channel_stat["count"] >= channel_max_daily:
+                        break
+                    continue
                 elif mode == "test":
                     print(f"     [TEST MODE] Live post skipped for {channel_id}. State preserved.")
                     posted_successfully = True
-                    break
+                    posts_published_this_run += 1
+                    if posts_published_this_run >= max_posts or channel_stat["count"] >= channel_max_daily:
+                        break
+                    continue
 
                 print(f"     [5/5] Publishing INSTANT photo post to Facebook (Page ID: {dest_id})...")
                 try:
@@ -542,7 +528,7 @@ def run_pipeline(mode="run", target_channel="all"):
 
                 channel_stat["count"] += 1
                 channel_stat["timestamps"].append(datetime.now(timezone.utc).isoformat())
-                channel_stat["last_published_time"] = now_current
+                channel_stat["last_published_time"] = int(time.time())
 
                 # Persist state with per-channel tracking & cross-channel syndication support
                 channel_image_hashes_map[channel_id] = list(channel_image_hashes)
@@ -560,7 +546,12 @@ def run_pipeline(mode="run", target_channel="all"):
                 save_state(state)
 
                 posted_successfully = True
-                break  # Exactly 1 post per hour cycle completed!
+                posts_published_this_run += 1
+                if posts_published_this_run >= max_posts or channel_stat["count"] >= channel_max_daily:
+                    print(f"     [CYCLE TARGET REACHED] Published {posts_published_this_run} / {max_posts} configured post(s) for this run (Daily count: {channel_stat['count']}/{channel_max_daily}).")
+                    break
+                print(f"     [MULTI-POST BATCH] Successfully published {posts_published_this_run}/{max_posts}. Continuing to next candidate in 5s...")
+                time.sleep(5)
 
             except Exception as err:
                 tb_str = traceback.format_exc()
@@ -580,7 +571,8 @@ def run_pipeline(mode="run", target_channel="all"):
         daily_stats[channel_id] = channel_stat
         state["processed_ids"] = processed_ids_map
         state["daily_stats"] = daily_stats
-        save_state(state)
+        if mode not in ("dry_run", "test", "health_check"):
+            save_state(state)
     print("\n===================================================================")
     print("  Hourly Pipeline Execution Completed. State Saved.")
     print("===================================================================")
@@ -609,4 +601,4 @@ def main():
         run_pipeline(mode=mode, target_channel=target_channel)
 
 if __name__ == "__main__":
-    main()
+    main()

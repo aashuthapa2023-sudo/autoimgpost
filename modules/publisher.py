@@ -22,5 +22,5 @@ def publish_to_facebook(dest_page_id: str, access_token: str, image_path: str, c
         return res_json["id"]
     elif "error" in res_json:
         raise RuntimeError(f"Facebook Graph API Error: {res_json['error'].get('message')}")
-    return "UNKNOWN_ID"
+    raise RuntimeError(f"Facebook did not confirm publication (HTTP {resp.status_code})")
 

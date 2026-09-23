@@ -130,17 +130,18 @@ def _clean_img_url(raw_url):
     return cleaned.strip()
 
 
-def _fetch_og_image(article_url, timeout=12):
-    """Fetch og:image or twitter:image from an article page."""
+def _fetch_article_image_and_details(article_url, timeout=12):
+    """Fetch og:image, description, and substantive body paragraphs from an article page."""
     if not article_url or not article_url.startswith("http"):
-        return ""
+        return "", "", []
     try:
         resp = requests.get(article_url, headers=SCRAPE_HEADERS, timeout=timeout, allow_redirects=True)
         if resp.status_code != 200:
-            return ""
+            return "", "", []
         page = resp.text
 
-        # All common og:image / twitter:image meta tag orderings
+        # 1. Image extraction
+        img = ""
         patterns = [
             r'property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']',
             r'content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']',
@@ -151,22 +152,92 @@ def _fetch_og_image(article_url, timeout=12):
         for pat in patterns:
             m = re.search(pat, page, re.IGNORECASE)
             if m:
-                img = _clean_img_url(m.group(1))
-                if img.startswith("http"):
-                    return img
+                cand = _clean_img_url(m.group(1))
+                if cand.startswith("http"):
+                    img = cand
+                    break
 
-        # Fallback: largest image found in srcset attributes
-        srcsets = re.findall(r'srcset=["\']([^"\']+)["\']', page)
-        for srcset in srcsets:
-            parts = [p.strip().split()[0] for p in srcset.split(",") if p.strip()]
-            for p in reversed(parts):
-                p = _clean_img_url(p)
-                if p.startswith("http") and any(e in p.lower() for e in [".jpg", ".jpeg", ".png", ".webp"]):
-                    return p
+        if not img:
+            srcsets = re.findall(r'srcset=["\']([^"\']+)["\']', page)
+            for srcset in srcsets:
+                parts = [p.strip().split()[0] for p in srcset.split(",") if p.strip()]
+                for p in reversed(parts):
+                    p = _clean_img_url(p)
+                    if p.startswith("http") and any(e in p.lower() for e in [".jpg", ".jpeg", ".png", ".webp"]):
+                        img = p
+                        break
+                if img:
+                    break
 
+        # 2. Meta description extraction
+        meta_desc = ""
+        desc_patterns = [
+            r'property=["\']og:description["\'][^>]+content=["\']([^"\']+)["\']',
+            r'content=["\']([^"\']+)["\'][^>]+property=["\']og:description["\']',
+            r'name=["\']description["\'][^>]+content=["\']([^"\']+)["\']',
+            r'content=["\']([^"\']+)["\'][^>]+name=["\']description["\']',
+            r'name=["\']twitter:description["\'][^>]+content=["\']([^"\']+)["\']',
+            r'content=["\']([^"\']+)["\'][^>]+name=["\']twitter:description["\']',
+        ]
+        for pat in desc_patterns:
+            dm = re.search(pat, page, re.IGNORECASE)
+            if dm:
+                clean_d = html_module.unescape(re.sub(r'<[^>]+>', ' ', dm.group(1))).strip()
+                clean_d = re.sub(r'\s+', ' ', clean_d)
+                if len(clean_d) > 20:
+                    meta_desc = clean_d
+                    break
+
+        # 3. Substantive body paragraphs extraction
+        body_paras = []
+        p_matches = re.findall(r'<p[^>]*>(.*?)</p>', page, re.DOTALL | re.IGNORECASE)
+        for p in p_matches:
+            clean_p = html_module.unescape(re.sub(r'<[^>]+>', ' ', p)).strip()
+            clean_p = re.sub(r'\s+', ' ', clean_p)
+            if len(clean_p) < 55 or len(clean_p) > 650:
+                continue
+            lower_p = clean_p.lower()
+            if any(k in lower_p for k in ['cookie', 'subscribe', 'sign up', 'newsletter', 'privacy policy', 'terms of use', 'all rights reserved', 'advertisement', 'copyright', 'read more']):
+                continue
+            body_paras.append(clean_p)
+            if len(body_paras) >= 3:
+                break
+
+        return img, meta_desc, body_paras
     except Exception:
-        pass
-    return ""
+        return "", "", []
+
+
+def _fetch_og_image(article_url, timeout=12):
+    """Fetch og:image or twitter:image from an article page (backward compatibility wrapper)."""
+    img, _, _ = _fetch_article_image_and_details(article_url, timeout=timeout)
+    return img
+
+
+def build_detailed_article_caption(title: str, rss_desc: str, meta_desc: str, body_paras: list) -> str:
+    """Combines headline, meta description, and body paragraphs into a rich, detailed article context."""
+    parts = [title.strip()]
+    seen_texts = {re.sub(r'\W+', '', title.lower())}
+
+    def add_if_unique(txt: str):
+        if not txt:
+            return
+        clean_txt = html_module.unescape(re.sub(r'<[^>]+>', ' ', txt)).strip()
+        clean_txt = re.sub(r'\s+', ' ', clean_txt)
+        norm = re.sub(r'\W+', '', clean_txt.lower())
+        if len(clean_txt) >= 25 and norm not in seen_texts and not any(norm in prev for prev in seen_texts):
+            parts.append(clean_txt)
+            seen_texts.add(norm)
+
+    if meta_desc:
+        add_if_unique(meta_desc)
+    elif rss_desc:
+        add_if_unique(rss_desc)
+
+    for bp in body_paras:
+        add_if_unique(bp)
+
+    return "\n\n".join(parts)
 
 
 def _validate_image_url(img_url, timeout=8):
@@ -314,7 +385,7 @@ def fetch_web_news(category="mixed", processed_ids=None, global_story_fps=None, 
         if post_id in processed_set:
             continue
 
-        img_url = _fetch_og_image(article_url)
+        img_url, meta_desc, body_paras = _fetch_article_image_and_details(article_url)
         if not img_url:
             desc = art.get("description", "")
             m = re.search(r'<img[^>]+src=["\x27]([^"\x27]+\.(?:jpg|jpeg|png|webp))["\x27]', desc)
@@ -330,12 +401,15 @@ def fetch_web_news(category="mixed", processed_ids=None, global_story_fps=None, 
         enriched += 1
         effective_ts = pub_ts if pub_ts > 0 else (now_ts - 3600)
 
+        # Build detailed contextual caption with title, summary, and body paragraphs
+        detailed_caption = build_detailed_article_caption(title, art.get("description", ""), meta_desc, body_paras)
+
         results.append({
             "post_id": post_id,
             "photo_id": post_id,
             "caption_fingerprint": cap_fp,
             "story_fingerprint": story_fp,
-            "caption": title,
+            "caption": detailed_caption,
             "image_url": img_url,
             "created_time": effective_ts,
             "source_tag": "Web News",

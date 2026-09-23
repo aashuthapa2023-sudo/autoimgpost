@@ -2,7 +2,7 @@ name: Multi-Page Content Pipeline & Hourly Scheduler
 
 on:
   schedule:
-    - cron: '15,45 * * * *'  # Runs automatically at :15 and :45 (avoiding top-of-hour GitHub queue delays)
+    - cron: '7,22,37,52 * * * *'
   workflow_dispatch:     # Allows manual trigger or control from UI
     inputs:
       action:
@@ -27,6 +27,10 @@ on:
 permissions:
   contents: write
   actions: read
+
+concurrency:
+  group: facebook-publisher
+  cancel-in-progress: false
 
 jobs:
   run-pipeline:
@@ -55,7 +59,11 @@ jobs:
       - name: Install Python Dependencies
         run: pip install -r requirements.txt
 
+      - name: Install Browser Fallback
+        run: python -m playwright install --with-deps chromium
+
       - name: Execute Multi-Channel Post Pipeline
+        id: pipeline
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -87,6 +95,7 @@ jobs:
           fi
 
       - name: Commit and Push Updated State
+        if: ${{ always() && steps.pipeline.outcome != 'skipped' }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"

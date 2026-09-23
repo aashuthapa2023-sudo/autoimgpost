@@ -88,28 +88,36 @@ def fetch_facebook_mobile_playwright(page_url_or_slug: str, processed_ids: list 
                     if ((img.alt && (img.alt.includes('Cover') || img.alt.includes('profile'))) || img.naturalWidth < 150) return;
 
                     let cur = img;
+                    let postContainer = img.parentElement;
+                    for (let i = 0; i < 6; i++) {
+                        if (!cur || cur === document.body) break;
+                        if (cur.querySelectorAll('img[src*="/v/t39.30808-6/"]').length > 1) {
+                            break; // Stop: multi-post container reached, do not escape this post boundary
+                        }
+                        postContainer = cur;
+                        if (cur.getAttribute('role') === 'article' || cur.tagName.toLowerCase() === 'article') {
+                            break; // Post card boundary identified
+                        }
+                        cur = cur.parentElement;
+                    }
+
                     let text = "";
                     let timeStr = "";
-                    for (let i = 0; i < 9; i++) {
-                        if (!cur || cur === document.body) break;
-                        const tEls = cur.querySelectorAll('span, div, p');
-                        for (const el of tEls) {
-                            let t = (el.innerText || "").trim();
-                            if (!timeStr) {
-                                const tm = t.match(/^(\\d+[mhdw]|Just now)$/i);
-                                if (tm) timeStr = tm[1];
-                            }
-                            t = t.replace(/\\.\\.\\.\\s*See\\s*more/gi, '').replace(/See\\s*more/gi, '').trim();
-                            if (/[\\u0900-\\u097F]{4,}/.test(t) && t.length > 25) {
-                                if (!t.includes("Himali Patrika") && !t.includes("News & media website") && !t.includes("others") && !t.includes("Abhi Raj")) {
-                                    if (t.length > text.length && t.length < 600) {
-                                        text = t;
-                                    }
+                    const tEls = (postContainer || img.parentElement).querySelectorAll('span, div, p');
+                    for (const el of tEls) {
+                        let t = (el.innerText || "").trim();
+                        if (!timeStr) {
+                            const tm = t.match(/^(\\d+[mhdw]|Just now)$/i);
+                            if (tm) timeStr = tm[1];
+                        }
+                        t = t.replace(/\\.\\.\\.\\s*See\\s*more/gi, '').replace(/See\\s*more/gi, '').trim();
+                        if (/[\\u0900-\\u097F]{4,}/.test(t) && t.length > 25) {
+                            if (!t.includes("Himali Patrika") && !t.includes("News & media website") && !t.includes("others") && !t.includes("Abhi Raj")) {
+                                if (t.length > text.length && t.length < 600) {
+                                    text = t;
                                 }
                             }
                         }
-                        if (text.length > 35) break;
-                        cur = cur.parentElement;
                     }
                     results.push({
                         photoId: photoId,
@@ -270,27 +278,53 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
         photo_id = None
         img_url = None
 
+        def _find_img_in_node(node):
+            if not isinstance(node, dict):
+                return None
+            for k in ["large_share_image", "flexible_height_share_image", "image", "photo_image", "preview_image"]:
+                val = node.get(k)
+                if isinstance(val, dict) and val.get("uri") and str(val["uri"]).startswith("http"):
+                    return str(val["uri"])
+            for med_k in ["media", "target", "attachment"]:
+                med = node.get(med_k)
+                if isinstance(med, dict):
+                    res = _find_img_in_node(med)
+                    if res:
+                        return res
+            styles = node.get("styles")
+            if isinstance(styles, dict):
+                res = _find_img_in_node(styles)
+                if res:
+                    return res
+            sub = node.get("subattachments") or node.get("all_subattachments")
+            if isinstance(sub, dict) and "nodes" in sub:
+                for sn in sub["nodes"]:
+                    res = _find_img_in_node(sn)
+                    if res:
+                        return res
+            return None
+
         atts = story_node.get("attachments", [])
         if isinstance(atts, list):
             for a in atts:
                 if not isinstance(a, dict):
                     continue
+                if not img_url:
+                    img_url = _find_img_in_node(a)
                 styles_att = a.get("styles", {}).get("attachment", {}) if isinstance(a.get("styles"), dict) else {}
                 med = styles_att.get("media") or a.get("media") or a.get("target") or {}
-                if isinstance(med, dict):
-                    if med.get("id"):
-                        photo_id = str(med["id"])
-                    img_obj = med.get("image") or med.get("photo_image") or {}
-                    if isinstance(img_obj, dict) and img_obj.get("uri"):
-                        img_url = img_obj["uri"]
-                if photo_id:
-                    break
+                if isinstance(med, dict) and med.get("id"):
+                    mid = str(med["id"])
+                    if mid.isdigit() and len(mid) >= 9:
+                        photo_id = mid
 
         if not photo_id and story_node.get("photo_id"):
-            photo_id = str(story_node["photo_id"])
+            raw_phid = str(story_node["photo_id"])
+            if raw_phid.isdigit():
+                photo_id = raw_phid
 
-        # Construct high-resolution crawler lookaside URI
-        if photo_id:
+        # Construct crawler lookaside URI only as fallback for genuine numeric photo IDs
+        if photo_id and not img_url:
             img_url = f"https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id={photo_id}"
         elif not img_url:
             # Text-only or video-only story without photo — skip to prevent pairing with unrelated photos!
@@ -305,6 +339,9 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
             created_time = post_meta.get(photo_id, 0)
         if not created_time:
             created_time = story_node.get("creation_time") or story_node.get("publish_time") or 0
+        if not created_time or int(created_time) <= 0:
+            import time
+            created_time = int(time.time()) - 1800
 
         cap_fp = hashlib.md5(re.sub(r'\s+', '', msg[:60]).lower().encode('utf-8')).hexdigest()
 
@@ -314,7 +351,7 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
             "caption_fingerprint": cap_fp,
             "caption": msg,
             "image_url": img_url,
-            "created_time": int(created_time) if created_time else 0,
+            "created_time": int(created_time),
             "source_gap_hours": 2.0
         }
 
@@ -363,6 +400,8 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
                 for it in node:
                     scan_story_nodes(it)
 
+        scan_story_nodes(data)
+
     if not posts_dict:
         print(f" [FB INGEST] Standard SSR yielded 0 posts for {url}. Engaging Playwright mobile bypass...")
         pw_posts = fetch_facebook_mobile_playwright(page_url_or_slug, processed_ids=processed_ids, limit=limit)
@@ -397,10 +436,10 @@ def fetch_source_posts(source_page_id: str = "", access_token: str = "", process
         targets.append(source_page_id)
 
     all_posts = []
-    seen_ids = set(processed_ids)
+    seen_ids = set(str(x) for x in processed_ids if x)
 
     for target in targets:
-        per_source_limit = max(5, limit // max(1, len(targets)))
+        per_source_limit = max(15, limit)
         fb_posts = fetch_facebook_public_posts(target, processed_ids=list(seen_ids), limit=per_source_limit)
         for p in fb_posts:
             pid = str(p.get("post_id", ""))

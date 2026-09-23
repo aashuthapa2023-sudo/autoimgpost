@@ -31,11 +31,20 @@ def download_image(url: str) -> np.ndarray:
     # Download original uncompressed full-res image first
     if orig_url:
         try:
-            resp_orig = requests.get(orig_url, headers=desktop_headers, timeout=18)
+            clean_headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+                'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
+            }
+            resp_orig = requests.get(orig_url, headers=clean_headers, timeout=12)
             if resp_orig.status_code == 200 and 'text/html' not in resp_orig.headers.get('Content-Type', ''):
                 arr = np.asarray(bytearray(resp_orig.content), dtype=np.uint8)
                 img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
-                if img is not None and img.shape[0] >= 300 and img.shape[1] >= 400:
+                if img is not None and img.shape[0] >= 200 and img.shape[1] >= 200:
+                    h_cur, w_cur = img.shape[:2]
+                    if min(w_cur, h_cur) < 500:
+                        scale = 720.0 / float(min(w_cur, h_cur))
+                        new_w, new_h = int(w_cur * scale), int(h_cur * scale)
+                        img = cv2.resize(img, (new_w, new_h), interpolation=cv2.INTER_LANCZOS4)
                     return img
         except Exception:
             pass

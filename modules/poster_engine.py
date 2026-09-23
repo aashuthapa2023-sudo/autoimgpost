@@ -280,22 +280,7 @@ def detect_image_text_position(img: np.ndarray) -> str:
                 dist_weight = 1.0 + ((y_center - h * 0.58) / (h * 0.42))
                 bot_score += area * dist_weight
 
-    # 1. Clear winner when one region has text and the other does not:
-    if top_score > 300 and bot_score < 150:
-        return 'top'
-    if bot_score > 300 and top_score < 150:
-        return 'bottom'
-
-    # 2. Both regions have detectable text:
-    if top_score > 300 and bot_score > 300:
-        if top_face_detected:
-            return 'bottom'
-        if top_score > bot_score * 1.3:
-            return 'top'
-        return 'bottom'
-
-    # 3. Clean editorial image with no significant text overlay:
-    # Default to 'bottom' (standard professional graphic layout)
+    # User Requirement: ALWAYS use bottom side's overlays
     return 'bottom'
 
 def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex: str = "random", badge_label: str = "", dest_page_name: str = "", output_path: str = "output/poster.jpg", **kwargs):
@@ -418,14 +403,9 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         except Exception:
             pass
 
-    # Identify where original text is: TOP or BOTTOM
-    text_position = kwargs.get("text_position")
-    if not text_position or text_position == "auto":
-        text_position = detect_image_text_position(canvas)
-    text_position = str(text_position).lower()
-    if text_position not in ["top", "bottom"]:
-        text_position = "bottom"
-    print(f"           [Text Placement] Placement: {text_position.upper()} -> Rendering seamless filmic photographic fade.")
+    # User Requirement: ALWAYS use bottom side's overlays
+    text_position = "bottom"
+    print(f"           [Text Placement] Placement: BOTTOM -> Rendering seamless filmic photographic fade.")
 
     gap = 20
     total_content_h = (bh + gap if branding_name else 0) + total_text_h
