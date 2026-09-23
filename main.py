@@ -202,8 +202,8 @@ def run_pipeline(mode="run", target_channel="all"):
                     token = cand
                     break
 
-        max_posts = ch.get("max_posts_per_run", 1)
-        post_interval_hours = float(ch.get("post_interval_hours", ch.get("min_gap_hours", 1.0)))
+        max_posts = int(ch.get("max_posts_per_run", 1))
+        post_interval_hours = max(1.0, float(ch.get("post_interval_hours", ch.get("min_gap_hours", 1.0))))
         badge_label = ch.get("badge_label", ch.get("dest_page_name", "OFFICIAL UPDATE"))
         highlight_hex = ch.get("highlight_color", "random")
 
@@ -363,8 +363,8 @@ def run_pipeline(mode="run", target_channel="all"):
 
         gap_elapsed = now_current - last_pub_time
         effective_gap_seconds = int(float(post_interval_hours) * 3600)
-        # 5-minute (300s) grace tolerance so 15m cron checks trigger on-schedule without skipping a whole cycle
-        min_required_gap = max(0, effective_gap_seconds - 300)
+        # 2-minute (120s) clock tolerance so scheduled cron checks trigger on-schedule without premature posting
+        min_required_gap = max(0, effective_gap_seconds - 120)
 
         if last_pub_time > 0 and gap_elapsed < min_required_gap:
             remaining_mins = max(1, int((effective_gap_seconds - gap_elapsed) / 60))
