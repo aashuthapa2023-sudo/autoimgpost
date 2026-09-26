@@ -197,6 +197,11 @@ def clean_and_deduplicate_source_caption(raw_caption: str, language: str = "en",
     text = raw_caption.replace('\x91', "'").replace('\x92', "'").replace('\x93', '"').replace('\x94', '"')
     text = text.replace('’', "'").replace('‘', "'").replace('“', '"').replace('”', '"')
 
+    # Remove complete Markdown links first, including shortened URL labels.
+    text = re.sub(r'\[[^\]]*\]\(https?://[^\s]*\)', '', text, flags=re.IGNORECASE)
+    text = re.sub(r'(?:https?://|www\.)\S+|\b(?:[a-z0-9-]+\.)+[a-z]{2,}(?:/[^\s]*)?', '', text, flags=re.IGNORECASE)
+    text = text.strip().strip(' {}:*')
+
     # Remove fake boilerplate if present
     fake_phrases = [
         r'यस विषयमा सम्बन्धित निकाय तथा सरोकारवालाहरूले आवश्यक अध्ययन.*',
@@ -264,10 +269,24 @@ def clean_and_deduplicate_source_caption(raw_caption: str, language: str = "en",
             clean_lines.append(line_clean)
             seen_normalized.append(norm)
 
-    if not clean_lines:
-        clean_lines = [raw_caption.strip()[:200]]
-
-    body_text = "\n\n".join(clean_lines)
+    # Keep a short standalone news brief; never restore discarded raw links.
+    sentences = re.split(r'(?<=[.!?।])\s+|\n+', ' '.join(clean_lines))
+    brief = []
+    for sentence in sentences:
+        sentence = sentence.strip(' {}:*')
+        if not sentence or sentence.endswith('?'):
+            continue
+        if re.search(r'\b(?:find out|read the full|tap (?:here|the link)|what you need to know|link below)\b', sentence, re.IGNORECASE):
+            continue
+        if len((' '.join(brief + [sentence])).split()) > 80:
+            break
+        if sentence not in brief:
+            brief.append(sentence)
+        if len(brief) == 3:
+            break
+    body_text = ' '.join(brief)
+    if not body_text:
+        return ''
 
     # Clean channel hashtags
     ch_clean = re.sub(r'[^a-zA-Z0-9\u0900-\u097F]', '', str(channel_name or channel_id or ""))
@@ -283,68 +302,35 @@ def clean_and_deduplicate_source_caption(raw_caption: str, language: str = "en",
     return f"{body_text}\n\n{hashtags}"
 
 def extract_meaningful_nepali_overlay(raw_caption: str) -> list:
-    """
-    Extracts high-impact, meaningful 2-line overlay tokens for Nepali posts.
-    Strips day preambles ('आज आईतवार'), greetings, and filler words ('विशेष कभरेज').
-    """
-    cleaned = re.sub(r'https?:\S+', '', raw_caption).strip()
+    """Preserve a complete source headline, including its subject and action."""
+    cleaned = clean_and_deduplicate_source_caption(raw_caption, language="ne")
+    body = cleaned.split("\n\n")[0]
+    sentences = [s.strip() for s in re.split(r"[।!?\n]+", body) if s.strip()]
+    # Never turn long stories into four unrelated keywords or invent filler.
+    # Select a complete source sentence that can remain legible on the poster.
+    headline = next((s for s in sentences if 2 <= len(s.split()) <= 24 and len(s) <= 240), "")
+    if not headline:
+        raise ValueError("No complete, readable Nepali headline available")
+    words = headline.split()
+    line_count = 2 if len(words) <= 10 and len(headline) <= 100 else 3
+    lines = []
+    for remaining_lines in range(line_count, 0, -1):
+        if remaining_lines == 1:
+            take = len(words)
+        else:
+            target = len(" ".join(words)) / remaining_lines
+            take = min(range(1, len(words) - remaining_lines + 2),
+                       key=lambda n: abs(len(" ".join(words[:n])) - target))
+        lines.append(format_nepali_thematic_tokens(words[:take]))
+        words = words[take:]
+    return ensure_nepali_overlay_ellipsis(lines)
 
-    # 1. Strip day names, greetings, and ceremonial preambles
-    strip_patterns = [
-        r'^(?:आज(?:को)?\s+)?(?:आइतबार|आईतवार|आइतवार|सोमबार|सोमवार|मंगलबार|मङ्गलवार|बुधबार|बुधवार|बिहीबार|बिहिवार|शुक्रबार|शुक्रवार|शनिबार|शनिवार|सुप्रभात|शुभप्रभात|नमस्ते|नमस्कार|हार्दिक\s+शुभकामना)\s*[-—,:|।!?–]?\s*',
-        r'^संविधान\s+दिवस(?:\s+तथा\s+राष्ट्रिय\s+दिवस)?(?:\s+[०-९0-9]+)?(?:\s+को\s+मूल\s+समारोहलाई\s+सम्बोधन\s+गर्दै)?\s*',
-        r'^[^\s]+मा\s+बस्दै\s+आएका\s+नेपाली\s+[^\s]+\s*(?:ले)?\s*',
-        r'^चितवन\s+राष्ट्रिय\s+निकुञ्जको\s+हात्ती\s+प्रजनन\s+केन्द्र\s+आसपास\s*',
-        r'^नेपाल\s+क्रिकेट\s+संघ\s*\(क्यान\)ले\s*',
-        r'^[^\s]+का\s+अनुसार\s*',
-        r'^[०-९0-9]+\s+वर्षीया\s+[^\s]+लाई\s*',
-    ]
-
-    lead = cleaned
-    for _ in range(2):
-        for pat in strip_patterns:
-            lead = re.sub(pat, '', lead, flags=re.IGNORECASE).strip()
-
-    sentences = [s.strip() for s in re.split(r'[।!?\n]+', lead) if len(s.strip()) > 5]
-    first_sent = sentences[0] if sentences else lead[:100]
-
-    # General intelligent extraction: Strictly from the actual source caption headline
-    all_words = [w.strip("‘'\"“”") for w in re.split(r'[\s,।!?\-—:]+', first_sent or lead) if w.strip("‘'\"“”")]
-    meaningful_words = [w for w in all_words if w not in NEPALI_BANNED_OVERLAY_WORDS and len(w) > 1]
-
-    if len(meaningful_words) >= 4:
-        w1 = meaningful_words[:2]
-        w2 = meaningful_words[2:4]
-    elif len(meaningful_words) == 3:
-        w1 = meaningful_words[:2]
-        w2 = meaningful_words[2:]
-    elif len(meaningful_words) == 2:
-        w1 = [meaningful_words[0]]
-        w2 = [meaningful_words[1]]
-    elif len(all_words) >= 4:
-        w1 = all_words[:2]
-        w2 = all_words[2:4]
-    else:
-        w1 = all_words[:2] if all_words else ['नेपाल', 'अपडेट']
-        w2 = all_words[2:4] if len(all_words) > 2 else ['मुख्य', 'समाचार']
-
-    # Clean hanging words from ends
-    while w1 and re.sub(r'[^\u0900-\u097F]', '', w1[-1]) in NEPALI_HANGING_WORDS:
-        w1.pop()
-    while w2 and re.sub(r'[^\u0900-\u097F]', '', w2[-1]) in NEPALI_HANGING_WORDS:
-        w2.pop()
-
-    if not w1:
-        w1 = ['नेपाल', 'अपडेट']
-    if not w2:
-        w2 = ['मुख्य', 'समाचार']
-
-    overlay = [format_nepali_thematic_tokens(w1), format_nepali_thematic_tokens(w2)]
-    return ensure_nepali_overlay_ellipsis(overlay)
 
 def nepali_heuristic_payload(raw_caption: str, channel_name: str = "", channel_id: str = "") -> dict:
     overlay_lines = extract_meaningful_nepali_overlay(raw_caption)
     rewritten = clean_and_deduplicate_source_caption(raw_caption, language="ne", channel_name=channel_name, channel_id=channel_id)
+    if not rewritten:
+        raise ValueError('Source has no usable news facts after removing links and teasers')
     return {
         "overlay_lines": overlay_lines,
         "rewritten_caption": sanitize_caption(rewritten, channel_name=channel_name, channel_id=channel_id)
@@ -562,7 +548,11 @@ def generate_social_payload(raw_caption: str, language: str = "en", channel_name
     if effective_lang == "ne" or channel_id == "nepal_speaks" or "nepal" in str(channel_name).lower():
         return nepali_heuristic_payload(raw_caption, channel_name=channel_name, channel_id=channel_id)
 
+    raw_caption = clean_and_deduplicate_source_caption(raw_caption, language=effective_lang, channel_name=channel_name, channel_id=channel_id)
+    if not raw_caption:
+        raise ValueError('Source has no usable news facts after removing links and teasers')
     prompt = build_system_prompt(effective_lang, channel_name=channel_name)
+    prompt += '\nCAPTION REQUIREMENT: Write a standalone news brief in 1-3 short sentences, at most 80 words. Explain who did what and include available key details. Use only facts explicitly supplied in the source. Never invent song names, dates, explanations or context. No URLs, bare domains, Markdown links, read-more prompts or teaser questions. Keep brief sources brief.'
     payload = None
 
     # Tier 1: Groq Cloud
@@ -633,6 +623,8 @@ def generate_social_payload(raw_caption: str, language: str = "en", channel_name
     # Universal Sanitization of Caption
     if isinstance(payload, dict) and "rewritten_caption" in payload:
         payload["rewritten_caption"] = sanitize_caption(payload["rewritten_caption"], channel_name=channel_name, channel_id=channel_id)
+        if not payload["rewritten_caption"]:
+            raise ValueError('Generated caption contains no usable news summary')
 
     # Guarantee ellipsis (...) on Nepali overlays ending
     if effective_lang == "ne" and isinstance(payload, dict) and "overlay_lines" in payload:
