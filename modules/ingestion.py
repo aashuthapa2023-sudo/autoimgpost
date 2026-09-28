@@ -450,6 +450,7 @@ def fetch_source_posts(source_page_id: str = "", access_token: str = "", process
                 if photo_id: seen_ids.add(photo_id)
                 if cap_fp: seen_ids.add(cap_fp)
                 p["source_tag"] = extract_identifier(target).replace("_", " ").title()
+                p["source_page_url"] = target
                 all_posts.append(p)
 
     if all_posts:

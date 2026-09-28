@@ -403,9 +403,10 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         except Exception:
             pass
 
-    # User Requirement: ALWAYS use bottom side's overlays
-    text_position = "bottom"
-    print(f"           [Text Placement] Placement: BOTTOM -> Rendering seamless filmic photographic fade.")
+    text_position = kwargs.get("text_position", "bottom")
+    if text_position not in ("top", "bottom"):
+        text_position = "bottom"
+    print(f"           [Text Placement] Placement: {text_position.upper()}")
 
     gap = 20
     total_content_h = (bh + gap if branding_name else 0) + total_text_h
@@ -446,6 +447,11 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         # Solid dark backing covers text region + detected original top text
         text_floor = max(content_bottom + 35, (top_text_max_y + 15) if has_top_text else (content_bottom + 35))
         fade_depth = max(180, int(total_content_h * 0.65))
+        if kwargs.get("source_header_fraction"):
+            # This source has a designed header, not text scattered over the photo.
+            # Do not misclassify facial edges below it as headline text.
+            text_floor = max(content_bottom + 20, int(target_h * kwargs["source_header_fraction"]))
+            fade_depth = int(target_h * 0.06)
         grad_bottom = min(target_h, text_floor + fade_depth)
 
         # 1. Dark backing across text area [0, text_floor] (100% opaque, zero ghost text)
