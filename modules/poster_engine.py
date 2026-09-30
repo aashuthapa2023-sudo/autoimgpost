@@ -572,5 +572,8 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     # NO attribution footer line (removed completely as requested)
 
     os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
+    if kwargs.get("source_logo_boxes"):
+        from modules.logo_branding import apply_branding
+        pil_img = apply_branding(pil_img, kwargs["source_logo_boxes"], kwargs["source_logo_size"])
     pil_img.save(output_path, "JPEG", quality=98, subsampling=0)
     return output_path
