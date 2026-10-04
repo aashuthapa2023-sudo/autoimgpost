@@ -73,6 +73,7 @@ jobs:
           FB_TOKEN_DAILY_NETFLIX: ${{ secrets.FB_TOKEN_DAILY_NETFLIX }}
           DAILY_NETFLIX_TOKEN: ${{ secrets.DAILY_NETFLIX_TOKEN }}
           FB_TOKEN_CINEMA: ${{ secrets.FB_TOKEN_CINEMA }}
+          FB_TOKEN_OCEANS_SECRET: ${{ secrets.FB_TOKEN_OCEANS_SECRET }}
           FB_TOKEN_GAMING: ${{ secrets.FB_TOKEN_GAMING }}
           FB_TOKEN_TECH: ${{ secrets.FB_TOKEN_TECH }}
           FB_TOKEN_MUSIC_STORE: ${{ secrets.FB_TOKEN_MUSIC_STORE }}

@@ -1,4 +1,4 @@
-from urllib.parse import urlparse
+from urllib.parse import urlparse, parse_qs
 
 
 def get_source_layout(channel, post, detected_position=None):
@@ -6,6 +6,8 @@ def get_source_layout(channel, post, detected_position=None):
     source = str(post.get("source_page_url", ""))
     parsed = urlparse(source)
     slug = parsed.path.strip('/').split('/')[0].lower()
+    if slug == 'profile.php':
+        slug = parse_qs(parsed.query).get('id', [''])[0]
     if parsed.hostname not in ("facebook.com", "www.facebook.com", "m.facebook.com"):
         slug = ""
     overrides = channel.get("source_layouts", {})

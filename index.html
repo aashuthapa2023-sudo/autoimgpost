@@ -1445,7 +1445,7 @@
       finally { btn.disabled = false; btn.textContent = 'Push pages to GitHub'; }
     }
     function sourceLayoutKey(source) {
-      try { const u = new URL(source); return ['facebook.com','www.facebook.com','m.facebook.com'].includes(u.hostname) ? (u.pathname.split('/').filter(Boolean)[0] || '').toLowerCase() : ''; }
+      try { const u = new URL(source); return ['facebook.com','www.facebook.com','m.facebook.com'].includes(u.hostname) ? (u.pathname === '/profile.php' ? (u.searchParams.get('id') || '') : (u.pathname.split('/').filter(Boolean)[0] || '')).toLowerCase() : ''; }
       catch { return ''; }
     }
     async function setSourcePlacement(id, source, field, value) {
@@ -1695,7 +1695,7 @@
     }
 
     async function submitNewChannel() {
-      const cid = document.getElementById('newChannelId').value.trim();
+      let cid = document.getElementById('newChannelId').value.trim();
       const destName = document.getElementById('newDestPageName').value.trim();
       const sourcesStr = document.getElementById('newChannelSources').value.trim();
       const destId = document.getElementById('newDestPageId').value.trim();
@@ -1706,8 +1706,9 @@
       const langEl = document.getElementById('newChannelLanguage');
       const langVal = langEl ? langEl.value : 'ne';
 
+      if (!cid) cid = destName.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
       if (!cid) {
-        alert('Please enter a channel identifier');
+        alert('Please enter a page name or channel identifier');
         return;
       }
 

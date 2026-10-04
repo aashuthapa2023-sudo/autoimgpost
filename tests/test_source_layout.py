@@ -17,6 +17,10 @@ class SourceLayoutTests(unittest.TestCase):
     def test_explicit_bottom_overrides_detection(self):
         channel = {'source_layouts': {'example': {'text_position': 'bottom'}}}
         self.assertEqual(get_source_layout(channel, {'source_page_url': 'https://www.facebook.com/example'}, 'top'), {'text_position': 'bottom'})
+    def test_profile_ids_have_separate_layouts(self):
+        channel = {'source_layouts': {'61587221117884': {'text_position': 'top'}, '61589616333583': {'text_position': 'bottom'}}}
+        for page_id, position in [('61587221117884', 'top'), ('61589616333583', 'bottom')]:
+            self.assertEqual(get_source_layout(channel, {'source_page_url': 'https://www.facebook.com/profile.php?id=' + page_id})['text_position'], position)
     def test_other_sources_keep_bottom(self):
         self.assertEqual(get_source_layout(self.channel, {'source_page_url': 'https://www.facebook.com/HimaliMedia'}), {'text_position': 'bottom'})
     def test_other_channels_keep_bottom(self):
