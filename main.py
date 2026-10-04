@@ -433,7 +433,10 @@ def run_pipeline(mode="run", target_channel="all"):
                     print(f"           [Branding] Detected {len(source_layout['source_logo_boxes'])} source logo(s)")
                 print(f"           [Text Placement Audit] Detected original source text position: {detected_text_pos.upper()}")
 
-                cleaned_img = erase_text_and_watermarks(raw_img)
+                from modules.image_cleaner import detect_source_text_boxes
+                text_boxes = detect_source_text_boxes(raw_img)
+                print(f"           [Source text cleanup] Removing {len(text_boxes)} detected text regions across the full image")
+                cleaned_img = erase_text_and_watermarks(raw_img, source_text_boxes=text_boxes)
 
                 # 2. Cinematic Color Grading
                 print("     [2/4] Applying OpenCV CIE-LAB CLAHE contrast grading...")

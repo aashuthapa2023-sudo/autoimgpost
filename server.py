@@ -89,7 +89,9 @@ def execute_pipeline_task(action="dry_run", channel="all", specific_post=None):
             from modules.source_layout import get_source_layout
             from modules.poster_engine import detect_image_text_position
             source_layout = get_source_layout(ch, specific_post, detect_image_text_position(raw_img))
-            cleaned = erase_text_and_watermarks(raw_img)
+            from modules.image_cleaner import detect_source_text_boxes
+            text_boxes = detect_source_text_boxes(raw_img)
+            cleaned = erase_text_and_watermarks(raw_img, source_text_boxes=text_boxes)
 
             log_message("Stage 4: Applying OpenCV CIE-LAB CLAHE contrast grading...", stage=4)
             graded = apply_cinematic_grade(cleaned)
