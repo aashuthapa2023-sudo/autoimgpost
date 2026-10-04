@@ -283,6 +283,34 @@ def detect_image_text_position(img: np.ndarray) -> str:
     # User Requirement: ALWAYS use bottom side's overlays
     return 'bottom'
 
+def fit_headline_line(tokens, font, font_size, highlight_rgb, max_width, max_height):
+    """Rasterize full glyph bounds before fitting, so strokes and matras stay safe."""
+    tiles = []
+    for text, kind in tokens:
+        color = highlight_rgb if kind == "highlight" else (255, 255, 255)
+        if is_devanagari(text) and os.name == 'nt':
+            mask, width, height = render_gdi_token(text, font_size, bold=True)
+            tile = Image.new('RGBA', (max(1, width), max(1, height)))
+            tile.paste(color, (0, 0), Image.fromarray(mask).convert('L'))
+        else:
+            probe = ImageDraw.Draw(Image.new('RGBA', (1, 1)))
+            left, top, right, bottom = probe.textbbox((0, 0), text, font=font, stroke_width=2)
+            width = max(right - min(0, left), math.ceil(probe.textlength(text, font=font)))
+            tile = Image.new('RGBA', (max(1, width + 4), max(1, bottom - top + 4)))
+            ImageDraw.Draw(tile).text((2 - min(0, left), 2 - top), text, font=font,
+                                     fill=color, stroke_width=2, stroke_fill=(0, 0, 0))
+        tiles.append(tile)
+    line = Image.new('RGBA', (max(1, sum(t.width for t in tiles)), max([t.height for t in tiles] or [1])))
+    x = 0
+    for tile in tiles:
+        line.alpha_composite(tile, (x, 0))
+        x += tile.width
+    scale = min(1.0, max_width / line.width, max_height / line.height)
+    if scale < 1:
+        line = line.resize((max(1, int(line.width * scale)), max(1, int(line.height * scale))), Image.Resampling.LANCZOS)
+    return line
+
+
 def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex: str = "random", badge_label: str = "", dest_page_name: str = "", output_path: str = "output/poster.jpg", **kwargs):
     """
     Renders 4:5 visual poster strictly matching user reference layout:
@@ -359,10 +387,10 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         bbox = (0, 0, 0, 0)
 
     # Typography sizing: 100% INCREASED FONT SIZE (Doubled from 50-56px to 100-108px)
-    safe_margin = 45
+    safe_margin = 60
     safe_max_w = target_w - (safe_margin * 2) # 990px
     chosen_size = 108 if len(normalized_lines) <= 2 else 96
-    for test_size in [chosen_size, 100, 92, 84, 76, 68, 60, 52]:
+    for test_size in range(chosen_size, 7, -2):
         line_spacing_test = int(test_size * 1.30)
         total_text_h_test = len(normalized_lines) * line_spacing_test
         total_content_h_test = (bh + 24 if branding_name else 0) + total_text_h_test
@@ -380,7 +408,7 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         chosen_size = test_size
 
     title_font = get_font(chosen_size, bold=True)
-    line_spacing = int(chosen_size * 1.30)  # Generous line height ensures top & bottom matras never collide
+    line_spacing = min(int(chosen_size * 1.30), max(1, (target_h - 2 * safe_margin - bh - 24) // max(1, len(normalized_lines))))  # Generous line height ensures top & bottom matras never collide
     total_text_h = len(normalized_lines) * line_spacing
 
     # ALWAYS USE SOURCE AS 4:5 ASPECT RATIO IMAGE (Fill entire 1080x1350 canvas)
@@ -439,7 +467,7 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     dark_black = np.array([8, 8, 10], dtype=np.float32)
 
     if text_position == "top":
-        top_margin = 48
+        top_margin = safe_margin
         by = top_margin
         start_text_y = by + (bh + gap if branding_name else 0)
         content_bottom = start_text_y + total_text_h
@@ -482,7 +510,7 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
             canvas[y, :] = ((1.0 - alpha) * canvas[y, :].astype(np.float32) + alpha * np.array([8, 8, 10], dtype=np.float32)).astype(np.uint8)
 
         # Position text with clean bottom breathing margin
-        bottom_margin = 55
+        bottom_margin = safe_margin
         start_text_y = target_h - bottom_margin - total_text_h
         by = start_text_y - bh - gap if branding_name else start_text_y
         content_top = by
@@ -526,14 +554,19 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     # Render High-Visibility Studio Branding Badge — perfectly centered pill
     if branding_name:
         bx = (target_w - bw) // 2
+        logo_position = kwargs.get("logo_position", "with-text")
+        if logo_position in ("top-left", "top-center", "top-right", "bottom-left", "bottom-center", "bottom-right"):
+            vertical, horizontal = logo_position.split("-")
+            by = safe_margin if vertical == "top" else target_h - bh - safe_margin
+            bx = safe_margin if horizontal == "left" else target_w - bw - safe_margin if horizontal == "right" else (target_w - bw) // 2
         draw.rounded_rectangle([bx, by, bx + bw, by + bh], radius=radius, fill=(10, 10, 14), outline=highlight_rgb, width=2)
         if badge_is_deva and os.name == 'nt':
             b_mask, bw_act, bh_act = render_gdi_token(dest_badge_text, 22, bold=True)
-            bx_text = int((target_w - bw_act) / 2.0)
+            bx_text = int(bx + (bw - bw_act) / 2.0)
             by_text = int(by + (bh - bh_act) / 2.0)
             composite_mask_on_pil(pil_img, b_mask, bx_text, by_text, highlight_rgb, stroke=False)
         else:
-            draw.text((target_w / 2.0, by + bh / 2.0), dest_badge_text, font=badge_font, fill=highlight_rgb, anchor="mm")
+            draw.text((bx + bw / 2.0, by + bh / 2.0), dest_badge_text, font=badge_font, fill=highlight_rgb, anchor="mm")
 
     # Render Headline Typography — each line mathematically centered
     for line in normalized_lines:
@@ -544,28 +577,11 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
             t_type = token.get("type", "white") if isinstance(token, dict) else "white"
             full_line_tokens.append((t_str, t_type))
 
-        if line_is_deva and os.name == 'nt':
-            rendered_tokens = []
-            total_line_w = 0
-            for t_str, t_type in full_line_tokens:
-                m, tw, th = render_gdi_token(t_str, chosen_size, bold=True)
-                rendered_tokens.append((m, tw, th, t_type))
-                total_line_w += tw
-
-            cur_x = (target_w - total_line_w) / 2.0
-            for m, tw, th, t_type in rendered_tokens:
-                color = highlight_rgb if t_type == "highlight" else (255, 255, 255)
-                composite_mask_on_pil(pil_img, m, int(cur_x), int(start_text_y), color, stroke=True)
-                cur_x += tw
-        else:
-            # Use exact font typographical advance width for subpixel centering
-            total_line_w = sum(draw.textlength(t_str, font=title_font) for t_str, _ in full_line_tokens)
-            cur_x = (target_w - total_line_w) / 2.0
-
-            for t_str, t_type in full_line_tokens:
-                color = highlight_rgb if t_type == "highlight" else (255, 255, 255)
-                draw.text((cur_x, start_text_y), t_str, font=title_font, fill=color, stroke_width=2, stroke_fill=(0, 0, 0))
-                cur_x += draw.textlength(t_str, font=title_font)
+        line_image = fit_headline_line(full_line_tokens, title_font, chosen_size,
+                                       highlight_rgb, safe_max_w, line_spacing)
+        line_x = (target_w - line_image.width) // 2
+        line_y = max(safe_margin, min(int(start_text_y), target_h - safe_margin - line_image.height))
+        pil_img.paste(line_image, (line_x, line_y), line_image)
 
         start_text_y += line_spacing
 

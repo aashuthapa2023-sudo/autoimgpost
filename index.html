@@ -464,6 +464,7 @@
           </div>
 
           <div class="flex items-center gap-2">
+            <button onclick="pushPagesToGitHub()" id="btnPushPages" class="px-3 py-2 bg-blue-600 text-white rounded-xl text-xs">Push pages to GitHub</button>
             <button onclick="forceSyncFromGitHub()" id="btnForceSyncHub"
               class="px-3.5 py-2 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 hover:text-white rounded-xl text-xs font-mono flex items-center gap-1.5 transition-all border border-neutral-700 cursor-pointer shadow" title="Force re-fetch live configuration directly from GitHub main branch">
               <svg id="iconSyncSpinner" class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
@@ -753,7 +754,7 @@
             'Accept': 'application/vnd.github.v3+json',
             'Cache-Control': 'no-cache'
           };
-          const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json?t=${Date.now()}`, { headers });
+          const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json?ref=main&t=${Date.now()}`, { headers });
           if (res.ok) {
             const data = await res.json();
             configSha = data.sha;
@@ -905,7 +906,7 @@
       if (token) {
         try {
           // Always get latest SHA first to prevent conflicts
-          const shaRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json?t=${Date.now()}`, {
+          const shaRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json?ref=main&t=${Date.now()}`, {
             headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Cache-Control': 'no-cache' }
           });
           if (shaRes.ok) {
@@ -924,7 +925,7 @@
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              message: commitMsg,
+              message: commitMsg, branch: 'main',
               content: b64,
               sha: configSha || undefined
             })
@@ -932,7 +933,7 @@
 
           // If 409 conflict, refetch fresh SHA and retry once
           if (putRes.status === 409) {
-            const retryShaRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json?t=${Date.now()}`, {
+            const retryShaRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json?ref=main&t=${Date.now()}`, {
               headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Cache-Control': 'no-cache' }
             });
             if (retryShaRes.ok) {
@@ -946,7 +947,7 @@
                   'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                  message: commitMsg,
+                  message: commitMsg, branch: 'main',
                   content: b64,
                   sha: configSha
                 })
@@ -960,14 +961,15 @@
             showToast('✓ Auto-Saved to GitHub Instantly (main branch)!');
           } else {
             const err = await putRes.json().catch(() => ({}));
-            showToast('✓ Saved locally (GitHub: ' + (err.message || putRes.statusText) + ')');
+            showToast('Saved in browser. GitHub push failed: ' + (err.message || putRes.statusText), 'warning');
           }
         } catch(err) {
           console.warn('GitHub API network note:', err);
-          showToast('✓ Saved locally');
+          showToast('Saved in browser. GitHub push failed.', 'warning');
         }
       }
 
+      if (!token) showToast('Saved in browser. Set a GitHub token and push pages.', 'warning');
       renderChannelsHub(true);
     }
 
@@ -1468,6 +1470,26 @@
       `).join('');
     }
 
+    async function pushPagesToGitHub() {
+      if (!getGitHubToken()) setGitHubTokenPrompt();
+      if (!getGitHubToken()) return;
+      const btn = document.getElementById('btnPushPages');
+      btn.disabled = true; btn.textContent = 'Pushing…';
+      try { await saveConfigUniversal(cachedConfig, 'Save Facebook pages and source placement'); }
+      finally { btn.disabled = false; btn.textContent = 'Push pages to GitHub'; }
+    }
+    function sourceLayoutKey(source) {
+      try { const u = new URL(source); return ['facebook.com','www.facebook.com','m.facebook.com'].includes(u.hostname) ? (u.pathname.split('/').filter(Boolean)[0] || '').toLowerCase() : ''; }
+      catch { return ''; }
+    }
+    async function setSourcePlacement(id, source, field, value) {
+      const ch = cachedChannels.find(c => c.channel_id === decodeURIComponent(id));
+      const key = sourceLayoutKey(decodeURIComponent(source));
+      if (!ch || !key) { showToast('Use a Facebook page URL first.', 'warning'); return; }
+      ch.source_layouts ||= {}; ch.source_layouts[key] ||= {};
+      ch.source_layouts[key][field] = value;
+      await saveConfigUniversal(cachedConfig, 'Update source text and logo placement');
+    }
     // --- CHANNELS & MULTI-SOURCE HUB ---
     async function renderChannelsHub(skipFetch = false) {
       const container = document.getElementById('channelCardsContainer');
@@ -1545,8 +1567,9 @@
                   <span>Linked Source Pages (${sources.length}):</span>
                 </div>
 
-                <div class="space-y-1.5 max-h-36 overflow-y-auto custom-scrollbar">
+                <div class="space-y-1.5 max-h-72 overflow-y-auto custom-scrollbar">
                   ${sources.map(src => {
+                    const layout = (ch.source_layouts || {})[sourceLayoutKey(src)] || {};
                     const displaySlug = src.replace('https://www.facebook.com/', '').replace('https://facebook.com/', '').replace('/', '');
                     return `
                       <div class="flex items-center justify-between bg-neutral-950 px-2.5 py-1.5 rounded-lg border border-neutral-800 text-[11px] font-mono">
@@ -1555,6 +1578,12 @@
                           class="text-neutral-500 hover:text-rose-400 ml-2 font-bold cursor-pointer">
                           &times;
                         </button>
+                      </div>
+                      <div class="flex flex-wrap gap-2 text-xs text-neutral-300 pb-2">
+                        <label>Text <select class="bg-neutral-800 p-1 rounded" aria-label="Text placement" onchange="setSourcePlacement('${encodeURIComponent(ch.channel_id)}', '${encodeURIComponent(src)}', 'text_position', this.value)">
+                        ${['top','bottom'].map(v => `<option value="${v}" ${(layout.text_position || 'bottom') === v ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
+                        <label>Logo / branding <select class="bg-neutral-800 p-1 rounded" aria-label="Logo placement" onchange="setSourcePlacement('${encodeURIComponent(ch.channel_id)}', '${encodeURIComponent(src)}', 'logo_position', this.value)">
+                        ${['with-text','top-left','top-center','top-right','bottom-left','bottom-center','bottom-right'].map(v => `<option value="${v}" ${(layout.logo_position || 'with-text') === v ? 'selected' : ''}>${v.replaceAll('-', ' ')}</option>`).join('')}</select></label>
                       </div>
                     `;
                   }).join('')}
