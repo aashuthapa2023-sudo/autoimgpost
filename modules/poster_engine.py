@@ -280,8 +280,9 @@ def detect_image_text_position(img: np.ndarray) -> str:
                 dist_weight = 1.0 + ((y_center - h * 0.58) / (h * 0.42))
                 bot_score += area * dist_weight
 
-    # User Requirement: ALWAYS use bottom side's overlays
-    return 'bottom'
+    if top_face_detected:
+        return 'bottom'
+    return 'top' if top_score > max(1.0, bot_score * 1.15) else 'bottom'
 
 def fit_headline_line(tokens, font, font_size, highlight_rgb, max_width, max_height):
     """Rasterize full glyph bounds before fitting, so strokes and matras stay safe."""

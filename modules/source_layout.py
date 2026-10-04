@@ -1,7 +1,7 @@
 from urllib.parse import urlparse
 
 
-def get_source_layout(channel, post):
+def get_source_layout(channel, post, detected_position=None):
     """Apply explicit source layouts only within their destination channel."""
     source = str(post.get("source_page_url", ""))
     parsed = urlparse(source)
@@ -10,7 +10,9 @@ def get_source_layout(channel, post):
         slug = ""
     overrides = channel.get("source_layouts", {})
     layout = overrides.get(slug, {})
-    position = layout.get("text_position", "bottom")
+    position = layout.get("text_position", "auto")
+    if position == "auto":
+        position = detected_position or "bottom"
     result = {"text_position": position if position in ("top", "bottom") else "bottom"}
     logo_position = layout.get("logo_position", "with-text")
     if logo_position in ("top-left", "top-center", "top-right", "bottom-left", "bottom-center", "bottom-right"):

@@ -425,7 +425,7 @@ def run_pipeline(mode="run", target_channel="all"):
                 from modules.poster_engine import detect_image_text_position
                 detected_text_pos = detect_image_text_position(raw_img)
                 from modules.source_layout import get_source_layout
-                source_layout = get_source_layout(ch, post)
+                source_layout = get_source_layout(ch, post, detected_text_pos)
                 if channel_id == "nepal_speaks":
                     from modules.logo_branding import detect_source_logos
                     source_layout["source_logo_boxes"] = detect_source_logos(raw_img)

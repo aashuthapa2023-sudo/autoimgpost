@@ -646,14 +646,14 @@
       try {
         const urlParams = new URLSearchParams(window.location.search);
         const urlToken = urlParams.get('token');
-        if (urlToken && urlToken.startsWith('ghp_')) {
+        if (urlToken &&  /^(ghp_|github_pat_)/.test(urlToken)) {
           localStorage.setItem('autoimgpost_gh_token', urlToken.trim());
           window.history.replaceState({}, document.title, window.location.pathname);
           return urlToken.trim();
         }
       } catch(e) {}
       const stored = localStorage.getItem('autoimgpost_gh_token');
-      if (stored && stored.trim().startsWith('ghp_')) {
+      if (stored && /^(ghp_|github_pat_)/.test(stored.trim())) {
         return stored.trim();
       }
       return DEFAULT_GITHUB_TOKEN;
@@ -665,7 +665,7 @@
       if (tok !== null) {
         localStorage.setItem('autoimgpost_gh_token', tok.trim());
         showToast('GitHub token saved successfully!');
-        loadUnifiedConfig(true).then(() => renderChannelsHub(true));
+        updateHeaderStatus();
       }
     }
 
@@ -727,6 +727,13 @@
 
     // --- UNIVERSAL CONFIG & CHANNELS MANAGEMENT ---
     async function loadUnifiedConfig(forceLive = false) {
+      const pending = localStorage.getItem('autoimgpost_pending_config');
+      if (pending) {
+        cachedConfig = JSON.parse(pending);
+        cachedChannels = cachedConfig.channels || [];
+        updateHeaderStatus();
+        return cachedConfig;
+      }
       // 1. If running locally, query /api/status
       if (isLocalEnv()) {
         try {
@@ -882,95 +889,54 @@
     }
 
     // --- INSTANT AUTO-SAVE TO GITHUB & LOCALHOST ---
-    async function saveConfigUniversal(updatedConfig, commitMsg = 'Update channel configuration from 24/7 Web UI') {
-      cachedConfig = updatedConfig;
-      cachedChannels = updatedConfig.channels || [];
-      localStorage.setItem('autoimgpost_latest_config', JSON.stringify(updatedConfig));
+    let configSaveQueue = Promise.resolve();
+    function saveConfigUniversal(updatedConfig, commitMsg = 'Update Facebook pages from Web UI') {
+      const snapshot = JSON.parse(JSON.stringify(updatedConfig));
+      cachedConfig = snapshot;
+      cachedChannels = snapshot.channels || [];
+      localStorage.setItem('autoimgpost_latest_config', JSON.stringify(snapshot));
+      localStorage.setItem('autoimgpost_pending_config', JSON.stringify(snapshot));
       updateHeaderStatus();
-      // Optimistically update UI instantly without waiting for network
       renderChannelsHub(true);
+      const task = configSaveQueue.then(() => persistConfig(snapshot, commitMsg));
+      configSaveQueue = task.catch(() => false);
+      return task;
+    }
 
-      // 1. If running locally, update local config.json via server
+    async function persistConfig(snapshot, commitMsg) {
       if (isLocalEnv()) {
         try {
-          await fetch('/api/save-config', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updatedConfig)
-          }).catch(() => {});
-        } catch(e) {}
+          const local = await fetch('/api/save-config', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(snapshot)});
+          if (!local.ok) throw new Error('Local save failed');
+        } catch (error) { showToast(error.message, 'warning'); }
       }
-
-      // 2. Commit directly to GitHub repository on branch main
-      let token = getGitHubToken();
-      if (token) {
-        try {
-          // Always get latest SHA first to prevent conflicts
-          const shaRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json?ref=main&t=${Date.now()}`, {
-            headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Cache-Control': 'no-cache' }
-          });
-          if (shaRes.ok) {
-            const fileObj = await shaRes.json();
-            configSha = fileObj.sha;
-          }
-
-          const rawJson = JSON.stringify(updatedConfig, null, 2);
-          const b64 = utf8ToBase64(rawJson);
-
-          let putRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json`, {
-            method: 'PUT',
-            headers: {
-              'Authorization': 'token ' + token,
-              'Accept': 'application/vnd.github.v3+json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              message: commitMsg, branch: 'main',
-              content: b64,
-              sha: configSha || undefined
-            })
-          });
-
-          // If 409 conflict, refetch fresh SHA and retry once
-          if (putRes.status === 409) {
-            const retryShaRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json?ref=main&t=${Date.now()}`, {
-              headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Cache-Control': 'no-cache' }
-            });
-            if (retryShaRes.ok) {
-              const retryFile = await retryShaRes.json();
-              configSha = retryFile.sha;
-              putRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json`, {
-                method: 'PUT',
-                headers: {
-                  'Authorization': 'token ' + token,
-                  'Accept': 'application/vnd.github.v3+json',
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                  message: commitMsg, branch: 'main',
-                  content: b64,
-                  sha: configSha
-                })
-              });
-            }
-          }
-
-          if (putRes.ok) {
-            const putData = await putRes.json();
-            if (putData.content) configSha = putData.content.sha;
-            showToast('✓ Auto-Saved to GitHub Instantly (main branch)!');
-          } else {
-            const err = await putRes.json().catch(() => ({}));
-            showToast('Saved in browser. GitHub push failed: ' + (err.message || putRes.statusText), 'warning');
-          }
-        } catch(err) {
-          console.warn('GitHub API network note:', err);
-          showToast('Saved in browser. GitHub push failed.', 'warning');
+      const token = getGitHubToken();
+      if (!token) {
+        showToast('Pages saved in this browser. Click Push pages to GitHub and enter a token with Contents write permission.', 'warning');
+        return false;
+      }
+      const headers = {'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json'};
+      try {
+        const remote = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json?ref=main&t=${Date.now()}`, {headers});
+        if (!remote.ok) throw new Error(`Cannot read repository (${remote.status}). Check token access to this repository.`);
+        const file = await remote.json();
+        const result = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json`, {
+          method: 'PUT', headers,
+          body: JSON.stringify({message: commitMsg, branch: 'main', sha: file.sha, content: utf8ToBase64(JSON.stringify(snapshot, null, 2))})
+        });
+        if (!result.ok) {
+          const error = await result.json().catch(() => ({}));
+          throw new Error(error.message || `GitHub returned ${result.status}`);
         }
+        const saved = await result.json();
+        configSha = saved.content.sha;
+        if (localStorage.getItem('autoimgpost_pending_config') === JSON.stringify(snapshot)) localStorage.removeItem('autoimgpost_pending_config');
+        showToast('Pages and placement committed to GitHub successfully.');
+        return true;
+      } catch (error) {
+        showToast('GitHub save failed: ' + error.message + '. Your changes are kept for retry.', 'warning');
+        return false;
       }
-
-      if (!token) showToast('Saved in browser. Set a GitHub token and push pages.', 'warning');
-      renderChannelsHub(true);
     }
 
     // --- CONCURRENT ACTION EXECUTION & SYNC ---
@@ -1581,7 +1547,7 @@
                       </div>
                       <div class="flex flex-wrap gap-2 text-xs text-neutral-300 pb-2">
                         <label>Text <select class="bg-neutral-800 p-1 rounded" aria-label="Text placement" onchange="setSourcePlacement('${encodeURIComponent(ch.channel_id)}', '${encodeURIComponent(src)}', 'text_position', this.value)">
-                        ${['top','bottom'].map(v => `<option value="${v}" ${(layout.text_position || 'bottom') === v ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
+                        ${['auto','top','bottom'].map(v => `<option value="${v}" ${(layout.text_position || 'auto') === v ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
                         <label>Logo / branding <select class="bg-neutral-800 p-1 rounded" aria-label="Logo placement" onchange="setSourcePlacement('${encodeURIComponent(ch.channel_id)}', '${encodeURIComponent(src)}', 'logo_position', this.value)">
                         ${['with-text','top-left','top-center','top-right','bottom-left','bottom-center','bottom-right'].map(v => `<option value="${v}" ${(layout.logo_position || 'with-text') === v ? 'selected' : ''}>${v.replaceAll('-', ' ')}</option>`).join('')}</select></label>
                       </div>

@@ -86,6 +86,9 @@ def execute_pipeline_task(action="dry_run", channel="all", specific_post=None):
 
             log_message("Stage 3: Downloading high-res image & running intelligent watermark inpainter...", stage=3)
             raw_img = download_image(specific_post["image_url"])
+            from modules.source_layout import get_source_layout
+            from modules.poster_engine import detect_image_text_position
+            source_layout = get_source_layout(ch, specific_post, detect_image_text_position(raw_img))
             cleaned = erase_text_and_watermarks(raw_img)
 
             log_message("Stage 4: Applying OpenCV CIE-LAB CLAHE contrast grading...", stage=4)
@@ -109,7 +112,8 @@ def execute_pipeline_task(action="dry_run", channel="all", specific_post=None):
                 highlight_hex="random",
                 dest_page_name=dest_name,
                 output_path=out_poster,
-                post_id=specific_post.get("post_id")
+                post_id=specific_post.get("post_id"),
+                **source_layout
             )
             CURRENT_RUN["last_poster"] = out_poster.replace("\\", "/")
             CURRENT_RUN["current_post"] = specific_post
