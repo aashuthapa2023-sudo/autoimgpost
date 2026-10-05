@@ -85,6 +85,9 @@ def execute_pipeline_task(action="dry_run", channel="all", specific_post=None):
             time.sleep(0.4)
 
             log_message("Stage 3: Downloading high-res image & running intelligent watermark inpainter...", stage=3)
+            from modules.content_quality import channel_accepts_post
+            if not channel_accepts_post(ch, specific_post):
+                raise ValueError('This post does not match the destination page topic')
             raw_img = download_image(specific_post["image_url"])
             from modules.source_layout import get_source_layout
             from modules.poster_engine import detect_image_text_position

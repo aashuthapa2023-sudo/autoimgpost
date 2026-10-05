@@ -280,6 +280,8 @@ def run_pipeline(mode="run", target_channel="all"):
             )
             continue
 
+        from modules.content_quality import channel_accepts_post
+        candidate_posts = [p for p in candidate_posts if channel_accepts_post(ch, p)]
         now_current = int(time.time())
         cutoff_24h  = now_current - 86400       # 24 hours ago
         cutoff_72h  = now_current - 259200      # 72 hours ago
@@ -317,7 +319,7 @@ def run_pipeline(mode="run", target_channel="all"):
         # 4. WEB NEWS FALLBACK — fetch from internet when Facebook sources are dry
         web_posts = []
         is_nepali_ch = (ch.get("language") == "ne" or channel_id == "nepal_speaks")
-        web_needed = (len(unposted_t1) == 0 and not is_nepali_ch)  # Strictly disable English web fallback for Nepali channels!
+        web_needed = (len(unposted_t1) == 0 and not is_nepali_ch and channel_id not in ('oceans_secret', 'Music Store') and ch.get('content_topic') != 'ocean')  # Strictly disable English web fallback for Nepali channels!
         if web_needed and WEB_SCRAPER_AVAILABLE:
             category = get_channel_category(channel_name)
             print(f" [WEB FALLBACK] No fresh FB posts available. Fetching {category.upper()} news from internet...")

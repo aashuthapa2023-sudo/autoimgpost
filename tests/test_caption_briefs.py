@@ -11,6 +11,11 @@ exec(compile(ast.Module(body=[node], type_ignores=[]), '<caption cleaner>', 'exe
 clean = namespace[node.name]
 
 class CaptionTests(unittest.TestCase):
+    def test_repeated_sentences_in_one_paragraph_are_removed(self):
+        clean = namespace['clean_and_deduplicate_source_caption']('Scientists found coral near the coast. Scientists found coral near the coast! Scientists found coral near the coast again.', channel_name="Ocean's Secret")
+        self.assertEqual(clean.lower().count('scientists found coral'), 1)
+        self.assertNotIn('#Entertainment', clean)
+
     def test_user_example(self):
         result = clean('{: [**bit.ly/3TpQ4Vm**](https://l.facebook.com/l.php?u=https%3A%2F%2Fbit.ly%2F3TpQ4Vm)\nTaylor Swift just gave fans four new songs to pore over. But what are they about?}')
         self.assertIn('Taylor Swift just gave fans four new songs to pore over.', result)

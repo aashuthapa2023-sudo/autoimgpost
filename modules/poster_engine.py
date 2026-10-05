@@ -309,6 +309,9 @@ def fit_headline_line(tokens, font, font_size, highlight_rgb, max_width, max_hei
     scale = min(1.0, max_width / line.width, max_height / line.height)
     if scale < 1:
         line = line.resize((max(1, int(line.width * scale)), max(1, int(line.height * scale))), Image.Resampling.LANCZOS)
+    bounds = line.getbbox()
+    if bounds:
+        line = line.crop(bounds)  # Centre visible glyphs, excluding padding and trailing spaces.
     return line
 
 
@@ -387,26 +390,44 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
         text_w, text_h, radius = 0, 0, 0
         bbox = (0, 0, 0, 0)
 
-    # Typography sizing: 100% INCREASED FONT SIZE (Doubled from 50-56px to 100-108px)
+    # Reflow words before sizing: lengthy lines must not shrink into tiny type.
     safe_margin = 60
-    safe_max_w = target_w - (safe_margin * 2) # 990px
-    chosen_size = 108 if len(normalized_lines) <= 2 else 96
-    for test_size in range(chosen_size, 7, -2):
-        line_spacing_test = int(test_size * 1.30)
-        total_text_h_test = len(normalized_lines) * line_spacing_test
-        total_content_h_test = (bh + 24 if branding_name else 0) + total_text_h_test
-
-        f_test = get_font(test_size, bold=True)
-        all_fit = True
-        for line in normalized_lines:
-            line_w = measure_line_width(temp_draw, line, f_test, font_size=test_size)
-            if line_w > safe_max_w:
-                all_fit = False
+    safe_max_w = target_w - 2 * safe_margin
+    word_tokens = []
+    for line in normalized_lines:
+        for token in line:
+            text = token.get('text', '') if isinstance(token, dict) else str(token)
+            kind = token.get('type', 'white') if isinstance(token, dict) else 'white'
+            word_tokens.extend({'text': word + ' ', 'type': kind} for word in text.split())
+    chosen_size = None
+    for test_size in range(96, 59, -2):
+        font = get_font(test_size, bold=True)
+        wrapped = [[]]
+        for token in word_tokens:
+            candidate = wrapped[-1] + [token]
+            if wrapped[-1] and measure_line_width(temp_draw, candidate, font, test_size) > safe_max_w - 20:
+                wrapped.append([token])
+            else:
+                wrapped[-1].append(token)
+        if len(wrapped) <= 3 and len(wrapped)*int(test_size*1.30) + bh + 24 <= 490:
+            if all(measure_line_width(temp_draw, line, font, test_size) <= safe_max_w - 20 for line in wrapped):
+                chosen_size = test_size
+                normalized_lines = wrapped
                 break
-        if all_fit and total_content_h_test <= (target_h - int(target_h * 0.62) - 16):
-            chosen_size = test_size
-            break
-        chosen_size = test_size
+    if chosen_size is not None:
+        # Balance adjacent lines instead of leaving a lone word at the bottom.
+        font = get_font(chosen_size, bold=True)
+        for i in range(len(normalized_lines)-1, 0, -1):
+            previous, current = normalized_lines[i-1], normalized_lines[i]
+            while len(previous) > 1:
+                old_delta = abs(measure_line_width(temp_draw, previous, font, chosen_size) - measure_line_width(temp_draw, current, font, chosen_size))
+                candidate = [previous[-1]] + current
+                new_delta = abs(measure_line_width(temp_draw, previous[:-1], font, chosen_size) - measure_line_width(temp_draw, candidate, font, chosen_size))
+                if new_delta >= old_delta or measure_line_width(temp_draw, candidate, font, chosen_size) > safe_max_w - 20:
+                    break
+                current.insert(0, previous.pop())
+    if chosen_size is None or not word_tokens:
+        raise ValueError('Headline cannot fit legibly: shorten it without dropping the main facts')
 
     title_font = get_font(chosen_size, bold=True)
     line_spacing = min(int(chosen_size * 1.30), max(1, (target_h - 2 * safe_margin - bh - 24) // max(1, len(normalized_lines))))  # Generous line height ensures top & bottom matras never collide
@@ -440,104 +461,35 @@ def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex
     gap = 20
     total_content_h = (bh + gap if branding_name else 0) + total_text_h
 
-    # Detect exact bounding boxes of text in canvas to ensure full coverage if source had text
-    gray_canvas = cv2.cvtColor(canvas, cv2.COLOR_BGR2GRAY)
-    k_el = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
-    m_grad = cv2.morphologyEx(gray_canvas, cv2.MORPH_GRADIENT, k_el)
-    _, m_thresh = cv2.threshold(m_grad, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-    k_h = cv2.getStructuringElement(cv2.MORPH_RECT, (max(15, int(target_w * 0.035)), 3))
-    m_conn = cv2.morphologyEx(m_thresh, cv2.MORPH_CLOSE, k_h)
-    m_cnts, _ = cv2.findContours(m_conn, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-    top_text_max_y = int(target_h * 0.30)
-    bot_text_min_y = int(target_h * 0.70)
-    has_bot_text = False
-    has_top_text = False
-    for c in m_cnts:
-        bx_t, by_t, bw_t, bh_t = cv2.boundingRect(c)
-        aspect = bw_t / float(bh_t + 1e-5)
-        if bw_t > target_w * 0.12 and bh_t > target_h * 0.012 and bh_t < target_h * 0.25 and aspect > 1.6:
-            y_mid = by_t + bh_t / 2.0
-            if y_mid < target_h * 0.45:
-                top_text_max_y = max(top_text_max_y, by_t + bh_t)
-                has_top_text = True
-            elif y_mid > target_h * 0.55:
-                bot_text_min_y = min(bot_text_min_y, by_t)
-                has_bot_text = True
+    # Source lettering was already verified and removed upstream. Scene edges
+    # must not expand the dark backing over faces, waves, buildings or animals.
+    has_top_text = has_bot_text = False
+    top_text_max_y = bot_text_min_y = 0
 
     dark_black = np.array([8, 8, 10], dtype=np.float32)
 
-    if text_position == "top":
-        top_margin = safe_margin
-        by = top_margin
+    # A separate headline panel prevents any backing or fade from hiding the subject.
+    panel_height = min(target_h - 450, total_content_h + 2 * safe_margin)
+    if text_position == 'top':
+        by = safe_margin
         start_text_y = by + (bh + gap if branding_name else 0)
-        content_bottom = start_text_y + total_text_h
-        
-        # Solid dark backing covers text region + detected original top text
-        text_floor = max(content_bottom + 35, (top_text_max_y + 15) if has_top_text else (content_bottom + 35))
-        fade_depth = max(180, int(total_content_h * 0.65))
-        if kwargs.get("source_header_fraction"):
-            # This source has a designed header, not text scattered over the photo.
-            # Do not misclassify facial edges below it as headline text.
-            text_floor = max(content_bottom + 20, int(target_h * kwargs["source_header_fraction"]))
-            fade_depth = int(target_h * 0.06)
-        grad_bottom = min(target_h, text_floor + fade_depth)
-
-        # 1. Dark backing across text area [0, text_floor] (100% opaque, zero ghost text)
-        for y in range(text_floor):
-            canvas[y, :] = dark_black.astype(np.uint8)
-
-        # 2. Filmic cosine smoothstep feathering into the photography [text_floor, grad_bottom]
-        for y in range(text_floor, grad_bottom):
-            t = (grad_bottom - y) / float(grad_bottom - text_floor + 1e-5)
-            ease = 0.5 * (1.0 - math.cos(math.pi * t))
-            alpha = ease
-            canvas[y, :] = ((1.0 - alpha) * canvas[y, :].astype(np.float32) + alpha * dark_black).astype(np.uint8)
-
-        # Subtle clean at bottom edge for watermarks (bottom 5%)
-        bot_strip_h = int(target_h * 0.05)
-        strip_start = target_h - bot_strip_h
-        for y in range(strip_start, target_h):
-            t = (y - strip_start) / float(bot_strip_h)
-            alpha = t * 0.75
-            canvas[y, :] = ((1.0 - alpha) * canvas[y, :].astype(np.float32) + alpha * dark_black).astype(np.uint8)
-
+        photo_top, photo_bottom = panel_height, target_h
     else:
-        # Bottom placement:
-        # Subtle atmospheric top vignette (gentle 5% top edge frame)
-        top_fade_h = int(target_h * 0.06)
-        for y in range(top_fade_h):
-            alpha = (1.0 - (y / float(top_fade_h))) * 0.12
-            canvas[y, :] = ((1.0 - alpha) * canvas[y, :].astype(np.float32) + alpha * np.array([8, 8, 10], dtype=np.float32)).astype(np.uint8)
-
-        # Position text with clean bottom breathing margin
-        bottom_margin = safe_margin
-        start_text_y = target_h - bottom_margin - total_text_h
+        start_text_y = target_h - safe_margin - total_text_h
         by = start_text_y - bh - gap if branding_name else start_text_y
-        content_top = by
-
-        # Determine where dark backing starts:
-        # If original bottom text was detected, cover it; otherwise start comfortably above badge
-        if has_bot_text and bot_text_min_y < target_h * 0.85:
-            text_roof = min(content_top - 25, bot_text_min_y - 20)
-        else:
-            text_roof = content_top - 35
-        text_roof = max(int(target_h * 0.45), text_roof)
-
-        # Filmic cosine smoothstep feather zone extending upward into the photo
-        fade_depth = max(180, int(total_content_h * 0.65))
-        grad_top = max(0, text_roof - fade_depth)
-
-        # 1. Filmic cosine smoothstep feather zone [grad_top, text_roof]
-        for y in range(grad_top, text_roof):
-            t = (y - grad_top) / float(text_roof - grad_top + 1e-5)
-            ease = 0.5 * (1.0 - math.cos(math.pi * t))
-            alpha = ease
-            canvas[y, :] = ((1.0 - alpha) * canvas[y, :].astype(np.float32) + alpha * dark_black).astype(np.uint8)
-
-        # 2. 100% Solid dark backing behind text & badge [text_roof, target_h] (zero ghost text)
-        for y in range(text_roof, target_h):
-            canvas[y, :] = dark_black.astype(np.uint8)
+        photo_top, photo_bottom = 0, target_h - panel_height
+    canvas[:] = dark_black.astype(np.uint8)
+    photo_h = photo_bottom - photo_top
+    # Full subject remains visible; a blurred fill avoids empty letterbox edges.
+    fill_scale = max(target_w / float(w), photo_h / float(h))
+    fill = cv2.resize(base_img, (max(target_w, round(w*fill_scale)), max(photo_h, round(h*fill_scale))))
+    fx, fy = (fill.shape[1]-target_w)//2, (fill.shape[0]-photo_h)//2
+    background = cv2.GaussianBlur(fill[fy:fy+photo_h, fx:fx+target_w], (0,0), 24)
+    canvas[photo_top:photo_bottom] = background
+    fit_scale = min(target_w / float(w), photo_h / float(h))
+    photo = cv2.resize(base_img, (max(1,round(w*fit_scale)), max(1,round(h*fit_scale))), interpolation=cv2.INTER_LANCZOS4)
+    px, py = (target_w-photo.shape[1])//2, photo_top+(photo_h-photo.shape[0])//2
+    canvas[py:py+photo.shape[0], px:px+photo.shape[1]] = photo
 
     pil_img = Image.fromarray(cv2.cvtColor(canvas, cv2.COLOR_BGR2RGB))
     draw = ImageDraw.Draw(pil_img)

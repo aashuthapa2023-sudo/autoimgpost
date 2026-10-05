@@ -237,22 +237,18 @@ def detect_source_text_boxes(img, reader=None):
     if reader is None:
         if _source_text_reader is None:
             import easyocr
-            # Only the neural text detector is used: no recognition confidence gate
-            # can discard partial, stylized, or Devanagari source lettering.
-            _source_text_reader = easyocr.Reader(['en'], gpu=False, recognizer=False)
+            _source_text_reader = easyocr.Reader(['en', 'hi'], gpu=False)
         reader = _source_text_reader
     h, w = img.shape[:2]
-    horizontal, free = reader.detect(img, min_size=8, text_threshold=0.5,
-                                     low_text=0.3, link_threshold=0.3,
-                                     canvas_size=2560, mag_ratio=1.0)
     boxes = []
-    for group in horizontal:
-        for left, right, top, bottom in group:
-            boxes.append((left, top, right, bottom))
-    for group in free:
-        for polygon in group:
-            xs, ys = zip(*polygon)
-            boxes.append((min(xs), min(ys), max(xs), max(ys)))
+    # Detection alone mistakes waves, fur and architecture for letters. Require
+    # recognizable text before changing photo pixels.
+    for polygon, text, confidence in reader.readtext(img, detail=1, paragraph=False):
+        letters = sum(c.isalnum() for c in str(text))
+        if confidence < 0.65 or letters < 3:
+            continue
+        xs, ys = zip(*polygon)
+        boxes.append((min(xs), min(ys), max(xs), max(ys)))
     padding = max(4, round(min(h, w) * 0.006))
     return [(max(0, int(left)-padding), max(0, int(top)-padding),
              min(w, int(right)+padding), min(h, int(bottom)+padding))
@@ -265,8 +261,15 @@ def remove_source_text(img, boxes):
     if img is None or not boxes:
         return img
     mask = np.zeros(img.shape[:2], dtype=np.uint8)
+    h, w = img.shape[:2]
     for left, top, right, bottom in boxes:
+        left, right = max(0, left), min(w, right)
+        top, bottom = max(0, top), min(h, bottom)
+        if (right-left)*(bottom-top) > h*w*0.04:
+            raise ValueError('Source text covers too much photo area for safe removal; choose another image')
         mask[top:bottom, left:right] = 255
+    if np.count_nonzero(mask) > h*w*0.10:
+        raise ValueError('Source has too much embedded text to clean without damaging the photograph')
     return cv2.inpaint(img, mask, inpaintRadius=5, flags=cv2.INPAINT_TELEA)
 
 
@@ -274,7 +277,7 @@ def erase_text_and_watermarks(img: np.ndarray, source_text_boxes=None) -> np.nda
     # Detection failure must stop this image, rather than publish leaking lettering.
     boxes = detect_source_text_boxes(img) if source_text_boxes is None else source_text_boxes
     cleaned = remove_source_text(img, boxes)
-    return detect_and_remove_watermarks(cleaned)
+    return cleaned  # No unverified edge/colour erasure on the main subject.
 
 def validate_image_quality(img: np.ndarray, min_dim: int = 500, min_sharpness: float = 100.0) -> tuple:
     """
