@@ -31,7 +31,7 @@ class DiscoveryTests(unittest.TestCase):
             image.write(b"dummy")
             image_path = image.name
         try:
-            with patch.object(publisher.requests, 'post', return_value=SimpleNamespace(status_code=500, json=lambda: {})):
+            with patch.object(publisher, 'verify_publishable_poster', return_value={}), patch.object(publisher.requests, 'post', return_value=SimpleNamespace(status_code=500, json=lambda: {})):
                 with self.assertRaises(RuntimeError):
                     publisher.publish_to_facebook('page', 'token', image_path, 'caption')
         finally:
@@ -53,12 +53,18 @@ class PipelineTests(unittest.TestCase):
         ns.update(load_config=lambda: {'channels': [{'channel_id': 'test', 'dest_access_token_env': 'EAA_test'}]},
                   load_state=lambda: state, save_state=Mock(), fetch_source_posts=Mock(return_value=posts),
                   download_image=Mock(return_value=None), send_telegram_alert=Mock())
-        ns['run_pipeline']()
-        self.assertEqual(ns['download_image'].call_count, 2)
-        self.assertEqual(state['processed_ids']['test'], [])
-        ns['save_state'].reset_mock()
-        ns['run_pipeline'](mode='dry_run')
-        ns['save_state'].assert_not_called()
+        previous_cwd = os.getcwd()
+        with tempfile.TemporaryDirectory() as directory:
+            try:
+                os.chdir(directory)
+                ns['run_pipeline']()
+                self.assertEqual(ns['download_image'].call_count, 2)
+                self.assertEqual(state['processed_ids']['test'], [])
+                ns['save_state'].reset_mock()
+                ns['run_pipeline'](mode='dry_run')
+                ns['save_state'].assert_not_called()
+            finally:
+                os.chdir(previous_cwd)
 
 if __name__ == '__main__':
     unittest.main()

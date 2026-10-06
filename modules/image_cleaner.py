@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import requests
 import urllib.parse
+import os
 
 def download_image(url: str) -> np.ndarray:
     desktop_headers = {
@@ -40,11 +41,6 @@ def download_image(url: str) -> np.ndarray:
                 arr = np.asarray(bytearray(resp_orig.content), dtype=np.uint8)
                 img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
                 if img is not None and img.shape[0] >= 200 and img.shape[1] >= 200:
-                    h_cur, w_cur = img.shape[:2]
-                    if min(w_cur, h_cur) < 500:
-                        scale = 720.0 / float(min(w_cur, h_cur))
-                        new_w, new_h = int(w_cur * scale), int(h_cur * scale)
-                        img = cv2.resize(img, (new_w, new_h), interpolation=cv2.INTER_LANCZOS4)
                     return img
         except Exception:
             pass
@@ -70,141 +66,20 @@ def download_image(url: str) -> np.ndarray:
         if img is not None:
             if img.shape[0] < 50 or img.shape[1] < 50:
                 return None
-            h_cur, w_cur = img.shape[:2]
-            if min(w_cur, h_cur) < 500:
-                scale = 720.0 / float(min(w_cur, h_cur))
-                new_w, new_h = int(w_cur * scale), int(h_cur * scale)
-                img = cv2.resize(img, (new_w, new_h), interpolation=cv2.INTER_LANCZOS4)
+            # Preserve native resolution so the quality gate cannot mistake an
+            # enlarged thumbnail for a detailed source photograph.
         return img
     except Exception:
         return None
 
 def detect_and_remove_watermarks(img: np.ndarray) -> np.ndarray:
+    """Legacy entry point: gradients and red objects are not proof of a watermark.
+
+    Preserve the original pixels. The pipeline uses OCR and separable source
+    panels through erase_text_and_watermarks instead of generic inpainting.
     """
-    Intelligently inspects image for watermarks, channel logos, text stamps,
-    and semi-transparent overlays, while strictly preserving human faces using
-    Haar cascade detection, and seamlessly inpaints watermarks using Telea algorithm.
-    """
-    if img is None:
-        return None
-
-    h, w = img.shape[:2]
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-    # 1. Face & Skin detection masks to strictly prevent inpainting over human subjects
-    face_mask = np.zeros((h, w), dtype=np.uint8)
-    try:
-        cascade_path = cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
-        face_cascade = cv2.CascadeClassifier(cascade_path)
-        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.15, minNeighbors=4, minSize=(40, 40))
-        for (fx, fy, fw, fh) in faces:
-            # Expand face bounds by 35% for hair, forehead, and neck protection
-            pad_x = int(fw * 0.35)
-            pad_y = int(fh * 0.35)
-            x1 = max(0, fx - pad_x)
-            y1 = max(0, fy - pad_y)
-            x2 = min(w, fx + fw + pad_x)
-            y2 = min(h, fy + fh + pad_y)
-            cv2.rectangle(face_mask, (x1, y1), (x2, y2), 255, -1)
-    except Exception:
-        pass
-
-    # Human skin detection in HSV to protect faces, necks, arms, and subject bodies
-    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-    skin_mask = cv2.inRange(hsv, np.array([0, 20, 50]), np.array([25, 255, 255]))
-    kernel_skin = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7))
-    skin_mask = cv2.dilate(skin_mask, kernel_skin, iterations=2)
-
-    # 2. Gradient edge detection for high-frequency text / watermark strokes
-    mask = np.zeros((h, w), dtype=np.uint8)
-    grad_x = cv2.Sobel(gray, cv2.CV_16S, 1, 0, ksize=3)
-    grad_y = cv2.Sobel(gray, cv2.CV_16S, 0, 1, ksize=3)
-    abs_grad_x = cv2.convertScaleAbs(grad_x)
-    abs_grad_y = cv2.convertScaleAbs(grad_y)
-    grad = cv2.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0)
-
-    # Otsu thresholding for edge regions
-    _, thresh = cv2.threshold(grad, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-
-    # Morphological horizontal closing to group letters into words
-    kernel_text = cv2.getStructuringElement(cv2.MORPH_RECT, (11, 3))
-    connected = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel_text)
-
-    contours, _ = cv2.findContours(connected, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    watermark_detected = False
-
-    # STRICT RULE: Only check strictly below the vertical center of the image
-    y_center = int(h * 0.50)
-
-    for cnt in contours:
-        x, y, cw, ch = cv2.boundingRect(cnt)
-        aspect = cw / float(ch + 1e-5)
-        area = cw * ch
-
-        # Strictly ignore any region above center of image (y < y_center)
-        if y < y_center:
-            continue
-
-        # Strictly protect human subjects: NEVER touch faces or skin tones
-        if np.any(face_mask[y:y+ch, x:x+cw] > 0):
-            continue
-        skin_overlap = np.count_nonzero(skin_mask[y:y+ch, x:x+cw] > 0) / float(area + 1e-5)
-        if skin_overlap > 0.06:
-            continue
-
-        # Watermark / overlay text criteria strictly in lower half
-        is_edge_or_banner = (x < w * 0.20 or x + cw > w * 0.80 or y + ch > h * 0.65)
-        if is_edge_or_banner and 1.2 <= aspect <= 18.0 and 8 <= ch <= 75 and area <= (h * w * 0.035):
-            roi_grad = grad[y:y+ch, x:x+cw]
-            density = np.count_nonzero(roi_grad > 38) / float(area + 1e-5)
-            if density > 0.22:
-                cv2.rectangle(mask, (max(0, x - 2), max(0, y - 2)), (min(w, x + cw + 2), min(h, y + ch + 2)), 255, -1)
-                watermark_detected = True
-
-    # 3. Detect high-contrast colored badges (strictly below the center of the image)
-    try:
-        mask_r1 = cv2.inRange(hsv, np.array([0, 110, 90]), np.array([12, 255, 255]))
-        mask_r2 = cv2.inRange(hsv, np.array([168, 110, 90]), np.array([180, 255, 255]))
-        mask_colored = cv2.bitwise_or(mask_r1, mask_r2)
-        cnts_badge, _ = cv2.findContours(mask_colored, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        for bcnt in cnts_badge:
-            bx, by, bw, bh = cv2.boundingRect(bcnt)
-            if by < y_center:
-                continue
-            b_area = bw * bh
-            if not np.any(face_mask[by:by+bh, bx:bx+bw] > 0) and np.count_nonzero(skin_mask[by:by+bh, bx:bx+bw] > 0) < (b_area * 0.06) and 25 <= bw <= 350 and 12 <= bh <= 100 and b_area < (h * w * 0.03):
-                cv2.rectangle(mask, (max(0, bx - 2), max(0, by - 2)), (min(w, bx + bw + 2), min(h, by + bh + 2)), 255, -1)
-                watermark_detected = True
-    except Exception:
-        pass
-
-    # 4. Detect and inpaint top-left corner ND / NF logos (Netflix Daily / Netflix Fanatics)
-    # Strictly isolated to top-left corner: x < 0.16 * w and y < 0.13 * h
-    try:
-        corner_h = int(h * 0.13)
-        corner_w = int(w * 0.16)
-        roi_corner = img[0:corner_h, 0:corner_w]
-        cb, cg, cr = cv2.split(roi_corner)
-        c_diff = cr.astype(np.int16) - np.maximum(cg, cb).astype(np.int16)
-        # Saturated red logo pixels
-        c_logo_pixels = ((cr > 125) & (c_diff > 65)).astype(np.uint8) * 255
-        cnts_logo, _ = cv2.findContours(c_logo_pixels, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        for lcnt in cnts_logo:
-            lx, ly, lw, lh = cv2.boundingRect(lcnt)
-            l_area = lw * lh
-            if 8 <= lw <= 95 and 8 <= lh <= 90 and l_area >= 50:
-                cv2.rectangle(mask, (max(0, lx - 3), max(0, ly - 3)), (min(corner_w, lx + lw + 3), min(corner_h, ly + lh + 3)), 255, -1)
-                watermark_detected = True
-    except Exception:
-        pass
-
-    if watermark_detected and np.count_nonzero(mask) > 0:
-        kernel_dilate = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
-        dilated_mask = cv2.dilate(mask, kernel_dilate, iterations=1)
-        cleaned = cv2.inpaint(img, dilated_mask, inpaintRadius=3, flags=cv2.INPAINT_TELEA)
-        return cleaned
-
     return img
+
 
 def compute_image_dhash(img: np.ndarray, hash_size: int = 8) -> str:
     """Computes a 64-bit difference hash (dHash) as a 16-char hex string for visual deduplication."""
@@ -229,126 +104,250 @@ def clean_lower_half_text_and_badges(img: np.ndarray) -> np.ndarray:
 _source_text_reader = None
 
 
+class SourceTextBoxes(list):
+    """Recognized text plus separate detector evidence; never mix their trust levels."""
+    def __init__(self, boxes=(), suspected_rows=(), suspected_marks=()):
+        super().__init__(boxes)
+        self.suspected_rows = list(suspected_rows)
+        self.suspected_marks = list(suspected_marks)
+
+
+def _text_rows(boxes):
+    rows = []
+    for box in sorted(boxes, key=lambda item: item[1]):
+        for index, row in enumerate(rows):
+            overlap = min(row[3], box[3]) - max(row[1], box[1])
+            if overlap > min(row[3]-row[1], box[3]-box[1]) * .5:
+                rows[index] = (min(row[0], box[0]), min(row[1], box[1]),
+                               max(row[2], box[2]), max(row[3], box[3]))
+                break
+        else:
+            rows.append(tuple(box))
+    return rows
+
+
+def _clamped_boxes(boxes, height, width, padding=0):
+    result = []
+    for left, top, right, bottom in boxes:
+        left = max(0, int(left)-padding)
+        top = max(0, int(top)-padding)
+        right = min(width, int(right)+padding)
+        bottom = min(height, int(bottom)+padding)
+        if right > left and bottom > top:
+            result.append((left, top, right, bottom))
+    return result
+
+
 def detect_source_text_boxes(img, reader=None):
-    """Detect lettering across the complete image, independently of its language."""
+    """Inspect the whole source, keeping unreadable detector hits separate.
+
+    CRAFT alone often labels water, instruments, fur, and buildings as text.
+    Its hits can identify a designed panel, but never authorize pixel removal.
+    """
     if img is None:
-        return []
+        return SourceTextBoxes()
     global _source_text_reader
     if reader is None:
         if _source_text_reader is None:
             import easyocr
-            _source_text_reader = easyocr.Reader(['en', 'hi'], gpu=False)
+            options = {'gpu': False}
+            if os.getenv('IMAGE_OCR_MODEL_DIR'):
+                options['model_storage_directory'] = os.environ['IMAGE_OCR_MODEL_DIR']
+            # Nepali is explicitly supported by EasyOCR's Devanagari model;
+            # include it rather than relying on Hindi's character whitelist.
+            _source_text_reader = easyocr.Reader(['en', 'ne', 'hi'], **options)
         reader = _source_text_reader
-    h, w = img.shape[:2]
-    boxes = []
-    # Detection alone mistakes waves, fur and architecture for letters. Require
-    # recognizable text before changing photo pixels.
+    height, width = img.shape[:2]
+    recognized = []
     for polygon, text, confidence in reader.readtext(img, detail=1, paragraph=False):
-        letters = sum(c.isalnum() for c in str(text))
-        if confidence < 0.35 or letters < 3:
-            continue
+        letters = sum(character.isalnum() for character in str(text))
         xs, ys = zip(*polygon)
-        boxes.append((min(xs), min(ys), max(xs), max(ys)))
-    # Keep detector-only bounds for broad designed headline rows. Recognition
-    # must not miss Nepali text and leave a complete source news panel behind.
+        near_corner = ((max(ys) <= height*.18 or min(ys) >= height*.82)
+                       and (max(xs) <= width*.22 or min(xs) >= width*.78))
+        minimum_confidence = .35 if letters >= 3 else (.35 if near_corner and letters == 2
+                              else .60 if letters == 2 else .55 if near_corner else .80)
+        if letters < 1 or confidence < minimum_confidence:
+            continue
+        recognized.append((min(xs), min(ys), max(xs), max(ys)))
+    suspected = []
+    marks = []
     if hasattr(reader, 'detect'):
-        horizontal, free = reader.detect(img, min_size=12, text_threshold=0.6,
-                                         low_text=0.35, link_threshold=0.4)
-        detected = [(l,t,r,b) for group in horizontal for l,r,t,b in group]
-        rows = []
-        for l,t,r,b in sorted(detected, key=lambda box:box[1]):
-            for i,(rl,rt,rr,rb) in enumerate(rows):
-                if min(rb,b)-max(rt,t) > min(rb-rt,b-t)*0.5:
-                    rows[i] = (min(l,rl),min(t,rt),max(r,rr),max(b,rb))
-                    break
-            else:
-                rows.append((l,t,r,b))
-        boxes.extend(row for row in rows if row[2]-row[0] > w*.25)
-    padding = max(4, round(min(h, w) * 0.006))
-    return [(max(0, int(left)-padding), max(0, int(top)-padding),
-             min(w, int(right)+padding), min(h, int(bottom)+padding))
-            for left, top, right, bottom in boxes
-            if right > left and bottom > top]
+        horizontal, free = reader.detect(img, min_size=12, text_threshold=.65,
+                                         low_text=.35, link_threshold=.4)
+        detected = [(left, top, right, bottom)
+                    for group in horizontal for left, right, top, bottom in group]
+        suspected = [row for row in _text_rows(detected)
+                     if row[2]-row[0] >= width*.35 and row[3]-row[1] <= height*.14]
+        # Small source initials can be recognized as punctuation or a single
+        # glyph. Keep that uncertainty rather than claiming an OCR-clean photo.
+        # These bounds may veto a source, never authorize erasing its pixels.
+        marks = [box for box in detected
+                 if (box[3] <= height*.18 or box[1] >= height*.82)
+                 and (box[2] <= width*.22 or box[0] >= width*.78)
+                 and box[2]-box[0] >= max(12, width*.018)
+                 and box[3]-box[1] >= max(12, height*.012)
+                 and (box[2]-box[0])*(box[3]-box[1]) <= height*width*.025]
+    padding = max(4, round(min(height, width)*.006))
+    return SourceTextBoxes(_clamped_boxes(recognized, height, width, padding),
+                           _clamped_boxes(suspected, height, width, padding),
+                           _clamped_boxes(marks, height, width, padding))
 
 
 def remove_source_text(img, boxes):
-    """Remove complete detected text bounds, including shadows and edge fragments."""
+    """Never fabricate photo pixels to erase a rectangular OCR detection.
+
+    Even a small label can overlap a face, animal, instrument or other subject.
+    A safe source panel can be cropped by extract_source_photo; text inside the
+    retained photograph requires another source image.
+    """
     if img is None or not boxes:
         return img
-    mask = np.zeros(img.shape[:2], dtype=np.uint8)
-    h, w = img.shape[:2]
-    for left, top, right, bottom in boxes:
-        left, right = max(0, left), min(w, right)
-        top, bottom = max(0, top), min(h, bottom)
-        if (right-left)*(bottom-top) > h*w*0.04:
-            raise ValueError('Source text covers too much photo area for safe removal; choose another image')
-        mask[top:bottom, left:right] = 255
-    if np.count_nonzero(mask) > h*w*0.10:
-        raise ValueError('Source has too much embedded text to clean without damaging the photograph')
-    return cv2.inpaint(img, mask, inpaintRadius=5, flags=cv2.INPAINT_TELEA)
+    raise ValueError('Embedded source text overlaps the photograph; choose another image instead of inpainting subjects')
+
+
+def _flat_panel_rows(img, boxes):
+    """Rows with a uniform designed background after excluding lettering.
+
+    Exclusions are only used to assess backgrounds, never to change pixels.
+    Require a substantial visible background on each row. Missing rows are
+    bridged only where OCR boxes cover them and neighboring backgrounds agree.
+    """
+    height, width = img.shape[:2]
+    left, right = int(width*.15), max(int(width*.85), int(width*.15)+1)
+    # Sample columns rather than scaling vertically: crop boundaries stay exact.
+    step = max(1, (right-left)//320)
+    xs = np.arange(left, right, step)
+    samples = img[:, xs].astype(np.int16)
+    available = np.ones(samples.shape[:2], dtype=bool)
+    covered = np.zeros(height, dtype=bool)
+    for box_left, top, box_right, bottom in boxes:
+        available[top:bottom, (xs >= box_left) & (xs < box_right)] = False
+        if box_right-box_left >= width*.25:
+            covered[top:bottom] = True
+    flat = np.zeros(height, dtype=bool)
+    colors = np.zeros((height, 3), dtype=np.float32)
+    for y in range(height):
+        visible = samples[y, available[y]]
+        if len(visible) < max(16, len(xs)*.18):
+            continue
+        color = np.median(visible, axis=0)
+        colors[y] = color
+        flat[y] = np.mean(np.max(np.abs(visible-color), axis=1) <= 14) >= .90
+    # Letter rows may be fully covered, but unrelated photo texture cannot
+    # become a panel just because a fixed-size morphological kernel joined it.
+    y = 0
+    while y < height:
+        if flat[y]:
+            y += 1
+            continue
+        start = y
+        while y < height and not flat[y]:
+            y += 1
+        end = y
+        if (start > 0 and end < height and np.all(covered[start:end])
+                and end-start <= height*.15
+                and np.max(np.abs(colors[start-1]-colors[end])) <= 18):
+            flat[start:end] = True
+    return flat
+
+
+def _has_panel_text(rows, width, top, bottom, verified):
+    relevant = [row for row in rows if row[1] >= top and row[3] <= bottom
+                and row[2]-row[0] >= width*.25]
+    if not relevant:
+        return False
+    # Recognizable broad headline + solid background suffices. Unreadable
+    # typography needs multiple aligned lines, not one detector band of waves.
+    if any(row[1] >= top and row[3] <= bottom and row[2]-row[0] >= width*.25
+           for row in _text_rows(verified)):
+        return True
+    broad = [row for row in relevant if row[2]-row[0] >= width*.40]
+    return len(broad) >= 2 and max(row[0] for row in broad)-min(row[0] for row in broad) <= width*.12
 
 
 def extract_source_photo(img, boxes):
-    """Discard edge news-card panels instead of keeping or smearing their lettering."""
-    h, w = img.shape[:2]
-    if not boxes:
+    """Extract only edge-connected solid news panels; preserve photo pixels.
+
+    A headline's y-coordinate is never itself a crop boundary. Typography over
+    a photograph, ambiguous panels, and leftover source logos are rejected.
+    """
+    if img is None:
+        return None
+    height, width = img.shape[:2]
+    verified = _clamped_boxes(boxes, height, width)
+    suspected = _clamped_boxes(getattr(boxes, 'suspected_rows', []), height, width)
+    marks = _clamped_boxes(getattr(boxes, 'suspected_marks', []), height, width)
+    evidence = verified+suspected+marks
+    if not evidence:
         return img
-    # OCR may return separate words: group overlapping baseline boxes into rows.
-    rows = []
-    for box in sorted(boxes, key=lambda b:b[1]):
-        for i,row in enumerate(rows):
-            overlap = min(row[3],box[3])-max(row[1],box[1])
-            if overlap > min(row[3]-row[1],box[3]-box[1])*0.5:
-                rows[i] = (min(row[0],box[0]),min(row[1],box[1]),max(row[2],box[2]),max(row[3],box[3]))
-                break
-        else:
-            rows.append(box)
-    # Detect broad headline/paragraph rows in the top or bottom of designed cards.
-    edge_boxes = [b for b in rows if b[2]-b[0] >= w*0.25]
-    lower = [b for b in edge_boxes if b[1] >= h*0.40]
-    upper = [b for b in edge_boxes if b[3] <= h*0.40]
-    top, bottom = 0, h
-    if lower:
-        bottom = min(b[1] for b in lower)
-        # A flat-colour banner often starts before its first glyph. Find its
-        # boundary rather than leaving the blank label/banner attached to photo.
-        start = max(int(h*0.3), bottom-int(h*0.20))
-        band = img[start:bottom, int(w*.15):int(w*.85)].astype(np.float32)
-        median = np.median(band, axis=1)
-        uniform = np.mean(np.max(np.abs(band-median[:,None,:]),axis=2)<15,axis=1) > 0.65
-        for y in range(len(uniform)-8, -1, -1):
-            if uniform[y:y+8].all():
-                boundary = y
-                while boundary > 0 and uniform[boundary-1]:
-                    boundary -= 1
-                bottom = start + boundary
-                break
-    if upper:
-        top = max(b[3] for b in upper)
-    if bottom-top < h*0.35 or bottom-top < 280:
-        raise ValueError('News-card photo cannot be separated safely; skip this source image')
-    remaining = [b for b in boxes if b[1] < bottom and b[3] > top]
-    if any(b[2]-b[0] >= w*0.25 for b in remaining):
-        raise ValueError('Source headline still intersects the photo; skip instead of duplicating text')
-    photo = img[top:bottom].copy()
-    # Only small verified lettering may be inpainted in the retained photograph.
-    small_boxes = [(l,max(0,t-top),r,min(bottom-top,b-top)) for l,t,r,b in remaining]
-    return remove_source_text(photo, small_boxes)
+    rows = _text_rows(evidence)
+    flat = _flat_panel_rows(img, evidence)
+    top, bottom = 0, height
+    # Allow up to 8px of compression/separator line at the physical edge.
+    edge_slop = max(2, min(8, round(height*.006)))
+    if flat[edge_slop]:
+        candidate = edge_slop
+        while candidate < height and flat[candidate]:
+            candidate += 1
+        if _has_panel_text(rows, width, 0, candidate, verified):
+            top = candidate
+    if flat[height-1-edge_slop]:
+        candidate = height-1-edge_slop
+        while candidate >= 0 and flat[candidate]:
+            candidate -= 1
+        candidate += 1
+        if _has_panel_text(rows, width, candidate, height, verified):
+            bottom = candidate
+    cropped = top > 0 or bottom < height
+    if cropped:
+        retained_height = bottom-top
+        if (retained_height < max(280, height*.35)
+                or retained_height*width < 200000 or width/retained_height > 3.0):
+            raise ValueError('Source panels leave too little usable photograph; choose another image')
+        # A sharp boundary to varied photo pixels is essential. Do not crop a
+        # natural flat sky or a fade based solely on approximate OCR placement.
+        for boundary, direction in ((top, 1), (bottom, -1)):
+            if boundary in (0, height):
+                continue
+            photo_slice = flat[boundary: min(height, boundary+12)] if direction == 1 else flat[max(0,boundary-12):boundary]
+            if not len(photo_slice) or np.mean(photo_slice) > .5:
+                raise ValueError('Source panel boundary is ambiguous; choose another image')
+    remaining = [box for box in verified if box[1] < bottom and box[3] > top]
+    if remaining:
+        raise ValueError('Source text or logo remains inside the photo; skipping to preserve the subject')
+    if any(box[1] < bottom and box[3] > top for box in marks):
+        raise ValueError('Unverified corner lettering or source logo remains; choose another image')
+    remaining_suspected = [row for row in suspected if row[1] < bottom and row[3] > top]
+    # Multiple broad aligned lines are strong evidence of unrecognized embedded
+    # typography (including Devanagari), even in the center of the photograph.
+    if len(remaining_suspected) >= 2:
+        for first in remaining_suspected:
+            for second in remaining_suspected:
+                if (first != second and abs(first[0]-second[0]) <= width*.10
+                        and abs(first[2]-second[2]) <= width*.15
+                        and abs(first[1]-second[1]) <= height*.25):
+                    raise ValueError('Unrecognized source typography overlaps the photo; choose another image')
+    return img[top:bottom].copy() if cropped else img
 
 
 def erase_text_and_watermarks(img: np.ndarray, source_text_boxes=None) -> np.ndarray:
     boxes = detect_source_text_boxes(img) if source_text_boxes is None else source_text_boxes
     photo = extract_source_photo(img, boxes)
-    # Fail closed if a second OCR pass can still read a source headline or caption.
+    if photo is None:
+        return None
+    # A second full-image inspection catches panel fragments, short captions,
+    # small source logos, and unreadable multiline text. No width exemption.
     residual = detect_source_text_boxes(photo)
-    if any(r-l > photo.shape[1]*0.25 for l,t,r,b in residual):
-        raise ValueError('Source text remains after cleanup; skipping this image')
+    inspected = extract_source_photo(photo, residual)
+    if residual or inspected is not photo:
+        raise ValueError('Source text remains after photo extraction; skipping this image')
     return photo
+
 
 def validate_image_quality(img: np.ndarray, min_dim: int = 500, min_sharpness: float = 100.0) -> tuple:
     """
     Validates image resolution and clarity to strictly eliminate blurry or pixelated images:
-    - Verifies dimensions are at least min_dim x min_dim (or sufficient HD area >= 350,000 px)
+    - Verifies native dimensions are at least min_dim x min_dim and area >= 350,000 px
     - Verifies sharpness variance using Laplacian operator >= min_sharpness
     - Verifies color / contrast standard deviation >= 20 (rejects blank, washed out, or corrupted images)
     """
@@ -357,8 +356,8 @@ def validate_image_quality(img: np.ndarray, min_dim: int = 500, min_sharpness: f
 
     h, w = img.shape[:2]
     total_pixels = h * w
-    if min(w, h) < 450 or total_pixels < 350000:
-        return False, f"Low resolution: {w}x{h}px ({total_pixels:,} pixels; minimum required is 450px short-edge & 350,000px area)"
+    if min(w, h) < min_dim or total_pixels < 350000:
+        return False, f"Low resolution: {w}x{h}px ({total_pixels:,} pixels; minimum required is {min_dim}px short-edge & 350,000px area)"
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     lap_var = float(cv2.Laplacian(gray, cv2.CV_64F).var())

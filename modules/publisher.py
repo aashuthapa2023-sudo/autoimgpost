@@ -1,10 +1,15 @@
 import requests
+from modules.poster_quality import verify_publishable_poster
 
 def publish_to_facebook(dest_page_id: str, access_token: str, image_path: str, caption: str, scheduled_publish_time: int = None) -> str:
     """
     Publishes the generated 4:5 image and caption to Facebook Page INSTANTLY.
     Meta Graph API scheduling is disabled to guarantee immediate live delivery.
     """
+    try:
+        verify_publishable_poster(image_path, caption)
+    except (ValueError, OSError) as error:
+        raise RuntimeError(f'Poster quality check failed: {error}') from error
     url = f"https://graph.facebook.com/v19.0/{dest_page_id}/photos"
     
     data = {

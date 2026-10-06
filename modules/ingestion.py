@@ -37,24 +37,134 @@ def extract_identifier(url_or_id: str) -> str:
 
     return url
 
+def facebook_mobile_url(url_or_id):
+    """Preserve post/profile paths and queries when changing Facebook hostname."""
+    from urllib.parse import urlsplit, urlunsplit
+    target = str(url_or_id or '').strip()
+    if target.startswith(('http://', 'https://')):
+        parts = urlsplit(target)
+        if (parts.hostname or '').lower() not in ('facebook.com', 'www.facebook.com', 'm.facebook.com', 'mbasic.facebook.com'):
+            raise ValueError('Source URL must refer to Facebook')
+        return urlunsplit(('https', 'm.facebook.com', parts.path or '/', parts.query, ''))
+    return 'https://m.facebook.com/' + extract_identifier(target)
+
+
+def _select_photo_from_attachment(attachment):
+    """Return an image and its ID together; exclude video/link preview media."""
+    if not isinstance(attachment, dict):
+        return None
+    kind = str(attachment.get('__typename') or '').lower()
+    if any(blocked in kind for blocked in ('video', 'external', 'link')):
+        return None
+    if kind == 'story' or ('message' in attachment and kind != 'photo'):
+        return None
+    target = attachment.get('target')
+    if isinstance(target, dict):
+        target_kind = str(target.get('__typename') or '').lower()
+        if target_kind and target_kind != 'photo':
+            return None
+    if kind == 'photo' or (not kind and attachment.get('id') and any(k in attachment for k in ('image', 'photo_image', 'large_image'))):
+        photo_id = str(attachment.get('id') or '')
+        if photo_id and not photo_id.isdigit():
+            return None
+        image_url = None
+        for key in ('large_image', 'image', 'photo_image'):
+            value = attachment.get(key)
+            if isinstance(value, dict) and isinstance(value.get('uri'), str) and value['uri'].startswith(('http://', 'https://')):
+                image_url = value['uri']
+                break
+        if image_url or photo_id:
+            return photo_id, image_url
+    for key in ('media', 'target', 'attachment'):
+        selected = _select_photo_from_attachment(attachment.get(key))
+        if selected:
+            return selected
+    styles = attachment.get('styles')
+    if isinstance(styles, dict):
+        selected = _select_photo_from_attachment(styles)
+        if selected:
+            return selected
+    for key in ('subattachments', 'all_subattachments'):
+        children = attachment.get(key)
+        if isinstance(children, dict):
+            children = children.get('nodes', [])
+        if isinstance(children, list):
+            for child in children:
+                selected = _select_photo_from_attachment(child)
+                if selected:
+                    return selected
+    return None
+
+
+def _exact_story_caption(story):
+    """Use this story's message, never a nested share or image ALT."""
+    if not isinstance(story, dict):
+        return ''
+    message = story.get('message')
+    if not isinstance(message, dict) or not isinstance(message.get('text'), str):
+        return ''
+    if any(message.get(flag) is True or story.get(flag) is True for flag in ('is_truncated', 'truncated', 'has_more')):
+        return ''
+    caption = message['text'].strip()
+    if re.search(r'(?:\.\.\.|…)\s*(?:See\s+more|थप\s+हेर्नुहोस्)?\s*$', caption, re.IGNORECASE):
+        return ''
+    return caption
+
+
 def parse_relative_time(time_str: str) -> int:
     import time
     now = int(time.time())
     if not time_str:
+        return 0
+    s = str(time_str).strip().lower().translate(str.maketrans('०१२३४५६७८९', '0123456789'))
+    if s in ('just now', 'now', 'अहिले'):
         return now
-    s = time_str.strip().lower()
-    if 'just now' in s or 'now' in s:
-        return now
-    m = re.search(r'(\d+)\s*m', s)
+    m = re.fullmatch(r'(\d+)\s*(?:m|min|mins|minutes?|मिनेट)', s)
     if m:
         return now - int(m.group(1)) * 60
-    h = re.search(r'(\d+)\s*h', s)
+    h = re.fullmatch(r'(\d+)\s*(?:h|hr|hrs|hours?|घण्टा)', s)
     if h:
         return now - int(h.group(1)) * 3600
-    d = re.search(r'(\d+)\s*d', s)
+    d = re.fullmatch(r'(\d+)\s*(?:d|days?|दिन)', s)
     if d:
         return now - int(d.group(1)) * 86400
-    return now
+    w = re.fullmatch(r'(\d+)\s*(?:w|weeks?|हप्ता)', s)
+    if w:
+        return now - int(w.group(1)) * 604800
+    return 0
+
+def _posts_from_mobile_cards(cards, processed_ids=None, limit=15):
+    """Accept only complete messages and verified photographs from one card."""
+    posts = []
+    seen = set(str(value) for value in processed_ids or [])
+    for card in cards or []:
+        if not isinstance(card, dict) or not all(card.get(flag) is True for flag in ('caption_verified', 'caption_complete', 'image_verified')):
+            continue
+        post_id = str(card.get('postId') or '')
+        photo_id = str(card.get('photoId') or '')
+        caption = str(card.get('caption') or '').strip()
+        image_url = str(card.get('imgUrl') or '')
+        if not post_id or not photo_id.isdigit() or post_id in seen or photo_id in seen or len(caption) < 8 or not image_url.startswith(('http://', 'https://')):
+            continue
+        if not _exact_story_caption({'message': {'text': caption}}):
+            continue
+        try:
+            created_time = int(card.get('createdTime') or 0) or parse_relative_time(card.get('timeStr') or '')
+        except (ValueError, TypeError):
+            continue
+        if created_time <= 0:
+            continue
+        fingerprint = hashlib.md5(re.sub(r'\s+', '', caption[:60]).lower().encode('utf-8')).hexdigest()
+        if fingerprint in seen:
+            continue
+        seen.update((post_id, photo_id, fingerprint))
+        posts.append({'post_id': post_id, 'photo_id': photo_id, 'caption_fingerprint': fingerprint,
+                      'caption': caption, 'image_url': image_url, 'created_time': created_time,
+                      'source_gap_hours': 0.25})
+        if len(posts) >= limit:
+            break
+    return posts
+
 
 def fetch_facebook_mobile_playwright(page_url_or_slug: str, processed_ids: list = None, limit: int = 15):
     try:
@@ -62,9 +172,7 @@ def fetch_facebook_mobile_playwright(page_url_or_slug: str, processed_ids: list 
     except ImportError:
         return []
 
-    ident = extract_identifier(page_url_or_slug)
-    mobile_url = f"https://m.facebook.com/{ident}"
-    processed_set = set(str(x) for x in (processed_ids or []))
+    mobile_url = facebook_mobile_url(page_url_or_slug)
     print(f" [PLAYWRIGHT FB] Ingesting {mobile_url} via mobile Chromium bypass...")
 
     posts = []
@@ -77,90 +185,61 @@ def fetch_facebook_mobile_playwright(page_url_or_slug: str, processed_ids: list 
             page.goto(mobile_url, wait_until="domcontentloaded", timeout=25000)
             page.wait_for_timeout(3000)
 
-            cards = page.evaluate('''() => {
+            cards = page.evaluate(r'''() => {
                 const results = [];
-                const imgs = Array.from(document.querySelectorAll('img[src*="/v/t39.30808-6/"]'));
-                imgs.forEach(img => {
-                    const src = img.src;
-                    const m = src.match(/\\/v\\/t39\\.30808-6\\/\\d+_(\\d{14,18})_/);
-                    if (!m) return;
-                    const photoId = m[1];
-                    if ((img.alt && (img.alt.includes('Cover') || img.alt.includes('profile'))) || img.naturalWidth < 150) return;
-
-                    let cur = img;
-                    let postContainer = img.parentElement;
-                    for (let i = 0; i < 6; i++) {
-                        if (!cur || cur === document.body) break;
-                        if (cur.querySelectorAll('img[src*="/v/t39.30808-6/"]').length > 1) {
-                            break; // Stop: multi-post container reached, do not escape this post boundary
-                        }
-                        postContainer = cur;
-                        if (cur.getAttribute('role') === 'article' || cur.tagName.toLowerCase() === 'article') {
-                            break; // Post card boundary identified
-                        }
-                        cur = cur.parentElement;
+                const articles = Array.from(document.querySelectorAll('[role="article"], article'));
+                const messageSelector = '[data-ad-preview="message"], [data-ad-comet-preview="message"], [data-testid="post_message"], .userContent';
+                for (const article of articles) {
+                    const messages = Array.from(article.querySelectorAll(messageSelector)).filter(el => el.closest('[role="article"], article') === article);
+                    // A nested shared post or multiple different message fields is
+                    // ambiguous. Never choose the longest descendant or image ALT.
+                    const uniqueMessages = [...new Set(messages.map(el => (el.innerText || '').trim()).filter(Boolean))];
+                    if (uniqueMessages.length !== 1) continue;
+                    const caption = uniqueMessages[0];
+                    const truncated = /(?:\.\.\.|…)\s*(?:See\s+more|थप\s+हेर्नुहोस्)?\s*$/i.test(caption) || messages.some(el => Array.from(el.querySelectorAll('a, [role="button"]')).some(control => /^(See more|थप हेर्नुहोस्)$/i.test((control.innerText || '').trim())));
+                    if (truncated) continue;
+                    if (article.querySelector('video, a[href*="/videos/"], a[href*="/watch/"]')) continue;
+                    const photos = [];
+                    for (const img of article.querySelectorAll('img')) {
+                        if (img.closest('[role="article"], article') !== article || img.naturalWidth < 150) continue;
+                        const src = img.currentSrc || img.src;
+                        let parsed;
+                        try { parsed = new URL(src); } catch (_) { continue; }
+                        if (!/(?:fbcdn\.net|fbsbx\.com)$/.test(parsed.hostname)) continue;
+                        const photoLink = img.closest('a[href]');
+                        const href = photoLink ? photoLink.href : '';
+                        if (!/\/photos?\b|[?&]fbid=/.test(href)) continue;
+                        const photoMatch = href.match(/[?&]fbid=(\d+)/) || href.match(/\/photos\/(?:[^/?#]+\/)?(\d{9,20})/);
+                        const photoId = photoMatch ? photoMatch[1] : '';
+                        if (!photoId) continue;
+                        if (!photos.some(photo => photo.photoId === photoId)) photos.push({photoId, imgUrl: src});
                     }
-
-                    let text = "";
-                    let timeStr = "";
-                    const tEls = (postContainer || img.parentElement).querySelectorAll('span, div, p');
-                    for (const el of tEls) {
-                        let t = (el.innerText || "").trim();
-                        if (!timeStr) {
-                            const tm = t.match(/^(\\d+[mhdw]|Just now)$/i);
-                            if (tm) timeStr = tm[1];
-                        }
-                        t = t.replace(/\\.\\.\\.\\s*See\\s*more/gi, '').replace(/See\\s*more/gi, '').trim();
-                        if (/[\\u0900-\\u097F]{4,}/.test(t) && t.length > 25) {
-                            if (!t.includes("Himali Patrika") && !t.includes("News & media website") && !t.includes("others") && !t.includes("Abhi Raj")) {
-                                if (t.length > text.length && t.length < 600) {
-                                    text = t;
-                                }
-                            }
-                        }
+                    // DOM albums cannot establish which photograph a prose
+                    // caption describes; SSR photo attachments remain supported.
+                    if (photos.length !== 1) continue;
+                    const timeElement = article.querySelector('time[datetime], [data-utime], abbr');
+                    let createdTime = 0;
+                    let timeStr = '';
+                    if (timeElement) {
+                        createdTime = Number(timeElement.getAttribute('data-utime') || 0);
+                        if (!createdTime && timeElement.getAttribute('datetime')) createdTime = Math.floor(Date.parse(timeElement.getAttribute('datetime')) / 1000) || 0;
+                        timeStr = (timeElement.innerText || '').trim();
                     }
-                    results.push({
-                        photoId: photoId,
-                        imgUrl: src,
-                        caption: text,
-                        timeStr: timeStr,
-                        alt: img.alt || ""
-                    });
-                });
+                    const links = Array.from(article.querySelectorAll('a[href]'));
+                    const postIds = [...new Set(links.map(link => {
+                        const match = link.href.match(/[?&]story_fbid=([^&#]+)/) || link.href.match(/\/posts\/([^/?#]+)/);
+                        return match ? match[1] : '';
+                    }).filter(Boolean))];
+                    if (postIds.length > 1) continue;
+                    results.push({...photos[0], postId: postIds[0] || photos[0].photoId,
+                        caption, caption_verified: true, caption_complete: true,
+                        image_verified: true, createdTime, timeStr});
+                }
                 return results;
             }''')
             browser.close()
 
-        seen_pids = set()
-        for c in cards:
-            pid = c.get("photoId")
-            cap = c.get("caption", "").strip()
-            if not cap and c.get("alt"):
-                alt_m = re.findall(r'[\u0900-\u097F]{4,}', c.get("alt"))
-                if len(alt_m) >= 2:
-                    cap = re.sub(r'^May be an image of [^\n\']*(?:text that says)?[\'"]?', '', c.get("alt")).strip().rstrip("'\"")
-
-            if not pid or pid in seen_pids or pid in processed_set or len(cap) < 15:
-                continue
-            seen_pids.add(pid)
-
-            created_ts = parse_relative_time(c.get("timeStr", ""))
-            cap_fp = hashlib.md5(re.sub(r'\s+', '', cap[:60]).lower().encode('utf-8')).hexdigest()
-            if cap_fp in processed_set:
-                continue
-
-            posts.append({
-                "post_id": pid,
-                "photo_id": pid,
-                "caption_fingerprint": cap_fp,
-                "caption": cap,
-                "image_url": c.get("imgUrl"),
-                "created_time": created_ts,
-                "source_gap_hours": 0.25,
-                "source_tag": "Himali Patrika"
-            })
-            if len(posts) >= limit:
-                break
+        posts = _posts_from_mobile_cards(cards, processed_ids, limit)
     except Exception as e:
         print(f" [PLAYWRIGHT FB ERROR] Error scraping {mobile_url}: {e}")
 
@@ -236,7 +315,7 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
         except Exception:
             pass
 
-    # 2. Main pass: Strictly extract stories guaranteeing 1:1 caption & photo pairing
+    # 2. Main pass: retain caption and photo owned by the same story object.
     def _decode_fb_id(raw):
         if not raw: return ""
         s_raw = str(raw).strip()
@@ -252,20 +331,14 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
 
     def extract_single_story(story_node):
         """
-        Extracts post_id, message, photo_id, and image_url STRICTLY from this single story node.
-        Guarantees 100% that caption and image belong to each other and NEVER cross-contaminate.
+        Extract the exact message and a photo from one story object.
+        Ambiguous wrappers and truncated messages are skipped.
         """
         if not isinstance(story_node, dict):
             return None
 
         # 1. Message text directly belonging to THIS story
-        msg = None
-        if "message" in story_node and isinstance(story_node["message"], dict) and "text" in story_node["message"]:
-            msg = story_node["message"]["text"].strip()
-        elif "story" in story_node and isinstance(story_node["story"], dict):
-            st = story_node["story"]
-            if "message" in st and isinstance(st["message"], dict) and "text" in st["message"]:
-                msg = st["message"]["text"].strip()
+        msg = _exact_story_caption(story_node)
 
         if not msg or len(msg) < 8:
             return None
@@ -278,56 +351,19 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
         photo_id = None
         img_url = None
 
-        def _find_img_in_node(node):
-            if not isinstance(node, dict):
-                return None
-            for k in ["large_share_image", "flexible_height_share_image", "image", "photo_image", "preview_image"]:
-                val = node.get(k)
-                if isinstance(val, dict) and val.get("uri") and str(val["uri"]).startswith("http"):
-                    return str(val["uri"])
-            for med_k in ["media", "target", "attachment"]:
-                med = node.get(med_k)
-                if isinstance(med, dict):
-                    res = _find_img_in_node(med)
-                    if res:
-                        return res
-            styles = node.get("styles")
-            if isinstance(styles, dict):
-                res = _find_img_in_node(styles)
-                if res:
-                    return res
-            sub = node.get("subattachments") or node.get("all_subattachments")
-            if isinstance(sub, dict) and "nodes" in sub:
-                for sn in sub["nodes"]:
-                    res = _find_img_in_node(sn)
-                    if res:
-                        return res
-            return None
-
         atts = story_node.get("attachments", [])
         if isinstance(atts, list):
             for a in atts:
-                if not isinstance(a, dict):
-                    continue
-                if not img_url:
-                    img_url = _find_img_in_node(a)
-                styles_att = a.get("styles", {}).get("attachment", {}) if isinstance(a.get("styles"), dict) else {}
-                med = styles_att.get("media") or a.get("media") or a.get("target") or {}
-                if isinstance(med, dict) and med.get("id"):
-                    mid = str(med["id"])
-                    if mid.isdigit() and len(mid) >= 9:
-                        photo_id = mid
-
-        if not photo_id and story_node.get("photo_id"):
-            raw_phid = str(story_node["photo_id"])
-            if raw_phid.isdigit():
-                photo_id = raw_phid
+                selected = _select_photo_from_attachment(a)
+                if selected:
+                    photo_id, img_url = selected
+                    break
 
         # Construct crawler lookaside URI only as fallback for genuine numeric photo IDs
         if photo_id and not img_url:
             img_url = f"https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id={photo_id}"
         elif not img_url:
-            # Text-only or video-only story without photo — skip to prevent pairing with unrelated photos!
+            # No confirmed photo on this story; video/link previews do not count.
             return None
 
         final_pid = pid_str or photo_id
@@ -339,15 +375,19 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
             created_time = post_meta.get(photo_id, 0)
         if not created_time:
             created_time = story_node.get("creation_time") or story_node.get("publish_time") or 0
-        if not created_time or int(created_time) <= 0:
-            import time
-            created_time = int(time.time()) - 1800
+        try:
+            created_time = int(created_time)
+        except (ValueError, TypeError):
+            return None
+        if created_time <= 0:
+            # An unknown date must not become an invented fresh post.
+            return None
 
-        cap_fp = hashlib.md5(re.sub(r'\s+', '', msg[:60]).lower().encode('utf-8')).hexdigest()
+        cap_fp = 'caption_v2_' + hashlib.sha256(re.sub(r'\s+', '', msg).lower().encode('utf-8')).hexdigest()
 
         return {
             "post_id": str(final_pid),
-            "photo_id": str(photo_id or final_pid),
+            "photo_id": str(photo_id or ""),
             "caption_fingerprint": cap_fp,
             "caption": msg,
             "image_url": img_url,

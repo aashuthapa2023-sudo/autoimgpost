@@ -17,7 +17,7 @@ class CaptionRewriteTests(unittest.TestCase):
         calls = []
         def post(url, **kwargs):
             calls.append(kwargs['json'])
-            return SimpleNamespace(status_code=200, json=lambda: {'choices': [{'message': {'content': json.dumps({'overlay_lines': [[{'text': 'नयाँ बस सेवा', 'type': 'white'}]], 'rewritten_caption': 'काठमाडौंमा नयाँ बस सेवा सञ्चालनमा आएको छ।'}, ensure_ascii=False)}}]})
+            return SimpleNamespace(status_code=200, json=lambda: {'choices': [{'message': {'content': json.dumps({'headline': 'काठमाडौंमा नयाँ बस सेवा सञ्चालनमा आएको छ', 'rewritten_caption': 'काठमाडौंमा नयाँ बस सेवा सञ्चालनमा आएको छ।'}, ensure_ascii=False)}}]})
         namespace['requests'] = SimpleNamespace(post=post)
         from unittest.mock import patch
         with patch.dict(os.environ, {'GROQ_API_KEY': 'test'}):

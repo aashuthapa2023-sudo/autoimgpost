@@ -2,6 +2,11 @@ import unittest
 from modules.source_layout import get_source_layout
 
 class SourceLayoutTests(unittest.TestCase):
+    def test_page_default_is_preserved_when_source_has_no_override(self):
+        self.assertEqual(get_source_layout({'poster_style':{'text_position':'bottom'}}, {'source_page_url':'https://www.facebook.com/newsource'}, 'top')['text_position'],'bottom')
+    def test_source_can_return_branding_to_headline_panel(self):
+        channel={'poster_style':{'logo_position':'top-right'},'source_layouts':{'example':{'logo_position':'with-text'}}}
+        self.assertEqual(get_source_layout(channel,{'source_page_url':'https://www.facebook.com/example'})['logo_position'],'with-text')
     def setUp(self):
         self.channel = {'source_layouts': {'smartmedianp': {'text_position': 'top', 'source_header_fraction': 0.4}}}
     def test_smart_media_uses_top(self):

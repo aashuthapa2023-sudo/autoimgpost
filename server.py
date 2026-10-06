@@ -84,11 +84,15 @@ def execute_pipeline_task(action="dry_run", channel="all", specific_post=None):
             log_message("Stage 2: Enforcing Facebook publishing cadence & daily caps...", stage=2)
             time.sleep(0.4)
 
-            log_message("Stage 3: Downloading high-res image & running intelligent watermark inpainter...", stage=3)
+            log_message("Stage 3: Checking the original image and extracting an intact photograph...", stage=3)
             from modules.content_quality import channel_accepts_post
             if not channel_accepts_post(ch, specific_post):
                 raise ValueError('This post does not match the destination page topic')
             raw_img = download_image(specific_post["image_url"])
+            from modules.image_cleaner import validate_image_quality
+            valid, reason = validate_image_quality(raw_img, min_dim=500, min_sharpness=80.0)
+            if not valid:
+                raise ValueError('Original image is unusable: ' + reason)
             from modules.source_layout import get_source_layout
             from modules.poster_engine import detect_image_text_position
             source_layout = get_source_layout(ch, specific_post, detect_image_text_position(raw_img))
@@ -97,6 +101,10 @@ def execute_pipeline_task(action="dry_run", channel="all", specific_post=None):
             cleaned = erase_text_and_watermarks(raw_img, source_text_boxes=text_boxes)
 
             log_message("Stage 4: Applying OpenCV CIE-LAB CLAHE contrast grading...", stage=4)
+            from modules.image_cleaner import validate_image_quality
+            valid, reason = validate_image_quality(cleaned, min_dim=450, min_sharpness=35.0)
+            if not valid:
+                raise ValueError('Cleaned photo is unusable: ' + reason)
             graded = apply_cinematic_grade(cleaned)
 
             log_message("Stage 5: Generating original, policy-compliant caption & centered headline...", stage=5)
@@ -105,7 +113,9 @@ def execute_pipeline_task(action="dry_run", channel="all", specific_post=None):
                 specific_post["caption"],
                 language=ch_lang,
                 channel_name=dest_name,
-                channel_id=channel_id
+                channel_id=channel_id,
+                content_topic=ch.get('content_topic',''),
+                editorial_style=ch.get('editorial_style','')
             )
             CURRENT_RUN["rewritten_caption"] = ai_data["rewritten_caption"]
 
@@ -114,11 +124,12 @@ def execute_pipeline_task(action="dry_run", channel="all", specific_post=None):
             render_final_poster(
                 base_img=graded,
                 overlay_lines=ai_data["overlay_lines"],
-                highlight_hex="random",
+                highlight_hex=ch.get('highlight_color','#FFC83B'),
                 dest_page_name=dest_name,
                 output_path=out_poster,
                 post_id=specific_post.get("post_id"),
-                **source_layout
+                caption=ai_data['rewritten_caption'], source_checked=True,
+                **{**ch.get('poster_style',{}), **source_layout}
             )
             CURRENT_RUN["last_poster"] = out_poster.replace("\\", "/")
             CURRENT_RUN["current_post"] = specific_post
@@ -165,7 +176,9 @@ def execute_pipeline_task(action="dry_run", channel="all", specific_post=None):
             proc.stdout.close()
             proc.wait()
             CURRENT_RUN["current_stage"] = 7
-            log_message("Pipeline execution finished with exit code 0.", stage=7)
+            if proc.returncode:
+                raise RuntimeError(f'Pipeline execution failed with exit code {proc.returncode}')
+            log_message("Pipeline execution finished.", stage=7)
 
     except Exception as e:
         CURRENT_RUN["error"] = str(e)
@@ -287,6 +300,7 @@ class PipelineHandler(SimpleHTTPRequestHandler):
             return
 
         if path == "/api/posters":
+            from update_cache import poster_design_status
             out_files = []
             if os.path.exists("output"):
                 for fn in sorted(os.listdir("output"), reverse=True):
@@ -296,6 +310,7 @@ class PipelineHandler(SimpleHTTPRequestHandler):
                             "filename": fn,
                             "url": f"/output/{fn}",
                             "size": os.path.getsize(fp),
+                            "quality_status": poster_design_status(fp),
                             "modified": os.path.getmtime(fp)
                         })
             body = json.dumps({"posters": out_files}).encode("utf-8")
@@ -424,7 +439,7 @@ class PipelineHandler(SimpleHTTPRequestHandler):
 
             existing_idx = next((i for i, c in enumerate(config["channels"]) if c["channel_id"] == cid), None)
             if existing_idx is not None:
-                config["channels"][existing_idx] = new_ch
+                config["channels"][existing_idx] = {**config["channels"][existing_idx], **new_ch}
             else:
                 config["channels"].append(new_ch)
 

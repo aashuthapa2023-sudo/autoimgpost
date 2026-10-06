@@ -13,14 +13,14 @@ class NepaliOverlayTests(unittest.TestCase):
         text = 'नेपाल क्रिकेट संघले दुई नयाँ खेलाडीलाई राष्ट्रिय टोलीमा समावेश गरेको छ'
         lines = namespace['extract_meaningful_nepali_overlay'](text + '।')
         joined = ' '.join(''.join(t['text'] for t in line) for line in lines)
-        self.assertEqual(joined, text + '...')
-        self.assertEqual(len(lines), 3)
+        self.assertEqual(joined, text)
+        self.assertLessEqual(len(lines), 3)
 
     def test_short_complete_headline(self):
         text = 'काठमाडौंमा नयाँ बस सेवा सुरु भएको छ'
         lines = namespace['extract_meaningful_nepali_overlay'](text)
         self.assertEqual(len(lines), 2)
-        self.assertEqual(' '.join(''.join(t['text'] for t in line) for line in lines), text + '...')
+        self.assertEqual(' '.join(''.join(t['text'] for t in line) for line in lines), text)
 
     def test_no_generic_filler_for_empty_source(self):
         with self.assertRaises(ValueError):

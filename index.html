@@ -1423,11 +1423,13 @@
         return;
       }
 
+      posters.sort((a,b) => Number(b.quality_status === 'checked') - Number(a.quality_status === 'checked') || (b.modified || 0) - (a.modified || 0));
       grid.innerHTML = posters.map(p => `
         <div class="bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden p-3 shadow hover:border-amber-400/50 transition-all flex flex-col">
           <div class="aspect-[4/5] bg-neutral-950 rounded-lg overflow-hidden mb-2">
             <img src="${p.url}" alt="${p.filename}" class="w-full h-full object-cover" loading="lazy" />
           </div>
+          <span class="text-[10px] mb-2 ${p.quality_status === 'checked' ? 'text-emerald-400' : 'text-amber-400'}">${p.quality_status === 'checked' ? 'Checked design' : 'Older design · regenerate before posting'}</span>
           <div class="flex items-center justify-between text-[11px] font-mono text-neutral-400 mt-1">
             <span class="truncate max-w-[140px]" title="${p.filename}">${p.filename}</span>
             <a href="${p.url}" download="${p.filename}" target="_blank" class="text-amber-400 hover:underline">Download</a>
@@ -1512,6 +1514,7 @@
               </div>
 
               <!-- Configurable Post Interval -->
+              ${ch.poster_style ? `<div class="mb-3 text-xs text-neutral-400 leading-relaxed"><span class="text-neutral-200">${({screen:'Streaming',music:'Music',film:'Film',news:'Nepali news',ocean:'Marine science'})[ch.content_topic] || 'Editorial'} style</span> · centered headlines · full photo · single masthead</div>` : ''}
               <div class="mb-4 bg-neutral-950 p-2.5 rounded-xl border border-neutral-800 flex items-center justify-between">
                 <div>
                   <span class="text-[11px] font-mono text-neutral-300 block font-bold">Post Interval</span>
@@ -1737,7 +1740,7 @@
       if (!cachedConfig.channels) cachedConfig.channels = [];
       const existingIdx = cachedConfig.channels.findIndex(c => c.channel_id === cid);
       if (existingIdx >= 0) {
-        cachedConfig.channels[existingIdx] = newCh;
+        cachedConfig.channels[existingIdx] = {...cachedConfig.channels[existingIdx], ...newCh};
       } else {
         cachedConfig.channels.push(newCh);
       }

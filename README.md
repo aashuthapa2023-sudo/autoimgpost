@@ -1,42 +1,49 @@
-# Automated Facebook Content Pipeline (100% Free & Unlimited Architecture)
+# Automated Facebook Content Pipeline
 
-Target Repository: **https://github.com/aashuthapa2023-sudo/autoimgpost.git**
+A multi-page publisher with a GitHub Pages control panel. Each destination uses its own sources, editorial topic, palette, language and source-specific text/branding placement.
 
-## Zero-Cost Engineering Architecture
+## How a post is accepted
 
-| Component | Unlimited Free Technology | Why It Never Charges |
-|---|---|---|
-| **Compute Runner** | Public GitHub Repository Actions | 100% free and unlimited runner minutes for public repos. |
-| **Watermark Erasing** | Local EasyOCR + OpenCV INPAINT_TELEA | Executes natively on runner CPU in ~2s with zero external API calls. |
-| **Upscaling & Grading**| OpenCV CLAHE + Pillow Lanczos Filter | Native image processing; runs locally with zero rate limits. |
-| **Text & Copy AI** | Groq ➔ Google AI Studio ➔ OpenRouter :free ➔ CPU Heuristic | Multi-tier failover cycling through free developer allowances (~16,000+ free requests/day). |
-| **Publisher** | Meta Graph API (Long-Lived System Token) | Free up to 200 requests/hour per page. |
+1. Fetch a source post with its own full caption and associated photo. Topic and language checks run before image processing. Generic web fallback is disabled on the six configured pages.
+2. Check native resolution, sharpness and contrast. Thumbnails are not artificially enlarged to pass this check.
+3. Detect English/Nepali text across the source. Extract a photograph only from a separable solid source panel. Uncertain lettering, source marks or text on the subject rejects the candidate. No broad text/logo inpainting is used.
+4. Rewrite from the exact paired caption. Reject repetition, page metadata, incomplete hooks and observable changes to names, numbers, species, negation or uncertainty. An invalid AI response moves to another provider; fallback must still be a complete source fact.
+5. Render a 1080×1350 editorial card with the full photograph, at most three centered headline lines, readable minimum font sizes and 64px safe margins. Source-specific branding positions reserve space instead of covering the subject.
+6. Verify the approved image/caption hashes and layout before upload. Only Meta-confirmed publication updates state and deduplication history.
 
-## Strict Safety & Policy Rules
+Ambiguous sources are skipped rather than forced into a scheduled slot. Checks reduce known failures; they cannot guarantee interpretation of every possible image or guarantee viral reach.
 
-1. **Max 15 Images Per Day Per Page**:
-   - The engine tracks `daily_stats` in `state.json`.
-   - Each page stops publishing automatically after 15 images in any 24-hour UTC window to preserve distribution algorithms and prevent spam penalties.
+## Page settings
 
-2. **At Least 1 Hour Gap Per Post**:
-   - Consecutive posts on any page are strictly spaced by at least 3600 seconds (1.0 hour).
-   - If the source page posts rapidly (e.g. 5 posts in 20 minutes), the destination page schedules them cleanly spaced across the day.
+The six profiles in `config.json` are Daily Netflix, Music Store, Anisha, Daily Hollywood, Nepal Speaks and Ocean's Secret. Each includes `content_topic`, `editorial_style`, `poster_style`, and `source_layouts`.
 
-3. **Master Auto Start / Stop Switch**:
-   - Toggle `pipeline_active: true / false` in `config.json` or the web UI.
-   - Paused runs exit gracefully without touching Graph API.
+Use the control panel's page/source settings to choose headline and branding positions. **Push pages to GitHub** saves the current configuration to `main`; the GitHub token must have permission to update repository contents. Updating an existing page preserves its detailed styling settings.
 
-## Repository Secrets Required in GitHub Actions
+The [six-page audit and tuning report](docs/page-quality-audit-2026-10-06.md) documents observed failures, selected styles, verification and live-access limits. In particular, Anisha's configured Facebook session was invalidated and needs reconnection.
 
-Set these in **Settings ➔ Secrets and variables ➔ Actions**:
+## Publishing and diagnostics
 
+- `pipeline_active` controls automated publishing.
+- Per-page daily caps default to 15 posts per UTC calendar day.
+- Per-page intervals have a minimum of one hour.
+- `state.json` stores confirmed posts, cadence and per-page image/story deduplication.
+- `quality_report.json` records recent rejected candidates and reasons without tokens.
+- Each current poster has a matching `.quality.json` approval manifest. Older designs are labeled for regeneration in the gallery.
+- `queue_worker.py` uses the same checked pipeline for every page. Older queued posters are retained for review and are not uploaded directly.
+
+GitHub Actions runs regression checks before generation/publishing and persists state, rejection reports and poster manifests.
+
+## Local use
+
+Install `requirements.txt` in a Python environment. Devanagari rendering requires Windows GDI or Pillow with RAQM; OCR needs its EasyOCR models. Optional provider credentials are `GROQ_API_KEY`, `GEMINI_API_KEY` and `OPENROUTER_API_KEY`.
+
+Set each destination's `dest_access_token_env` to its own environment/Actions secret name. Ocean's Secret uses `FB_TOKEN_OCEANS_SECRET`. A missing credential never falls back to another page's token.
+
+```sh
+python -m unittest discover -s tests
+node tests/test_github_save.js
+python main.py dry_run all
+python server.py
 ```
-GROQ_API_KEY          (Optional: Tier 1 free developer LPU tier)
-GEMINI_API_KEY        (Optional: Tier 2 Google AI Studio free tier)
-OPENROUTER_API_KEY    (Optional: Tier 3 :free open-source models)
-TELEGRAM_BOT_TOKEN    (Optional: Real-time pipeline failure watchdog alerts)
-TELEGRAM_CHAT_ID      (Optional: Telegram recipient chat ID)
-FB_TOKEN_CINEMA       (Required: Meta Page Access Token for CineVerse)
-FB_TOKEN_GAMING       (Required: Meta Page Access Token for NextGen Gaming)
-FB_TOKEN_TECH         (Required: Meta Page Access Token for AI Frontier)
-```
+
+A dry run creates accepted previews without Facebook uploads or published-state changes. Design-only proofs do not have source approval and cannot pass the upload gate.

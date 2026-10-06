@@ -5,7 +5,10 @@ import numpy as np
 import hashlib
 import random
 import math
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, features
+import json
+from pathlib import Path
+from functools import lru_cache
 
 CURATED_HIGHLIGHT_PALETTE = [
     {"name": "Dark Yellow", "hex": "#FFC83B"}, # Warm cinematic gold / dark yellow
@@ -31,34 +34,16 @@ def hex_to_rgb(hex_str: str) -> tuple:
         hex_str = "".join([c*2 for c in hex_str])
     return tuple(int(hex_str[i:i+2], 16) for i in (0, 2, 4))
 
-def get_font(size: int, bold: bool = True) -> ImageFont.FreeTypeFont:
-    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    font_candidates = [
-        os.path.join(repo_root, "assets", "fonts", "Akshar-Bold.ttf"),
-        os.path.join(repo_root, "assets", "fonts", "impact.ttf"),
-        os.path.join(repo_root, "assets", "fonts", "bold_headline.ttf"),
-        r"C:\Windows\Fonts\impact.ttf",
-        r"C:\Windows\Fonts\Nirmala.ttc",
-        r"C:\Windows\Fonts\ariblk.ttf",
-        r"C:\Windows\Fonts\arialbd.ttf",
-        r"C:\Windows\Fonts\segoeuib.ttf",
-        "/usr/share/fonts/truetype/msttcorefonts/Impact.ttf",
-        "/usr/share/fonts/truetype/msttcorefonts/impact.ttf",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-        "/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf",
-        "/System/Library/Fonts/Supplemental/Impact.ttf",
-        "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
-    ]
-    for p in font_candidates:
-        if os.path.exists(p):
-            try:
-                return ImageFont.truetype(p, size)
-            except Exception:
-                pass
-    try:
-        return ImageFont.load_default(size=size)
-    except Exception:
-        return ImageFont.load_default()
+def get_font(size: int, bold: bool = True, language: str = 'en'):
+    root = Path(__file__).resolve().parent.parent
+    if language == 'ne':
+        candidates = [root/'assets/fonts/Akshar-Bold.ttf']
+    else:
+        candidates = [root/'assets/fonts/BarlowCondensed-Bold.ttf', root/'assets/fonts/impact.ttf']
+    for path in candidates:
+        if path.exists():
+            return ImageFont.truetype(str(path), size)
+    raise ValueError('Required editorial font is missing; refusing fallback glyphs')
 
 if os.name == 'nt':
     import ctypes
@@ -315,234 +300,157 @@ def fit_headline_line(tokens, font, font_size, highlight_rgb, max_width, max_hei
     return line
 
 
-def render_final_poster(base_img: np.ndarray, overlay_lines: list, highlight_hex: str = "random", badge_label: str = "", dest_page_name: str = "", output_path: str = "output/poster.jpg", **kwargs):
-    """
-    Renders 4:5 visual poster strictly matching user reference layout:
-    - Large, bold uppercase typography in dual-tone (White + Dynamic Highlight Color).
-    - Centered horizontal alignment for all lines with whole-sentence thematic entity highlights.
-    - Destination page branding badge (using individual destination page name).
-    - Randomized visible highlight colors: Red, Light Blue, Dark Yellow, Cyan, Emerald, Coral.
-    - NO attribution footer line.
-    - Smooth faded dark black gradient placed on TOP or BOTTOM to block original source text cleanly.
-    """
-    target_w, target_h = 1080, 1350
-    h, w, _ = base_img.shape
+def _render_runs(tokens, size, language, accent):
+    return _render_runs_cached(tuple(tokens),size,language,accent)
 
-    # Pre-calculate typography & badge layout
-    temp_img = Image.new("RGB", (target_w, target_h))
-    temp_draw = ImageDraw.Draw(temp_img)
-    safe_margin = 60
-    safe_max_w = target_w - (safe_margin * 2) # 960px
 
-    # Normalize lines into lists of token dicts
-    normalized_lines = []
-    for line in overlay_lines:
-        if isinstance(line, str):
-            words = line.split(" ")
-            mid = max(1, len(words) // 2)
-            normalized_lines.append([
-                {"text": " ".join(words[:mid]) + " ", "type": "white"},
-                {"text": " ".join(words[mid:]), "type": "highlight"}
-            ])
-        elif isinstance(line, list):
-            normalized_lines.append(line)
+@lru_cache(maxsize=512)
+def _render_runs_cached(tokens,size,language,accent):
+    font = get_font(size,language=language)
+    return fit_headline_line(tokens,font,size,accent,100000,100000)
 
-    # Branding Badge metrics matching exact reference style
-    branding_name = dest_page_name or badge_label or kwargs.get("source_tag", "")
-    badge_is_deva = is_devanagari(branding_name)
 
-    # For all Nepali news pages/overlays, ensure the text overlay ending has '...'
-    is_deva_overlay = badge_is_deva or any(
-        any(is_devanagari(t.get("text", "") if isinstance(t, dict) else str(t)) for t in line)
-        for line in normalized_lines
-    )
-    if is_deva_overlay and normalized_lines and normalized_lines[-1]:
-        last_tok = normalized_lines[-1][-1]
-        if isinstance(last_tok, dict) and "text" in last_tok:
-            t = re.sub(r'[।!?.…—\-]+$', '', str(last_tok["text"])).rstrip()
-            last_tok["text"] = t + "..."
-        elif isinstance(last_tok, str):
-            t = re.sub(r'[।!?.…—\-]+$', '', str(last_tok)).rstrip()
-            normalized_lines[-1][-1] = t + "..."
-
-    badge_font = get_font(26, bold=True)
-    dest_badge_text = f"• {branding_name if badge_is_deva else branding_name.upper()} •" if branding_name else ""
-    if branding_name:
-        if badge_is_deva and os.name == 'nt':
-            _, text_w, text_h = render_gdi_token(dest_badge_text, 26, bold=True)
-            bw = text_w + 34
-            bh = max(text_h + 14, 34)
+def _wrap_headline(words, size, language, max_width, accent):
+    lines = [[]]
+    for word, kind in words:
+        token = (word + ' ', kind)
+        candidate = lines[-1] + [token]
+        if lines[-1] and _render_runs(candidate, size, language, accent).width > max_width:
+            lines.append([token])
         else:
-            try:
-                bbox = temp_draw.textbbox((0, 0), dest_badge_text, font=badge_font)
-                text_w = bbox[2] - bbox[0]
-                text_h = bbox[3] - bbox[1]
-                bw = text_w + 34
-                bh = max(text_h + 14, 34)
-            except Exception:
-                bw, bh = 240, 34
-                text_w, text_h = 200, 24
-                bbox = (0, 4, 200, 28)
-        radius = bh // 2  # Classic smooth stadium pill
-        bx = (target_w - bw) // 2
-    else:
-        bx, bw, bh = 0, 0, 0
-        text_w, text_h, radius = 0, 0, 0
-        bbox = (0, 0, 0, 0)
-
-    # Reflow words before sizing: lengthy lines must not shrink into tiny type.
-    safe_margin = 60
-    safe_max_w = target_w - 2 * safe_margin
-    word_tokens = []
-    for line in normalized_lines:
-        for token in line:
-            text = token.get('text', '') if isinstance(token, dict) else str(token)
-            kind = token.get('type', 'white') if isinstance(token, dict) else 'white'
-            word_tokens.extend({'text': word + ' ', 'type': kind} for word in text.split())
-    chosen_size = None
-    for test_size in range(96, 59, -2):
-        font = get_font(test_size, bold=True)
-        wrapped = [[]]
-        for token in word_tokens:
-            candidate = wrapped[-1] + [token]
-            if wrapped[-1] and measure_line_width(temp_draw, candidate, font, test_size) > safe_max_w - 20:
-                wrapped.append([token])
-            else:
-                wrapped[-1].append(token)
-        if len(wrapped) <= 3 and len(wrapped)*int(test_size*1.30) + bh + 24 <= 490:
-            if all(measure_line_width(temp_draw, line, font, test_size) <= safe_max_w - 20 for line in wrapped):
-                chosen_size = test_size
-                normalized_lines = wrapped
+            lines[-1] = candidate
+    # Prefer balanced visible lengths over a final orphan word.
+    for i in range(len(lines)-1, 0, -1):
+        left, right = lines[i-1], lines[i]
+        while len(left) > 1:
+            current_delta = abs(_render_runs(left,size,language,accent).width - _render_runs(right,size,language,accent).width)
+            new_right = [left[-1]] + right
+            new_delta = abs(_render_runs(left[:-1],size,language,accent).width - _render_runs(new_right,size,language,accent).width)
+            if new_delta >= current_delta or _render_runs(new_right,size,language,accent).width > max_width:
                 break
-    if chosen_size is not None:
-        # Balance adjacent lines instead of leaving a lone word at the bottom.
-        font = get_font(chosen_size, bold=True)
-        for i in range(len(normalized_lines)-1, 0, -1):
-            previous, current = normalized_lines[i-1], normalized_lines[i]
-            while len(previous) > 1:
-                old_delta = abs(measure_line_width(temp_draw, previous, font, chosen_size) - measure_line_width(temp_draw, current, font, chosen_size))
-                candidate = [previous[-1]] + current
-                new_delta = abs(measure_line_width(temp_draw, previous[:-1], font, chosen_size) - measure_line_width(temp_draw, candidate, font, chosen_size))
-                if new_delta >= old_delta or measure_line_width(temp_draw, candidate, font, chosen_size) > safe_max_w - 20:
-                    break
-                current.insert(0, previous.pop())
-    if chosen_size is None or not word_tokens:
-        raise ValueError('Headline cannot fit legibly: shorten it without dropping the main facts')
+            right.insert(0,left.pop())
+    return lines
 
-    title_font = get_font(chosen_size, bold=True)
-    line_spacing = min(int(chosen_size * 1.30), max(1, (target_h - 2 * safe_margin - bh - 24) // max(1, len(normalized_lines))))  # Generous line height ensures top & bottom matras never collide
-    total_text_h = len(normalized_lines) * line_spacing
 
-    # ALWAYS USE SOURCE AS 4:5 ASPECT RATIO IMAGE (Fill entire 1080x1350 canvas)
-    scale = max(target_w / float(w), target_h / float(h))
-    scaled_w = int(w * scale)
-    scaled_h = int(h * scale)
-    resized_art = cv2.resize(base_img, (scaled_w, scaled_h), interpolation=cv2.INTER_LANCZOS4)
-
-    # Center crop to exact 1080x1350 (4:5 canvas)
-    x_off = (scaled_w - target_w) // 2
-    y_off = (scaled_h - target_h) // 2
-    canvas = resized_art[y_off:y_off+target_h, x_off:x_off+target_w].copy()
-
-    # Pro color grading is already applied once by the upstream pipeline caller (main.py / server.py)
-    # Only grade here if explicitly requested or if base_img was not pre-graded
-    if kwargs.get("apply_grade", False):
-        try:
-            from modules.image_cleaner import apply_cinematic_grade
-            canvas = apply_cinematic_grade(canvas)
-        except Exception:
-            pass
-
-    text_position = kwargs.get("text_position", "bottom")
-    if text_position not in ("top", "bottom"):
-        text_position = "bottom"
-    print(f"           [Text Placement] Placement: {text_position.upper()}")
-
-    gap = 20
-    total_content_h = (bh + gap if branding_name else 0) + total_text_h
-
-    # Source lettering was already verified and removed upstream. Scene edges
-    # must not expand the dark backing over faces, waves, buildings or animals.
-    has_top_text = has_bot_text = False
-    top_text_max_y = bot_text_min_y = 0
-
-    dark_black = np.array([8, 8, 10], dtype=np.float32)
-
-    # A separate headline panel prevents any backing or fade from hiding the subject.
-    panel_height = min(target_h - 450, total_content_h + 2 * safe_margin)
-    if text_position == 'top':
-        by = safe_margin
-        start_text_y = by + (bh + gap if branding_name else 0)
-        photo_top, photo_bottom = panel_height, target_h
-    else:
-        start_text_y = target_h - safe_margin - total_text_h
-        by = start_text_y - bh - gap if branding_name else start_text_y
-        photo_top, photo_bottom = 0, target_h - panel_height
-    canvas[:] = dark_black.astype(np.uint8)
-    photo_h = photo_bottom - photo_top
-    # Full subject remains visible; a blurred fill avoids empty letterbox edges.
-    fill_scale = max(target_w / float(w), photo_h / float(h))
-    fill = cv2.resize(base_img, (max(target_w, round(w*fill_scale)), max(photo_h, round(h*fill_scale))))
-    fx, fy = (fill.shape[1]-target_w)//2, (fill.shape[0]-photo_h)//2
-    background = cv2.GaussianBlur(fill[fy:fy+photo_h, fx:fx+target_w], (0,0), 24)
-    canvas[photo_top:photo_bottom] = background
-    fit_scale = min(target_w / float(w), photo_h / float(h))
-    photo = cv2.resize(base_img, (max(1,round(w*fit_scale)), max(1,round(h*fit_scale))), interpolation=cv2.INTER_LANCZOS4)
-    px, py = (target_w-photo.shape[1])//2, photo_top+(photo_h-photo.shape[0])//2
-    canvas[py:py+photo.shape[0], px:px+photo.shape[1]] = photo
-
-    pil_img = Image.fromarray(cv2.cvtColor(canvas, cv2.COLOR_BGR2RGB))
-    draw = ImageDraw.Draw(pil_img)
-
-    # Dynamic Highlight Color Selection
-    if not highlight_hex or highlight_hex == "random":
-        seed = kwargs.get("post_id") or kwargs.get("seed") or output_path or dest_page_name
-        highlight_hex = pick_highlight_color(seed)
-    elif kwargs.get("randomize_color", False) and not highlight_hex.startswith("#"):
-        seed = kwargs.get("post_id") or kwargs.get("seed") or output_path or dest_page_name
-        highlight_hex = pick_highlight_color(seed)
-
-    highlight_rgb = hex_to_rgb(highlight_hex)
-
-    # Render High-Visibility Studio Branding Badge — perfectly centered pill
-    if branding_name:
-        bx = (target_w - bw) // 2
-        logo_position = kwargs.get("logo_position", "with-text")
-        if logo_position in ("top-left", "top-center", "top-right", "bottom-left", "bottom-center", "bottom-right"):
-            vertical, horizontal = logo_position.split("-")
-            by = safe_margin if vertical == "top" else target_h - bh - safe_margin
-            bx = safe_margin if horizontal == "left" else target_w - bw - safe_margin if horizontal == "right" else (target_w - bw) // 2
-        draw.rounded_rectangle([bx, by, bx + bw, by + bh], radius=radius, fill=(10, 10, 14), outline=highlight_rgb, width=2)
-        if badge_is_deva and os.name == 'nt':
-            b_mask, bw_act, bh_act = render_gdi_token(dest_badge_text, 22, bold=True)
-            bx_text = int(bx + (bw - bw_act) / 2.0)
-            by_text = int(by + (bh - bh_act) / 2.0)
-            composite_mask_on_pil(pil_img, b_mask, bx_text, by_text, highlight_rgb, stroke=False)
-        else:
-            draw.text((bx + bw / 2.0, by + bh / 2.0), dest_badge_text, font=badge_font, fill=highlight_rgb, anchor="mm")
-
-    # Render Headline Typography — each line mathematically centered
-    for line in normalized_lines:
-        line_is_deva = any(is_devanagari(t.get("text", "") if isinstance(t, dict) else str(t)) for t in line)
-        full_line_tokens = []
-        for token in line:
-            t_str = token.get("text", "") if isinstance(token, dict) else str(token)
-            t_type = token.get("type", "white") if isinstance(token, dict) else "white"
-            full_line_tokens.append((t_str, t_type))
-
-        line_image = fit_headline_line(full_line_tokens, title_font, chosen_size,
-                                       highlight_rgb, safe_max_w, line_spacing)
-        line_x = (target_w - line_image.width) // 2
-        line_y = max(safe_margin, min(int(start_text_y), target_h - safe_margin - line_image.height))
-        pil_img.paste(line_image, (line_x, line_y), line_image)
-
-        start_text_y += line_spacing
-
-    # NO attribution footer line (removed completely as requested)
-
-    os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
-    if kwargs.get("source_logo_boxes"):
-        from modules.logo_branding import apply_branding
-        pil_img = apply_branding(pil_img, kwargs["source_logo_boxes"], kwargs["source_logo_size"])
-    pil_img.save(output_path, "JPEG", quality=98, subsampling=0)
-    return output_path
+def render_final_poster(base_img, overlay_lines, highlight_hex='#FFC83B', badge_label='',
+                        dest_page_name='', output_path='output/poster.jpg', **kwargs):
+    """Render a measured editorial card and write a verifiable quality manifest."""
+    if base_img is None or base_img.ndim != 3 or min(base_img.shape[:2]) < 240:
+        raise ValueError('Clean source photograph is too small or invalid')
+    words = []
+    for line in overlay_lines:
+        for token in ([{'text':line,'type':'white'}] if isinstance(line,str) else line):
+            text = str(token.get('text','')) if isinstance(token,dict) else str(token)
+            kind = token.get('type','white') if isinstance(token,dict) else 'white'
+            words.extend((word,kind) for word in text.split())
+    if not words or len(words) > 32:
+        raise ValueError('Headline must be complete and concise before layout')
+    language = 'ne' if any(is_devanagari(word) for word,_ in words) else 'en'
+    if language == 'ne' and os.name != 'nt' and not features.check_feature('raqm'):
+        raise ValueError('Devanagari shaping is unavailable; refusing broken text')
+    accent = hex_to_rgb(highlight_hex if highlight_hex and highlight_hex != 'random' else '#FFC83B')
+    background_hex = kwargs.get('panel_color','#0D111A')
+    panel_color = hex_to_rgb(background_hex)
+    if sum(accent)/3 < 100 or sum(panel_color)/3 > 65:
+        raise ValueError('Brand colours do not provide safe headline contrast')
+    margin = max(56,min(80,int(kwargs.get('safe_margin',64))))
+    max_width = 1080 - 2*margin
+    min_size = max(64,int(kwargs.get('min_font_size',68)))
+    max_size = min(100,int(kwargs.get('max_font_size',94)))
+    max_lines = min(3,int(kwargs.get('max_lines',3)))
+    line_gap = 14 if language=='en' else 20
+    selected = None
+    for size in range(max_size,min_size-1,-2):
+        lines = _wrap_headline(words,size,language,max_width,accent)
+        images = [_render_runs(line,size,language,accent) for line in lines]
+        if len(lines)<=max_lines and all(0<im.width<=max_width and im.getbbox() for im in images):
+            height = sum(im.height for im in images)+line_gap*(len(images)-1)
+            if height <= 290:
+                selected = size,images
+                break
+    if selected is None:
+        raise ValueError('Headline cannot fit at readable type size; rewrite before publishing')
+    size,images = selected
+    title_height=sum(im.height for im in images)+line_gap*(len(images)-1)
+    brand_name=dest_page_name or badge_label
+    brand_font=get_font(28,language='ne' if is_devanagari(brand_name) else 'en')
+    if len(brand_name)>40:
+        raise ValueError('Brand wordmark is too long')
+    # Brand, breathing space, headline and bottom margin have fixed measured slots.
+    panel_h=max(260,title_height+180)
+    if panel_h>470:
+        raise ValueError('Text panel would dominate the photograph')
+    position=kwargs.get('text_position','bottom')
+    if position not in ('top','bottom'):
+        raise ValueError('Unsupported headline position')
+    logo_position=kwargs.get('logo_position','with-text')
+    allowed_logo_positions=('with-text','top-left','top-center','top-right','bottom-left','bottom-center','bottom-right')
+    if logo_position not in allowed_logo_positions:
+        raise ValueError('Unsupported branding position')
+    external_brand=logo_position!='with-text' and not logo_position.startswith(position+'-')
+    brand_strip=148 if external_brand else 0
+    if external_brand:
+        panel_h=max(242,title_height+128)
+    photo_h=1350-panel_h-brand_strip
+    photo_top=panel_h if position=='top' else brand_strip
+    panel_top=0 if position=='top' else 1350-panel_h
+    canvas=Image.new('RGB',(1080,1350),panel_color)
+    photo=Image.fromarray(cv2.cvtColor(base_img,cv2.COLOR_BGR2RGB))
+    scale=min(1080/photo.width,photo_h/photo.height)
+    if scale>1.75:
+        raise ValueError('Retained photograph would need excessive enlargement')
+    photo=photo.resize((round(photo.width*scale),round(photo.height*scale)),Image.Resampling.LANCZOS)
+    # Solid matte preserves the whole photograph without inventing blurred duplicates.
+    canvas.paste(photo,((1080-photo.width)//2,photo_top+(photo_h-photo.height)//2))
+    draw=ImageDraw.Draw(canvas)
+    rule_y=panel_top if position=='bottom' else panel_h-4
+    draw.rectangle((0,rule_y,1079,rule_y+3),fill=accent)
+    brand_y=(1350-margin-38 if position=='top' else margin+6) if external_brand else panel_top+(margin+6 if position=='top' else 48)
+    brand=fit_headline_line([(brand_name.upper(),'highlight')],brand_font,28,accent,max_width,42)
+    if brand.width>max_width or not brand.getbbox():
+        raise ValueError('Branding could not be rendered clearly')
+    # Optional owned logo appears once in a reserved header slot, never over the subject.
+    logo_path=kwargs.get('logo_path')
+    badge=None
+    if logo_path:
+        root=Path(__file__).resolve().parent.parent
+        logo=(root/logo_path).resolve()
+        if not logo.is_relative_to(root/'assets/branding'):
+            raise ValueError('Logo must be a local approved branding asset')
+        badge=Image.open(logo).convert('RGBA')
+        badge.thumbnail((44,44),Image.Resampling.LANCZOS)
+    group_width=brand.width+(badge.width+16 if badge else 0)
+    if group_width>max_width:
+        raise ValueError('Logo and wordmark cannot fit without overlap')
+    alignment=logo_position.rsplit('-',1)[-1] if logo_position!='with-text' else 'center'
+    group_x=margin if alignment=='left' else 1080-margin-group_width if alignment=='right' else (1080-group_width)//2
+    logo_bounds=None
+    if badge:
+        canvas.paste(badge,(group_x,brand_y-6),badge)
+        logo_bounds=[group_x,brand_y-6,group_x+badge.width,brand_y-6+badge.height]
+    brand_x=group_x+(badge.width+16 if badge else 0)
+    canvas.paste(brand,(brand_x,brand_y),brand)
+    title_y=panel_top+(margin if external_brand else margin+68 if position=='top' else 110)
+    bounds=[]
+    for im in images:
+        x=(1080-im.width)//2
+        box=[x,title_y,x+im.width,title_y+im.height]
+        if x<margin or box[2]>1080-margin or box[1]<margin or box[3]>min(1350-margin,panel_top+panel_h-32):
+            raise ValueError('Headline exceeds its measured safe area')
+        canvas.paste(im,(x,title_y),im)
+        bounds.append(box)
+        title_y+=im.height+line_gap
+    output=Path(output_path)
+    output.parent.mkdir(parents=True,exist_ok=True)
+    canvas.save(output,'JPEG',quality=96,subsampling=0)
+    manifest={'schema_version':3,'approved':True,'image_sha256':hashlib.sha256(output.read_bytes()).hexdigest(),
+              'caption_sha256':hashlib.sha256(str(kwargs.get('caption','')).encode('utf-8')).hexdigest(),
+              'source_checked':kwargs.get('source_checked',False),'size':[1080,1350],
+              'font_size':size,'safe_margin':margin,'text_bounds':bounds,'panel_height':panel_h,
+              'panel_bounds':[0,panel_top,1080,panel_top+panel_h],
+              'brand_bounds':[brand_x,brand_y,brand_x+brand.width,brand_y+brand.height],
+              'logo_bounds':logo_bounds,
+              'photo_bounds':[(1080-photo.width)//2,photo_top+(photo_h-photo.height)//2,photo.width,photo.height],
+              'style_id':kwargs.get('style_id','editorial'),'headline':' '.join(word for word,_ in words)}
+    output.with_suffix('.quality.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf-8')
+    return str(output)

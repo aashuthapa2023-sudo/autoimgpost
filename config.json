@@ -10,7 +10,7 @@
       "dest_page_id": "105077258283692",
       "dest_access_token_env": "EAAqmh45n064BSbVUgZAOnUNbjR4Tyubx95oZAFL0YPb4PeVzpsiZALeSBE5Trd6QgfBx3dmcnNgWQtl2hZCKzSt6HXMfTpuaLOuzoNkN6mgRRGniZBqGZBqH9BECWFP78bh4uwPy7IAEZBGSs09lZAZC54Xc3G7iUFuVITGhMRXFRFv7a5qewaSm5A1ecc7dvv7Ldu1hrojUtiAZAGKLdTVwUZD",
       "badge_label": "Daily Netflix",
-      "highlight_color": "#FFC83B",
+      "highlight_color": "#FF5964",
       "post_interval_hours": 1,
       "max_posts_per_run": 1,
       "cadence_mirror_enabled": true,
@@ -23,7 +23,36 @@
         "https://www.facebook.com/netflixfanatics",
         "https://www.facebook.com/netflixfanslivehere"
       ],
-      "source_page_url": "https://www.facebook.com/netflixdaily"
+      "source_page_url": "https://www.facebook.com/netflixdaily",
+      "content_topic": "screen",
+      "language": "en",
+      "editorial_style": "Streaming releases and television news, clear specific titles and release details",
+      "allow_web_fallback": false,
+      "poster_style": {
+        "style_id": "daily_netflix",
+        "panel_color": "#150E14",
+        "min_font_size": 68,
+        "max_font_size": 94,
+        "max_lines": 3,
+        "safe_margin": 64,
+        "text_position": "bottom",
+        "logo_position": "with-text"
+      },
+      "source_layouts": {
+        "netflixdaily": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        },
+        "netflixfanatics": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        },
+        "netflixfanslivehere": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        }
+      },
+      "max_candidates_per_run": 6
     },
     {
       "channel_id": "Music Store",
@@ -32,7 +61,7 @@
       "dest_page_id": "106576441624891",
       "dest_access_token_env": "EAAXSklef1o0BSSZCv3cOQpZA1PH4ZBZAgbTULcHvdCBzs6uD6HFnLgdvS6gpKr0AK7UHH0c4JbqUgq9md48L8HzLubXjKqYdg6AB3I5LPc2spj4RYygb4cVuZBkjZCWsOf6dV5vyNapnLZC3ZBuxF9vUAkktwysXUcaZB4JnAPGJmFCAh6MBpZBIIjHBHIJJO57gyPYUmM8sgZD",
       "badge_label": "Music Store",
-      "highlight_color": "#FFC83B",
+      "highlight_color": "#FFD166",
       "post_interval_hours": 1,
       "max_posts_per_run": 1,
       "cadence_mirror_enabled": true,
@@ -43,11 +72,38 @@
       "source_pages": [
         "https://www.facebook.com/Billboard",
         "https://www.facebook.com/RollingStone",
-        "https://www.facebook.com/mtv",
-        "https://www.facebook.com/netflixdaily"
+        "https://www.facebook.com/mtv"
       ],
       "source_page_url": "https://www.facebook.com/Billboard",
-      "content_topic": "music"
+      "content_topic": "music",
+      "language": "en",
+      "editorial_style": "Music journalism: artist, event, performance or release first; energetic without bait",
+      "allow_web_fallback": false,
+      "poster_style": {
+        "style_id": "music_store",
+        "panel_color": "#121018",
+        "min_font_size": 68,
+        "max_font_size": 94,
+        "max_lines": 3,
+        "safe_margin": 64,
+        "text_position": "bottom",
+        "logo_position": "with-text"
+      },
+      "source_layouts": {
+        "billboard": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        },
+        "rollingstone": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        },
+        "mtv": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        }
+      },
+      "max_candidates_per_run": 6
     },
     {
       "channel_id": "Anisha",
@@ -56,7 +112,7 @@
       "dest_page_id": "1003708246162484",
       "dest_access_token_env": "EAAOGPtFt04UBRjCsJ2SIOckiV3lsZBOaUvI6MrvYNEoRd2qSRrMuhVu8WHLBvUvE5cu5TZBZB8xh7Dy7pounont4kpCPIGUAj4sJnEWzRovdj3AraHMxnnur0ZCuvo2w4ZBftFqECvTjOUjYHMVbj7JFy76hRnpE0z8QQbtE61bGFdUaIyBIKhfwZAIZB7NxW2S2ZBLHCXWQ8LDqqi2oYHr0F4zg",
       "badge_label": "ANISHA",
-      "highlight_color": "#FFC83B",
+      "highlight_color": "#F4A6C7",
       "post_interval_hours": 1,
       "max_posts_per_run": 1,
       "cadence_mirror_enabled": true,
@@ -68,7 +124,32 @@
         "https://www.facebook.com/ThenetflixCommuniity",
         "https://www.facebook.com/NetflixFanaticz"
       ],
-      "source_page_url": "https://www.facebook.com/ThenetflixCommuniity"
+      "source_page_url": "https://www.facebook.com/ThenetflixCommuniity",
+      "content_topic": "screen",
+      "language": "en",
+      "editorial_style": "Warm entertainment editorial with complete show and cast details",
+      "allow_web_fallback": false,
+      "poster_style": {
+        "style_id": "anisha",
+        "panel_color": "#1B101B",
+        "min_font_size": 68,
+        "max_font_size": 90,
+        "max_lines": 3,
+        "safe_margin": 64,
+        "text_position": "bottom",
+        "logo_position": "with-text"
+      },
+      "source_layouts": {
+        "thenetflixcommuniity": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        },
+        "netflixfanaticz": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        }
+      },
+      "max_candidates_per_run": 6
     },
     {
       "channel_id": "Daily Hollywood",
@@ -77,7 +158,7 @@
       "dest_page_id": "597529990626512",
       "dest_access_token_env": "EAAqmh45n064BSG8ZBKwTgTc5r6b8i96cxvM28dcZAEKgzcH4gnRIPkYiW2qCbqDW4cUh49gZCvQoL3UazRglUTaSbLDcMJtovh4VfvWMHIETncQT6PuDqB4ZA91pKtWNTxp2QkXUtE99RGd1QZB5U6DiZA0XiNKHnVkYZB9DxzbZAZBZArl7KLQZCGlX7iHoQVyb5jKzgTZAOWVpEWhlCwQY9udT",
       "badge_label": "DAILY HOLLYWOOD",
-      "highlight_color": "#FFC83B",
+      "highlight_color": "#D9BB78",
       "post_interval_hours": 1,
       "max_posts_per_run": 1,
       "cadence_mirror_enabled": true,
@@ -88,7 +169,28 @@
       "source_pages": [
         "https://www.facebook.com/whatsonnetflix"
       ],
-      "source_page_url": "https://www.facebook.com/whatsonnetflix"
+      "source_page_url": "https://www.facebook.com/whatsonnetflix",
+      "content_topic": "film",
+      "language": "en",
+      "editorial_style": "Film and industry reporting with grounded outcomes and restrained tone",
+      "allow_web_fallback": false,
+      "poster_style": {
+        "style_id": "daily_hollywood",
+        "panel_color": "#141720",
+        "min_font_size": 68,
+        "max_font_size": 92,
+        "max_lines": 3,
+        "safe_margin": 64,
+        "text_position": "bottom",
+        "logo_position": "with-text"
+      },
+      "source_layouts": {
+        "whatsonnetflix": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        }
+      },
+      "max_candidates_per_run": 6
     },
     {
       "channel_id": "nepal_speaks",
@@ -112,11 +214,30 @@
       ],
       "source_page_url": "https://www.facebook.com/HimaliMedia",
       "source_layouts": {
+        "himalimedia": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        },
         "smartmedianp": {
-          "text_position": "top",
-          "source_header_fraction": 0.4
+          "text_position": "bottom",
+          "logo_position": "with-text"
         }
-      }
+      },
+      "content_topic": "news",
+      "editorial_style": "Clear complete Nepali news sentence: subject, event, key outcome, neutral tone",
+      "allow_web_fallback": false,
+      "poster_style": {
+        "style_id": "nepal_speaks",
+        "panel_color": "#101C2D",
+        "min_font_size": 66,
+        "max_font_size": 90,
+        "max_lines": 3,
+        "safe_margin": 64,
+        "logo_path": "assets/branding/nepal_speaks.png",
+        "text_position": "bottom",
+        "logo_position": "with-text"
+      },
+      "max_candidates_per_run": 6
     },
     {
       "channel_id": "oceans_secret",
@@ -130,7 +251,7 @@
       ],
       "source_page_url": "https://www.facebook.com/profile.php?id=61587221117884",
       "badge_label": "Ocean's Secret",
-      "highlight_color": "#38BDF8",
+      "highlight_color": "#4DD6E8",
       "language": "en",
       "post_interval_hours": 1.0,
       "max_posts_per_run": 1,
@@ -138,13 +259,28 @@
       "min_gap_hours": 1.0,
       "source_layouts": {
         "61587221117884": {
-          "text_position": "auto"
+          "text_position": "bottom",
+          "logo_position": "with-text"
         },
         "61589616333583": {
-          "text_position": "auto"
+          "text_position": "bottom",
+          "logo_position": "with-text"
         }
       },
-      "content_topic": "ocean"
+      "content_topic": "ocean",
+      "editorial_style": "Marine science discoveries: species, phenomenon, location and evidence; no sensationalism",
+      "allow_web_fallback": false,
+      "poster_style": {
+        "style_id": "oceans_secret",
+        "panel_color": "#081E28",
+        "min_font_size": 68,
+        "max_font_size": 92,
+        "max_lines": 3,
+        "safe_margin": 64,
+        "text_position": "bottom",
+        "logo_position": "with-text"
+      },
+      "max_candidates_per_run": 6
     }
   ]
 }

@@ -73,10 +73,10 @@ def compute_story_fingerprint(text: str) -> str:
     }
     tokens = []
     for w in words:
-        if len(w) >= 3 and w not in stop_words and not w.isdigit():
+        if (len(w) >= 3 or w.isdigit()) and w not in stop_words:
             if w not in tokens:
                 tokens.append(w)
-        if len(tokens) >= 8:
+        if len(tokens) >= 18:
             break
     return "_".join(sorted(tokens)) if tokens else ""
 
@@ -159,6 +159,8 @@ def run_pipeline(mode="run", target_channel="all"):
     # while strictly enforcing per-channel uniqueness (no repeats on the same channel).
     channel_image_hashes_map = state.get("channel_image_hashes", {})
     channel_story_fingerprints_map = state.get("channel_story_fingerprints", {})
+    channel_recent_captions_map = state.get('channel_recent_source_captions', {})
+    channel_clean_hashes_map = state.get('channel_clean_image_hashes', {})
     all_published_ids = set(str(x) for x in state.get("global_processed_ids", []))
     for cid, id_list in processed_ids_map.items():
         all_published_ids.update(str(x) for x in id_list)
@@ -171,6 +173,10 @@ def run_pipeline(mode="run", target_channel="all"):
     for ch in channels:
         channel_id = ch["channel_id"]
         channel_name = ch.get("channel_name", channel_id)
+        from modules.quality_log import record_rejection, ready_candidates, profile_signature
+        signature=profile_signature(ch)
+        def reject(post_id,stage,reason):
+            record_rejection(channel_id,post_id,stage,reason,policy_signature=signature)
 
         if target_channel != "all":
             t_clean = target_channel.strip().lower()
@@ -195,12 +201,10 @@ def run_pipeline(mode="run", target_channel="all"):
         else:
             token = os.getenv(token_env)
             
-        if not token:
-            for fallback_key in ["FB_TOKEN_MUSIC_STORE", "MUSIC_STORE_TOKEN", "FB_TOKEN_DAILY_NETFLIX", "DAILY_NETFLIX_TOKEN", "FB_TOKEN_CINEMA", "FB_TOKEN_DEFAULT"]:
-                cand = os.getenv(fallback_key)
-                if cand:
-                    token = cand
-                    break
+        if not token and mode not in ('dry_run','health_check','test'):
+            reject('', 'credential', 'This destination has no configured Facebook token')
+            print(f" [CREDENTIAL REJECT] No token configured for {channel_id}; refusing another page's token")
+            continue
 
         max_posts = int(ch.get("max_posts_per_run", 1))
         post_interval_hours = max(1.0, float(ch.get("post_interval_hours", ch.get("min_gap_hours", 1.0))))
@@ -240,6 +244,8 @@ def run_pipeline(mode="run", target_channel="all"):
         channel_processed_ids = set(str(x) for x in processed_ids)
         channel_image_hashes = set(str(x) for x in channel_image_hashes_map.get(channel_id, []))
         channel_story_fps = set(channel_story_fingerprints_map.get(channel_id, []))
+        recent_source_captions = channel_recent_captions_map.get(channel_id, [])
+        clean_image_hashes = set(channel_clean_hashes_map.get(channel_id, []))
 
         try:
             # 1. Fetch recent candidates across all linked source pages
@@ -281,7 +287,14 @@ def run_pipeline(mode="run", target_channel="all"):
             continue
 
         from modules.content_quality import channel_accepts_post
-        candidate_posts = [p for p in candidate_posts if channel_accepts_post(ch, p)]
+        candidate_posts = ready_candidates(ch, candidate_posts, bypass=mode!='run')
+        topical_posts = []
+        for candidate in candidate_posts:
+            if channel_accepts_post(ch, candidate):
+                topical_posts.append(candidate)
+            else:
+                reject(candidate.get('post_id',''), 'topic_or_caption', 'Source caption is missing, context-free or outside this page topic')
+        candidate_posts = topical_posts
         now_current = int(time.time())
         cutoff_24h  = now_current - 86400       # 24 hours ago
         cutoff_72h  = now_current - 259200      # 72 hours ago
@@ -293,6 +306,7 @@ def run_pipeline(mode="run", target_channel="all"):
         # 3. IDENTIFY UNPOSTED UNIQUE POSTS in each tier for THIS channel
         # Strictly enforce per-channel story uniqueness (no repeats of the same story on this channel)
         def filter_unposted(posts):
+            from modules.story_dedup import is_repeated_story
             result = []
             for p in posts:
                 pid      = str(p.get("post_id", ""))
@@ -303,7 +317,8 @@ def run_pipeline(mode="run", target_channel="all"):
                     pid in channel_processed_ids or
                     photo_id in channel_processed_ids or
                     cap_fp in channel_processed_ids or
-                    (story_fp and story_fp in channel_story_fps)
+                    (story_fp and story_fp in channel_story_fps) or
+                    is_repeated_story(p.get('caption',''), recent_source_captions)
                 )
                 if not is_dup:
                     result.append(p)
@@ -319,7 +334,7 @@ def run_pipeline(mode="run", target_channel="all"):
         # 4. WEB NEWS FALLBACK — fetch from internet when Facebook sources are dry
         web_posts = []
         is_nepali_ch = (ch.get("language") == "ne" or channel_id == "nepal_speaks")
-        web_needed = (len(unposted_t1) == 0 and not is_nepali_ch and channel_id not in ('oceans_secret', 'Music Store') and ch.get('content_topic') != 'ocean')  # Strictly disable English web fallback for Nepali channels!
+        web_needed = (len(unposted_t1) == 0 and not is_nepali_ch and channel_id not in ('oceans_secret', 'Music Store') and ch.get('content_topic') != 'ocean' and ch.get('allow_web_fallback',False))  # Strictly disable English web fallback for Nepali channels!
         if web_needed and WEB_SCRAPER_AVAILABLE:
             category = get_channel_category(channel_name)
             print(f" [WEB FALLBACK] No fresh FB posts available. Fetching {category.upper()} news from internet...")
@@ -381,7 +396,12 @@ def run_pipeline(mode="run", target_channel="all"):
         if is_nepali_ch:
             candidates_to_try = [p for p in candidates_to_try if p.get("source_tag") != "Internet Web Scraper"]
 
-        for post in candidates_to_try:
+        attempt_limit=max(max_posts,min(20,max(1,int(ch.get('max_candidates_per_run',6)))))
+        processing_deadline=time.monotonic()+240
+        for post in candidates_to_try[:attempt_limit]:
+            if time.monotonic()>processing_deadline:
+                print(' [PAGE BUDGET] Continuing the next page; remaining candidates can be checked in a later run')
+                break
             post_id = post.get("post_id", "unknown")
             print(f"\n [+] 1-Hour Automatic Release: Evaluating Post {post_id}")
             print(f"     Destination: {channel_name} ({dest_id}) | Interval: {post_interval_hours}h | Mode: INSTANT LIVE POST ONLY")
@@ -392,31 +412,39 @@ def run_pipeline(mode="run", target_channel="all"):
                     from modules.llm_transformer import is_devanagari_text
                     post_cap = post.get("caption", "")
                     if not is_devanagari_text(post_cap):
+                        reject(post_id, 'source_language', 'Source caption does not match the page language')
+                        reject(post_id, 'source_language', 'Source caption does not match the page language')
                         print(f"     [LANGUAGE REJECT] Channel '{channel_name}' requires 100% Nepali content. Skipping non-Nepali post {post_id}.")
                         continue
 
                 # 1. Image Download & Smart Cleaner (strictly below center, faces & subjects 100% protected)
                 image_url = post.get("image_url")
                 if not image_url:
+                    reject(post_id, 'source_image', 'Source post has no image URL')
+                    reject(post_id, 'source_image', 'Source post has no image URL')
                     print(f"     [SKIP] Post {post_id} has no image URL. Skipping.")
                     continue
 
                 print("     [1/4] Downloading high-resolution source image...")
                 raw_img = download_image(image_url)
                 if raw_img is None:
+                    reject(post_id, 'source_image', 'Image is unavailable or corrupt')
                     print(f"     [SKIP] Post {post_id} returned non-image or invalid media content. Will retry on a later scan; checking next candidate.")
                     continue
 
                 # STRICT HD QUALITY GATE: Reject very low-resolution, blank, or excessively blurry images
                 is_valid_quality, quality_msg = validate_image_quality(raw_img, min_dim=500, min_sharpness=80.0)
                 if not is_valid_quality:
-                    print(f"     [QUALITY REJECT] Post {post_id} rejected: {quality_msg}. Skipping to guarantee zero blur and zero pixelation.")
+                    reject(post_id, 'source_quality', quality_msg)
+                    print(f"     [QUALITY REJECT] Post {post_id} rejected: {quality_msg}.")
                     continue
 
                 # STRICT CHANNEL VISUAL IMAGE DEDUPLICATION:
                 # Verifies that this exact photo/image was NEVER published to THIS channel before
                 img_dhash = compute_image_dhash(raw_img)
                 if img_dhash and is_duplicate_dhash(img_dhash, channel_image_hashes):
+                    reject(post_id, 'duplicate_photo', 'Source image was already published to this page')
+                    reject(post_id, 'duplicate_photo', 'Source image was already published to this page')
                     print(f"     [CHANNEL IMAGE DEDUP] Image visually matches an image already published to {channel_id} (dHash: {img_dhash}). Skipping duplicate.")
                     continue
 
@@ -432,11 +460,20 @@ def run_pipeline(mode="run", target_channel="all"):
 
                 from modules.image_cleaner import detect_source_text_boxes
                 text_boxes = detect_source_text_boxes(raw_img)
-                print(f"           [Source text cleanup] Removing {len(text_boxes)} detected text regions across the full image")
+                print(f"           [Source text cleanup] Checking {len(text_boxes)} regions for safe photo extraction")
                 cleaned_img = erase_text_and_watermarks(raw_img, source_text_boxes=text_boxes)
 
                 # 2. Cinematic Color Grading
                 print("     [2/4] Applying OpenCV CIE-LAB CLAHE contrast grading...")
+                clean_valid, clean_reason = validate_image_quality(cleaned_img, min_dim=450, min_sharpness=35.0)
+                if not clean_valid:
+                    reject(post_id, 'photo_extraction', clean_reason)
+                    print(f" [CLEANUP QUALITY REJECT] {post_id}: {clean_reason}")
+                    continue
+                clean_dhash = compute_image_dhash(cleaned_img)
+                if clean_dhash and is_duplicate_dhash(clean_dhash, clean_image_hashes):
+                    reject(post_id, 'duplicate_photo', 'Retained photograph was already published to this page')
+                    continue
                 graded_img = apply_cinematic_grade(cleaned_img)
 
                 # 3. AI Caption & Dual-Tone Headline
@@ -450,7 +487,9 @@ def run_pipeline(mode="run", target_channel="all"):
                     post.get("caption", ""),
                     language=ch_lang,
                     channel_name=dest_name,
-                    channel_id=channel_id
+                    channel_id=channel_id,
+                    content_topic=ch.get('content_topic',''),
+                    editorial_style=ch.get('editorial_style','')
                 )
 
                 # STRICT OVERLAY LANGUAGE GATE FOR NEPALI CHANNELS:
@@ -458,6 +497,8 @@ def run_pipeline(mode="run", target_channel="all"):
                     from modules.llm_transformer import is_devanagari_text
                     overlay_all = "".join(t.get("text", "") for line in ai_data.get("overlay_lines", []) for t in line)
                     if not is_devanagari_text(overlay_all):
+                        reject(post_id, 'headline_language', 'Generated headline does not match the page language')
+                        reject(post_id, 'headline_language', 'Generated headline does not match the page language')
                         print(f"     [LANGUAGE REJECT] Generated non-Devanagari overlay text for '{channel_name}'. Skipping post {post_id}.")
                         continue
 
@@ -471,7 +512,8 @@ def run_pipeline(mode="run", target_channel="all"):
                     dest_page_name=dest_name,
                     output_path=rendered_file,
                     post_id=post_id,
-                    **source_layout
+                    caption=ai_data['rewritten_caption'], source_checked=True,
+                    **{**ch.get('poster_style',{}), **source_layout}
                 )
                 print(f"           Poster created successfully: 1080x1350px")
                 try:
@@ -509,6 +551,8 @@ def run_pipeline(mode="run", target_channel="all"):
                 except Exception as pub_err:
                     print(f"     [PUBLISH REJECTED BY META] Graph API Error: {pub_err}")
                     if "deleted" in str(pub_err).lower() or "190" in str(pub_err):
+                        reject('', 'credential', 'Facebook rejected this page connection; reconnect with a fresh page token')
+                        reject('', 'credential', 'Facebook rejected this page connection; reconnect with a fresh page token')
                         print(f"     [ACTION REQUIRED] The Meta Facebook App for '{dest_name}' (ID: {dest_id}) was deleted or token expired.")
                         print(f"     Please generate a fresh Page Access Token on Meta Developers and paste it into Web UI Settings.")
                     raise pub_err
@@ -524,6 +568,8 @@ def run_pipeline(mode="run", target_channel="all"):
                 if img_dhash:
                     channel_image_hashes.add(img_dhash)
                     global_image_hashes.add(img_dhash)
+                if clean_dhash:
+                    clean_image_hashes.add(clean_dhash)
 
                 if image_url:
                     global_processed_urls.add(image_url)
@@ -540,6 +586,11 @@ def run_pipeline(mode="run", target_channel="all"):
                 # Persist state with per-channel tracking & cross-channel syndication support
                 channel_image_hashes_map[channel_id] = list(channel_image_hashes)
                 channel_story_fingerprints_map[channel_id] = list(channel_story_fps)
+                recent_source_captions.append(str(post.get('caption',''))[:4000])
+                channel_recent_captions_map[channel_id] = recent_source_captions[-80:]
+                channel_clean_hashes_map[channel_id] = list(clean_image_hashes)[-300:]
+                state['channel_recent_source_captions'] = channel_recent_captions_map
+                state['channel_clean_image_hashes'] = channel_clean_hashes_map
                 state["channel_image_hashes"] = channel_image_hashes_map
                 state["channel_story_fingerprints"] = channel_story_fingerprints_map
                 processed_ids_map[channel_id] = processed_ids
@@ -561,6 +612,10 @@ def run_pipeline(mode="run", target_channel="all"):
                 time.sleep(5)
 
             except Exception as err:
+                if isinstance(err, ValueError):
+                    reject(post_id, 'content_or_layout', str(err))
+                    print(f"     [QUALITY SKIP] Post {post_id}: {err}")
+                    continue
                 tb_str = traceback.format_exc()
                 print(f"     [ERROR] Post {post_id} failed: {err}")
                 send_telegram_alert(
