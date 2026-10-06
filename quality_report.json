@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-06T13:32:04.906376+00:00",
+  "updated_at": "2026-10-06T14:09:41.420326+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -173,51 +173,6 @@
       "retry_after": 1791306286.811618
     },
     {
-      "channel_id": "Music Store",
-      "post_id": "1620161410150997",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-06T05:04:46.812100+00:00",
-      "policy_signature": "bb05e7ab7adf8184",
-      "retry_after": 1791306286.8121076
-    },
-    {
-      "channel_id": "Anisha",
-      "post_id": "122242790042298966",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-06T05:06:15.072152+00:00",
-      "policy_signature": "fa9a2803a273f005",
-      "retry_after": 1791306375.0721726
-    },
-    {
-      "channel_id": "Anisha",
-      "post_id": "122242777262298966",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-06T05:06:53.067340+00:00",
-      "policy_signature": "fa9a2803a273f005",
-      "retry_after": 1791306413.0673592
-    },
-    {
-      "channel_id": "Anisha",
-      "post_id": "122242771556298966",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-06T05:07:10.774292+00:00",
-      "policy_signature": "fa9a2803a273f005",
-      "retry_after": 1791306430.7743115
-    },
-    {
-      "channel_id": "Anisha",
-      "post_id": "122242763120298966",
-      "stage": "content_or_layout",
-      "reason": "Unrecognized source typography overlaps the photo; choose another image",
-      "checked_at": "2026-10-06T05:07:47.024725+00:00",
-      "policy_signature": "fa9a2803a273f005",
-      "retry_after": 1791306467.0247443
-    },
-    {
       "channel_id": "oceans_secret",
       "post_id": "122139751989240703",
       "stage": "content_or_layout",
@@ -225,15 +180,6 @@
       "checked_at": "2026-10-06T05:08:19.022948+00:00",
       "policy_signature": "49edbda33c648801",
       "retry_after": 1791306499.0229685
-    },
-    {
-      "channel_id": "Anisha",
-      "post_id": "122242763012298966",
-      "stage": "content_or_layout",
-      "reason": "Source needs editorial review: no complete readable headline",
-      "checked_at": "2026-10-06T05:35:38.371323+00:00",
-      "policy_signature": "fa9a2803a273f005",
-      "retry_after": 1791308138.3713393
     },
     {
       "channel_id": "nepal_speaks",
@@ -828,6 +774,60 @@
       "checked_at": "2026-10-06T13:32:04.906376+00:00",
       "policy_signature": "ba052a5595bd398a",
       "retry_after": 1791336724.9063895
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1620161410150997",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-06T14:08:31.775502+00:00",
+      "policy_signature": "550f9351cca2e144",
+      "retry_after": 1791338911.7755086
+    },
+    {
+      "channel_id": "Anisha",
+      "post_id": "122242790042298966",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-06T14:08:49.464819+00:00",
+      "policy_signature": "817a187a0cab80fc",
+      "retry_after": 1791338929.464836
+    },
+    {
+      "channel_id": "Anisha",
+      "post_id": "122242777262298966",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-06T14:09:05.657860+00:00",
+      "policy_signature": "817a187a0cab80fc",
+      "retry_after": 1791338945.65788
+    },
+    {
+      "channel_id": "Anisha",
+      "post_id": "122242771556298966",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-06T14:09:13.355446+00:00",
+      "policy_signature": "817a187a0cab80fc",
+      "retry_after": 1791338953.3554611
+    },
+    {
+      "channel_id": "Anisha",
+      "post_id": "122242763120298966",
+      "stage": "content_or_layout",
+      "reason": "Unrecognized source typography overlaps the photo; choose another image",
+      "checked_at": "2026-10-06T14:09:29.217134+00:00",
+      "policy_signature": "817a187a0cab80fc",
+      "retry_after": 1791338969.217155
+    },
+    {
+      "channel_id": "Anisha",
+      "post_id": "122242763012298966",
+      "stage": "content_or_layout",
+      "reason": "Source needs editorial review: no complete readable headline",
+      "checked_at": "2026-10-06T14:09:41.420326+00:00",
+      "policy_signature": "817a187a0cab80fc",
+      "retry_after": 1791338981.420359
     }
   ]
 }
