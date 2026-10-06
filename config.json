@@ -20,7 +20,6 @@
       "min_gap_hours": 1,
       "source_pages": [
         "https://www.facebook.com/netflixdaily",
-        "https://www.facebook.com/netflixfanatics",
         "https://www.facebook.com/netflixfanslivehere"
       ],
       "source_page_url": "https://www.facebook.com/netflixdaily",
@@ -40,10 +39,6 @@
       },
       "source_layouts": {
         "netflixdaily": {
-          "text_position": "bottom",
-          "logo_position": "with-text"
-        },
-        "netflixfanatics": {
           "text_position": "bottom",
           "logo_position": "with-text"
         },
@@ -280,7 +275,8 @@
         "text_position": "bottom",
         "logo_position": "with-text"
       },
-      "max_candidates_per_run": 6
+      "max_candidates_per_run": 6,
+      "preserve_readable_source_cards": true
     }
   ]
 }

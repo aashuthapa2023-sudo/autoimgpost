@@ -1,7 +1,8 @@
 import unittest
 import cv2
 import numpy as np
-from modules.image_cleaner import detect_source_text_boxes, remove_source_text, detect_and_remove_watermarks, extract_source_photo
+from modules.image_cleaner import detect_source_text_boxes, remove_source_text, detect_and_remove_watermarks, extract_source_photo, erase_text_and_watermarks, SourceTextBoxes
+from unittest.mock import patch
 
 class Detector:
     def readtext(self, image, **kwargs):
@@ -50,7 +51,7 @@ class SourceTextCleanupTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             extract_source_photo(image, boxes)
 
-    def test_unreadable_corner_logo_is_not_claimed_clean(self):
+    def test_unreadable_compact_corner_source_mark_keeps_original_pixels(self):
         class LogoReader:
             def readtext(self, image, **kwargs):
                 return [([[47,23],[87,23],[87,71],[47,71]], ' )', .033)]
@@ -61,9 +62,40 @@ class SourceTextCleanupTests(unittest.TestCase):
         boxes = detect_source_text_boxes(image, LogoReader())
         self.assertFalse(boxes)
         self.assertEqual(len(boxes.suspected_marks), 1)
-        with self.assertRaisesRegex(ValueError, 'Unverified corner'):
-            extract_source_photo(image, boxes)
+        self.assertIs(extract_source_photo(image,boxes),image)
         np.testing.assert_array_equal(image, original)
+
+    def test_two_letter_source_initials_survive_both_ocr_passes(self):
+        image=np.random.default_rng(7).integers(0,256,(1000,800,3),dtype=np.uint8)
+        boxes=SourceTextBoxes([(12,14,65,65)],text_labels={(12,14,65,65):'ND'})
+        with patch('modules.image_cleaner.detect_source_text_boxes',return_value=boxes):
+            self.assertIs(erase_text_and_watermarks(image,boxes),image)
+
+    def test_corner_headline_and_numeral_are_not_source_provenance(self):
+        image=np.random.default_rng(8).integers(0,256,(1000,800,3),dtype=np.uint8)
+        for label in ('NEWS','MONSTER','BREAKING','NEW','WOW','HOT','42','7'):
+            box=(12,14,110,55)
+            boxes=SourceTextBoxes([box],text_labels={box:label})
+            with self.subTest(label=label),self.assertRaises(ValueError):
+                extract_source_photo(image,boxes)
+
+    def test_compact_paragraph_cannot_be_split_into_provenance_marks(self):
+        image=np.random.default_rng(9).integers(0,256,(1000,800,3),dtype=np.uint8)
+        boxes=[(12,14,110,35),(12,40,115,61),(12,67,105,87)]
+        detected=SourceTextBoxes(boxes,text_labels=dict(zip(boxes,['The story','continues','today'])))
+        with self.assertRaises(ValueError):extract_source_photo(image,detected)
+
+    def test_large_corner_mark_and_wide_unknown_subtitle_are_rejected(self):
+        image=np.random.default_rng(10).integers(0,256,(1000,800,3),dtype=np.uint8)
+        for boxes in (SourceTextBoxes([(12,14,215,100)],text_labels={(12,14,215,100):'Himali'}),
+                      SourceTextBoxes([],suspected_marks=[(12,14,145,33)])):
+            with self.assertRaises(ValueError):extract_source_photo(image,boxes)
+
+    def test_known_small_corner_source_wordmark_is_preserved(self):
+        image=np.random.default_rng(11).integers(0,256,(1000,800,3),dtype=np.uint8)
+        box=(12,14,140,44)
+        boxes=SourceTextBoxes([box],text_labels={box:'Himali'})
+        self.assertIs(extract_source_photo(image,boxes),image)
 
     def test_large_removal_is_rejected(self):
         with self.assertRaises(ValueError):

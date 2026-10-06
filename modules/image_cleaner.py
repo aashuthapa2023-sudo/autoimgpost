@@ -106,10 +106,11 @@ _source_text_reader = None
 
 class SourceTextBoxes(list):
     """Recognized text plus separate detector evidence; never mix their trust levels."""
-    def __init__(self, boxes=(), suspected_rows=(), suspected_marks=()):
+    def __init__(self, boxes=(), suspected_rows=(), suspected_marks=(), text_labels=None):
         super().__init__(boxes)
         self.suspected_rows = list(suspected_rows)
         self.suspected_marks = list(suspected_marks)
+        self.text_labels = dict(text_labels or {})
 
 
 def _text_rows(boxes):
@@ -159,6 +160,7 @@ def detect_source_text_boxes(img, reader=None):
         reader = _source_text_reader
     height, width = img.shape[:2]
     recognized = []
+    labels = []
     for polygon, text, confidence in reader.readtext(img, detail=1, paragraph=False):
         letters = sum(character.isalnum() for character in str(text))
         xs, ys = zip(*polygon)
@@ -169,6 +171,7 @@ def detect_source_text_boxes(img, reader=None):
         if letters < 1 or confidence < minimum_confidence:
             continue
         recognized.append((min(xs), min(ys), max(xs), max(ys)))
+        labels.append(str(text))
     suspected = []
     marks = []
     if hasattr(reader, 'detect'):
@@ -188,9 +191,67 @@ def detect_source_text_boxes(img, reader=None):
                  and box[3]-box[1] >= max(12, height*.012)
                  and (box[2]-box[0])*(box[3]-box[1]) <= height*width*.025]
     padding = max(4, round(min(height, width)*.006))
-    return SourceTextBoxes(_clamped_boxes(recognized, height, width, padding),
+    padded = _clamped_boxes(recognized, height, width, padding)
+    return SourceTextBoxes(padded,
                            _clamped_boxes(suspected, height, width, padding),
-                           _clamped_boxes(marks, height, width, padding))
+                           _clamped_boxes(marks, height, width, padding),
+                           {tuple(box):label for box,label in zip(padded,labels)})
+
+
+def _source_provenance_marks(boxes, height, width):
+    """Identify small original source credits, never body headlines or subtitles.
+
+    Compact peripheral initials and known source names can stay in their
+    original pixels. Group the entire corner so a paragraph cannot evade the
+    size limit by splitting into tiny OCR words. Original-image geometry is
+    used again after cropping; newly peripheral body text is never promoted.
+    """
+    known = {'nd','nf','bbc','cnn','nbc','cbs','abc','npr','afp','ap','netflixdaily','netflixfanatics','himali',
+             'himalimedia','smartmedia','smartmedianp','oceanssecret','anisha',
+             'nepalspeaks','हि','हिं','हिमाली'}
+    labels = getattr(boxes, 'text_labels', {})
+    groups = {}
+    candidates = list(boxes)+list(getattr(boxes, 'suspected_marks', []))
+    for box in _clamped_boxes(candidates, height, width):
+        left, top, right, bottom = box
+        vertical = 'top' if bottom <= height*.15 else 'bottom' if top >= height*.85 else None
+        horizontal = 'left' if right <= width*.22 else 'right' if left >= width*.78 else None
+        if vertical and horizontal:
+            groups.setdefault((vertical,horizontal), []).append(box)
+    result = []
+    for cluster in groups.values():
+        left=min(box[0] for box in cluster); top=min(box[1] for box in cluster)
+        right=max(box[2] for box in cluster); bottom=max(box[3] for box in cluster)
+        mark_width,mark_height=right-left,bottom-top
+        if (mark_width > width*.18 or mark_height > height*.10
+                or mark_width*mark_height > height*width*.015):
+            continue
+        recognized_labels = [str(labels[tuple(box)]) for box in cluster if tuple(box) in labels]
+        initials_only = True
+        label_rejected = False
+        for label in recognized_labels:
+            letters=''.join(character for character in label if character.isalnum())
+            initial = letters.isascii() and letters.isalpha() and letters.isupper() and len(letters)<=2
+            if letters.casefold() not in known and not initial:
+                label_rejected = True
+                break
+            initials_only = initials_only and initial
+        if label_rejected:
+            continue
+        # Unreadable initials must remain compact. A long horizontal detector
+        # hit is too easily a subtitle, credit line or a short source headline.
+        max_aspect = 5.0 if recognized_labels and not initials_only else 2.8
+        if mark_width/max(1,mark_height) > max_aspect:
+            continue
+        result.append((left,top,right,bottom))
+    return result
+
+
+def _inside_source_mark(box, marks):
+    left,top,right,bottom=box
+    return any(left>=mark_left-4 and top>=mark_top-4
+               and right<=mark_right+4 and bottom<=mark_bottom+4
+               for mark_left,mark_top,mark_right,mark_bottom in marks)
 
 
 def remove_source_text(img, boxes):
@@ -265,21 +326,23 @@ def _has_panel_text(rows, width, top, bottom, verified):
     return len(broad) >= 2 and max(row[0] for row in broad)-min(row[0] for row in broad) <= width*.12
 
 
-def extract_source_photo(img, boxes):
+def extract_source_photo(img, boxes, *, retained_marks=None, return_crop_bounds=False):
     """Extract only edge-connected solid news panels; preserve photo pixels.
 
     A headline's y-coordinate is never itself a crop boundary. Typography over
-    a photograph, ambiguous panels, and leftover source logos are rejected.
+    a photograph and ambiguous panels are rejected. Small original corner
+    provenance remains intact; it is never erased or expanded into a headline.
     """
     if img is None:
-        return None
+        return (None,0,0) if return_crop_bounds else None
     height, width = img.shape[:2]
     verified = _clamped_boxes(boxes, height, width)
     suspected = _clamped_boxes(getattr(boxes, 'suspected_rows', []), height, width)
     marks = _clamped_boxes(getattr(boxes, 'suspected_marks', []), height, width)
     evidence = verified+suspected+marks
+    provenance = _source_provenance_marks(boxes,height,width) if retained_marks is None else retained_marks
     if not evidence:
-        return img
+        return (img,0,height) if return_crop_bounds else img
     rows = _text_rows(evidence)
     flat = _flat_panel_rows(img, evidence)
     top, bottom = 0, height
@@ -312,10 +375,11 @@ def extract_source_photo(img, boxes):
             photo_slice = flat[boundary: min(height, boundary+12)] if direction == 1 else flat[max(0,boundary-12):boundary]
             if not len(photo_slice) or np.mean(photo_slice) > .5:
                 raise ValueError('Source panel boundary is ambiguous; choose another image')
-    remaining = [box for box in verified if box[1] < bottom and box[3] > top]
+    remaining = [box for box in verified if box[1] < bottom and box[3] > top
+                 and not _inside_source_mark(box,provenance)]
     if remaining:
         raise ValueError('Source text or logo remains inside the photo; skipping to preserve the subject')
-    if any(box[1] < bottom and box[3] > top for box in marks):
+    if any(box[1] < bottom and box[3] > top and not _inside_source_mark(box,provenance) for box in marks):
         raise ValueError('Unverified corner lettering or source logo remains; choose another image')
     remaining_suspected = [row for row in suspected if row[1] < bottom and row[3] > top]
     # Multiple broad aligned lines are strong evidence of unrecognized embedded
@@ -327,19 +391,28 @@ def extract_source_photo(img, boxes):
                         and abs(first[2]-second[2]) <= width*.15
                         and abs(first[1]-second[1]) <= height*.25):
                     raise ValueError('Unrecognized source typography overlaps the photo; choose another image')
-    return img[top:bottom].copy() if cropped else img
+    photo = img[top:bottom].copy() if cropped else img
+    return (photo,top,bottom) if return_crop_bounds else photo
 
 
 def erase_text_and_watermarks(img: np.ndarray, source_text_boxes=None) -> np.ndarray:
     boxes = detect_source_text_boxes(img) if source_text_boxes is None else source_text_boxes
-    photo = extract_source_photo(img, boxes)
+    if img is None:
+        return None
+    provenance = _source_provenance_marks(boxes,*img.shape[:2])
+    photo,top,bottom = extract_source_photo(img,boxes,retained_marks=provenance,return_crop_bounds=True)
     if photo is None:
         return None
-    # A second full-image inspection catches panel fragments, short captions,
-    # small source logos, and unreadable multiline text. No width exemption.
+    # Source credits must use the original-image decision; cropping cannot
+    # turn a source subtitle into a newly allowed corner logo.
+    retained_provenance = [(left,mark_top-top,right,mark_bottom-top)
+                           for left,mark_top,right,mark_bottom in provenance
+                           if mark_top<bottom and mark_bottom>top]
+    # A second full-image inspection still rejects every body headline or
+    # caption; narrowly bounded original provenance keeps its source pixels.
     residual = detect_source_text_boxes(photo)
-    inspected = extract_source_photo(photo, residual)
-    if residual or inspected is not photo:
+    inspected = extract_source_photo(photo,residual,retained_marks=retained_provenance)
+    if inspected is not photo:
         raise ValueError('Source text remains after photo extraction; skipping this image')
     return photo
 

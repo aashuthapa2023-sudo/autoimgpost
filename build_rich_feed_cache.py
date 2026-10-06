@@ -7,10 +7,26 @@ from modules.ingestion import fetch_facebook_public_posts
 from modules.image_cleaner import download_image
 from modules.llm_transformer import smart_heuristic_headline
 
-def build_rich_feed_cache(source_url="https://www.facebook.com/netflixdailyupdates", limit=15, cache_path="feed_cache.json"):
+def build_rich_feed_cache(source_url="https://www.facebook.com/netflixfanslivehere", limit=15, cache_path="feed_cache.json"):
     print(f"Ingesting live posts from {source_url} (limit {limit})...")
     posts = fetch_facebook_public_posts(source_url, limit=limit)
     print(f"Retrieved {len(posts)} raw posts from Facebook.")
+    if not posts:
+        try:
+            with open(cache_path, 'r', encoding='utf-8') as cached:
+                previous = json.load(cached)
+        except (OSError, ValueError):
+            previous = None
+        if isinstance(previous, dict) and isinstance(previous.get('posts'), list) and previous['posts']:
+            previous['last_refresh'] = {
+                'checked_at': datetime.now(timezone.utc).isoformat(),
+                'status': 'source_unavailable', 'requested_page': source_url,
+                'reason': 'No complete caption/photo pairs were available; retained the last usable source feed.'
+            }
+            with open(cache_path, 'w', encoding='utf-8') as cached:
+                json.dump(previous, cached, indent=2)
+            print(' [FEED PRESERVED] Source returned no usable posts; existing nonempty feed retained.')
+            return previous
 
     enriched_posts = []
     for idx, p in enumerate(posts):
@@ -65,4 +81,15 @@ def build_rich_feed_cache(source_url="https://www.facebook.com/netflixdailyupdat
     return payload
 
 if __name__ == "__main__":
-    build_rich_feed_cache()
+    import sys
+    source = sys.argv[1].strip() if len(sys.argv) > 1 else ''
+    limit = int(sys.argv[2]) if len(sys.argv) > 2 else 15
+    if not source:
+        try:
+            with open('config.json', 'r', encoding='utf-8') as config_file:
+                configured = json.load(config_file)
+            channels = configured.get('channels', []) if isinstance(configured, dict) else configured
+            source = next(url for channel in channels for url in channel.get('source_pages', []) if url)
+        except (OSError, ValueError, StopIteration, TypeError):
+            source = 'https://www.facebook.com/netflixfanslivehere'
+    build_rich_feed_cache(source, limit)

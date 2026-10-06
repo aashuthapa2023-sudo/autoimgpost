@@ -111,6 +111,56 @@ def _exact_story_caption(story):
     return caption
 
 
+def _caption_fingerprint(caption):
+    """Versioned full-message identity; a shared first line is not a duplicate."""
+    normalized = re.sub(r'\s+', '', str(caption or '')).lower()
+    return 'caption_v2_' + hashlib.sha256(normalized.encode('utf-8')).hexdigest()
+
+
+def _page_identity(value):
+    from urllib.parse import urlsplit, parse_qs
+    target = str(value or '').strip().rstrip('/')
+    if not target:
+        return None
+    if not target.startswith(('http://', 'https://')):
+        return ('id', target) if target.isdigit() else ('slug', target.lstrip('@').casefold())
+    parts = urlsplit(target)
+    if (parts.hostname or '').lower() not in ('facebook.com', 'www.facebook.com', 'm.facebook.com', 'mbasic.facebook.com'):
+        return None
+    page_id = parse_qs(parts.query).get('id', [''])[0]
+    if page_id.isdigit():
+        return 'id', page_id
+    segments = [segment for segment in parts.path.split('/') if segment]
+    if not segments:
+        return None
+    if segments[0].lower() in ('people', 'pages') and segments[-1].isdigit():
+        return 'id', segments[-1]
+    if segments[0].lower() in ('photo', 'photos', 'photo.php', 'story.php', 'permalink.php', 'watch', 'groups', 'share', 'login'):
+        return None
+    return ('id', segments[0]) if segments[0].isdigit() else ('slug', segments[0].casefold())
+
+
+def _story_matches_source(story, source_url):
+    """Reject contradictory known authors; absence or aliases are not guessed."""
+    expected = _page_identity(source_url)
+    actors = story.get('actors') if isinstance(story, dict) else None
+    if expected is None or not isinstance(actors, list) or not actors:
+        return True
+    comparable = []
+    for actor in actors:
+        if not isinstance(actor, dict):
+            continue
+        identities = [_page_identity(actor.get('url'))]
+        if str(actor.get('id') or '').isdigit():
+            identities.append(('id', str(actor['id'])))
+        for identity in identities:
+            if identity == expected:
+                return True
+            if identity and identity[0] == expected[0]:
+                comparable.append(identity)
+    return not comparable
+
+
 def parse_relative_time(time_str: str) -> int:
     import time
     now = int(time.time())
@@ -154,7 +204,7 @@ def _posts_from_mobile_cards(cards, processed_ids=None, limit=15):
             continue
         if created_time <= 0:
             continue
-        fingerprint = hashlib.md5(re.sub(r'\s+', '', caption[:60]).lower().encode('utf-8')).hexdigest()
+        fingerprint = _caption_fingerprint(caption)
         if fingerprint in seen:
             continue
         seen.update((post_id, photo_id, fingerprint))
@@ -184,6 +234,18 @@ def fetch_facebook_mobile_playwright(page_url_or_slug: str, processed_ids: list 
             page = context.new_page()
             page.goto(mobile_url, wait_until="domcontentloaded", timeout=25000)
             page.wait_for_timeout(3000)
+
+            # A browser may receive full hydration JSON even when its visible
+            # mobile cards lack stable message selectors. Reuse the exact same
+            # story/photo extractor; no DOM text guesses or ALT captions.
+            hydrated_scripts = page.evaluate("() => Array.from(document.querySelectorAll('script[type=\"application/json\"]')).map(node => node.textContent || '')")
+            resolved_url = getattr(page, 'url', '')
+            expected_source = resolved_url if _page_identity(resolved_url) else page_url_or_slug
+            hydrated_posts = _extract_facebook_story_posts(hydrated_scripts, processed_ids, limit, source_url=expected_source)
+            if hydrated_posts:
+                print(f" [PLAYWRIGHT FB] Retrieved {len(hydrated_posts)} exact caption/photo pairs from hydration JSON")
+                browser.close()
+                return hydrated_posts
 
             cards = page.evaluate(r'''() => {
                 const results = [];
@@ -245,40 +307,10 @@ def fetch_facebook_mobile_playwright(page_url_or_slug: str, processed_ids: list 
 
     return posts
 
-def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = None, limit: int = 15):
-    """
-    Universally scrapes and extracts real-time posts from ANY public Facebook URL
-    (page URLs, direct post links, profile IDs, or slugs) using Googlebot SSR routing with Playwright fallback.
-    """
+def _extract_facebook_story_posts(scripts, processed_ids=None, limit=15, html='', source_url=''):
+    """Read complete same-story caption/photo pairs from source hydration JSON."""
     processed_ids = processed_ids or []
-    target = page_url_or_slug.strip()
-    if target.startswith("http"):
-        url = target
-    else:
-        ident = extract_identifier(target)
-        url = f"https://www.facebook.com/{ident}"
-
-    try:
-        res = requests.get(url, headers=FB_BOT_HEADERS, timeout=20)
-    except Exception as e:
-        print(f" [FB INGEST ERROR] Network request to {url} failed: {e}. Trying Playwright fallback...")
-        return fetch_facebook_mobile_playwright(page_url_or_slug, processed_ids=processed_ids, limit=limit)
-
-    if res.status_code != 200 or "facebook.com/login" in res.url.lower():
-        print(f" [FB INGEST] URL {url} redirected to login or returned {res.status_code}. Engaging Playwright mobile bypass...")
-        pw_posts = fetch_facebook_mobile_playwright(page_url_or_slug, processed_ids=processed_ids, limit=limit)
-        if pw_posts:
-            return pw_posts
-        return []
-
-    html = res.text
-    scripts = re.findall(r'<script\s+type="application/json"[^>]*>(.*?)</script>', html)
-    if len(scripts) < 3:
-        print(f" [FB INGEST] Insufficient JSON scripts ({len(scripts)}) on {url}. Engaging Playwright mobile bypass...")
-        pw_posts = fetch_facebook_mobile_playwright(page_url_or_slug, processed_ids=processed_ids, limit=limit)
-        if pw_posts:
-            return pw_posts
-
+    html = html or '\n'.join(scripts)
     # 1. Pre-pass: Extract true post_id -> publish_time (integer) from tracking strings and metadata
     post_meta = {}
     for m in re.finditer(r'\\?"publish_time\\?":\s*(\d{9,11}).*?\\"story_fbid\\":\[\\"(\d+)\\"\]', html):
@@ -336,6 +368,8 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
         """
         if not isinstance(story_node, dict):
             return None
+        if not _story_matches_source(story_node, source_url):
+            return None
 
         # 1. Message text directly belonging to THIS story
         msg = _exact_story_caption(story_node)
@@ -383,7 +417,7 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
             # An unknown date must not become an invented fresh post.
             return None
 
-        cap_fp = 'caption_v2_' + hashlib.sha256(re.sub(r'\s+', '', msg).lower().encode('utf-8')).hexdigest()
+        cap_fp = _caption_fingerprint(msg)
 
         return {
             "post_id": str(final_pid),
@@ -442,15 +476,45 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
 
         scan_story_nodes(data)
 
-    if not posts_dict:
-        print(f" [FB INGEST] Standard SSR yielded 0 posts for {url}. Engaging Playwright mobile bypass...")
-        pw_posts = fetch_facebook_mobile_playwright(page_url_or_slug, processed_ids=processed_ids, limit=limit)
-        if pw_posts:
-            return pw_posts
-
     posts = list(posts_dict.values())
     posts.sort(key=lambda p: p.get("created_time", 0), reverse=True)
     return posts[:limit]
+
+
+def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = None, limit: int = 15):
+    """
+    Universally scrapes and extracts real-time posts from ANY public Facebook URL
+    (page URLs, direct post links, profile IDs, or slugs) using Googlebot SSR routing with Playwright fallback.
+    """
+    processed_ids = processed_ids or []
+    target = page_url_or_slug.strip()
+    if target.startswith("http"):
+        url = target
+    else:
+        ident = extract_identifier(target)
+        url = f"https://www.facebook.com/{ident}"
+
+    try:
+        res = requests.get(url, headers=FB_BOT_HEADERS, timeout=20)
+    except Exception as e:
+        print(f" [FB INGEST ERROR] Network request to {url} failed: {e}. Trying Playwright fallback...")
+        return fetch_facebook_mobile_playwright(page_url_or_slug, processed_ids=processed_ids, limit=limit)
+
+    if res.status_code != 200 or "facebook.com/login" in res.url.lower():
+        print(f" [FB INGEST] URL {url} redirected to login or returned {res.status_code}. Engaging Playwright mobile bypass...")
+        pw_posts = fetch_facebook_mobile_playwright(page_url_or_slug, processed_ids=processed_ids, limit=limit)
+        if pw_posts:
+            return pw_posts
+        return []
+
+    html = res.text
+    scripts = re.findall(r'<script\b(?=[^>]*\btype=["\']application/json["\'])[^>]*>(.*?)</script>', html, re.DOTALL)
+    expected_source = res.url if _page_identity(res.url) else page_url_or_slug
+    posts = _extract_facebook_story_posts(scripts, processed_ids, limit, html, expected_source)
+    if not posts:
+        print(f" [FB INGEST] Standard SSR yielded 0 posts for {url}. Engaging Playwright mobile bypass...")
+        return fetch_facebook_mobile_playwright(page_url_or_slug, processed_ids=processed_ids, limit=limit)
+    return posts
 
 
 def fetch_source_posts(source_page_id: str = "", access_token: str = "", processed_ids: list = None, limit: int = 2, source_url: str = "", source_pages: list = None, **kwargs):

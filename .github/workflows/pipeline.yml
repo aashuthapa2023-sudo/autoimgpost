@@ -85,6 +85,7 @@ jobs:
           MUSIC_STORE_TOKEN: ${{ secrets.MUSIC_STORE_TOKEN }}
           NEPAL_SPEAKS_ACCESS_TOKEN: ${{ secrets.NEPAL_SPEAKS_ACCESS_TOKEN }}
           FB_TOKEN_NEPAL_SPEAKS: ${{ secrets.FB_TOKEN_NEPAL_SPEAKS }}
+          FEED_SOURCE_URL: ${{ github.event.inputs.source_url }}
         run: |
           ACTION="${{ github.event.inputs.action }}"
           CHANNEL="${{ github.event.inputs.channel }}"
@@ -94,10 +95,9 @@ jobs:
           if [ "$CHANNEL" = "true" ]; then CHANNEL="all"; fi
 
           if [ "$ACTION" = "ingest" ]; then
-            python build_rich_feed_cache.py "${{ github.event.inputs.source_url || 'https://www.facebook.com/netflixdailyupdates' }}" 15
+            python build_rich_feed_cache.py "$FEED_SOURCE_URL" 15
           else
             python main.py "$ACTION" "$CHANNEL"
-            python build_rich_feed_cache.py "https://www.facebook.com/netflixdailyupdates" 15 || true
           fi
 
       - name: Commit and Push Updated State

@@ -18,14 +18,22 @@ def verify_publishable_poster(image_path, caption):
         raise ValueError('Caption does not match the approved poster')
     with Image.open(image) as poster:
         size=poster.size
-    if size != (1080,1350) or data.get('font_size',0)<64:
+    original_card=data.get('layout_kind')=='preserved_source_card'
+    if original_card:
+        if data.get('preserved_source_approved') is not True or data.get('min_visible_letter_height',0)<32:
+            raise ValueError('Original card did not pass headline readability approval')
+    if size != (1080,1350) or (not original_card and data.get('font_size',0)<64):
         raise ValueError('Poster does not meet image size and typography requirements')
     margin=data.get('safe_margin',64)
     bounds=data.get('text_bounds',[])
     if not bounds or any(l<margin or r>1080-margin or t<margin or b>1350-margin or r<=l or b<=t for l,t,r,b in bounds):
         raise ValueError('Poster lettering is outside the approved safe area')
     panel=data.get('panel_bounds')
-    if not panel or any(t<panel[1]+32 or b>panel[3]-32 or abs((l+r)/2-540)>1 for l,t,r,b in bounds):
+    if original_card:
+        photo=data.get('photo_bounds')
+        if not photo or any(l<photo[0] or r>photo[0]+photo[2] or t<photo[1] or b>photo[1]+photo[3] or b-t<32 for l,t,r,b in bounds):
+            raise ValueError('Original card headline is outside its retained frame')
+    elif not panel or any(t<panel[1]+32 or b>panel[3]-32 or abs((l+r)/2-540)>1 for l,t,r,b in bounds):
         raise ValueError('Headline is not centered inside its separate text panel')
     for key in ('brand_bounds','logo_bounds'):
         box=data.get(key)

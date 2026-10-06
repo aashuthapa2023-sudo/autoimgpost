@@ -57,10 +57,11 @@ class NewsCardTests(unittest.TestCase):
             extract_source_photo(image, [(70,470,720,525), (90,540,730,590)])
         np.testing.assert_array_equal(image, original)
 
-    def test_small_logo_is_not_inpainted_or_ignored(self):
+    def test_small_source_provenance_is_preserved_without_inpainting(self):
         image = self.make_photo()
-        with self.assertRaisesRegex(ValueError, 'logo remains'):
-            extract_source_photo(image, [(680,20,760,55)])
+        original=image.copy()
+        self.assertIs(extract_source_photo(image, [(680,20,760,55)]),image)
+        np.testing.assert_array_equal(image,original)
 
     def test_detector_only_wave_band_cannot_modify_a_text_free_photo(self):
         image = self.make_photo()
@@ -102,6 +103,19 @@ class NewsCardTests(unittest.TestCase):
         with patch('modules.image_cleaner.detect_source_text_boxes', return_value=residual):
             with self.assertRaisesRegex(ValueError, 'Source text remains'):
                 erase_text_and_watermarks(image, source_text_boxes=[])
+
+    def test_crop_cannot_promote_newly_detected_subtitle_to_corner_provenance(self):
+        image=self.make_photo(1200,800)
+        image[:400]=(8,8,8)
+        source=SourceTextBoxes([(80,100,720,160),(80,220,720,280)])
+        residual=SourceTextBoxes([(20,30,75,60)],text_labels={(20,30,75,60):'ND'})
+        # Cropped geometry alone resembles a logo, but it was not source
+        # provenance in the original image and cannot bypass the second scan.
+        cropped=image[400:].copy()
+        self.assertIs(extract_source_photo(cropped,residual),cropped)
+        with patch('modules.image_cleaner.detect_source_text_boxes',return_value=residual):
+            with self.assertRaisesRegex(ValueError,'Source text or logo remains'):
+                erase_text_and_watermarks(image,source_text_boxes=source)
 
     def test_limited_visible_photo_is_rejected_even_with_clean_panels(self):
         image = self.make_photo()

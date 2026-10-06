@@ -29,3 +29,22 @@ class TopicTests(unittest.TestCase):
     def test_configured_screen_alias_rejects_ocean_source(self):
         self.assertFalse(channel_accepts_post({'content_topic': 'screen'}, {'caption': 'A whale calf swims beside its mother'}))
         self.assertTrue(channel_accepts_post({'content_topic': 'screen'}, {'caption': 'Bridgerton returns to Netflix for season six'}))
+
+    def test_real_source_duet_and_vma_award_facts_are_music(self):
+        for caption in [
+            'Riley Green and Carly Pearce showed chemistry in their hit duet, and now they are joining The Voice.',
+            'Taylor Swift winning #VMA Video of the Year never goes out of style.',
+        ]:
+            self.assertTrue(channel_accepts_post({'content_topic': 'music'}, {'caption': caption}))
+        for caption in ['An update about politics #VMAs', 'A timeline of Taylor Swift generosity and donations']:
+            self.assertFalse(channel_accepts_post({'content_topic': 'music'}, {'caption': caption}))
+
+    def test_marine_archaeology_requires_ship_or_marine_context(self):
+        for caption in [
+            'Archaeologists recovered ceramic cargo from a merchant ship wreck off Adrasan in the Mediterranean.',
+            'An ancient shipwreck reveals intact cargo.',
+            'Marine archaeologists investigate a coastal wreck.',
+        ]:
+            self.assertTrue(channel_accepts_post({'content_topic': 'ocean'}, {'caption': caption}))
+        for caption in ['A car wreck blocked a rural highway', 'A plane wreck was discovered in a desert']:
+            self.assertFalse(channel_accepts_post({'content_topic': 'ocean'}, {'caption': caption}))
