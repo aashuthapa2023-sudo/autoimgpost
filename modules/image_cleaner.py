@@ -245,10 +245,25 @@ def detect_source_text_boxes(img, reader=None):
     # recognizable text before changing photo pixels.
     for polygon, text, confidence in reader.readtext(img, detail=1, paragraph=False):
         letters = sum(c.isalnum() for c in str(text))
-        if confidence < 0.65 or letters < 3:
+        if confidence < 0.35 or letters < 3:
             continue
         xs, ys = zip(*polygon)
         boxes.append((min(xs), min(ys), max(xs), max(ys)))
+    # Keep detector-only bounds for broad designed headline rows. Recognition
+    # must not miss Nepali text and leave a complete source news panel behind.
+    if hasattr(reader, 'detect'):
+        horizontal, free = reader.detect(img, min_size=12, text_threshold=0.6,
+                                         low_text=0.35, link_threshold=0.4)
+        detected = [(l,t,r,b) for group in horizontal for l,r,t,b in group]
+        rows = []
+        for l,t,r,b in sorted(detected, key=lambda box:box[1]):
+            for i,(rl,rt,rr,rb) in enumerate(rows):
+                if min(rb,b)-max(rt,t) > min(rb-rt,b-t)*0.5:
+                    rows[i] = (min(l,rl),min(t,rt),max(r,rr),max(b,rb))
+                    break
+            else:
+                rows.append((l,t,r,b))
+        boxes.extend(row for row in rows if row[2]-row[0] > w*.25)
     padding = max(4, round(min(h, w) * 0.006))
     return [(max(0, int(left)-padding), max(0, int(top)-padding),
              min(w, int(right)+padding), min(h, int(bottom)+padding))
@@ -273,11 +288,62 @@ def remove_source_text(img, boxes):
     return cv2.inpaint(img, mask, inpaintRadius=5, flags=cv2.INPAINT_TELEA)
 
 
+def extract_source_photo(img, boxes):
+    """Discard edge news-card panels instead of keeping or smearing their lettering."""
+    h, w = img.shape[:2]
+    if not boxes:
+        return img
+    # OCR may return separate words: group overlapping baseline boxes into rows.
+    rows = []
+    for box in sorted(boxes, key=lambda b:b[1]):
+        for i,row in enumerate(rows):
+            overlap = min(row[3],box[3])-max(row[1],box[1])
+            if overlap > min(row[3]-row[1],box[3]-box[1])*0.5:
+                rows[i] = (min(row[0],box[0]),min(row[1],box[1]),max(row[2],box[2]),max(row[3],box[3]))
+                break
+        else:
+            rows.append(box)
+    # Detect broad headline/paragraph rows in the top or bottom of designed cards.
+    edge_boxes = [b for b in rows if b[2]-b[0] >= w*0.25]
+    lower = [b for b in edge_boxes if b[1] >= h*0.40]
+    upper = [b for b in edge_boxes if b[3] <= h*0.40]
+    top, bottom = 0, h
+    if lower:
+        bottom = min(b[1] for b in lower)
+        # A flat-colour banner often starts before its first glyph. Find its
+        # boundary rather than leaving the blank label/banner attached to photo.
+        start = max(int(h*0.3), bottom-int(h*0.20))
+        band = img[start:bottom, int(w*.15):int(w*.85)].astype(np.float32)
+        median = np.median(band, axis=1)
+        uniform = np.mean(np.max(np.abs(band-median[:,None,:]),axis=2)<15,axis=1) > 0.65
+        for y in range(len(uniform)-8, -1, -1):
+            if uniform[y:y+8].all():
+                boundary = y
+                while boundary > 0 and uniform[boundary-1]:
+                    boundary -= 1
+                bottom = start + boundary
+                break
+    if upper:
+        top = max(b[3] for b in upper)
+    if bottom-top < h*0.35 or bottom-top < 280:
+        raise ValueError('News-card photo cannot be separated safely; skip this source image')
+    remaining = [b for b in boxes if b[1] < bottom and b[3] > top]
+    if any(b[2]-b[0] >= w*0.25 for b in remaining):
+        raise ValueError('Source headline still intersects the photo; skip instead of duplicating text')
+    photo = img[top:bottom].copy()
+    # Only small verified lettering may be inpainted in the retained photograph.
+    small_boxes = [(l,max(0,t-top),r,min(bottom-top,b-top)) for l,t,r,b in remaining]
+    return remove_source_text(photo, small_boxes)
+
+
 def erase_text_and_watermarks(img: np.ndarray, source_text_boxes=None) -> np.ndarray:
-    # Detection failure must stop this image, rather than publish leaking lettering.
     boxes = detect_source_text_boxes(img) if source_text_boxes is None else source_text_boxes
-    cleaned = remove_source_text(img, boxes)
-    return cleaned  # No unverified edge/colour erasure on the main subject.
+    photo = extract_source_photo(img, boxes)
+    # Fail closed if a second OCR pass can still read a source headline or caption.
+    residual = detect_source_text_boxes(photo)
+    if any(r-l > photo.shape[1]*0.25 for l,t,r,b in residual):
+        raise ValueError('Source text remains after cleanup; skipping this image')
+    return photo
 
 def validate_image_quality(img: np.ndarray, min_dim: int = 500, min_sharpness: float = 100.0) -> tuple:
     """
