@@ -22,4 +22,15 @@ class PageOCRTests(unittest.TestCase):
             self.assertIs(cleaner.erase_text_and_watermarks(image,[],language='en'),image)
         self.assertEqual(scan.call_args.kwargs['language'],'en')
 
+    def test_one_detection_pass_preserves_recognized_and_unreadable_evidence(self):
+        horizontal=[[[40,720,420,450],[40,720,500,530]]]
+        reader=SimpleNamespace(detect=Mock(return_value=(horizontal,[[]])),
+            recognize=Mock(return_value=[([[40,420],[720,420],[720,450],[40,450]],'COMPLETE HEADLINE',.96)]),
+            readtext=Mock(side_effect=AssertionError('Would run detector twice')))
+        boxes=cleaner.detect_source_text_boxes(np.zeros((1000,800,3),dtype=np.uint8),reader)
+        reader.detect.assert_called_once();reader.recognize.assert_called_once();reader.readtext.assert_not_called()
+        self.assertEqual(len(boxes),1)
+        self.assertEqual(len(boxes.suspected_rows),2)
+        self.assertEqual(list(boxes.text_labels.values()),['COMPLETE HEADLINE'])
+
 if __name__=='__main__':unittest.main()

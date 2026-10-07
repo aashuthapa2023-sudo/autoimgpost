@@ -176,7 +176,14 @@ def detect_source_text_boxes(img, reader=None, *, language='mixed'):
     recognized = []
     labels = {}
     confidences = {}
-    for polygon, text, confidence in reader.readtext(img, detail=1, paragraph=False):
+    detection=None
+    if callable(getattr(reader,'detect',None)) and callable(getattr(reader,'recognize',None)):
+        detection=reader.detect(img,min_size=12,text_threshold=.65,low_text=.35,link_threshold=.4)
+        horizontal,free=detection
+        readings=reader.recognize(img,horizontal_list=horizontal[0],free_list=free[0],detail=1,paragraph=False)
+    else:
+        readings=reader.readtext(img,detail=1,paragraph=False)
+    for polygon, text, confidence in readings:
         letters = sum(character.isalnum() for character in str(text))
         xs, ys = zip(*polygon)
         near_corner = ((max(ys) <= height*.18 or min(ys) >= height*.82)
@@ -195,8 +202,8 @@ def detect_source_text_boxes(img, reader=None, *, language='mixed'):
     suspected = []
     marks = []
     if hasattr(reader, 'detect'):
-        horizontal, free = reader.detect(img, min_size=12, text_threshold=.65,
-                                         low_text=.35, link_threshold=.4)
+        horizontal,free=detection if detection is not None else reader.detect(img,min_size=12,text_threshold=.65,
+                                                                            low_text=.35,link_threshold=.4)
         detected = [(left, top, right, bottom)
                     for group in horizontal for left, right, top, bottom in group]
         suspected = [row for row in _text_rows(detected)
