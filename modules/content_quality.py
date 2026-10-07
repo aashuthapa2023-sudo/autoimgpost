@@ -7,6 +7,9 @@ MUSIC_TERMS = r"\b(?:music|musicians?|singers?|songs?|albums?|concerts?|billboar
 SCREEN_TERMS = r"\b(?:netflix|streaming|series|seasons?|episodes?|films?|movies?|cinema|hollywood|actors?|actresses?|directors?|cast|casting|screenplay|box[- ]office|trailers?|oscars?|emmys?|hbo|disney|paramount|sitcom|documentary|television|tv show)\b"
 
 
+MILITARY_TERMS = r"\b(?:army|military|marines?|navy|air force|soldiers?|veterans?|rangers?|medal of honor|regiment|battalion|infantry|fighter jets?|F-16V?|SR-71|Blackbird|NMESIS|missiles?|armed forces)\b"
+
+
 def channel_topic(channel):
     topic = str(channel.get('content_topic') or '').strip().lower()
     if topic:
@@ -31,6 +34,8 @@ def channel_accepts_post(channel, post):
     if re.fullmatch(r'(?:read more|link in (?:bio|comments)|breaking news|latest update)[.! ]*', caption, re.IGNORECASE):
         return False
     topic = channel_topic(channel)
+    if topic == 'military':
+        return bool(re.search(MILITARY_TERMS, caption, re.IGNORECASE))
     if topic == 'music':
         return bool(re.search(MUSIC_TERMS, caption, re.IGNORECASE))
     if topic in ('film', 'entertainment'):

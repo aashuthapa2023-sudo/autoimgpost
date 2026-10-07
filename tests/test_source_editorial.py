@@ -6,6 +6,19 @@ from modules.source_editorial import extract_editorial_photo,source_profile
 from modules.source_replacement import replacement_payload
 
 class EditorialSourceTests(unittest.TestCase):
+ def test_petry_hook_keeps_named_person_sacrifice_and_saved_rangers(self):
+  caption='An enemy grenade landed next to three Army Rangers. Leroy Petry grabbed it with his bare hand and threw it back. He lost his hand and saved his fellow Army Rangers.'
+  payload=replacement_payload(caption,language='en',content_topic='military')
+  self.assertEqual(payload['headline'],'Leroy Petry lost his hand saving fellow Army Rangers from a grenade')
+ def test_military_headline_keeps_complete_named_deployment_clause(self):
+  caption='During the exercise Keen Sword, Marines will field the NMESIS anti-ship missile system on Yonaguni, Japan. NMESIS, the Navy-Marine Expeditionary Ship Interdiction System, is a ground-based launcher.'
+  payload=replacement_payload(caption,language='en',content_topic='military')
+  self.assertEqual(payload['headline'],'Marines will field the NMESIS anti-ship missile system on Yonaguni')
+ def test_configured_footer_removes_short_fragment_only_with_publisher_anchor(self):
+  boxes=self.boxes([((310,720,490,770),'NEWS'),((80,900,130,940),'Say')])
+  profile=dict(self.profile,footer_start_fraction=.65)
+  photo,top,bottom=extract_editorial_photo(self.image,boxes,profile)
+  self.assertEqual(bottom,708)
  def setUp(self):
   self.image=np.random.default_rng(49).integers(30,220,(1000,800,3),dtype=np.uint8)
   self.profile={'credit_pattern':r'news|himali','scene_labels':['परम्पराको','१५']}

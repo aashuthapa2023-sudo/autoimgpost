@@ -35,7 +35,9 @@ def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
         if is_credit and t<h*.2 and r-l<w*.25 and b-t<h*.14:
             if r<=w*.28 or l>=w*.72:
                 corners.append(box);continue
-        if t>=h*.55 and (is_credit or r-l>=w*.25):
+        configured_footer = profile.get('footer_start_fraction')
+        if t>=h*.55 and (is_credit or r-l>=w*.25 or
+                (configured_footer is not None and t>=h*float(configured_footer))):
             footer.append(box);continue
         if profile.get('header_fraction') and b<=h*.20:
             headers.append(box);continue

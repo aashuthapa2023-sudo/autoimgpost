@@ -2,6 +2,12 @@ import unittest
 from modules.content_quality import channel_accepts_post
 
 class TopicTests(unittest.TestCase):
+    def test_military_page_requires_a_military_subject(self):
+        channel={'content_topic':'military'}
+        for caption in ['Leroy Petry saved fellow Army Rangers', 'The SR-71 Blackbird has moved', 'Taiwan receives two F-16V fighter jets']:
+            self.assertTrue(channel_accepts_post(channel,{'caption':caption}))
+        for caption in ['A singer releases an album', 'A whale swims offshore', 'Celebrity news #Army']:
+            self.assertFalse(channel_accepts_post(channel,{'caption':caption}))
     def test_ocean_subjects_allowed(self):
         for caption in ['False killer whale calves seen alongside mothers', 'A deep-sea brine pool', 'Coral reefs recovering after bleaching']:
             self.assertTrue(channel_accepts_post({'channel_id':'oceans_secret'}, {'caption':caption}))

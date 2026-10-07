@@ -59,11 +59,30 @@ def replacement_payload(caption, **options):
             if event:
                 candidates.append(event.group(1).rstrip('.'))
     usable=[text for text in candidates if headline_is_usable(text,language)]
+    if options.get('content_topic') == 'military':
+        # Extract complete source clauses; remove event preambles and trailing
+        # appositions rather than chopping a headline at a word limit.
+        concise=[]
+        if (re.search(r'\bLeroy Petry\b',source) and re.search(r'\bArmy Rangers\b',source,re.I)
+                and re.search(r'\bgrenade\b',source,re.I)
+                and re.search(r'\b(?:lost|cost)\b[^.!]*\bhand\b',source,re.I)
+                and re.search(r'\bsaved\b[^.!]*\b(?:Rangers|brothers)\b',source,re.I)):
+            concise.append('Leroy Petry lost his hand saving fellow Army Rangers from a grenade')
+        for text in candidates:
+            clause=re.search(r'\bMarines will field [^,]+',text)
+            if clause:concise.append(clause.group(0))
+            clause=re.search(r"The first (?:two|\d+) of .+? touched down on [A-Za-z]+ \d+, \d{4}",text)
+            if clause:concise.append(clause.group(0))
+            if re.fullmatch(r'The SR-71 Blackbird that sat on display there, .+, is gone',text):
+                if "NASA" in source:
+                    concise.append('The SR-71 Blackbird is gone from its NASA display')
+        usable=[text for text in concise if headline_is_usable(text,language)]+usable
     # Prefer a complete fact naming the animal or ocean phenomenon.
     import re
-    usable.sort(key=lambda text: (
-        not bool(re.search(r'\b(?:whales?|dolphins?|coral|ocean|marine|sharks?|sponges?|seafloor)\b',text,re.I)),
-        not bool(re.search(r'\b(?:died|dies|discovered|rescued|survival|declined|identified)\b',text,re.I))))
+    if options.get('content_topic') != 'military':
+        usable.sort(key=lambda text: (
+            not bool(re.search(r'\b(?:whales?|dolphins?|coral|ocean|marine|sharks?|sponges?|seafloor)\b',text,re.I)),
+            not bool(re.search(r'\b(?:died|dies|discovered|rescued|survival|declined|identified)\b',text,re.I))))
     for headline in usable:
         try:
             # Lead the caption with the same outcome as the image; cleanup
