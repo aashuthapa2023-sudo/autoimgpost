@@ -33,6 +33,12 @@ class SourceImageQualityTests(unittest.TestCase):
         blurred = cv2.GaussianBlur(photo, (41, 41), 16)
         self.assertFalse(validate_image_quality(blurred)[0])
 
+    def test_sharpness_tolerance_only_accepts_near_threshold_jpeg_ties(self):
+        photo=np.random.default_rng(12).integers(0,256,(800,800,3),dtype=np.uint8)
+        for score,accepted in ((79.9,True),(79.5,True),(79.4,False),(30.8,False)):
+            with self.subTest(score=score),patch('modules.image_cleaner.cv2.Laplacian',return_value=SimpleNamespace(var=lambda:score)):
+                self.assertEqual(validate_image_quality(photo,min_sharpness=80)[0],accepted)
+
 
 if __name__ == '__main__':
     unittest.main()

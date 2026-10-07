@@ -97,10 +97,11 @@ def execute_pipeline_task(action="dry_run", channel="all", specific_post=None):
             from modules.poster_engine import detect_image_text_position
             source_layout = get_source_layout(ch, specific_post, detect_image_text_position(raw_img))
             from modules.image_cleaner import detect_source_text_boxes
-            text_boxes = detect_source_text_boxes(raw_img)
+            ocr_language=ch.get('language','en')
+            text_boxes = detect_source_text_boxes(raw_img,language=ocr_language)
             preserved_review = None
             try:
-                cleaned,crop_top,crop_bottom = erase_text_and_watermarks(raw_img, source_text_boxes=text_boxes,return_crop_bounds=True)
+                cleaned,crop_top,crop_bottom = erase_text_and_watermarks(raw_img, source_text_boxes=text_boxes,return_crop_bounds=True,language=ocr_language)
             except ValueError:
                 if not ch.get('preserve_readable_source_cards',False):
                     raise

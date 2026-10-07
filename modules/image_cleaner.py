@@ -102,6 +102,27 @@ def clean_lower_half_text_and_badges(img: np.ndarray) -> np.ndarray:
     return img
 
 _source_text_reader = None
+_english_text_reader = None
+
+
+def source_text_reader(language='mixed'):
+    """Use the page alphabet and reuse its CPU OCR model across inspections."""
+    global _source_text_reader,_english_text_reader
+    english=language == 'en'
+    reader=_english_text_reader if english else _source_text_reader
+    if reader is None:
+        import easyocr
+        import torch
+        torch.set_num_threads(max(1,min(4,os.cpu_count() or 1)))
+        options={'gpu':False,'verbose':False}
+        if os.getenv('IMAGE_OCR_MODEL_DIR'):
+            options['model_storage_directory']=os.environ['IMAGE_OCR_MODEL_DIR']
+        reader=easyocr.Reader(['en'] if english else ['en','ne','hi'],**options)
+        if english:
+            _english_text_reader=reader
+        else:
+            _source_text_reader=reader
+    return reader
 
 
 class SourceTextBoxes(list):
@@ -140,7 +161,7 @@ def _clamped_boxes(boxes, height, width, padding=0):
     return result
 
 
-def detect_source_text_boxes(img, reader=None):
+def detect_source_text_boxes(img, reader=None, *, language='mixed'):
     """Inspect the whole source, keeping unreadable detector hits separate.
 
     CRAFT alone often labels water, instruments, fur, and buildings as text.
@@ -148,17 +169,8 @@ def detect_source_text_boxes(img, reader=None):
     """
     if img is None:
         return SourceTextBoxes()
-    global _source_text_reader
     if reader is None:
-        if _source_text_reader is None:
-            import easyocr
-            options = {'gpu': False, 'verbose': False}
-            if os.getenv('IMAGE_OCR_MODEL_DIR'):
-                options['model_storage_directory'] = os.environ['IMAGE_OCR_MODEL_DIR']
-            # Nepali is explicitly supported by EasyOCR's Devanagari model;
-            # include it rather than relying on Hindi's character whitelist.
-            _source_text_reader = easyocr.Reader(['en', 'ne', 'hi'], **options)
-        reader = _source_text_reader
+        reader=source_text_reader(language)
     height, width = img.shape[:2]
     padding = max(4, round(min(height, width)*.006))
     recognized = []
@@ -287,7 +299,16 @@ def _flat_panel_rows(img, boxes):
     samples = img[:, xs].astype(np.int16)
     available = np.ones(samples.shape[:2], dtype=bool)
     covered = np.zeros(height, dtype=bool)
+    # OCR bounds describe glyphs, not the surrounding badge/ribbon. Exclude a
+    # small assessment-only border so colored badge edges are not mistaken for
+    # photograph texture. This never changes pixels or expands crop authority.
+    assessment_border=max(4,min(12,round(min(height,width)*.008)))
     for box_left, top, box_right, bottom in boxes:
+        vertical_border=assessment_border if bottom-top <= height*.08 else 0
+        box_left=max(0,box_left-assessment_border)
+        box_right=min(width,box_right+assessment_border)
+        top=max(0,top-vertical_border)
+        bottom=min(height,bottom+vertical_border)
         available[top:bottom, (xs >= box_left) & (xs < box_right)] = False
         if box_right-box_left >= width*.25:
             covered[top:bottom] = True
@@ -401,9 +422,9 @@ def extract_source_photo(img, boxes, *, retained_marks=None, return_crop_bounds=
     return (photo,top,bottom) if return_crop_bounds else photo
 
 
-def erase_text_and_watermarks(img: np.ndarray, source_text_boxes=None, return_crop_bounds=False):
+def erase_text_and_watermarks(img: np.ndarray, source_text_boxes=None, return_crop_bounds=False, *, language='mixed'):
     """Return only the residual-checked photo, optionally with original row bounds."""
-    boxes = detect_source_text_boxes(img) if source_text_boxes is None else source_text_boxes
+    boxes = detect_source_text_boxes(img,language=language) if source_text_boxes is None else source_text_boxes
     if img is None:
         return (None,0,0) if return_crop_bounds else None
     provenance = _source_provenance_marks(boxes,*img.shape[:2])
@@ -417,7 +438,7 @@ def erase_text_and_watermarks(img: np.ndarray, source_text_boxes=None, return_cr
                            if mark_top<bottom and mark_bottom>top]
     # A second full-image inspection still rejects every body headline or
     # caption; narrowly bounded original provenance keeps its source pixels.
-    residual = detect_source_text_boxes(photo)
+    residual = detect_source_text_boxes(photo,language=language)
     inspected = extract_source_photo(photo,residual,retained_marks=retained_provenance)
     if inspected is not photo:
         raise ValueError('Source text remains after photo extraction; skipping this image')
@@ -441,7 +462,9 @@ def validate_image_quality(img: np.ndarray, min_dim: int = 500, min_sharpness: f
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     lap_var = float(cv2.Laplacian(gray, cv2.CV_64F).var())
-    if lap_var < min_sharpness:
+    # This score is an approximate JPEG/noise metric, not a perceptual cliff.
+    # Half a variance unit avoids rejecting visually identical threshold ties.
+    if lap_var + .5 < min_sharpness:
         return False, f"Blurry image detected: Sharpness variance {lap_var:.1f} is below minimum threshold of {min_sharpness:.1f}"
 
     # Check contrast / std deviation

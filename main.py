@@ -485,11 +485,12 @@ def run_pipeline(mode="run", target_channel="all"):
                 print(f"           [Text Placement Audit] Detected original source text position: {detected_text_pos.upper()}")
 
                 from modules.image_cleaner import detect_source_text_boxes
-                text_boxes = detect_source_text_boxes(raw_img)
+                ocr_language=ch.get('language','en')
+                text_boxes = detect_source_text_boxes(raw_img,language=ocr_language)
                 print(f"           [Source text cleanup] Checking {len(text_boxes)} regions for safe photo extraction")
                 preserved_review = None
                 try:
-                    cleaned_img,crop_top,crop_bottom = erase_text_and_watermarks(raw_img, source_text_boxes=text_boxes,return_crop_bounds=True)
+                    cleaned_img,crop_top,crop_bottom = erase_text_and_watermarks(raw_img, source_text_boxes=text_boxes,return_crop_bounds=True,language=ocr_language)
                 except ValueError:
                     if not ch.get('preserve_readable_source_cards',False):
                         raise

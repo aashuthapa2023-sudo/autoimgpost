@@ -29,6 +29,23 @@ class NewsCardTests(unittest.TestCase):
             photo=erase_text_and_watermarks(image)
         self.assertEqual(photo.shape,(550,800,3))
         np.testing.assert_array_equal(photo,image[:550])
+
+    def test_colored_badge_border_is_part_of_the_removed_panel(self):
+        image=self.make_photo()
+        image[600:]=(8,8,8)
+        image[665:695,210:590]=(5,5,190)
+        boxes=[(224,670,576,690),(80,760,720,810),(80,850,720,900)]
+        photo,top,bottom=extract_source_photo(image,boxes,return_crop_bounds=True)
+        self.assertEqual((top,bottom),(0,600))
+        np.testing.assert_array_equal(photo,image[:600])
+
+    def test_badge_border_does_not_authorize_cropping_text_over_a_photo(self):
+        image=self.make_photo()
+        image[665:695,210:590]=(5,5,190)
+        original=image.copy()
+        with self.assertRaises(ValueError):
+            extract_source_photo(image,[(224,670,576,690),(80,760,720,810)])
+        np.testing.assert_array_equal(image,original)
     def test_text_free_photo_is_unchanged(self):
         image=np.full((800,800,3),120,dtype=np.uint8)
         self.assertIs(extract_source_photo(image,[]),image)

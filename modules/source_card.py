@@ -17,11 +17,8 @@ def _read_english_card(image):
     # script. Use the card's configured language rather than changing OCR text.
     global _english_source_reader
     if _english_source_reader is None:
-        import easyocr
-        options = {'gpu': False, 'verbose': False}
-        if os.getenv('IMAGE_OCR_MODEL_DIR'):
-            options['model_storage_directory'] = os.environ['IMAGE_OCR_MODEL_DIR']
-        _english_source_reader = easyocr.Reader(['en'], **options)
+        from modules.image_cleaner import source_text_reader
+        _english_source_reader=source_text_reader('en')
     return _english_source_reader.readtext(image, detail=1, paragraph=False)
 
 
