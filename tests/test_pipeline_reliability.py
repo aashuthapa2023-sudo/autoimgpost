@@ -47,7 +47,9 @@ class PipelineTests(unittest.TestCase):
         state = {'processed_ids': {}, 'daily_stats': {}}
         now = int(time.time())
         posts = [{'post_id': str(i), 'photo_id': str(i), 'caption': 'caption '+str(i), 'image_url': 'image'+str(i), 'created_time': now-age} for i, age in [(1, 60), (2, 90000)]]
-        ns = dict(os=os, time=time, json=json, datetime=datetime.datetime, timezone=datetime.timezone, traceback=traceback,
+        ns = dict(os=os, time=time, json=json, copy=__import__('copy'),
+                  apply_publication_receipts=lambda ledger: ledger,
+                  datetime=datetime.datetime, timezone=datetime.timezone, traceback=traceback,
                   OUTPUT_DIR=tempfile.gettempdir(), MAX_DAILY_LIMIT_PER_PAGE=15, WEB_SCRAPER_AVAILABLE=False)
         exec(compile(functions, 'main.py', 'exec'), ns)
         ns.update(load_config=lambda: {'channels': [{'channel_id': 'test', 'dest_access_token_env': 'EAA_test'}]},

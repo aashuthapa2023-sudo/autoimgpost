@@ -106,11 +106,12 @@ _source_text_reader = None
 
 class SourceTextBoxes(list):
     """Recognized text plus separate detector evidence; never mix their trust levels."""
-    def __init__(self, boxes=(), suspected_rows=(), suspected_marks=(), text_labels=None):
+    def __init__(self, boxes=(), suspected_rows=(), suspected_marks=(), text_labels=None, text_confidences=None):
         super().__init__(boxes)
         self.suspected_rows = list(suspected_rows)
         self.suspected_marks = list(suspected_marks)
         self.text_labels = dict(text_labels or {})
+        self.text_confidences = dict(text_confidences or {})
 
 
 def _text_rows(boxes):
@@ -159,8 +160,10 @@ def detect_source_text_boxes(img, reader=None):
             _source_text_reader = easyocr.Reader(['en', 'ne', 'hi'], **options)
         reader = _source_text_reader
     height, width = img.shape[:2]
+    padding = max(4, round(min(height, width)*.006))
     recognized = []
-    labels = []
+    labels = {}
+    confidences = {}
     for polygon, text, confidence in reader.readtext(img, detail=1, paragraph=False):
         letters = sum(character.isalnum() for character in str(text))
         xs, ys = zip(*polygon)
@@ -170,8 +173,13 @@ def detect_source_text_boxes(img, reader=None):
                               else .60 if letters == 2 else .55 if near_corner else .80)
         if letters < 1 or confidence < minimum_confidence:
             continue
-        recognized.append((min(xs), min(ys), max(xs), max(ys)))
-        labels.append(str(text))
+        bounds = _clamped_boxes([(min(xs), min(ys), max(xs), max(ys))], height, width, padding)
+        if not bounds:
+            continue
+        box = bounds[0]
+        recognized.append(box)
+        labels[box] = str(text)
+        confidences[box] = float(confidence)
     suspected = []
     marks = []
     if hasattr(reader, 'detect'):
@@ -190,12 +198,10 @@ def detect_source_text_boxes(img, reader=None):
                  and box[2]-box[0] >= max(12, width*.018)
                  and box[3]-box[1] >= max(12, height*.012)
                  and (box[2]-box[0])*(box[3]-box[1]) <= height*width*.025]
-    padding = max(4, round(min(height, width)*.006))
-    padded = _clamped_boxes(recognized, height, width, padding)
-    return SourceTextBoxes(padded,
+    return SourceTextBoxes(recognized,
                            _clamped_boxes(suspected, height, width, padding),
                            _clamped_boxes(marks, height, width, padding),
-                           {tuple(box):label for box,label in zip(padded,labels)})
+                           labels, confidences)
 
 
 def _source_provenance_marks(boxes, height, width):
@@ -395,14 +401,15 @@ def extract_source_photo(img, boxes, *, retained_marks=None, return_crop_bounds=
     return (photo,top,bottom) if return_crop_bounds else photo
 
 
-def erase_text_and_watermarks(img: np.ndarray, source_text_boxes=None) -> np.ndarray:
+def erase_text_and_watermarks(img: np.ndarray, source_text_boxes=None, return_crop_bounds=False):
+    """Return only the residual-checked photo, optionally with original row bounds."""
     boxes = detect_source_text_boxes(img) if source_text_boxes is None else source_text_boxes
     if img is None:
-        return None
+        return (None,0,0) if return_crop_bounds else None
     provenance = _source_provenance_marks(boxes,*img.shape[:2])
     photo,top,bottom = extract_source_photo(img,boxes,retained_marks=provenance,return_crop_bounds=True)
     if photo is None:
-        return None
+        return (None,top,bottom) if return_crop_bounds else None
     # Source credits must use the original-image decision; cropping cannot
     # turn a source subtitle into a newly allowed corner logo.
     retained_provenance = [(left,mark_top-top,right,mark_bottom-top)
@@ -414,7 +421,7 @@ def erase_text_and_watermarks(img: np.ndarray, source_text_boxes=None) -> np.nda
     inspected = extract_source_photo(photo,residual,retained_marks=retained_provenance)
     if inspected is not photo:
         raise ValueError('Source text remains after photo extraction; skipping this image')
-    return photo
+    return (photo,top,bottom) if return_crop_bounds else photo
 
 
 def validate_image_quality(img: np.ndarray, min_dim: int = 500, min_sharpness: float = 100.0) -> tuple:

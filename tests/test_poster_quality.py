@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 import numpy as np
+from PIL import Image
 from modules.poster_engine import render_final_poster
 from modules.poster_quality import verify_publishable_poster
 from modules.publisher import publish_to_facebook
@@ -25,6 +26,24 @@ class PublishApprovalTests(unittest.TestCase):
         self.assertGreaterEqual(data['font_size'],64)
         for l,t,r,b in data['text_bounds']:
             self.assertLessEqual(abs((l+r)/2-540),1)
+
+    def test_three_tall_glyph_lines_use_remaining_safe_panel_space(self):
+        # Devanagari ascenders can make three readable lines295px high. They
+        # physically fit while the old290px cap rejected the entire post.
+        runs=[[('समुद्रमा नयाँ जीव भेटियो','white')]]*3
+        glyphs=Image.new('RGBA',(900,85),(255,255,255,255))
+        with patch('modules.poster_engine._wrap_headline',return_value=runs), \
+             patch('modules.poster_engine._render_runs',return_value=glyphs):
+            render_final_poster(np.zeros((1000,800,3),dtype=np.uint8),
+                [[{'text':'समुद्रमा नयाँ जीव भेटियो','type':'white'}]],
+                dest_page_name='Nepal Speaks',output_path=str(self.image),
+                caption=self.caption,source_checked=True,text_position='bottom',
+                logo_position='with-text',safe_margin=64,min_font_size=66)
+        data=verify_publishable_poster(self.image,self.caption)
+        self.assertLessEqual(data['panel_height'],470)
+        self.assertGreaterEqual(data['font_size'],66)
+        self.assertEqual(len(data['text_bounds']),3)
+        self.assertLessEqual(data['text_bounds'][-1][3],1286)
 
     def test_changed_image_or_caption_cannot_publish(self):
         with self.assertRaises(ValueError):

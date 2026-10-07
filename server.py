@@ -100,7 +100,7 @@ def execute_pipeline_task(action="dry_run", channel="all", specific_post=None):
             text_boxes = detect_source_text_boxes(raw_img)
             preserved_review = None
             try:
-                cleaned = erase_text_and_watermarks(raw_img, source_text_boxes=text_boxes)
+                cleaned,crop_top,crop_bottom = erase_text_and_watermarks(raw_img, source_text_boxes=text_boxes,return_crop_bounds=True)
             except ValueError:
                 if not ch.get('preserve_readable_source_cards',False):
                     raise
@@ -117,14 +117,31 @@ def execute_pipeline_task(action="dry_run", channel="all", specific_post=None):
 
             log_message("Stage 5: Generating original, policy-compliant caption & centered headline...", stage=5)
             ch_lang = ch.get("language", "ne" if ("nepal" in channel_id.lower() or "nepal" in dest_name.lower()) else "en")
-            ai_data = generate_social_payload(
-                specific_post["caption"],
-                language=ch_lang,
-                channel_name=dest_name,
-                channel_id=channel_id,
-                content_topic=ch.get('content_topic',''),
-                editorial_style=ch.get('editorial_style','')
-            )
+            try:
+                if preserved_review:
+                    from modules.llm_transformer import generate_preserved_card_payload
+                    ai_data = generate_preserved_card_payload(
+                        specific_post.get("caption",""), preserved_review["headline"],
+                        language=ch_lang,channel_name=dest_name,channel_id=channel_id,
+                        content_topic=ch.get('content_topic',''),editorial_style=ch.get('editorial_style',''))
+                else:
+                    ai_data = generate_social_payload(
+                        specific_post["caption"],
+                        language=ch_lang,
+                        channel_name=dest_name,
+                        channel_id=channel_id,
+                        content_topic=ch.get('content_topic',''),
+                        editorial_style=ch.get('editorial_style','')
+                    )
+            except ValueError as error:
+                if preserved_review or 'no complete readable headline' not in str(error):
+                    raise
+                from modules.llm_transformer import clean_and_deduplicate_source_caption
+                from modules.source_headline import source_panel_payload
+                brief = clean_and_deduplicate_source_caption(specific_post['caption'],ch_lang,dest_name,channel_id,ch.get('content_topic',''))
+                ai_data = source_panel_payload(specific_post['caption'],brief,text_boxes,raw_img.shape,
+                    (crop_top,crop_bottom),language=ch_lang,channel_name=dest_name,
+                    channel_id=channel_id,content_topic=ch.get('content_topic',''))
             CURRENT_RUN["rewritten_caption"] = ai_data["rewritten_caption"]
 
             out_poster = f"output/{channel_id}_{specific_post['post_id']}.jpg"
@@ -134,16 +151,21 @@ def execute_pipeline_task(action="dry_run", channel="all", specific_post=None):
                 render_preserved_source_card(raw_img,preserved_review,ai_data['rewritten_caption'],dest_name,out_poster,
                     highlight_hex=ch.get('highlight_color','#4DD6E8'),**ch.get('poster_style',{}))
             else:
-                render_final_poster(
+                from modules.source_headline import render_with_source_fallback
+                ai_data = render_with_source_fallback(
+                    ai_data,specific_post['caption'],text_boxes,raw_img.shape,(crop_top,crop_bottom),
+                    language=ch_lang,channel_name=dest_name,channel_id=channel_id,
+                    content_topic=ch.get('content_topic',''),render_fn=render_final_poster,
                     base_img=graded,
-                    overlay_lines=ai_data["overlay_lines"],
                     highlight_hex=ch.get('highlight_color','#FFC83B'),
                     dest_page_name=dest_name,
                     output_path=out_poster,
                     post_id=specific_post.get("post_id"),
-                    caption=ai_data['rewritten_caption'], source_checked=True,
+                    source_checked=True,
                     **{**ch.get('poster_style',{}), **source_layout}
                 )
+                if ai_data.get('headline_origin')=='removed_source_panel':
+                    log_message('Reused the complete verified headline from its safely removed source panel.',stage=6)
             CURRENT_RUN["last_poster"] = out_poster.replace("\\", "/")
             CURRENT_RUN["current_post"] = specific_post
 

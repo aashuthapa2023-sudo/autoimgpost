@@ -127,7 +127,7 @@ The local validation suite passes 114 Python regressions, plus the GitHub config
 
 ## Posting interruption repair
 
-The scheduler continued running, but the earlier cleanup policy rejected even small corner source credits and put those candidates into a 12-hour retry wait. Empty queues were misleadingly labeled up to date. Current repairs distinguish source outages, topic rejection, quality waits and already published stories; policy revision 4 allows affected candidates to be reviewed again without erasing publication history.
+The scheduler continued running, but the earlier cleanup policy rejected even small corner source credits and put those candidates into a 12-hour retry wait. Empty queues were misleadingly labeled up to date. Current repairs distinguish source outages, topic rejection, quality waits and already published stories; policy revision 5 allows affected candidates to be reviewed again without erasing publication history.
 
 Small peripheral provenance marks now remain untouched. The original frame geometry is retained during any panel crop, so a body paragraph cannot become a permitted corner mark after cropping. Actual OCR verification accepted a Netflix photograph unchanged and extracted a clear 1639×1217 photograph from the latest Himali policy card. Metro and cucumber cards whose headlines overlap the photograph remain blocked, as do the user's damaged examples.
 
@@ -138,3 +138,22 @@ Browser hydration now uses the same complete story/photo/date extraction as serv
 Normal posting runs no longer overwrite their scanned source feed with an extra fixed Netflix refresh. Manual source ingestion respects its selected URL and preserves a last usable feed when the requested source returns nothing. Missing optional rewrite-provider keys remain a limitation: those runs use complete source excerpts rather than claim an AI rewrite occurred.
 
 Recovery validation passes 156 Python tests and the GitHub configuration-save JavaScript checks. The real latest Ocean originals pass native quality checks at 768×1376 and their final retained-card headlines measure 45–53px high. They preserve the whole source photograph and contain one separate page-brand footer.
+
+### Confirmed recovery and persistence repair
+
+The existing live Actions run [37471384669](https://github.com/aashuthapa2023-sudo/autoimgpost/actions/runs/37471384669) published Ocean source `122139830349240703` at 2026-10-06 13:44:02 UTC. Meta returned confirmation `122106689253493170`. Its later Git save failed on rebase conflicts in generated caches/reports. The confirmed publication record was recovered to Git before the next scheduled cycle, restoring the day's count of two and its publication time.
+
+The runner now writes an atomic, token-free confirmation receipt immediately after Meta succeeds. A persistence failure after confirmation stops that run. Receipt replay repairs deduplication and cadence without counting a confirmation twice. The workflow backs up state/receipts before its Git update, checks out current main when work starts, and merges generated results onto the latest history without rebasing or overwriting concurrent code/configuration changes.
+
+The actual Music Store Shakira source photo was clean; its rejection came from merging an unpunctuated source title into the next paragraph and treating the possessive artist name as an unknown person. Those errors are fixed. Its approved proof uses the complete source fact “Shakira's Madrid concert sets an Amazon Music livestreaming record,” with three centered 92px lines and 64px safe margins. The caption retains its source details without “details in comments” promotion or repeated padding.
+
+For separable news panels, a complete original title can be reused only when high-confidence OCR covers its full lettering and the title passes the same source-grounding checks. It is tried when the complete caption fact cannot fit at the readable minimum size. No uncertain title is reconstructed, and the latest Himali photograph's successful crop does not mean its low-confidence title was approved. Sources with text over the photographic subject remain blocked unless the destination explicitly allows reviewed intact original cards; that setting currently applies to Ocean's Secret.
+
+
+## Posting stoppage check — 7 October 2026
+
+Live run 37579231465 completed at 11:52 AM Nepal time without a publication. Netflix, Music Store and Hollywood were waiting on prior quality rejections; Anisha, Nepal and Ocean reached image/headline checks but no candidate passed. The scheduler was enabled and daily limits were not reached. The rewrite-provider keys were empty in the runner. Facebook connection checks returned valid matching page identities for Netflix, Music, Hollywood and Nepal; Anisha returned HTTP 401 / code 190. Ocean uses its Actions secret and was not checked locally.
+
+The source cleanup and strict headline fit checks caused queue starvation. The reviewed-original-card path also required a second generated headline that was never displayed, so a long otherwise valid source caption could block an already-approved Ocean image. That path now prepares its caption independently while preserving the reviewed existing title and all image-card clipping, contradiction and source-pairing checks. Caption/source-title fallback repairs and a new quality-policy revision allow previously rejected sources to be re-evaluated without clearing confirmed publication history. Confirmed-state saving now has durable receipts and conflict-safe merging. Optional rewrite services still need configured API keys for AI rewriting; safe complete source excerpts remain the fallback.
+
+The posting-repair release passes 219 Python regression tests, the GitHub configuration-save JavaScript checks, and syntax/whitespace checks. Ten new state-sync tests cover concurrent history merging, deduplicated confirmations, cadence and count preservation, UTC rollover and malformed recovery data.

@@ -26,13 +26,13 @@ The [six-page audit and tuning report](docs/page-quality-audit-2026-10-06.md) do
 - `pipeline_active` controls automated publishing.
 - Per-page daily caps default to 15 posts per UTC calendar day.
 - Per-page intervals have a minimum of one hour.
-- `state.json` stores confirmed posts, cadence and per-page image/story deduplication.
+- `state.json` stores confirmed posts, cadence and per-page image/story deduplication. `publication_journal.json` records Meta confirmations before the broader state save and replays them idempotently after interruption.
 - `quality_report.json` records recent rejected candidates and reasons without tokens.
 - Runner logs distinguish unavailable sources, topic rejections, quality retry waits and actual published duplicates. A successful Actions run can still have no eligible post; look for Meta's confirmed publication ID.
 - Each current poster has a matching `.quality.json` approval manifest. Older designs are labeled for regeneration in the gallery.
 - `queue_worker.py` uses the same checked pipeline for every page. Older queued posters are retained for review and are not uploaded directly.
 
-GitHub Actions runs regression checks before generation/publishing and persists state, rejection reports and poster manifests. Normal posting runs retain the latest scanned feed; manual ingestion honors the selected source and preserves an existing usable feed when that source is unavailable.
+GitHub Actions runs regression checks before generation/publishing, checks out current `main` when queued work starts, and backs up confirmed receipts and state before pushing. Generated results merge into the latest repository history with normal push retries, preserving publication history when another update lands during the run. Normal posting runs retain the latest scanned feed; manual ingestion honors the selected source and preserves an existing usable feed when that source is unavailable.
 
 ## Local use
 

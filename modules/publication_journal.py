@@ -11,7 +11,7 @@ _FIELDS = {'channel_id', 'post_id', 'published_id', 'published_at',
            'processed_ids', 'story_fingerprint', 'source_caption',
            'image_hash', 'clean_image_hash'}
 _SOURCE_ID = re.compile(r'[A-Za-z0-9][A-Za-z0-9_.:-]{0,511}\Z')
-_CHANNEL = re.compile(r'[A-Za-z0-9][A-Za-z0-9_-]{0,95}\Z')
+_CHANNEL = re.compile(r'[A-Za-z0-9][A-Za-z0-9 _-]{0,95}\Z')
 _META_ID = re.compile(r'[0-9]{1,30}(?:_[0-9]{1,30})?\Z')
 _HASH = re.compile(r'[0-9a-fA-F]{16,64}\Z')
 
@@ -42,7 +42,7 @@ def _validate_receipt(receipt):
     result = dict(receipt)
     for field, pattern in (('channel_id', _CHANNEL), ('post_id', _SOURCE_ID), ('published_id', _META_ID)):
         value = result[field]
-        if not isinstance(value, str) or not pattern.fullmatch(value):
+        if not isinstance(value, str) or value != value.strip() or not pattern.fullmatch(value):
             raise ValueError(f'Publication receipt has an invalid {field}')
     processed = result['processed_ids']
     if (not isinstance(processed, list) or not 1 <= len(processed) <= 3
@@ -154,10 +154,11 @@ def apply_publication_receipts(state, path='publication_journal.json'):
     # receipt cannot partially mark earlier sources as published.
     recovered = copy.deepcopy(state)
     today = datetime.now(timezone.utc).date().isoformat()
+    confirmed = recovered.setdefault('confirmed_publications', []) if receipts else recovered.get('confirmed_publications', [])
+    if not isinstance(confirmed, list):
+        raise ValueError('Publication recovery requires a confirmed publication ledger')
+    confirmed[:] = [_validate_receipt(entry) for entry in confirmed]
     for receipt in receipts:
-        confirmed = recovered.setdefault('confirmed_publications', [])
-        if not isinstance(confirmed, list) or any(not isinstance(entry, dict) for entry in confirmed):
-            raise ValueError('Publication recovery requires a confirmed publication ledger')
         prior = next((entry for entry in confirmed
                       if (entry.get('channel_id'), entry.get('published_id')) ==
                          (receipt['channel_id'], receipt['published_id'])), None)
@@ -190,14 +191,30 @@ def apply_publication_receipts(state, path='publication_journal.json'):
         if not isinstance(last, (int, float)) or isinstance(last, bool):
             raise ValueError('Publication recovery found invalid last publication time')
         stats['last_published_time'] = max(last, int(published.timestamp()))
-        if new_source and published.date().isoformat() == today:
+        if published.date().isoformat() == today:
             if stats.get('date') != today:
                 stats.update(date=today, count=0, timestamps=[])
             count = stats.get('count', 0)
             if not isinstance(count, int) or isinstance(count, bool) or count < 0:
                 raise ValueError('Publication recovery found invalid daily publication count')
-            stats['count'] = count + 1
-            _union(stats.setdefault('timestamps', []), [receipt['published_at']])
+            timestamps = stats.setdefault('timestamps', [])
+            if not isinstance(timestamps, list):
+                raise ValueError('Publication recovery requires publication timestamps')
+            represented = receipt['published_at'] in {_publication_datetime(value).isoformat() for value in timestamps}
+            # A known different Meta receipt in the same second is a distinct
+            # physical publication, not evidence that this one was counted.
+            same_second_other = any(entry['channel_id'] == channel
+                                    and entry['published_id'] != receipt['published_id']
+                                    and entry['published_at'] == receipt['published_at']
+                                    for entry in confirmed)
+            if new_source and prior is None and (not represented or same_second_other):
+                count += 1
+            today_confirmations = {entry['published_id'] for entry in confirmed
+                                   if entry['channel_id'] == channel
+                                   and _publication_datetime(entry['published_at']).date().isoformat() == today}
+            stats['count'] = max(count, len(today_confirmations))
+            if not represented:
+                timestamps.append(receipt['published_at'])
     state.clear()
     state.update(recovered)
     return state

@@ -77,6 +77,33 @@ class NewsCardTests(unittest.TestCase):
         boxes = detect_source_text_boxes(self.make_photo(), Reader())
         self.assertEqual(boxes, [])
         self.assertEqual(len(boxes.suspected_rows), 1)
+        self.assertEqual(boxes.text_confidences,{})
+
+    def test_optional_crop_bounds_follow_final_residual_approval(self):
+        image=self.make_photo()
+        image[:200]=(8,8,8)
+        image[800:]=(8,8,8)
+        source=SourceTextBoxes([(80,60,720,110),(80,860,720,910)])
+        with patch('modules.image_cleaner.detect_source_text_boxes',return_value=SourceTextBoxes()):
+            default=erase_text_and_watermarks(image,source)
+            photo,top,bottom=erase_text_and_watermarks(image,source,return_crop_bounds=True)
+        self.assertIsInstance(default,np.ndarray)
+        self.assertEqual((top,bottom),(200,800))
+        np.testing.assert_array_equal(default,image[200:800])
+        np.testing.assert_array_equal(photo,default)
+        residual=SourceTextBoxes([(300,200,390,225)])
+        with patch('modules.image_cleaner.detect_source_text_boxes',return_value=residual):
+            with self.assertRaisesRegex(ValueError,'logo remains'):
+                erase_text_and_watermarks(image,source,return_crop_bounds=True)
+
+    def test_optional_bounds_for_unchanged_photo_and_none(self):
+        image=self.make_photo()
+        with patch('modules.image_cleaner.detect_source_text_boxes',return_value=SourceTextBoxes()):
+            photo,top,bottom=erase_text_and_watermarks(image,[],return_crop_bounds=True)
+        self.assertIs(photo,image)
+        self.assertEqual((top,bottom),(0,len(image)))
+        self.assertEqual(erase_text_and_watermarks(None,[],return_crop_bounds=True),(None,0,0))
+        self.assertIsNone(erase_text_and_watermarks(None,[]))
 
     def test_unrecognized_multiline_center_typography_is_rejected(self):
         image = self.make_photo()

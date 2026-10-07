@@ -41,6 +41,8 @@ class PublicationJournalTests(unittest.TestCase):
         self.assertEqual(state['channel_clean_image_hashes']['oceans_secret'], ['abcdef0123456789'])
         self.assertEqual(state['global_story_fingerprints'], ['factual_source_caption'])
         self.assertEqual(state['channel_recent_source_captions']['oceans_secret'], ['A factual source caption.'])
+        self.assertEqual(len(state['confirmed_publications']),1)
+        self.assertEqual(state['confirmed_publications'][0]['published_id'],'24680_13579')
 
     def test_old_day_receipt_recovers_dedup_but_does_not_increment_today(self):
         old = self.now - timedelta(days=2)
@@ -60,7 +62,7 @@ class PublicationJournalTests(unittest.TestCase):
                  'count': 1, 'timestamps': [], 'last_published_time': 0}}}
         apply_publication_receipts(state, self.path)
         self.assertEqual(state['daily_stats']['oceans_secret']['count'], 1)
-        self.assertEqual(state['daily_stats']['oceans_secret']['timestamps'], [])
+        self.assertEqual(state['daily_stats']['oceans_secret']['timestamps'], [self.now.isoformat()])
         self.assertEqual(state['daily_stats']['oceans_secret']['last_published_time'], self.now.timestamp())
         self.assertIn('67890', state['processed_ids']['oceans_secret'])
         self.assertIn('abcdef0123456789', state['channel_clean_image_hashes']['oceans_secret'])
@@ -117,6 +119,67 @@ class PublicationJournalTests(unittest.TestCase):
         original = copy.deepcopy(state)
         apply_publication_receipts(state, self.path)
         self.assertEqual(state, original)
+
+    def test_confirmation_archive_is_idempotent_and_rejects_conflicting_source(self):
+        receipt = self.record()
+        state = {'confirmed_publications': [receipt]}
+        apply_publication_receipts(state,self.path)
+        self.assertEqual(len(state['confirmed_publications']),1)
+        state['confirmed_publications'][0]['post_id']='99999'
+        state['confirmed_publications'][0]['processed_ids']=['99999']
+        before=copy.deepcopy(state)
+        with self.assertRaisesRegex(ValueError,'another source post'):
+            apply_publication_receipts(state,self.path)
+        self.assertEqual(state,before)
+
+    def test_missing_source_identifier_is_not_stringified_into_a_receipt(self):
+        self.post['post_id']=None
+        with self.assertRaisesRegex(ValueError,'source post identifier'):
+            self.record()
+        self.assertFalse(self.path.exists())
+
+    def test_actual_spaced_channel_keys_are_valid_and_path_keys_are_not(self):
+        for channel in ('Music Store','Daily Hollywood'):
+            with self.subTest(channel=channel):
+                record_publication(channel,self.post,'24680_13579',published_at=self.now.timestamp(),
+                                   image_hash='',clean_image_hash='',story_fingerprint='',path=self.path)
+        state={}
+        apply_publication_receipts(state,self.path)
+        self.assertEqual(set(state['processed_ids']),{'Music Store','Daily Hollywood'})
+        for channel in ('../page','page/child','page\\child','page\nchild',' page','page ','x'*97):
+            with self.subTest(channel=channel),self.assertRaises(ValueError):
+                record_publication(channel,self.post,'111',published_at=self.now.timestamp(),
+                                   image_hash='',clean_image_hash='',story_fingerprint='',path=self.path)
+
+    def test_partial_processed_id_with_zero_count_recovers_once(self):
+        self.record()
+        state={'processed_ids':{'oceans_secret':['12345']},'daily_stats':{'oceans_secret':{
+               'date':self.now.date().isoformat(),'count':0,'timestamps':[],'last_published_time':0}}}
+        apply_publication_receipts(state,self.path)
+        self.assertEqual(state['daily_stats']['oceans_secret']['count'],1)
+        first=copy.deepcopy(state)
+        apply_publication_receipts(state,self.path)
+        self.assertEqual(state,first)
+
+    def test_lost_source_ids_do_not_recount_an_existing_timestamp(self):
+        self.record()
+        state={'daily_stats':{'oceans_secret':{'date':self.now.date().isoformat(),
+               'count':1,'timestamps':[self.now.isoformat().replace('+00:00','Z')],'last_published_time':0}}}
+        apply_publication_receipts(state,self.path)
+        self.assertEqual(state['daily_stats']['oceans_secret']['count'],1)
+        self.assertEqual(len(state['daily_stats']['oceans_secret']['timestamps']),1)
+
+    def test_distinct_confirmed_meta_ids_same_source_or_second_count_physically(self):
+        self.record()
+        record_publication('oceans_secret',self.post,'22222_33333',published_at=self.now.timestamp(),
+                           image_hash='',clean_image_hash='',story_fingerprint='',path=self.path)
+        state={}
+        apply_publication_receipts(state,self.path)
+        self.assertEqual(state['daily_stats']['oceans_secret']['count'],2)
+        self.assertEqual(len(state['confirmed_publications']),2)
+        before=copy.deepcopy(state)
+        apply_publication_receipts(state,self.path)
+        self.assertEqual(state,before)
 
 
 if __name__ == '__main__':

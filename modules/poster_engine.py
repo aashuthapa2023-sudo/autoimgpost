@@ -359,13 +359,18 @@ def render_final_poster(base_img, overlay_lines, highlight_hex='#FFC83B', badge_
     max_size = min(100,int(kwargs.get('max_font_size',94)))
     max_lines = min(3,int(kwargs.get('max_lines',3)))
     line_gap = 14 if language=='en' else 20
+    # Bottom mastheads start the title 110px into a maximum470px panel.
+    # Use the actual remaining glyph space without sacrificing the global margin.
+    bottom_masthead = (kwargs.get('text_position','bottom')=='bottom'
+                       and kwargs.get('logo_position','with-text')=='with-text')
+    max_title_height = min(296,470-110-margin) if bottom_masthead else 290
     selected = None
     for size in range(max_size,min_size-1,-2):
         lines = _wrap_headline(words,size,language,max_width,accent)
         images = [_render_runs(line,size,language,accent) for line in lines]
         if len(lines)<=max_lines and all(0<im.width<=max_width and im.getbbox() for im in images):
             height = sum(im.height for im in images)+line_gap*(len(images)-1)
-            if height <= 290:
+            if height <= max_title_height:
                 selected = size,images
                 break
     if selected is None:
@@ -378,6 +383,8 @@ def render_final_poster(base_img, overlay_lines, highlight_hex='#FFC83B', badge_
         raise ValueError('Brand wordmark is too long')
     # Brand, breathing space, headline and bottom margin have fixed measured slots.
     panel_h=max(260,title_height+180)
+    if bottom_masthead:
+        panel_h=min(470,max(panel_h,title_height+110+margin))
     if panel_h>470:
         raise ValueError('Text panel would dominate the photograph')
     position=kwargs.get('text_position','bottom')
@@ -451,6 +458,7 @@ def render_final_poster(base_img, overlay_lines, highlight_hex='#FFC83B', badge_
               'brand_bounds':[brand_x,brand_y,brand_x+brand.width,brand_y+brand.height],
               'logo_bounds':logo_bounds,
               'photo_bounds':[(1080-photo.width)//2,photo_top+(photo_h-photo.height)//2,photo.width,photo.height],
-              'style_id':kwargs.get('style_id','editorial'),'headline':' '.join(word for word,_ in words)}
+              'style_id':kwargs.get('style_id','editorial'),'headline':' '.join(word for word,_ in words),
+              'headline_origin':kwargs.get('headline_origin','caption')}
     output.with_suffix('.quality.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf-8')
     return str(output)

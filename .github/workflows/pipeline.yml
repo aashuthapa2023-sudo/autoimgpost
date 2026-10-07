@@ -44,6 +44,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 1
+          ref: main
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
@@ -66,6 +67,9 @@ jobs:
         run: |
           python -m unittest discover -s tests
           node tests/test_github_save.js
+
+      - name: Capture Current Publication Baseline
+        run: python sync_pipeline_state.py capture-baseline --directory .pipeline-sync
 
       - name: Execute Multi-Channel Post Pipeline
         id: pipeline
@@ -100,12 +104,21 @@ jobs:
             python main.py "$ACTION" "$CHANNEL"
           fi
 
-      - name: Commit and Push Updated State
-        if: ${{ always() && steps.pipeline.outcome != 'skipped' }}
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add state.json feed_cache.json posters_cache.json output/
-          [ ! -f quality_report.json ] || git add quality_report.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update state, feed cache, and posters [skip ci]" && git pull --rebase origin main && git push)
+      - name: Save Recoverable Publication Evidence
+        if: ${{ always() && steps.pipeline.outcome != 'skipped' && steps.pipeline.outcome != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: publisher-state-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            state.json
+            quality_report.json
+            posters_cache.json
+            feed_cache.json
+            publication_journal.json
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Merge and Push Confirmed Publication State
+        if: ${{ always() && steps.pipeline.outcome != 'skipped' && steps.pipeline.outcome != '' }}
+        run: python sync_pipeline_state.py push --directory .pipeline-sync
 

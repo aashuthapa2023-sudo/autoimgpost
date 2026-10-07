@@ -76,5 +76,21 @@ class CaptionTests(unittest.TestCase):
         self.assertIn('Billboard Hot100', body)
         self.assertNotIn('MusicStore', body)
 
+    def test_live_shakira_title_does_not_merge_with_the_following_fact(self):
+        source = ('Shakira’s Madrid Concert Sets an Amazon Music Livestreaming Record\n\n'
+            "Shakira's Oct. 3 concert in Madrid, featuring surprise guest Dua Lipa, marked this milestone for livestreamed performances on Amazon Music.\n\nDetails in comments.")
+        body = clean(source, content_topic='music').split('\n\n')[0]
+        sentences = namespace['split_clean_sentences'](body)
+        self.assertEqual(sentences[0], "Shakira's Madrid Concert Sets an Amazon Music Livestreaming Record.")
+        self.assertIn('Oct. 3', sentences[1])
+        self.assertIn('Dua Lipa', sentences[1])
+        self.assertNotIn('Details in comments', body)
+
+    def test_comment_promotions_are_removed_without_removing_the_story(self):
+        for promotion in ['Details in comments.', 'Full story in the comments.', 'More info in comments.']:
+            with self.subTest(promotion=promotion):
+                body = clean('Shakira set a concert livestreaming record.\n\n'+promotion, content_topic='music').split('\n\n')[0]
+                self.assertEqual(body, 'Shakira set a concert livestreaming record.')
+
 if __name__ == '__main__':
     unittest.main()

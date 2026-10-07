@@ -15,6 +15,8 @@ validate = namespace['validate_model_payload']
 
 class PayloadQualityTests(unittest.TestCase):
     source = 'Two false killer whale calves were documented alongside their mothers in coastal waters during a marine survey.'
+    shakira_source = ('Shakira’s Madrid Concert Sets an Amazon Music Livestreaming Record\n\n'
+        "Shakira's Oct. 3 concert in Madrid, featuring surprise guest Dua Lipa, marked this milestone for livestreamed performances on Amazon Music.\n\nDetails in comments.")
 
     def payload(self, **changes):
         payload = {'headline': 'Two false killer whale calves swim beside their mothers in coastal waters',
@@ -41,6 +43,30 @@ class PayloadQualityTests(unittest.TestCase):
         source = 'Taylor Swift released four songs.'
         with self.assertRaises(ValueError):
             validate({'headline': 'Adele releases four new songs', 'rewritten_caption': 'Adele has released four songs.'}, source, content_topic='music')
+
+    def test_exact_source_title_with_curly_possessive_is_not_an_invented_artist(self):
+        caption = namespace['clean_and_deduplicate_source_caption'](self.shakira_source, content_topic='music')
+        result = validate({'headline': self.shakira_source.splitlines()[0], 'rewritten_caption': caption}, self.shakira_source, content_topic='music')
+        self.assertEqual(result['headline'].replace('’', "'"), "Shakira's Madrid Concert Sets an Amazon Music Livestreaming Record")
+        self.assertIn('Dua Lipa', result['rewritten_caption'])
+        self.assertNotIn('Details in comments', result['rewritten_caption'])
+
+    def test_possessive_source_name_supports_the_same_artist_in_a_complete_paraphrase(self):
+        headline = 'Shakira sets an Amazon Music livestreaming record with her Madrid concert'
+        caption = namespace['clean_and_deduplicate_source_caption'](self.shakira_source, content_topic='music')
+        result = validate({'headline': headline, 'rewritten_caption': caption}, self.shakira_source, content_topic='music')
+        self.assertEqual(result['headline'], headline)
+
+    def test_possessive_name_support_does_not_allow_an_artist_substitution(self):
+        caption = namespace['clean_and_deduplicate_source_caption'](self.shakira_source, content_topic='music')
+        with self.assertRaisesRegex(ValueError, 'observable source facts'):
+            validate({'headline': 'Adele sets an Amazon Music livestreaming record with her Madrid concert', 'rewritten_caption': caption}, self.shakira_source, content_topic='music')
+
+    def test_standalone_source_title_is_selected_before_its_long_following_paragraph(self):
+        result = namespace['smart_heuristic_headline'](self.shakira_source, content_topic='music')
+        self.assertEqual(result['headline'].rstrip('.'), "Shakira's Madrid Concert Sets an Amazon Music Livestreaming Record")
+        self.assertNotIn('Oct.', result['headline'])
+        self.assertIn('Oct. 3', result['rewritten_caption'])
 
     def test_uncertainty_and_negation_cannot_be_dropped(self):
         for source, payload in [

@@ -16,6 +16,22 @@ class SourceTextCleanupTests(unittest.TestCase):
         boxes = detect_source_text_boxes(image, Detector())
         self.assertEqual(boxes, [(31, 26, 169, 64), (31, 181, 169, 219), (166, 76, 224, 129)])
 
+    def test_recognized_confidence_matches_each_padded_box_without_second_ocr(self):
+        class CountingReader:
+            calls = 0
+            def readtext(self, image, **kwargs):
+                self.calls += 1
+                return [([[-50,-50],[-25,-50],[-25,-25],[-50,-25]], 'OUTSIDE', .99),
+                        ([[35,30],[165,30],[165,60],[35,60]], 'NEWS', .95),
+                        ([[180,80],[220,90],[210,125],[170,110]], 'TEXT', .73),
+                        ([[50,200],[160,200],[160,230],[50,230]], 'NOISE', .20)]
+        reader = CountingReader()
+        boxes = detect_source_text_boxes(np.zeros((400,400,3),dtype=np.uint8),reader)
+        self.assertEqual(reader.calls,1)
+        self.assertEqual(boxes.text_labels,{(31,26,169,64):'NEWS',(166,76,224,129):'TEXT'})
+        self.assertEqual(boxes.text_confidences,{(31,26,169,64):.95,(166,76,224,129):.73})
+        self.assertEqual(set(boxes),set(boxes.text_confidences))
+
     def test_photo_lettering_is_rejected_without_changing_pixels(self):
         image = np.full((400, 400, 3), 90, dtype=np.uint8)
         cv2.putText(image, 'NEWS', (40, 56), cv2.FONT_HERSHEY_SIMPLEX, .8, (255, 255, 255), 2)

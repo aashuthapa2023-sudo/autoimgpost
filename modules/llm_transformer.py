@@ -165,7 +165,7 @@ def strip_source_caption_noise(raw_caption):
     lines = []
     for line in text.splitlines():
         line = line.strip(' {}:*[]')
-        line = re.sub(r'(?:Follow\s+(?:our\s+page|us)|Subscribe\s+to|Link\s+in\s+(?:bio|comment)|Click\s+here|Read\s+more|Photo\s*:|Credit\s*:|थप\s+(?:समाचार|जानकारी|विवरण)|हाम्रो\s+(?:फेसबुक\s+)?पेज|लिंक\s+कमेन्टमा|तस्बिर\s*:|फोटो\s*:|साभार\s*:).*', '', line, flags=re.IGNORECASE).strip()
+        line = re.sub(r'(?:Follow\s+(?:our\s+page|us)|Subscribe\s+to|Link\s+in\s+(?:bio|comment)|Click\s+here|Read\s+more|(?:Details?|Full\s+story|More\s+info)\s+in\s+(?:the\s+)?comments|Photo\s*:|Credit\s*:|थप\s+(?:समाचार|जानकारी|विवरण)|हाम्रो\s+(?:फेसबुक\s+)?पेज|लिंक\s+कमेन्टमा|तस्बिर\s*:|फोटो\s*:|साभार\s*:).*', '', line, flags=re.IGNORECASE).strip()
         if line:
             lines.append(line)
     text = '\n'.join(lines)
@@ -197,6 +197,11 @@ def clean_and_deduplicate_source_caption(raw_caption: str, language: str = "en",
         # Do not cut a long sentence into an incomplete caption; choose another fact.
         if len(sentence.split()) > 80 or len((' '.join(sentences + [sentence])).split()) > 80:
             continue
+        # A standalone source title needs its own boundary before the next
+        # paragraph; otherwise a complete hook becomes an overlong fragment.
+        if (not re.search(r'[.!?।:;,\u2026]$',sentence)
+                and re.search(r'[\w\u0900-\u097F][\"\')\]]?$',sentence)):
+            sentence += '।' if language=='ne' else '.'
         sentences.append(sentence)
         keys.append(key)
         if len(sentences) == 3:
@@ -460,7 +465,7 @@ def numeric_facts(text):
 
 def check_source_grounding(text, source, language='en'):
     """Catch observable fact drift; this is not a semantic verification claim."""
-    text = re.sub(r'#[\w\u0900-\u097F]+', '', str(text or ''))
+    text = re.sub(r'#[\w\u0900-\u097F]+', '', str(text or '')).replace('’',"'").replace('‘',"'")
     source = str(source or '').replace('’', "'").replace('‘', "'")
     if not numeric_facts(text).issubset(numeric_facts(source)):
         return False
@@ -486,6 +491,7 @@ def check_source_grounding(text, source, language='en'):
             return False
     if language == 'en':
         source_words = set(re.findall(r"[a-z]+(?:'[a-z]+)?", source_lower))
+        source_words.update(word[:-2] for word in tuple(source_words) if word.endswith("'s"))
         # Multiple capitalized words are usually a name/title. Compare their
         # words to source tokens, tolerating lower-case source spelling.
         for phrase in re.findall(r"\b(?:[A-Z][a-z]+(?:'[A-Za-z]+)?|[A-Z]{2,})(?:\s+(?:[A-Z][a-z]+(?:'[A-Za-z]+)?|[A-Z]{2,}))+", text):
@@ -597,3 +603,52 @@ def generate_social_payload(raw_caption: str, language: str = "en", channel_name
     # Source excerpts remain honest, but only complete concise facts qualify.
     # Translation or synthesis is not guessed when all providers are invalid.
     return smart_heuristic_headline(raw_caption, effective_lang, channel_name, channel_id, topic, editorial_style)
+
+
+def generate_preserved_card_payload(raw_caption: str, reviewed_headline: str, language: str = "en",
+                                    channel_name: str = "", channel_id: str = "", content_topic: str = "",
+                                    editorial_style: str = "") -> dict:
+    """Keep an image-reviewed title while independently preparing its caption.
+
+    The intact card already supplies the display headline. Its caption must not
+    depend on generating a second unused headline or fitting the source brief
+    into display type. Image/OCR review remains the caller's responsibility.
+    """
+    raw_caption = str(raw_caption or '').strip()
+    effective_lang = language if language in ('en', 'ne') else ('ne' if is_devanagari_text(raw_caption) else 'en')
+    reviewed_headline = str(reviewed_headline or '').strip()
+    headline = clean_factual_clause(reviewed_headline)
+    factual_source = strip_source_caption_noise(raw_caption)
+    topic = resolve_content_topic(content_topic, channel_name, channel_id)
+    from modules.content_quality import channel_accepts_post
+    if (not factual_source or not channel_accepts_post({'content_topic': topic}, {'caption': factual_source})):
+        raise ValueError('Preserved card source has no usable caption or does not match the page topic')
+    if (not headline_is_usable(reviewed_headline, effective_lang) or not headline_is_usable(headline, effective_lang)
+            or not check_source_grounding(headline, factual_source, effective_lang)):
+        raise ValueError('Preserved card headline is incomplete or changed observable source facts')
+
+    def approved_caption(caption):
+        caption = clean_and_deduplicate_source_caption(caption, effective_lang, channel_name, channel_id, topic)
+        body = re.sub(r'#[\w\u0900-\u097F]+', '', caption).strip()
+        if (not 4 <= len(body.split()) <= 80 or body.endswith('?')
+                or re.search(r'https?://|www\.|\b(?:find out|link in bio|read more|you won.t believe|comment below|share this|tag a friend|go viral)\b', body, re.IGNORECASE)):
+            raise ValueError('Preserved card caption is empty, incomplete or a teaser')
+        if ((effective_lang == 'ne' and not is_devanagari_text(body))
+                or (effective_lang == 'en' and is_devanagari_text(body))):
+            raise ValueError('Preserved card caption uses the wrong page language')
+        if (not check_source_grounding(body, factual_source, effective_lang)
+                or not channel_accepts_post({'content_topic': topic}, {'caption': body})):
+            raise ValueError('Preserved card caption changed source facts or page topic')
+        return caption
+
+    # A short source brief is an honest fallback when optional rewrite services
+    # are unavailable. It is independent of their separate display-title rules.
+    caption = approved_caption(raw_caption)
+    if any(os.getenv(key) for key in ('GROQ_API_KEY', 'GEMINI_API_KEY', 'OPENROUTER_API_KEY')):
+        try:
+            rewritten = generate_social_payload(raw_caption, effective_lang, channel_name, channel_id, topic, editorial_style)
+            caption = approved_caption(rewritten['rewritten_caption'])
+        except (ValueError, KeyError, TypeError):
+            pass
+    return {'headline': headline, 'overlay_lines': format_balanced_overlay(headline, effective_lang),
+            'rewritten_caption': caption, 'headline_origin': 'preserved_source_card'}

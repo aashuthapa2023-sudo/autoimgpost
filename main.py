@@ -4,6 +4,7 @@ import json
 import time
 import shutil
 import traceback
+import copy
 from datetime import datetime, timezone
 try:
     if sys.stdout and hasattr(sys.stdout, 'reconfigure'):
@@ -30,6 +31,7 @@ from modules.image_cleaner import (
 from modules.llm_transformer import generate_social_payload
 from modules.poster_engine import render_final_poster
 from modules.publisher import publish_to_facebook
+from modules.publication_journal import record_publication, apply_publication_receipts
 from modules.notifier import send_telegram_alert
 try:
     from modules.web_scraper import fetch_web_news, get_channel_category
@@ -165,6 +167,11 @@ def run_pipeline(mode="run", target_channel="all"):
         return
 
     state = load_state()
+    state_before_recovery = copy.deepcopy(state)
+    apply_publication_receipts(state)
+    # Recover any confirmed publication whose later state save was interrupted.
+    if state != state_before_recovery and mode not in ("dry_run", "test", "health_check"):
+        save_state(state)
     processed_ids_map = state.get("processed_ids", {})
     daily_stats = state.get("daily_stats", {})
 
@@ -424,6 +431,7 @@ def run_pipeline(mode="run", target_channel="all"):
             print(f"\n [+] 1-Hour Automatic Release: Evaluating Post {post_id}")
             print(f"     Destination: {channel_name} ({dest_id}) | Interval: {post_interval_hours}h | Mode: INSTANT LIVE POST ONLY")
 
+            confirmed_meta_id = None
             try:
                 # STRICT SOURCE LANGUAGE GATE FOR NEPALI CHANNELS:
                 if is_nepali_ch:
@@ -478,7 +486,7 @@ def run_pipeline(mode="run", target_channel="all"):
                 print(f"           [Source text cleanup] Checking {len(text_boxes)} regions for safe photo extraction")
                 preserved_review = None
                 try:
-                    cleaned_img = erase_text_and_watermarks(raw_img, source_text_boxes=text_boxes)
+                    cleaned_img,crop_top,crop_bottom = erase_text_and_watermarks(raw_img, source_text_boxes=text_boxes,return_crop_bounds=True)
                 except ValueError:
                     if not ch.get('preserve_readable_source_cards',False):
                         raise
@@ -507,14 +515,31 @@ def run_pipeline(mode="run", target_channel="all"):
                     ch_lang = "ne"
                 dest_name = ch.get("badge_label") or ch.get("dest_page_name") or ch.get("channel_name") or channel_id
                 print(f"     [3/4] Generating dual-tone headline & policy-compliant caption (lang={ch_lang}, page={dest_name})...")
-                ai_data = generate_social_payload(
-                    post.get("caption", ""),
-                    language=ch_lang,
-                    channel_name=dest_name,
-                    channel_id=channel_id,
-                    content_topic=ch.get('content_topic',''),
-                    editorial_style=ch.get('editorial_style','')
-                )
+                try:
+                    if preserved_review:
+                        from modules.llm_transformer import generate_preserved_card_payload
+                        ai_data = generate_preserved_card_payload(
+                            post.get("caption",""), preserved_review["headline"],
+                            language=ch_lang,channel_name=dest_name,channel_id=channel_id,
+                            content_topic=ch.get('content_topic',''),editorial_style=ch.get('editorial_style',''))
+                    else:
+                        ai_data = generate_social_payload(
+                            post.get("caption", ""),
+                            language=ch_lang,
+                            channel_name=dest_name,
+                            channel_id=channel_id,
+                            content_topic=ch.get('content_topic',''),
+                            editorial_style=ch.get('editorial_style','')
+                        )
+                except ValueError as error:
+                    if preserved_review or 'no complete readable headline' not in str(error):
+                        raise
+                    from modules.llm_transformer import clean_and_deduplicate_source_caption
+                    from modules.source_headline import source_panel_payload
+                    brief = clean_and_deduplicate_source_caption(post.get('caption',''),ch_lang,dest_name,channel_id,ch.get('content_topic',''))
+                    ai_data = source_panel_payload(post.get('caption',''),brief,text_boxes,raw_img.shape,
+                        (crop_top,crop_bottom),language=ch_lang,channel_name=dest_name,
+                        channel_id=channel_id,content_topic=ch.get('content_topic',''))
 
                 # STRICT OVERLAY LANGUAGE GATE FOR NEPALI CHANNELS:
                 if is_nepali_ch:
@@ -533,16 +558,21 @@ def run_pipeline(mode="run", target_channel="all"):
                     render_preserved_source_card(raw_img,preserved_review,ai_data['rewritten_caption'],dest_name,rendered_file,
                         highlight_hex=highlight_hex,**ch.get('poster_style',{}))
                 else:
-                    render_final_poster(
+                    from modules.source_headline import render_with_source_fallback
+                    ai_data = render_with_source_fallback(
+                        ai_data,post.get('caption',''),text_boxes,raw_img.shape,(crop_top,crop_bottom),
+                        language=ch_lang,channel_name=dest_name,channel_id=channel_id,
+                        content_topic=ch.get('content_topic',''),render_fn=render_final_poster,
                         base_img=graded_img,
-                        overlay_lines=ai_data["overlay_lines"],
                         highlight_hex=highlight_hex,
                         dest_page_name=dest_name,
                         output_path=rendered_file,
                         post_id=post_id,
-                        caption=ai_data['rewritten_caption'], source_checked=True,
+                        source_checked=True,
                         **{**ch.get('poster_style',{}), **source_layout}
                     )
+                    if ai_data.get('headline_origin')=='removed_source_panel':
+                        print(' [SOURCE HEADLINE] Reusing its complete validated title from the removed panel')
                 print(f"           Poster created successfully: 1080x1350px")
                 try:
                     from update_cache import update_posters_cache
@@ -575,7 +605,7 @@ def run_pipeline(mode="run", target_channel="all"):
                         caption=ai_data["rewritten_caption"],
                         scheduled_publish_time=None  # ALWAYS INSTANT POST ONLY!
                     )
-                    print(f"     [SUCCESS] Live Instant Post Published! Meta ID: {published_id}")
+                    confirmed_meta_id = published_id
                 except Exception as pub_err:
                     print(f"     [PUBLISH REJECTED BY META] Graph API Error: {pub_err}")
                     if "deleted" in str(pub_err).lower() or "190" in str(pub_err):
@@ -583,6 +613,18 @@ def run_pipeline(mode="run", target_channel="all"):
                         print(f"     [ACTION REQUIRED] The Meta Facebook App for '{dest_name}' (ID: {dest_id}) was deleted or token expired.")
                         print(f"     Please generate a fresh Page Access Token on Meta Developers and paste it into Web UI Settings.")
                     raise pub_err
+
+                published_at = datetime.now(timezone.utc)
+                post_story_fp = str(post.get("story_fingerprint") or compute_story_fingerprint(post.get("caption", "")))
+                # Keep the confirmed Meta receipt before updating the broader ledger.
+                # A failed later save or Git push must never make this source eligible again.
+                record_publication(
+                    channel_id, dict(post, post_id=str(post_id)), published_id,
+                    published_at=published_at.isoformat(),
+                    image_hash=img_dhash, clean_image_hash=clean_dhash,
+                    story_fingerprint=post_story_fp,
+                )
+                print(f"     [SUCCESS] Live Instant Post Published! Meta ID: {published_id}")
 
                 # Update channel state ONLY after actual live publish succeeds
                 for id_val in [str(post_id), str(post.get("photo_id", "")), str(post.get("caption_fingerprint", ""))]:
@@ -601,14 +643,13 @@ def run_pipeline(mode="run", target_channel="all"):
                 if image_url:
                     global_processed_urls.add(image_url)
 
-                post_story_fp = str(post.get("story_fingerprint") or compute_story_fingerprint(post.get("caption", "")))
                 if post_story_fp:
                     global_story_fingerprints.add(post_story_fp)
                     channel_story_fps.add(post_story_fp)
 
                 channel_stat["count"] += 1
-                channel_stat["timestamps"].append(datetime.now(timezone.utc).isoformat())
-                channel_stat["last_published_time"] = int(time.time())
+                channel_stat["timestamps"].append(published_at.isoformat())
+                channel_stat["last_published_time"] = int(published_at.timestamp())
 
                 # Persist state with per-channel tracking & cross-channel syndication support
                 channel_image_hashes_map[channel_id] = list(channel_image_hashes)
@@ -639,6 +680,9 @@ def run_pipeline(mode="run", target_channel="all"):
                 time.sleep(5)
 
             except Exception as err:
+                if confirmed_meta_id:
+                    print(f" [CONFIRMED POST RECOVERY REQUIRED] Channel: {channel_id}; source: {post_id}; Meta ID: {confirmed_meta_id}")
+                    raise RuntimeError("Confirmed publication receipt/state could not be saved; stop and recover before another run") from err
                 if isinstance(err, ValueError):
                     reject(post_id, 'content_or_layout', str(err))
                     print(f"     [QUALITY SKIP] Post {post_id}: {err}")

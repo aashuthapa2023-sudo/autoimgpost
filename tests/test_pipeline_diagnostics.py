@@ -23,7 +23,8 @@ class PipelineDiagnosticsTests(unittest.TestCase):
 
     def run_isolated(self, posts, *, cooldown=False, topic='music', processed=()):
         state = {'processed_ids': {'test': list(processed)}, 'daily_stats': {}}
-        namespace = dict(os=os, time=time, json=json, datetime=datetime.datetime,
+        namespace = dict(os=os, time=time, json=json, copy=__import__('copy'),
+                         apply_publication_receipts=lambda ledger: ledger, datetime=datetime.datetime,
                          timezone=datetime.timezone, traceback=traceback,
                          OUTPUT_DIR='output', MAX_DAILY_LIMIT_PER_PAGE=15,
                          WEB_SCRAPER_AVAILABLE=False)
