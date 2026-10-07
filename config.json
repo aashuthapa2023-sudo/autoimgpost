@@ -47,18 +47,7 @@
           "logo_position": "with-text"
         }
       },
-      "max_candidates_per_run": 6,
-      "source_cleanup_profiles": {
-        "netflixfanslivehere": {
-          "credit_pattern": "news|netflix fans live here",
-          "scene_labels": [
-            "HIDE",
-            "RUN",
-            "CONFRONT",
-            "WAIT"
-          ]
-        }
-      }
+      "max_candidates_per_run": 6
     },
     {
       "channel_id": "Music Store",
@@ -109,19 +98,7 @@
           "logo_position": "with-text"
         }
       },
-      "max_candidates_per_run": 6,
-      "source_cleanup_profiles": {
-        "billboard": {
-          "credit_pattern": "billboard|latin music|week beach|miami",
-          "header_fraction": 0.17,
-          "footer_fraction": 0.72,
-          "scene_labels": []
-        },
-        "rollingstone": {
-          "credit_pattern": "rolling\\s*stone",
-          "scene_labels": []
-        }
-      }
+      "max_candidates_per_run": 6
     },
     {
       "channel_id": "Anisha",
@@ -209,13 +186,7 @@
           "logo_position": "with-text"
         }
       },
-      "max_candidates_per_run": 6,
-      "source_cleanup_profiles": {
-        "whatsonnetflix": {
-          "credit_pattern": "news|what.?s\\s*on\\s*netflix",
-          "scene_labels": []
-        }
-      }
+      "max_candidates_per_run": 6
     },
     {
       "channel_id": "nepal_speaks",
@@ -262,28 +233,7 @@
         "text_position": "bottom",
         "logo_position": "with-text"
       },
-      "max_candidates_per_run": 6,
-      "source_cleanup_profiles": {
-        "himalimedia": {
-          "credit_pattern": "news|himali\\s*patrika",
-          "scene_labels": [
-            "परम्पराको",
-            "१५",
-            "H1B Visa Application",
-            "HIB Visa Application"
-          ]
-        },
-        "smartmedianp": {
-          "credit_pattern": "smart|media",
-          "scene_labels": [
-            "Milk",
-            "दूध",
-            "द्वध",
-            "दृवध",
-            "दुध"
-          ]
-        }
-      }
+      "max_candidates_per_run": 6
     },
     {
       "channel_id": "oceans_secret",
@@ -293,29 +243,24 @@
       "dest_access_token_env": "FB_TOKEN_OCEANS_SECRET",
       "source_pages": [
         "https://www.facebook.com/profile.php?id=61587221117884",
-        "https://www.facebook.com/profile.php?id=61589616333583",
-        "https://www.facebook.com/livingoceans000"
+        "https://www.facebook.com/profile.php?id=61589616333583"
       ],
       "source_page_url": "https://www.facebook.com/profile.php?id=61587221117884",
       "badge_label": "Ocean's Secret",
-      "highlight_color": "#FFC83B",
+      "highlight_color": "#4DD6E8",
       "language": "en",
-      "post_interval_hours": 1.0,
+      "post_interval_hours": 1,
       "max_posts_per_run": 1,
       "max_daily_posts": 15,
-      "min_gap_hours": 1.0,
+      "min_gap_hours": 1,
       "source_layouts": {
         "61587221117884": {
           "text_position": "bottom",
-          "logo_position": "top-right"
+          "logo_position": "with-text"
         },
         "61589616333583": {
           "text_position": "bottom",
-          "logo_position": "top-right"
-        },
-        "livingoceans000": {
-          "text_position": "bottom",
-          "logo_position": "top-right"
+          "logo_position": "with-text"
         }
       },
       "content_topic": "ocean",
@@ -323,18 +268,37 @@
       "allow_web_fallback": false,
       "poster_style": {
         "style_id": "oceans_secret",
-        "panel_color": "#000000",
+        "panel_color": "#081E28",
         "min_font_size": 68,
         "max_font_size": 92,
-        "max_lines": 5,
+        "max_lines": 3,
         "safe_margin": 64,
         "text_position": "bottom",
-        "logo_position": "top-right",
-        "layout_kind": "source_replacement",
-        "logo_path": "assets/branding/oceans_secret.jpg"
+        "logo_position": "with-text"
       },
       "max_candidates_per_run": 6,
-      "preserve_readable_source_cards": false
+      "preserve_readable_source_cards": true
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "channel_name": "US Army Fans",
+      "dest_page_name": "US Army Fans",
+      "source_pages": [
+        "https://www.facebook.com/FrontlineDiary"
+      ],
+      "source_page_url": "https://www.facebook.com/FrontlineDiary",
+      "dest_page_id": "1208191125703552",
+      "dest_access_token_env": "EAAqmh45n064BSYKeYohOBJLZAFdfzxkSedoU49t7BHbDbIN5TnsyzWEaB9U2dZC9BEvRfMGB1V7QWzBh6CdhVTkda3xgHjnpZAq1ALbPsBufnDjzrZCuvBmFHZA0dem6yAb3buoFL9CbJsAk6Wt6TfWztHrT0crEYKQvCvXNUKaepIBTLyANBZAQBKmoOtoudUU0v2z0Q6UJWRxKN76Chz",
+      "badge_label": "US Army Fans",
+      "highlight_color": "#ffb700",
+      "language": "en",
+      "post_interval_hours": 2,
+      "max_posts_per_run": 1,
+      "cadence_mirror_enabled": true,
+      "fetch_frequency": "hourly",
+      "policy_compliance_mode": "strict_fb_standard",
+      "max_daily_posts": 15,
+      "min_gap_hours": 1
     }
   ]
 }
