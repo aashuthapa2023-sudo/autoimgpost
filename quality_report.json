@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-07T21:40:49.066007+00:00",
+  "updated_at": "2026-10-07T23:05:18.223791+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -1695,30 +1695,12 @@
     },
     {
       "channel_id": "nepal_speaks",
-      "post_id": "1537297931755780",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-07T15:05:00.978355+00:00",
-      "policy_signature": "0796b0243f4d11a6",
-      "retry_after": 1791428700.978372
-    },
-    {
-      "channel_id": "nepal_speaks",
       "post_id": "1537281955090711",
       "stage": "content_or_layout",
       "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
       "checked_at": "2026-10-07T15:05:17.079755+00:00",
       "policy_signature": "0796b0243f4d11a6",
       "retry_after": 1791428717.0797713
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1537304061755167",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-07T15:34:07.031929+00:00",
-      "policy_signature": "0796b0243f4d11a6",
-      "retry_after": 1791430447.0319512
     },
     {
       "channel_id": "Daily Hollywood",
@@ -1989,6 +1971,24 @@
       "checked_at": "2026-10-07T21:40:49.066007+00:00",
       "policy_signature": "b1ae2397ff9ba878",
       "retry_after": 1791452449.0660233
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1537304061755167",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-07T23:05:01.306706+00:00",
+      "policy_signature": "b1ae2397ff9ba878",
+      "retry_after": 1791457501.3067207
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1537297931755780",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-07T23:05:18.223791+00:00",
+      "policy_signature": "b1ae2397ff9ba878",
+      "retry_after": 1791457518.2238078
     }
   ]
 }
