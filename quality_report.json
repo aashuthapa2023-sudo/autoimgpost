@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-06T23:34:13.615138+00:00",
+  "updated_at": "2026-10-07T00:04:32.109533+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -1170,6 +1170,24 @@
       "checked_at": "2026-10-06T23:34:13.615138+00:00",
       "policy_signature": "550f9351cca2e144",
       "retry_after": 1791372853.6151562
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1117938600592601",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-07T00:04:02.227261+00:00",
+      "policy_signature": "6febb7ffd4ed0c09",
+      "retry_after": 1791374642.227281
+    },
+    {
+      "channel_id": "Anisha",
+      "post_id": "1087640097202097",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-10-07T00:04:32.109533+00:00",
+      "policy_signature": "817a187a0cab80fc",
+      "retry_after": 1791374672.1095526
     }
   ]
 }
