@@ -9,7 +9,7 @@ from pathlib import Path
 
 def profile_signature(channel):
     fields=('channel_id','source_pages','language','content_topic','editorial_style','poster_style','source_layouts','highlight_color','preserve_readable_source_cards')
-    policy={'revision':5, **{key:channel.get(key) for key in fields}}
+    policy={'revision':6, **{key:channel.get(key) for key in fields}}
     return hashlib.sha256(json.dumps(policy,sort_keys=True,ensure_ascii=False).encode('utf-8')).hexdigest()[:16]
 
 
@@ -21,11 +21,17 @@ def ready_candidates(channel,posts,path='quality_report.json',bypass=False):
     except (OSError,ValueError):
         return posts
     signature=profile_signature(channel)
-    blocked={item.get('post_id') for item in data.get('rejections',[])
-             if item.get('channel_id')==channel.get('channel_id')
-             and item.get('policy_signature')==signature
-             and item.get('retry_after',0)>time.time()}
-    return [post for post in posts if str(post.get('post_id','')) not in blocked]
+    current=[item for item in data.get('rejections',[])
+             if item.get('channel_id')==channel.get('channel_id') and item.get('policy_signature')==signature]
+    now=time.time()
+    blocked={item.get('post_id') for item in current if item.get('retry_after',0)>now}
+    expired_transient={item.get('post_id') for item in current
+                       if item.get('stage')=='transient_processing' and item.get('retry_after',0)<=now}
+    ready=[post for post in posts if str(post.get('post_id','')) not in blocked]
+    # Retrying a slow/failed candidate is allowed, but it must not repeatedly
+    # consume every attempt slot before previously untried sources are checked.
+    return ([post for post in ready if str(post.get('post_id','')) not in expired_transient]
+            +[post for post in ready if str(post.get('post_id','')) in expired_transient])
 
 
 def record_rejection(channel_id,post_id,stage,reason,path='quality_report.json',policy_signature=''):
@@ -34,10 +40,11 @@ def record_rejection(channel_id,post_id,stage,reason,path='quality_report.json',
         data=json.loads(target.read_text(encoding='utf-8'))
     except (OSError,ValueError):
         data={'rejections':[]}
+    retry_delay={'source_image':2700,'transient_processing':900}.get(stage,43200)
     entry={'channel_id':str(channel_id),'post_id':str(post_id),'stage':stage,
            'reason':str(reason)[:240],'checked_at':datetime.now(timezone.utc).isoformat(),
            'policy_signature':policy_signature,
-           'retry_after':time.time()+(2700 if stage=='source_image' else 43200)}
+           'retry_after':time.time()+retry_delay}
     previous=[item for item in data.get('rejections',[]) if not (
         item.get('channel_id')==entry['channel_id'] and item.get('post_id')==entry['post_id'])]
     data={'updated_at':entry['checked_at'],'rejections':(previous+[entry])[-2000:]}

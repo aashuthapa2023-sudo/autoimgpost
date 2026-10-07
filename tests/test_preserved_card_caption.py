@@ -80,6 +80,29 @@ class PreservedCardCaptionTests(unittest.TestCase):
                 with self.subTest(source=source), self.assertRaises(ValueError):
                     self.payload(source=source)
 
+    def test_uncertainty_in_an_unrelated_followup_does_not_change_the_reviewed_fact(self):
+        followup = 'The marine survey may continue next year to document more whales.'
+        source = self.headline + '.\n\n' + followup
+        with patch.dict(os.environ, self.empty_keys):
+            result = self.payload(source=source)
+        self.assertEqual(result['headline'], self.headline)
+        self.assertIn(self.headline + '.', result['rewritten_caption'])
+        self.assertIn(followup, result['rewritten_caption'])
+
+    def test_negation_in_an_unrelated_followup_remains_in_caption_without_invalidating_title(self):
+        followup = 'The marine survey is not finished and will continue next year.'
+        source = self.headline + '.\n\n' + followup
+        with patch.dict(os.environ, self.empty_keys):
+            result = self.payload(source=source)
+        self.assertEqual(result['headline'], self.headline)
+        self.assertIn(followup, result['rewritten_caption'])
+
+    def test_a_contradictory_matching_fact_is_rejected_despite_a_definite_matching_sentence(self):
+        for followup in [self.headline + ' is not confirmed.',
+                         'Reports that ' + self.headline.lower() + ' are unconfirmed.']:
+            with patch.dict(os.environ, self.empty_keys), self.subTest(followup=followup), self.assertRaises(ValueError):
+                self.payload(source=self.headline + '.\n\n' + followup)
+
     def test_empty_teaser_and_offtopic_sources_are_rejected(self):
         with patch.dict(os.environ, self.empty_keys):
             for source in ['', 'Read more about marine whales.', 'Comment below about marine whales.',

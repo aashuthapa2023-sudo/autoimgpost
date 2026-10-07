@@ -152,7 +152,7 @@ def detect_source_text_boxes(img, reader=None):
     if reader is None:
         if _source_text_reader is None:
             import easyocr
-            options = {'gpu': False}
+            options = {'gpu': False, 'verbose': False}
             if os.getenv('IMAGE_OCR_MODEL_DIR'):
                 options['model_storage_directory'] = os.environ['IMAGE_OCR_MODEL_DIR']
             # Nepali is explicitly supported by EasyOCR's Devanagari model;

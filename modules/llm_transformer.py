@@ -623,8 +623,21 @@ def generate_preserved_card_payload(raw_caption: str, reviewed_headline: str, la
     from modules.content_quality import channel_accepts_post
     if (not factual_source or not channel_accepts_post({'content_topic': topic}, {'caption': factual_source})):
         raise ValueError('Preserved card source has no usable caption or does not match the page topic')
+    # The card reviewer matches its title to the sentence that actually states
+    # that fact. Uncertainty about a different follow-up cannot turn this
+    # definite fact into a speculative one. Every matching sentence must agree;
+    # a contradictory repetition is never excused by another definite version.
+    def normalized_fact(text):
+        return ' '.join(re.findall(r"[a-z]+(?:'[a-z]+)?|[\u0900-\u097F]+|\d+(?:\.\d+)?",
+                                   str(text).lower().replace('’', "'")))
+    reviewed_fact = normalized_fact(headline)
+    source_sentences = [sentence for line in factual_source.splitlines()
+                        for sentence in (split_clean_sentences(line) if effective_lang == 'en'
+                                         else re.split(r'[।!?]+', line))]
+    matching_facts = [sentence for sentence in source_sentences
+                      if reviewed_fact and f' {reviewed_fact} ' in f' {normalized_fact(sentence)} ']
     if (not headline_is_usable(reviewed_headline, effective_lang) or not headline_is_usable(headline, effective_lang)
-            or not check_source_grounding(headline, factual_source, effective_lang)):
+            or not matching_facts or not all(check_source_grounding(headline, fact, effective_lang) for fact in matching_facts)):
         raise ValueError('Preserved card headline is incomplete or changed observable source facts')
 
     def approved_caption(caption):

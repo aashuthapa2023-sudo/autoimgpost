@@ -207,6 +207,9 @@ def run_pipeline(mode="run", target_channel="all"):
             cname_clean = str(channel_name).strip().lower()
             if t_clean != cid_clean and t_clean != cname_clean and t_clean not in cid_clean:
                 continue
+        if ch.get('posting_paused',False) and mode == 'run':
+            print(f" [PAGE PAUSED] {channel_name}: Automatic posting is paused in page settings.")
+            continue
         source_pages = ch.get("source_pages", [])
         if not source_pages:
             if ch.get("source_page_url"):
@@ -687,6 +690,11 @@ def run_pipeline(mode="run", target_channel="all"):
                     reject(post_id, 'content_or_layout', str(err))
                     print(f"     [QUALITY SKIP] Post {post_id}: {err}")
                     continue
+                # Unconfirmed runtime failures must not occupy every first
+                # candidate slot again before later usable sources are checked.
+                # Confirmed Meta publications stop in the recovery branch above.
+                reject(post_id, 'transient_processing', 'Processing or publishing failed before a confirmation ID; retry after 15 minutes')
+                print(f"     [TRANSIENT WAIT] Post {post_id}: retry after 15 minutes; checking the next candidate.")
                 tb_str = traceback.format_exc()
                 print(f"     [ERROR] Post {post_id} failed: {err}")
                 send_telegram_alert(

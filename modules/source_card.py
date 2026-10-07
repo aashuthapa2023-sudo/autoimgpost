@@ -18,7 +18,7 @@ def _read_english_card(image):
     global _english_source_reader
     if _english_source_reader is None:
         import easyocr
-        options = {'gpu': False}
+        options = {'gpu': False, 'verbose': False}
         if os.getenv('IMAGE_OCR_MODEL_DIR'):
             options['model_storage_directory'] = os.environ['IMAGE_OCR_MODEL_DIR']
         _english_source_reader = easyocr.Reader(['en'], **options)

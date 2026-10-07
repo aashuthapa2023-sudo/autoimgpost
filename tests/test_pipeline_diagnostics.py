@@ -21,7 +21,7 @@ class PipelineDiagnosticsTests(unittest.TestCase):
             body=[node for node in tree.body if isinstance(node, ast.FunctionDef)],
             type_ignores=[]), 'main.py', 'exec')
 
-    def run_isolated(self, posts, *, cooldown=False, topic='music', processed=()):
+    def run_isolated(self, posts, *, cooldown=False, topic='music', processed=(), paused=False):
         state = {'processed_ids': {'test': list(processed)}, 'daily_stats': {}}
         namespace = dict(os=os, time=time, json=json, copy=__import__('copy'),
                          apply_publication_receipts=lambda ledger: ledger, datetime=datetime.datetime,
@@ -32,6 +32,7 @@ class PipelineDiagnosticsTests(unittest.TestCase):
         namespace.update(
             load_config=lambda: {'channels': [{'channel_id': 'test', 'channel_name': 'Test Page',
                 'content_topic': topic, 'dest_access_token_env': 'EAA_test',
+                'posting_paused': paused,
                 'source_pages': ['https://www.facebook.com/source']}]},
             load_state=lambda: state, save_state=Mock(),
             fetch_source_posts=Mock(return_value=posts), download_image=Mock(return_value=None),
@@ -63,6 +64,13 @@ class PipelineDiagnosticsTests(unittest.TestCase):
         self.assertIn('retry_wait=1', output)
         self.assertNotIn('[UP TO DATE]', output)
         namespace['download_image'].assert_not_called()
+
+    def test_paused_page_does_not_fetch_or_publish(self):
+        output, namespace, rejections = self.run_isolated([self.post()], paused=True)
+        self.assertIn('[PAGE PAUSED]', output)
+        namespace['fetch_source_posts'].assert_not_called()
+        namespace['download_image'].assert_not_called()
+        self.assertEqual(rejections, [])
 
     def test_topic_rejection_reports_why_queue_is_empty(self):
         output, namespace, rejections = self.run_isolated(

@@ -1505,6 +1505,7 @@
                   ● ${destName.toUpperCase()} ●
                 </span>
                 ${langBadge}
+                ${ch.posting_paused ? '<span class="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-950/70 text-amber-300 border border-amber-500/40">Posting paused</span>' : ''}
                 <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-neutral-950 text-neutral-400 border border-neutral-800">
                   &le; ${ch.max_daily_posts || 15}/Day
                 </span>
@@ -1514,6 +1515,9 @@
               </div>
 
               <!-- Configurable Post Interval -->
+              <button onclick="toggleChannelPosting('${encodeURIComponent(ch.channel_id)}')" class="mb-3 px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-xs text-neutral-200">
+                ${ch.posting_paused ? 'Resume posting' : 'Pause posting'}
+              </button>
               ${ch.poster_style ? `<div class="mb-3 text-xs text-neutral-400 leading-relaxed"><span class="text-neutral-200">${({screen:'Streaming',music:'Music',film:'Film',news:'Nepali news',ocean:'Marine science'})[ch.content_topic] || 'Editorial'} style</span> · centered headlines · full photo · single masthead</div>` : ''}
               <div class="mb-4 bg-neutral-950 p-2.5 rounded-xl border border-neutral-800 flex items-center justify-between">
                 <div>
@@ -1687,6 +1691,14 @@
         ch.post_interval_hours = val;
         await saveConfigUniversal(cachedConfig, `Update post interval for ${channelId} to ${val}h`);
       }
+    }
+
+    async function toggleChannelPosting(encodedId) {
+      const channelId = decodeURIComponent(encodedId);
+      const channel = cachedChannels.find(c => c.channel_id === channelId);
+      if (!channel) return;
+      channel.posting_paused = !channel.posting_paused;
+      await saveConfigUniversal(cachedConfig, `${channel.posting_paused ? 'Pause' : 'Resume'} posting for ${channelId}`);
     }
 
     function openAddChannelModal() {

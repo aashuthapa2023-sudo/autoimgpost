@@ -27,3 +27,32 @@ class QualityRetryTests(unittest.TestCase):
                 self.assertEqual(ready_candidates(channel,posts,path=report),[])
             with patch('modules.quality_log.time.time',return_value=3701):
                 self.assertEqual(ready_candidates(channel,posts,path=report),posts)
+
+    def test_generic_processing_failure_waits_only_fifteen_minutes(self):
+        channel={'channel_id':'test'}
+        posts=[{'post_id':'failed'}, {'post_id':'next'}]
+        with tempfile.TemporaryDirectory() as directory:
+            report=Path(directory)/'quality.json'
+            with patch('modules.quality_log.time.time',return_value=1000):
+                record_rejection('test','failed','transient_processing','Unconfirmed runtime failure',
+                                 path=report,policy_signature=profile_signature(channel))
+                self.assertEqual(ready_candidates(channel,posts,path=report),[posts[1]])
+            with patch('modules.quality_log.time.time',return_value=1899):
+                self.assertEqual(ready_candidates(channel,posts,path=report),[posts[1]])
+            with patch('modules.quality_log.time.time',return_value=1901):
+                self.assertEqual(ready_candidates(channel,posts,path=report),[posts[1],posts[0]])
+
+    def test_expired_transient_retries_keep_relative_order_after_untried_candidates(self):
+        channel={'channel_id':'test'}
+        posts=[{'post_id':value} for value in ['retry-one','new-one','retry-two','new-two']]
+        with tempfile.TemporaryDirectory() as directory:
+            report=Path(directory)/'quality.json'
+            with patch('modules.quality_log.time.time',return_value=1000):
+                for post_id in ['retry-one','retry-two']:
+                    record_rejection('test',post_id,'transient_processing','Unconfirmed failure',
+                                     path=report,policy_signature=profile_signature(channel))
+            with patch('modules.quality_log.time.time',return_value=1901):
+                self.assertEqual(ready_candidates(channel,posts,path=report),[posts[1],posts[3],posts[0],posts[2]])
+                self.assertEqual(ready_candidates(channel,posts,path=report,bypass=True),posts)
+                changed={**channel,'content_topic':'music'}
+                self.assertEqual(ready_candidates(changed,posts,path=report),posts)
