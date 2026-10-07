@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-07T19:07:45.258728+00:00",
+  "updated_at": "2026-10-07T19:36:52.021308+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -1029,30 +1029,12 @@
     },
     {
       "channel_id": "oceans_secret",
-      "post_id": "122119454211320544",
-      "stage": "content_or_layout",
-      "reason": "Original card headline is incomplete or not supported by its caption",
-      "checked_at": "2026-10-07T08:39:25.160688+00:00",
-      "policy_signature": "3117fc7af1eceb39",
-      "retry_after": 1791405565.1607037
-    },
-    {
-      "channel_id": "oceans_secret",
       "post_id": "122139911829240703",
       "stage": "content_or_layout",
       "reason": "Original card headline is incomplete or not supported by its caption",
       "checked_at": "2026-10-07T08:39:34.999064+00:00",
       "policy_signature": "3117fc7af1eceb39",
       "retry_after": 1791405574.9990792
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122119384821320544",
-      "stage": "content_or_layout",
-      "reason": "Original card contains uncertain headline or body lettering",
-      "checked_at": "2026-10-07T08:39:50.828407+00:00",
-      "policy_signature": "3117fc7af1eceb39",
-      "retry_after": 1791405590.8284233
     },
     {
       "channel_id": "oceans_secret",
@@ -1944,6 +1926,24 @@
       "checked_at": "2026-10-07T19:07:45.258728+00:00",
       "policy_signature": "78d4c76a8787cdd4",
       "retry_after": 1791443265.2587457
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122119454211320544",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-10-07T19:36:45.335762+00:00",
+      "policy_signature": "ed4eb4e94d9c9c35",
+      "retry_after": 1791445005.3357763
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122119384821320544",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-10-07T19:36:52.021308+00:00",
+      "policy_signature": "ed4eb4e94d9c9c35",
+      "retry_after": 1791445012.0213227
     }
   ]
 }
