@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-07T17:03:58.774885+00:00",
+  "updated_at": "2026-10-07T17:26:25.562753+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -1128,15 +1128,6 @@
     },
     {
       "channel_id": "Music Store",
-      "post_id": "1620161410150997",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-07T09:05:41.009153+00:00",
-      "policy_signature": "6d5e4691ff16b3ac",
-      "retry_after": 1791407141.0091605
-    },
-    {
-      "channel_id": "Music Store",
       "post_id": "1468553445145229",
       "stage": "content_or_layout",
       "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
@@ -1541,15 +1532,6 @@
       "retry_after": 1791416108.1171331
     },
     {
-      "channel_id": "Music Store",
-      "post_id": "1468877225112851",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-07T12:04:10.289393+00:00",
-      "policy_signature": "6d5e4691ff16b3ac",
-      "retry_after": 1791417850.289404
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1537147381770835",
       "stage": "content_or_layout",
@@ -1917,6 +1899,24 @@
       "checked_at": "2026-10-07T17:03:58.774885+00:00",
       "policy_signature": "6d5e4691ff16b3ac",
       "retry_after": 1791435838.7749088
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1468877225112851",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-07T17:26:25.560632+00:00",
+      "policy_signature": "78d4c76a8787cdd4",
+      "retry_after": 1791437185.560642
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1620161410150997",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-07T17:26:25.562753+00:00",
+      "policy_signature": "78d4c76a8787cdd4",
+      "retry_after": 1791437185.5627632
     }
   ]
 }
