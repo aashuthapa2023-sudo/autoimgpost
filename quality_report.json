@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-07T19:41:04.976660+00:00",
+  "updated_at": "2026-10-07T20:07:53.669429+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -1046,60 +1046,6 @@
       "retry_after": 1791405606.7741516
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1118214090565052",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-07T09:04:15.275154+00:00",
-      "policy_signature": "1d591ac0983019ed",
-      "retry_after": 1791407055.2751772
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1117938600592601",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-07T09:04:31.651198+00:00",
-      "policy_signature": "1d591ac0983019ed",
-      "retry_after": 1791407071.6512148
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1117895587263569",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-07T09:04:47.614303+00:00",
-      "policy_signature": "1d591ac0983019ed",
-      "retry_after": 1791407087.6143203
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1117867297266398",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-07T09:05:03.513995+00:00",
-      "policy_signature": "1d591ac0983019ed",
-      "retry_after": 1791407103.5140116
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1117856750600786",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-07T09:05:19.448477+00:00",
-      "policy_signature": "1d591ac0983019ed",
-      "retry_after": 1791407119.4484937
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1117023657350762",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-07T09:05:27.027332+00:00",
-      "policy_signature": "1d591ac0983019ed",
-      "retry_after": 1791407127.027349
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1468487278485179",
       "stage": "topic_or_caption",
@@ -1134,24 +1080,6 @@
       "checked_at": "2026-10-07T09:05:59.673374+00:00",
       "policy_signature": "6d5e4691ff16b3ac",
       "retry_after": 1791407159.6733918
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1565288958945758",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-07T09:06:09.064669+00:00",
-      "policy_signature": "20ef10212b528aba",
-      "retry_after": 1791407169.0646856
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1564965185644802",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 30.8 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-07T09:06:20.737359+00:00",
-      "policy_signature": "20ef10212b528aba",
-      "retry_after": 1791407180.7373762
     },
     {
       "channel_id": "nepal_speaks",
@@ -1953,6 +1881,87 @@
       "checked_at": "2026-10-07T19:41:04.976660+00:00",
       "policy_signature": "78d4c76a8787cdd4",
       "retry_after": 1791445264.9766684
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1118214090565052",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-10-07T20:06:07.270688+00:00",
+      "policy_signature": "9e91a74c5a366f88",
+      "retry_after": 1791446767.270704
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1117938600592601",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-07T20:06:23.617271+00:00",
+      "policy_signature": "9e91a74c5a366f88",
+      "retry_after": 1791446783.6172862
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1117895587263569",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-07T20:06:39.021389+00:00",
+      "policy_signature": "9e91a74c5a366f88",
+      "retry_after": 1791446799.0214038
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1117867297266398",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-07T20:06:54.395110+00:00",
+      "policy_signature": "9e91a74c5a366f88",
+      "retry_after": 1791446814.3951252
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1117856750600786",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-07T20:07:09.872682+00:00",
+      "policy_signature": "9e91a74c5a366f88",
+      "retry_after": 1791446829.8726966
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1117023657350762",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-10-07T20:07:20.600781+00:00",
+      "policy_signature": "9e91a74c5a366f88",
+      "retry_after": 1791446840.6007974
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1469206138413293",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-07T20:07:38.135430+00:00",
+      "policy_signature": "78d4c76a8787cdd4",
+      "retry_after": 1791446858.1354458
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1565288958945758",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-07T20:07:46.700636+00:00",
+      "policy_signature": "b83605506234d85a",
+      "retry_after": 1791446866.7006526
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1564965185644802",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-07T20:07:53.669429+00:00",
+      "policy_signature": "b83605506234d85a",
+      "retry_after": 1791446873.6694443
     }
   ]
 }
