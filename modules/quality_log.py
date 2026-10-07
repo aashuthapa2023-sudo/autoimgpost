@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 def profile_signature(channel):
-    fields=('channel_id','source_pages','language','content_topic','editorial_style','poster_style','source_layouts','highlight_color','preserve_readable_source_cards')
+    fields=('channel_id','source_pages','language','content_topic','editorial_style','poster_style','source_layouts','source_cleanup_profiles','highlight_color','preserve_readable_source_cards')
     policy={'revision':9, **{key:channel.get(key) for key in fields}}
     return hashlib.sha256(json.dumps(policy,sort_keys=True,ensure_ascii=False).encode('utf-8')).hexdigest()[:16]
 

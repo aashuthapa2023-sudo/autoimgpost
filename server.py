@@ -100,8 +100,19 @@ def execute_pipeline_task(action="dry_run", channel="all", specific_post=None):
             ocr_language=ch.get('language','en')
             text_boxes = detect_source_text_boxes(raw_img,language=ocr_language)
             preserved_review = None
+            replacement_review = None
+            from modules.source_editorial import source_profile, extract_editorial_photo
+            editorial_profile = source_profile(ch,specific_post)
+            if ch.get('poster_style',{}).get('layout_kind')=='source_replacement':
+                from modules.source_replacement import review_source_replacement
+                replacement_review = review_source_replacement(raw_img,text_boxes)
             try:
-                cleaned,crop_top,crop_bottom = erase_text_and_watermarks(raw_img, source_text_boxes=text_boxes,return_crop_bounds=True,language=ocr_language)
+                if replacement_review:
+                    cleaned,crop_top,crop_bottom = raw_img,0,raw_img.shape[0]
+                elif editorial_profile:
+                    cleaned,crop_top,crop_bottom = extract_editorial_photo(raw_img,text_boxes,editorial_profile,specific_post.get('caption',''),ocr_language)
+                else:
+                    cleaned,crop_top,crop_bottom = erase_text_and_watermarks(raw_img, source_text_boxes=text_boxes,return_crop_bounds=True,language=ocr_language)
             except ValueError:
                 if not ch.get('preserve_readable_source_cards',False):
                     raise
@@ -119,7 +130,15 @@ def execute_pipeline_task(action="dry_run", channel="all", specific_post=None):
             log_message("Stage 5: Generating original, policy-compliant caption & centered headline...", stage=5)
             ch_lang = ch.get("language", "ne" if ("nepal" in channel_id.lower() or "nepal" in dest_name.lower()) else "en")
             try:
-                if preserved_review:
+                if replacement_review:
+                    from modules.source_replacement import replacement_payload
+                    ai_data = replacement_payload(specific_post.get('caption',''),language=ch_lang,channel_name=dest_name,
+                        channel_id=channel_id,content_topic=ch.get('content_topic',''),editorial_style=ch.get('editorial_style',''))
+                elif editorial_profile:
+                    from modules.source_replacement import replacement_payload
+                    ai_data = replacement_payload(specific_post.get('caption',''),language=ch_lang,channel_name=dest_name,
+                        channel_id=channel_id,content_topic=ch.get('content_topic',''),editorial_style=ch.get('editorial_style',''))
+                elif preserved_review:
                     from modules.llm_transformer import generate_preserved_card_payload
                     ai_data = generate_preserved_card_payload(
                         specific_post.get("caption",""), preserved_review["headline"],
@@ -135,7 +154,7 @@ def execute_pipeline_task(action="dry_run", channel="all", specific_post=None):
                         editorial_style=ch.get('editorial_style','')
                     )
             except ValueError as error:
-                if preserved_review or 'no complete readable headline' not in str(error):
+                if preserved_review or replacement_review or not any(reason in str(error) for reason in ('no complete readable headline', 'no complete grounded headline')):
                     raise
                 from modules.llm_transformer import clean_and_deduplicate_source_caption
                 from modules.source_headline import source_panel_payload
@@ -147,7 +166,11 @@ def execute_pipeline_task(action="dry_run", channel="all", specific_post=None):
 
             out_poster = f"output/{channel_id}_{specific_post['post_id']}.jpg"
             log_message(f"Stage 6: Compositing centered 4:5 visual poster with destination branding ({dest_name})...", stage=6)
-            if preserved_review:
+            if replacement_review:
+                from modules.source_replacement import render_source_replacement
+                render_source_replacement(raw_img,replacement_review,ai_data,out_poster,
+                    highlight_hex=ch.get('highlight_color','#FFC83B'),**ch.get('poster_style',{}))
+            elif preserved_review:
                 from modules.source_card import render_preserved_source_card
                 render_preserved_source_card(raw_img,preserved_review,ai_data['rewritten_caption'],dest_name,out_poster,
                     highlight_hex=ch.get('highlight_color','#4DD6E8'),**ch.get('poster_style',{}))

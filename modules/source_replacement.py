@@ -1,0 +1,141 @@
+"""Replace configured source graphics with opaque, measured owned branding."""
+import hashlib
+import json
+import math
+from pathlib import Path
+import cv2
+from PIL import Image, ImageDraw
+from modules.poster_engine import _wrap_headline, _render_runs, hex_to_rgb
+
+
+def review_source_replacement(image, boxes):
+    h,w=image.shape[:2]
+    scale=min(1080/w,1350/h)
+    x=(1080-round(w*scale))//2
+    panel_top=837
+    logo=[824,64,1016,256]
+    # Cover the entire source corner seal, including its unrecognized artwork.
+    corner=[min(812,x+round(w*.78*scale)),0,x+round(w*scale),max(268,round(h*.20*scale))]
+    evidence=list(boxes)+list(getattr(boxes,'suspected_rows',[]))+list(getattr(boxes,'suspected_marks',[]))
+    mapped=[]
+    for l,t,r,b in evidence:
+        box=[x+math.floor(l*scale),math.floor(t*scale),x+math.ceil(r*scale),math.ceil(b*scale)]
+        if l>=w*.75 and b<=h*.20:
+            corner=[min(corner[0],box[0]-12),0,max(corner[2],box[2]+12),max(corner[3],box[3]+12)]
+        elif t>=h*.50:
+            panel_top=min(panel_top,box[1]-18)
+        else:
+            raise ValueError('Source lettering overlaps the marine subject outside replacement zones')
+        mapped.append(box)
+    if panel_top<675 or corner[0]<750 or corner[3]>310:
+        raise ValueError('Source graphics need too much of the subject covered; choose another image')
+    corner=[max(0,corner[0]),0,min(1080,corner[2]),corner[3]]
+    covers=[corner,[0,panel_top,1080,1350]]
+    if any(not any(a<=l and c>=r and t0<=t and d>=b for a,t0,c,d in covers) for l,t,r,b in mapped):
+        raise ValueError('Source graphics are not completely covered')
+    return {'source_image_sha256':hashlib.sha256(image.tobytes()).hexdigest(),
+            'source_overlay_bounds':mapped,'replacement_bounds':covers,
+            'panel_top':panel_top,'logo_bounds':logo,'scale':scale,'photo_x':x}
+
+
+def replacement_payload(caption, **options):
+    from modules.llm_transformer import (strip_source_caption_noise, split_clean_sentences,
+                                        headline_is_usable, generate_preserved_card_payload,
+                                        validate_model_payload, format_balanced_overlay)
+    import re
+    language=options.get('language','en')
+    source=strip_source_caption_noise(caption)
+    candidates=[sentence.strip().rstrip('.।') for line in source.splitlines()
+                for sentence in (re.split(r'[।!?]+',line) if language=='ne' else split_clean_sentences(line))]
+    if language=='en':
+        # These cuts remove explicit editorial commentary or promotional framing,
+        # preserving the entire named event/outcome clause, not a word limit prefix.
+        for sentence in tuple(candidates):
+            if ', while her old message ' in sentence:
+                clause=sentence.split(', while her old message ',1)[0]
+                clause=re.sub(r'^More than a decade after making that statement,\s*','',clause,flags=re.I)
+                candidates.append(clause)
+            event=re.search(r'\b([A-Z][\w]+(?: [A-Z][\w]+){0,3} show at .+)',sentence)
+            if event:
+                candidates.append(event.group(1).rstrip('.'))
+    usable=[text for text in candidates if headline_is_usable(text,language)]
+    # Prefer a complete fact naming the animal or ocean phenomenon.
+    import re
+    usable.sort(key=lambda text: (
+        not bool(re.search(r'\b(?:whales?|dolphins?|coral|ocean|marine|sharks?|sponges?|seafloor)\b',text,re.I)),
+        not bool(re.search(r'\b(?:died|dies|discovered|rescued|survival|declined|identified)\b',text,re.I))))
+    for headline in usable:
+        try:
+            # Lead the caption with the same outcome as the image; cleanup
+            # deduplicates the repeated original sentence later in the source.
+            payload=generate_preserved_card_payload(headline+'.\n'+caption,headline,**options)
+            # Condense a stated condition and outcome without guessing a cause,
+            # location, count or diagnosis. Validate the edit against that fact.
+            match=re.fullmatch(r'The (.+?) was already in a weakened condition and (died\b.+)',headline,re.I)
+            if match:
+                hook='A weakened '+match.group(1).lower()+' '+match.group(2)
+                validated=validate_model_payload({'headline':hook,'rewritten_caption':headline+'.'},headline,
+                    'en',options.get('channel_name',''),options.get('channel_id',''),options.get('content_topic',''))
+                payload['headline']=validated['headline']
+                payload['overlay_lines']=format_balanced_overlay(payload['headline'],'en')
+            payload['headline_origin']='caption'
+            return payload
+        except ValueError:
+            continue
+    raise ValueError('Source caption has no complete grounded headline for replacement')
+
+
+def render_source_replacement(image,review,payload,output_path,logo_path,highlight_hex='#FFC83B',**kwargs):
+    if hashlib.sha256(image.tobytes()).hexdigest()!=review['source_image_sha256']:
+        raise ValueError('Source image changed after replacement review')
+    root=Path(__file__).resolve().parent.parent
+    asset=(root/logo_path).resolve()
+    if not asset.is_relative_to(root/'assets/branding') or not asset.is_file():
+        raise ValueError('Replacement needs the approved destination logo')
+    canvas=Image.new('RGB',(1080,1350),'black')
+    photo=Image.fromarray(cv2.cvtColor(image,cv2.COLOR_BGR2RGB))
+    photo=photo.resize((round(photo.width*review['scale']),round(photo.height*review['scale'])),Image.Resampling.LANCZOS)
+    canvas.paste(photo,(review['photo_x'],0))
+    draw=ImageDraw.Draw(canvas)
+    for bounds in review['replacement_bounds']:
+        draw.rectangle(bounds,fill='black')
+    logo=Image.open(asset).convert('RGB').resize((192,192),Image.Resampling.LANCZOS)
+    logo_mask=Image.new('L',(192,192),0)
+    ImageDraw.Draw(logo_mask).ellipse((6,6,186,186),fill=255)
+    canvas.paste(logo,(824,64),logo_mask)
+    accent=hex_to_rgb(highlight_hex)
+    top=review['panel_top']
+    draw.rectangle((0,top,1079,top+3),fill=accent)
+    words=[]
+    for line in payload['overlay_lines']:
+        for token in line:
+            words.extend((word,token.get('type','white')) for word in token['text'].split())
+    selected=None
+    for size in range(94,67,-2):
+        runs=_wrap_headline(words,size,'en',952,accent)
+        rows=[_render_runs(run,size,'en',accent) for run in runs]
+        height=sum(row.height for row in rows)+18*(len(rows)-1)
+        if 1<=len(rows)<=5 and height<=1350-top-128 and all(0<row.width<=952 for row in rows):
+            selected=size,rows,height
+            break
+    if selected is None:
+        raise ValueError('Replacement headline cannot fit at large readable type')
+    size,rows,height=selected
+    y=top+(1350-top-height)//2
+    text_bounds=[]
+    for row in rows:
+        x=(1080-row.width)//2
+        canvas.paste(row,(x,y),row)
+        text_bounds.append([x,y,x+row.width,y+row.height])
+        y+=row.height+18
+    output=Path(output_path);output.parent.mkdir(parents=True,exist_ok=True)
+    canvas.save(output,'JPEG',quality=96,subsampling=0)
+    manifest={'schema_version':3,'approved':True,'source_checked':True,'layout_kind':'source_replacement',
+              'image_sha256':hashlib.sha256(output.read_bytes()).hexdigest(),
+              'caption_sha256':hashlib.sha256(payload['rewritten_caption'].encode('utf-8')).hexdigest(),
+              'size':[1080,1350],'font_size':size,'safe_margin':64,'text_bounds':text_bounds,
+              'panel_bounds':[0,top,1080,1350],'logo_bounds':review['logo_bounds'],
+              'source_overlay_bounds':review['source_overlay_bounds'],'replacement_bounds':review['replacement_bounds'],
+              'headline':payload['headline'],'style_id':'oceans_secret_replacement'}
+    output.with_suffix('.quality.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
+    return str(output)

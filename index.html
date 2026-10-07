@@ -1543,6 +1543,7 @@
                 <div class="space-y-1.5 max-h-72 overflow-y-auto custom-scrollbar">
                   ${sources.map(src => {
                     const layout = (ch.source_layouts || {})[sourceLayoutKey(src)] || {};
+                    const replacementLayout = ch.poster_style?.layout_kind === 'source_replacement';
                     const displaySlug = src.replace('https://www.facebook.com/', '').replace('https://facebook.com/', '').replace('/', '');
                     return `
                       <div class="flex items-center justify-between bg-neutral-950 px-2.5 py-1.5 rounded-lg border border-neutral-800 text-[11px] font-mono">
@@ -1554,9 +1555,9 @@
                       </div>
                       <div class="flex flex-wrap gap-2 text-xs text-neutral-300 pb-2">
                         <label>Text <select class="bg-neutral-800 p-1 rounded" aria-label="Text placement" onchange="setSourcePlacement('${encodeURIComponent(ch.channel_id)}', '${encodeURIComponent(src)}', 'text_position', this.value)">
-                        ${['auto','top','bottom'].map(v => `<option value="${v}" ${(layout.text_position || 'auto') === v ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
+                        ${(replacementLayout ? ['bottom'] : ['auto','top','bottom']).map(v => `<option value="${v}" ${(layout.text_position || 'auto') === v ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
                         <label>Logo / branding <select class="bg-neutral-800 p-1 rounded" aria-label="Logo placement" onchange="setSourcePlacement('${encodeURIComponent(ch.channel_id)}', '${encodeURIComponent(src)}', 'logo_position', this.value)">
-                        ${['with-text','top-left','top-center','top-right','bottom-left','bottom-center','bottom-right'].map(v => `<option value="${v}" ${(layout.logo_position || 'with-text') === v ? 'selected' : ''}>${v.replaceAll('-', ' ')}</option>`).join('')}</select></label>
+                        ${(replacementLayout ? ['top-right'] : ['with-text','top-left','top-center','top-right','bottom-left','bottom-center','bottom-right']).map(v => `<option value="${v}" ${(layout.logo_position || 'with-text') === v ? 'selected' : ''}>${v.replaceAll('-', ' ')}</option>`).join('')}</select></label>
                       </div>
                     `;
                   }).join('')}

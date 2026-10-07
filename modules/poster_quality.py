@@ -39,4 +39,11 @@ def verify_publishable_poster(image_path, caption):
         box=data.get(key)
         if box and (box[0]<margin or box[2]>1080-margin or box[1]<margin or box[3]>1350-margin):
             raise ValueError('Branding is outside the safe area')
+    if data.get('layout_kind') == 'source_replacement':
+        covers=data.get('replacement_bounds',[])
+        if not covers or not data.get('logo_bounds'):
+            raise ValueError('Source replacement needs opaque panels and destination logo')
+        if any(not any(a<=l and c>=r and t0<=t and d>=b for a,t0,c,d in covers)
+               for l,t,r,b in data.get('source_overlay_bounds',[])):
+            raise ValueError('Source lettering is not completely covered by replacement panels')
     return data
