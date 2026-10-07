@@ -110,6 +110,35 @@ class PreservedCardCaptionTests(unittest.TestCase):
                 with self.subTest(source=source), self.assertRaises(ValueError):
                     self.payload(source=source)
 
+    def test_later_uncertainty_outside_the_brief_does_not_reject_copied_facts(self):
+        source = (self.headline + '.\nScientists photographed the calves in coastal waters.\n'
+                  'The team completed a marine survey.\nThe next marine survey may not happen this year.')
+        with patch.dict(os.environ, self.empty_keys):
+            result = self.payload(source=source)
+        self.assertNotIn('may not happen', result['rewritten_caption'])
+        self.assertIn('completed a marine survey', result['rewritten_caption'])
+
+    def test_uppercase_contractions_preserve_negation_and_reject_opposite_claim(self):
+        fact = "SCIENTISTS STILL CAN'T IDENTIFY THIS ANIMAL"
+        source = fact + '\nScientists recorded the animal beneath the Pacific Ocean.'
+        with patch.dict(os.environ, self.empty_keys):
+            self.assertEqual(self.payload(source=source, headline=fact)['headline'], fact)
+        grounding = namespace['check_source_grounding']
+        for negative in ["can't", "won't", "doesn't", 'cannot']:
+            with self.subTest(negative=negative):
+                self.assertFalse(grounding('Scientists identify this animal',
+                                           'Scientists '+negative+' identify this animal'))
+
+    def test_exact_source_excerpt_joined_across_ellipsis_and_newline_is_supported(self):
+        headline = "SCIENTISTS STILL CAN'T IDENTIFY THIS ANIMAL"
+        source = (headline + '\nScientists went nearly 9,100 meters beneath the Pacific Ocean…\n\n'
+                  'And their cameras recorded something they still cannot confidently identify.\n\n'
+                  'The strange animal slowly glided toward the seafloor in the Izu-Ogasawara Trench.')
+        with patch.dict(os.environ, self.empty_keys):
+            result = self.payload(source=source, headline=headline)
+        self.assertIn('9,100 meters', result['rewritten_caption'])
+        self.assertIn('cannot confidently identify', result['rewritten_caption'])
+
     def test_wrong_page_language_is_rejected(self):
         with patch.dict(os.environ, self.empty_keys), self.assertRaises(ValueError):
             self.payload(language='ne')

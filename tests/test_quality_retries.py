@@ -6,6 +6,17 @@ from modules.quality_log import record_rejection,ready_candidates,profile_signat
 
 
 class QualityRetryTests(unittest.TestCase):
+    def test_expired_source_quality_rejection_cannot_jump_ahead_of_untried_images(self):
+        channel={'channel_id':'test'}
+        posts=[{'post_id':'bad'}, {'post_id':'fresh'}]
+        with tempfile.TemporaryDirectory() as directory:
+            report=Path(directory)/'quality.json'
+            with patch('modules.quality_log.time.time',return_value=1000):
+                record_rejection('test','bad','source_quality','Embedded headline',
+                                 path=report,policy_signature=profile_signature(channel))
+            with patch('modules.quality_log.time.time',return_value=50000):
+                self.assertEqual(ready_candidates(channel,posts,path=report),[posts[1],posts[0]])
+
     def test_bad_candidate_does_not_starve_next_candidate(self):
         channel={'channel_id':'test','poster_style':{'min_font_size':68}}
         posts=[{'post_id':'bad'}, {'post_id':'next'}]

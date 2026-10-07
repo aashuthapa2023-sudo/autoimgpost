@@ -89,6 +89,14 @@ class SourceCardTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             inspect_readable_source_card(self.image(), caption, [self.record(headline)])
 
+    def test_uppercase_contraction_is_not_mistaken_for_an_invented_name(self):
+        headline = "SCIENTISTS STILL CAN'T IDENTIFY THIS ANIMAL"
+        caption = "SCIENTISTS STILL CAN’T IDENTIFY THIS ANIMAL\nScientists recorded the animal beneath the Pacific Ocean."
+        review = inspect_readable_source_card(self.image(), caption, [
+            self.record("SCIENTISTS STILL CAN'T", top=550),
+            self.record('IDENTIFY THIS ANIMAL', top=625)])
+        self.assertEqual(review['headline'], headline)
+
     def test_headline_lettering_clipped_at_any_source_edge_is_rejected(self):
         cases = [dict(left=0), dict(right=800), dict(top=0), dict(top=960)]
         for changes in cases:

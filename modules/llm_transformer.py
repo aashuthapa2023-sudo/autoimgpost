@@ -476,7 +476,7 @@ def check_source_grounding(text, source, language='en'):
     if re.search(r'\b(?:may|might|could|possibly|reportedly|alleged|rumou?r|unconfirmed)\b|(?:सम्भावना|आरोप|दाबी|बताइएको)', source_lower):
         if not re.search(r'\b(?:may|might|could|possibly|reportedly|alleged|rumou?r|unconfirmed|according|reports?|says?|said)\b|(?:सम्भावना|आरोप|दाबी|अनुसार|बताइएको|बताए)', output_lower):
             return False
-    negation = r'\b(?:not|never|no(?!\.)|without|neither)\b|नपर्ने|नभएको|नगरेको|नहुने|नसक्ने|हुँदैन'
+    negation = r"\b(?:not|never|no(?!\.)|without|neither|cannot|[a-z]+n't)\b|नपर्ने|नभएको|नगरेको|नहुने|नसक्ने|हुँदैन"
     if bool(re.search(negation, source_lower)) != bool(re.search(negation, output_lower)):
         return False
     if 'false killer whale' in source_lower and 'killer whale' in output_lower and 'false killer whale' not in output_lower:
@@ -494,7 +494,7 @@ def check_source_grounding(text, source, language='en'):
         source_words.update(word[:-2] for word in tuple(source_words) if word.endswith("'s"))
         # Multiple capitalized words are usually a name/title. Compare their
         # words to source tokens, tolerating lower-case source spelling.
-        for phrase in re.findall(r"\b(?:[A-Z][a-z]+(?:'[A-Za-z]+)?|[A-Z]{2,})(?:\s+(?:[A-Z][a-z]+(?:'[A-Za-z]+)?|[A-Z]{2,}))+", text):
+        for phrase in re.findall(r"\b(?:[A-Z][a-z]+|[A-Z]{2,})(?:'[A-Za-z]+)?(?:\s+(?:[A-Z][a-z]+|[A-Z]{2,})(?:'[A-Za-z]+)?)+", text):
             if any(word.lower() not in source_words for word in phrase.split()):
                 return False
         # Also catch single invented artist/place names at sentence starts.
@@ -649,7 +649,22 @@ def generate_preserved_card_payload(raw_caption: str, reviewed_headline: str, la
         if ((effective_lang == 'ne' and not is_devanagari_text(body))
                 or (effective_lang == 'en' and is_devanagari_text(body))):
             raise ValueError('Preserved card caption uses the wrong page language')
-        if (not check_source_grounding(body, factual_source, effective_lang)
+        # A verbatim source excerpt is supported by its own sentences. Later
+        # speculation or negation about a different fact cannot invalidate it.
+        def normalized_excerpt(value):
+            return ' '.join(re.findall(r"[\w]+(?:'[\w]+)?", str(value).lower().replace('’', "'")))
+        body_facts = (split_clean_sentences(body) if effective_lang == 'en'
+                      else re.split(r'[।!?]+', body))
+        # Cleanup can join a source line ending in an ellipsis with its next
+        # line. Match that unchanged excerpt across adjacent source lines too.
+        source_windows = [' '.join(source_sentences[index:index+length])
+                          for index in range(len(source_sentences)) for length in (1, 2, 3)]
+        copied_facts = bool(body_facts) and all(
+            any(normalized_excerpt(fact) == normalized_excerpt(original)
+                and check_source_grounding(fact, original, effective_lang)
+                for original in source_windows)
+            for fact in body_facts if fact.strip())
+        if ((not copied_facts and not check_source_grounding(body, factual_source, effective_lang))
                 or not channel_accepts_post({'content_topic': topic}, {'caption': body})):
             raise ValueError('Preserved card caption changed source facts or page topic')
         return caption
