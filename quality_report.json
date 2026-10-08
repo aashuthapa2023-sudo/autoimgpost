@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-08T16:05:42.921854+00:00",
+  "updated_at": "2026-10-08T16:35:01.695778+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -2322,6 +2322,24 @@
       "checked_at": "2026-10-08T16:05:42.921854+00:00",
       "policy_signature": "fe8dba7e23999f0f",
       "retry_after": 1791518742.92187
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1119440090442452",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-08T16:34:26.316769+00:00",
+      "policy_signature": "9e91a74c5a366f88",
+      "retry_after": 1791520466.3167872
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1538319824986924",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-08T16:35:01.695778+00:00",
+      "policy_signature": "b1ae2397ff9ba878",
+      "retry_after": 1791520501.6957936
     }
   ]
 }
