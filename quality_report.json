@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-08T10:34:05.505595+00:00",
+  "updated_at": "2026-10-08T11:05:04.532681+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -2205,6 +2205,24 @@
       "checked_at": "2026-10-08T10:34:05.505595+00:00",
       "policy_signature": "b83605506234d85a",
       "retry_after": 1791498845.50561
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1119214847131643",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-10-08T11:04:19.545523+00:00",
+      "policy_signature": "9e91a74c5a366f88",
+      "retry_after": 1791500659.5455406
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1538056508346589",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-08T11:05:04.532681+00:00",
+      "policy_signature": "b1ae2397ff9ba878",
+      "retry_after": 1791500704.532698
     }
   ]
 }
