@@ -8,6 +8,16 @@ from modules.source_replacement import review_source_replacement,render_source_r
 from modules.poster_quality import verify_publishable_poster
 
 class SourceReplacementTests(unittest.TestCase):
+ def test_logo_has_no_square_backing_when_source_corner_is_clear(self):
+  image=self.image();review=review_source_replacement(image,SourceTextBoxes([]))
+  self.assertFalse(review['corner_present'])
+  with tempfile.TemporaryDirectory() as folder:
+   path=Path(folder)/'poster.jpg'
+   render_source_replacement(image,review,self.payload(),path,logo_path='assets/branding/oceans_secret.jpg')
+   with Image.open(path) as poster:
+    self.assertGreater(max(poster.getpixel((810,40))),20)
+    self.assertGreater(max(poster.getpixel((1010,70))),20)
+   self.assertEqual(json.loads(path.with_suffix('.quality.json').read_text())['logo_shape'],'circle')
  def image(self):
   y,x=np.indices((1400,1200))
   return np.stack((x%170+30,y%170+30,(x+y)%170+30),axis=2).astype(np.uint8)

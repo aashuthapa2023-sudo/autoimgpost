@@ -18,9 +18,11 @@ def review_source_replacement(image, boxes):
     corner=[min(812,x+round(w*.78*scale)),0,x+round(w*scale),max(268,round(h*.20*scale))]
     evidence=list(boxes)+list(getattr(boxes,'suspected_rows',[]))+list(getattr(boxes,'suspected_marks',[]))
     mapped=[]
+    corner_present=False
     for l,t,r,b in evidence:
         box=[x+math.floor(l*scale),math.floor(t*scale),x+math.ceil(r*scale),math.ceil(b*scale)]
         if l>=w*.75 and b<=h*.20:
+            corner_present=True
             corner=[min(corner[0],box[0]-12),0,max(corner[2],box[2]+12),max(corner[3],box[3]+12)]
         elif t>=h*.50:
             panel_top=min(panel_top,box[1]-18)
@@ -35,7 +37,8 @@ def review_source_replacement(image, boxes):
         raise ValueError('Source graphics are not completely covered')
     return {'source_image_sha256':hashlib.sha256(image.tobytes()).hexdigest(),
             'source_overlay_bounds':mapped,'replacement_bounds':covers,
-            'panel_top':panel_top,'logo_bounds':logo,'scale':scale,'photo_x':x}
+            'panel_top':panel_top,'logo_bounds':logo,'scale':scale,'photo_x':x,
+            'corner_present':corner_present}
 
 
 def replacement_payload(caption, **options):
@@ -116,8 +119,16 @@ def render_source_replacement(image,review,payload,output_path,logo_path,highlig
     photo=photo.resize((round(photo.width*review['scale']),round(photo.height*review['scale'])),Image.Resampling.LANCZOS)
     canvas.paste(photo,(review['photo_x'],0))
     draw=ImageDraw.Draw(canvas)
-    for bounds in review['replacement_bounds']:
-        draw.rectangle(bounds,fill='black')
+    for index,bounds in enumerate(review['replacement_bounds']):
+        if index==0:
+            if review.get('corner_present',True):
+                # Circumscribe the entire reviewed source seal with an opaque
+                # circle, so all its graphics stay covered without a square box.
+                l,t,r,b=bounds;cx=(l+r)/2;cy=(t+b)/2
+                radius=math.hypot(r-l,b-t)/2+2
+                draw.ellipse((cx-radius,cy-radius,cx+radius,cy+radius),fill='black')
+        else:
+            draw.rectangle(bounds,fill='black')
     logo=Image.open(asset).convert('RGB').resize((192,192),Image.Resampling.LANCZOS)
     logo_mask=Image.new('L',(192,192),0)
     ImageDraw.Draw(logo_mask).ellipse((6,6,186,186),fill=255)
@@ -153,7 +164,7 @@ def render_source_replacement(image,review,payload,output_path,logo_path,highlig
               'image_sha256':hashlib.sha256(output.read_bytes()).hexdigest(),
               'caption_sha256':hashlib.sha256(payload['rewritten_caption'].encode('utf-8')).hexdigest(),
               'size':[1080,1350],'font_size':size,'safe_margin':64,'text_bounds':text_bounds,
-              'panel_bounds':[0,top,1080,1350],'logo_bounds':review['logo_bounds'],
+              'panel_bounds':[0,top,1080,1350],'logo_bounds':review['logo_bounds'],'logo_shape':'circle',
               'source_overlay_bounds':review['source_overlay_bounds'],'replacement_bounds':review['replacement_bounds'],
               'headline':payload['headline'],'style_id':'oceans_secret_replacement'}
     output.with_suffix('.quality.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
