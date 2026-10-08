@@ -494,6 +494,30 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
         ident = extract_identifier(target)
         url = f"https://www.facebook.com/{ident}"
 
+    def public_route_fallback():
+        # Facebook can serve a login shell for one route while its public
+        # posts route still contains exact same-page caption/photo stories.
+        # Do not transform direct story links into unrelated page feeds.
+        from urllib.parse import urlsplit
+        parsed=urlsplit(url)
+        path=parsed.path.strip('/')
+        if not path or '/' in path or path=='profile.php':
+            return []
+        for alternate in (f'https://www.facebook.com/{path}/posts/',
+                          f'https://www.facebook.com/{path}?sk=posts'):
+            try:
+                response=requests.get(alternate,headers=FB_BOT_HEADERS,timeout=20)
+                if response.status_code!=200 or 'facebook.com/login' in response.url.lower():
+                    continue
+                scripts=re.findall(r'<script\b(?=[^>]*\btype=["\']application/json["\'])[^>]*>(.*?)</script>',response.text,re.DOTALL)
+                recovered=_extract_facebook_story_posts(scripts,processed_ids,limit,response.text,url)
+                if recovered:
+                    print(f' [FB INGEST] Recovered {len(recovered)} verified source pairs from the public posts route')
+                    return recovered
+            except requests.RequestException:
+                continue
+        return []
+
     try:
         res = requests.get(url, headers=FB_BOT_HEADERS, timeout=20)
     except Exception as e:
@@ -502,7 +526,7 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
 
     if res.status_code != 200 or "facebook.com/login" in res.url.lower():
         print(f" [FB INGEST] URL {url} redirected to login or returned {res.status_code}. Engaging Playwright mobile bypass...")
-        pw_posts = fetch_facebook_mobile_playwright(page_url_or_slug, processed_ids=processed_ids, limit=limit)
+        pw_posts = public_route_fallback() or fetch_facebook_mobile_playwright(page_url_or_slug, processed_ids=processed_ids, limit=limit)
         if pw_posts:
             return pw_posts
         return []
@@ -513,7 +537,7 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
     posts = _extract_facebook_story_posts(scripts, processed_ids, limit, html, expected_source)
     if not posts:
         print(f" [FB INGEST] Standard SSR yielded 0 posts for {url}. Engaging Playwright mobile bypass...")
-        return fetch_facebook_mobile_playwright(page_url_or_slug, processed_ids=processed_ids, limit=limit)
+        return public_route_fallback() or fetch_facebook_mobile_playwright(page_url_or_slug, processed_ids=processed_ids, limit=limit)
     return posts
 
 

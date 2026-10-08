@@ -10,6 +10,21 @@ from unittest.mock import Mock, patch
 from modules import ingestion, publisher
 
 class DiscoveryTests(unittest.TestCase):
+    def test_login_shell_recovers_verified_public_posts_route(self):
+        story={'post_id':'123','creation_time':int(time.time()),'message':{'text':'An Army veteran receives an award'},'attachments':[{'media':{'id':'456','image':{'uri':'https://cdn.example/photo.jpg'}}}]}
+        html='<script type="application/json">'+json.dumps({'story':story})+'</script>'
+        responses=[SimpleNamespace(status_code=200,url='https://www.facebook.com/login/',text=''),SimpleNamespace(status_code=200,url='https://www.facebook.com/source/posts/',text=html)]
+        with patch.object(ingestion.requests,'get',side_effect=responses) as fetch,patch.object(ingestion,'fetch_facebook_mobile_playwright') as browser:
+            posts=ingestion.fetch_facebook_public_posts('source')
+        self.assertEqual(posts[0]['post_id'],'123')
+        self.assertEqual(fetch.call_args_list[1].args[0],'https://www.facebook.com/source/posts/')
+        browser.assert_not_called()
+
+    def test_direct_story_never_falls_back_to_page_feed(self):
+        response=SimpleNamespace(status_code=200,url='https://www.facebook.com/login/',text='')
+        with patch.object(ingestion.requests,'get',return_value=response) as fetch,patch.object(ingestion,'fetch_facebook_mobile_playwright',return_value=[]):
+            self.assertEqual(ingestion.fetch_facebook_public_posts('https://www.facebook.com/source/posts/123'),[])
+        self.assertEqual(fetch.call_count,1)
     def test_embedded_story_is_scanned_and_cdn_image_preserved(self):
         story = {'post_id': '123', 'creation_time': int(time.time()),
                  'message': {'text': 'A real source story caption'},
