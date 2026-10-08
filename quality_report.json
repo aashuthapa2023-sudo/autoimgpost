@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-08T11:05:04.532681+00:00",
+  "updated_at": "2026-10-08T12:15:42.947595+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -2223,6 +2223,24 @@
       "checked_at": "2026-10-08T11:05:04.532681+00:00",
       "policy_signature": "b1ae2397ff9ba878",
       "retry_after": 1791500704.532698
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1119252317127896",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline is clipped at a source edge",
+      "checked_at": "2026-10-08T12:15:29.646184+00:00",
+      "policy_signature": "9e91a74c5a366f88",
+      "retry_after": 1791504929.6462045
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1469743595026214",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-08T12:15:42.947595+00:00",
+      "policy_signature": "78d4c76a8787cdd4",
+      "retry_after": 1791504942.947603
     }
   ]
 }
