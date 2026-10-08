@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-07T23:05:18.223791+00:00",
+  "updated_at": "2026-10-08T00:34:18.073081+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -1361,24 +1361,6 @@
       "retry_after": 1791414338.5516386
     },
     {
-      "channel_id": "oceans_secret",
-      "post_id": "122119269303320544",
-      "stage": "content_or_layout",
-      "reason": "Original card headline is incomplete or not supported by its caption",
-      "checked_at": "2026-10-07T11:06:01.004596+00:00",
-      "policy_signature": "3117fc7af1eceb39",
-      "retry_after": 1791414361.004611
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122119209861320544",
-      "stage": "content_or_layout",
-      "reason": "Original card headline is incomplete or not supported by its caption",
-      "checked_at": "2026-10-07T11:06:16.908910+00:00",
-      "policy_signature": "3117fc7af1eceb39",
-      "retry_after": 1791414376.9089255
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1537129241772649",
       "stage": "content_or_layout",
@@ -1989,6 +1971,33 @@
       "checked_at": "2026-10-07T23:05:18.223791+00:00",
       "policy_signature": "b1ae2397ff9ba878",
       "retry_after": 1791457518.2238078
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1469335818400325",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-08T00:33:45.706350+00:00",
+      "policy_signature": "78d4c76a8787cdd4",
+      "retry_after": 1791462825.7063692
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122119269303320544",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-10-08T00:34:09.992757+00:00",
+      "policy_signature": "ed4eb4e94d9c9c35",
+      "retry_after": 1791462849.9927716
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122119209861320544",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-10-08T00:34:18.073081+00:00",
+      "policy_signature": "ed4eb4e94d9c9c35",
+      "retry_after": 1791462858.0730977
     }
   ]
 }
