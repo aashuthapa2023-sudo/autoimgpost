@@ -31,6 +31,8 @@ def review_source_replacement(image, boxes):
         mapped.append(box)
     if panel_top<675 or corner[0]<750 or corner[3]>310:
         raise ValueError('Source graphics need too much of the subject covered; choose another image')
+    if corner_present:
+        raise ValueError('Source corner seal needs an opaque cover; choose a clean photo for transparent destination branding')
     corner=[max(0,corner[0]),0,min(1080,corner[2]),corner[3]]
     covers=[corner,[0,panel_top,1080,1350]]
     if any(not any(a<=l and c>=r and t0<=t and d>=b for a,t0,c,d in covers) for l,t,r,b in mapped):
@@ -120,19 +122,12 @@ def render_source_replacement(image,review,payload,output_path,logo_path,highlig
     canvas.paste(photo,(review['photo_x'],0))
     draw=ImageDraw.Draw(canvas)
     for index,bounds in enumerate(review['replacement_bounds']):
-        if index==0:
-            if review.get('corner_present',True):
-                # Circumscribe the entire reviewed source seal with an opaque
-                # circle, so all its graphics stay covered without a square box.
-                l,t,r,b=bounds;cx=(l+r)/2;cy=(t+b)/2
-                radius=math.hypot(r-l,b-t)/2+2
-                draw.ellipse((cx-radius,cy-radius,cx+radius,cy+radius),fill='black')
-        else:
+        if index!=0:
             draw.rectangle(bounds,fill='black')
-    logo=Image.open(asset).convert('RGB').resize((192,192),Image.Resampling.LANCZOS)
-    logo_mask=Image.new('L',(192,192),0)
-    ImageDraw.Draw(logo_mask).ellipse((6,6,186,186),fill=255)
-    canvas.paste(logo,(824,64),logo_mask)
+    if review.get('corner_present') or any(b<=270 for l,t,r,b in review['source_overlay_bounds']):
+        raise ValueError('Source corner branding cannot remain behind the transparent PNG')
+    logo=Image.open(asset).convert('RGBA').resize((192,192),Image.Resampling.LANCZOS)
+    canvas.paste(logo,(824,64),logo.getchannel('A'))
     accent=hex_to_rgb(highlight_hex)
     top=review['panel_top']
     draw.rectangle((0,top,1079,top+3),fill=accent)
