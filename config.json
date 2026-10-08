@@ -35,7 +35,8 @@
         "max_lines": 3,
         "safe_margin": 64,
         "text_position": "bottom",
-        "logo_position": "with-text"
+        "logo_position": "with-text",
+        "photo_fit": "face-safe-cover"
       },
       "source_layouts": {
         "netflixdaily": {
@@ -56,9 +57,13 @@
             "RUN",
             "CONFRONT",
             "WAIT"
-          ]
+          ],
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.24,
+          "min_retained_fraction": 0.35
         }
-      }
+      },
+      "facebook_sources_only": true
     },
     {
       "channel_id": "Music Store",
@@ -93,7 +98,8 @@
         "max_lines": 3,
         "safe_margin": 64,
         "text_position": "bottom",
-        "logo_position": "with-text"
+        "logo_position": "with-text",
+        "photo_fit": "face-safe-cover"
       },
       "source_layouts": {
         "billboard": {
@@ -115,13 +121,21 @@
           "credit_pattern": "billboard|latin music|week beach|miami",
           "header_fraction": 0.17,
           "footer_fraction": 0.72,
-          "scene_labels": []
+          "scene_labels": [],
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.24,
+          "min_retained_fraction": 0.35,
+          "header_crop_padding": 2
         },
         "rollingstone": {
           "credit_pattern": "rolling\\s*stone",
-          "scene_labels": []
+          "scene_labels": [],
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.24,
+          "min_retained_fraction": 0.35
         }
-      }
+      },
+      "facebook_sources_only": true
     },
     {
       "channel_id": "Anisha",

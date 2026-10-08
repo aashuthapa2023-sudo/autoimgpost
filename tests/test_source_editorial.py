@@ -6,6 +6,19 @@ from modules.source_editorial import extract_editorial_photo,source_profile
 from modules.source_replacement import replacement_payload
 
 class EditorialSourceTests(unittest.TestCase):
+ def test_reviewed_zoom_uses_caption_subject_when_news_badge_is_missing(self):
+  boxes=self.boxes([((40,740,760,820),'ANIMALS starring Ben Affleck')])
+  profile=dict(self.profile,allow_edge_zoom=True)
+  photo,top,bottom=extract_editorial_photo(self.image,boxes,profile,'ANIMALS releases on Netflix')
+  self.assertEqual(bottom,728);np.testing.assert_array_equal(photo,self.image[:728])
+  with self.assertRaisesRegex(ValueError,'verified publisher anchor'):
+   extract_editorial_photo(self.image,boxes,profile,'A completely different story')
+ def test_release_hook_keeps_title_season_platform_and_caption_date(self):
+  payload=replacement_payload('THE EMPRESS Season 3 officially releases on Netflix on November 12, bringing Elisabeth and Franz back for the final chapter.',language='en',content_topic='entertainment')
+  self.assertEqual(payload['headline'],'THE EMPRESS Season 3 officially releases on Netflix on November 12')
+ def test_cover_hook_keeps_complete_intro_and_removes_emoji(self):
+  payload=replacement_payload("Pitbull is music's global party starter 🌎🎉 How Mr. Worldwide beat the odds, reset his career and keeps winning new fans.",language='en',content_topic='music')
+  self.assertEqual(payload['headline'],"Pitbull is music's global party starter")
  def test_petry_hook_keeps_named_person_sacrifice_and_saved_rangers(self):
   caption='An enemy grenade landed next to three Army Rangers. Leroy Petry grabbed it with his bare hand and threw it back. He lost his hand and saved his fellow Army Rangers.'
   payload=replacement_payload(caption,language='en',content_topic='military')

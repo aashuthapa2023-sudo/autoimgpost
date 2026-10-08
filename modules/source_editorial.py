@@ -27,6 +27,8 @@ def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
     h,w=image.shape[:2]
     labels=getattr(boxes,'text_labels',{});confidence=getattr(boxes,'text_confidences',{})
     credits=re.compile(profile['credit_pattern'],re.I)
+    zoom=bool(profile.get('allow_edge_zoom'))
+    header_limit=float(profile.get('header_max_fraction',.20))
     allowed={_normal(text) for text in profile.get('scene_labels',[])}
     scene=[];corners=[];footer=[];headers=[]
     for raw in boxes:
@@ -37,9 +39,9 @@ def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
                 corners.append(box);continue
         configured_footer = profile.get('footer_start_fraction')
         if t>=h*.55 and (is_credit or r-l>=w*.25 or
-                (configured_footer is not None and t>=h*float(configured_footer))):
+                (configured_footer is not None and t>=h*float(configured_footer)) or zoom):
             footer.append(box);continue
-        if profile.get('header_fraction') and b<=h*.20:
+        if (profile.get('header_fraction') or zoom) and b<=h*header_limit:
             headers.append(box);continue
         if (not is_credit and _normal(text) in allowed and confidence.get(box,0)>=.45
                 and t<h*.52 and r-l<w*.50 and b-t<h*.09):
@@ -50,7 +52,7 @@ def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
         l,t,r,b=box=tuple(raw)
         if t>=h*.55:
             footer.append(box);continue
-        if profile.get('header_fraction') and b<=h*.20:
+        if (profile.get('header_fraction') or zoom) and b<=h*header_limit:
             headers.append(box);continue
         if any(a<=l and c>=r and y<=t and d>=b for a,y,c,d in corners):continue
         # A detector row can extend beyond individual recognized sign words.
@@ -58,14 +60,25 @@ def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
         if any(abs(t-y)<h*.02 and abs(b-d)<h*.025 and r-l<=w*.50 for a,y,c,d in scene):continue
         raise ValueError('Unrecognized source typography overlaps the subject')
     top=round(h*profile.get('header_fraction',0)) if headers else 0
+    if headers and zoom:
+        padding=max(2,int(profile.get('header_crop_padding',max(12,round(h*.012)))))
+        top=max(top,max(box[3] for box in headers)+padding)
     bottom=min((box[1]-max(12,round(h*.012)) for box in footer),default=h)
     if footer and profile.get('footer_fraction'):
         bottom=min(bottom,round(h*profile['footer_fraction']))
-    if bottom-top<max(450,h*.42) or (bottom-top)*w<350000:
+    if bottom-top<max(450,h*float(profile.get('min_retained_fraction',.42))) or (bottom-top)*w<350000:
         raise ValueError('Source graphics leave too little usable photograph')
-    if (top or bottom<h or corners) and not any(
+    verified_credit=any(
             credits.search(str(labels.get(tuple(box),''))) and confidence.get(tuple(box),0)>=.55
-            for box in boxes):
+            for box in boxes)
+    # A repeated named subject in the paired caption can verify a publisher
+    # frame when a stylized masthead or NEWS badge is unreadable. This is
+    # enabled only for reviewed source templates, not arbitrary photos.
+    caption_words={word.lower() for word in re.findall(r'\b\w{5,}\b',caption)}-{'officially','releases','season','november','october','music','awards','news','which','their','there'}
+    named_anchor=zoom and any(confidence.get(tuple(box),0)>=.55 and
+        caption_words.intersection(word.lower() for word in re.findall(r'\b\w{5,}\b',str(labels.get(tuple(box),''))))
+        for box in boxes if tuple(box) in footer or tuple(box) in headers)
+    if (top or bottom<h or corners) and not (verified_credit or named_anchor):
         raise ValueError('Source frame has no verified publisher anchor')
     # Detect faces in the full source; no recognized face may be cut by either
     # edge. The retained photo is a direct copy, with no inpainting or blur.

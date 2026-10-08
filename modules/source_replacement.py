@@ -56,6 +56,13 @@ def replacement_payload(caption, **options):
         # These cuts remove explicit editorial commentary or promotional framing,
         # preserving the entire named event/outcome clause, not a word limit prefix.
         for sentence in tuple(candidates):
+            if ' How ' in sentence:
+                introduction=re.sub(r"[^\w\s'’.,:!-]",' ',sentence.split(' How ',1)[0]).strip()
+                if headline_is_usable(introduction,language):candidates.insert(0,introduction)
+            # Release facts stay complete before a trailing plot synopsis.
+            for separator in (', bringing ', ', starring ', ', with all '):
+                if separator in sentence and re.search(r'\b(?:releases|releasing|back|returns)\b.*\bNetflix\b',sentence.split(separator)[0],re.I):
+                    candidates.insert(0,sentence.split(separator)[0])
             if ', while her old message ' in sentence:
                 clause=sentence.split(', while her old message ',1)[0]
                 clause=re.sub(r'^More than a decade after making that statement,\s*','',clause,flags=re.I)

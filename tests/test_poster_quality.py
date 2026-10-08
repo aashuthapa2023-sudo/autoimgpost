@@ -12,6 +12,18 @@ from modules.story_dedup import is_repeated_story
 
 
 class PublishApprovalTests(unittest.TestCase):
+    def test_cover_zoom_falls_back_when_it_would_cut_a_face(self):
+        photo=np.full((800,1600,3),240,dtype=np.uint8)
+        with patch('modules.poster_engine.cv2.CascadeClassifier') as detector:
+            detector.return_value.detectMultiScale.return_value=[(5,100,100,100)]
+            render_final_poster(photo,[[{'text':'A singer performs at a new concert','type':'white'}]],dest_page_name='Music Store',output_path=str(self.image),caption='A singer performs at a new concert.',source_checked=True,photo_fit='face-safe-cover')
+        with Image.open(self.image) as poster:self.assertLess(max(poster.getpixel((540,100))),100)
+    def test_cover_zoom_fills_photo_area_when_faces_remain_inside(self):
+        photo=np.full((800,1600,3),240,dtype=np.uint8)
+        with patch('modules.poster_engine.cv2.CascadeClassifier') as detector:
+            detector.return_value.detectMultiScale.return_value=[(400,100,100,100)]
+            render_final_poster(photo,[[{'text':'A singer performs at a new concert','type':'white'}]],dest_page_name='Music Store',output_path=str(self.image),caption='A singer performs at a new concert.',source_checked=True,photo_fit='face-safe-cover')
+        with Image.open(self.image) as poster:self.assertGreater(min(poster.getpixel((540,100))),200)
     def setUp(self):
         self.directory=tempfile.TemporaryDirectory()
         self.addCleanup(self.directory.cleanup)

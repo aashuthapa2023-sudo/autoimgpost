@@ -404,11 +404,27 @@ def render_final_poster(base_img, overlay_lines, highlight_hex='#FFC83B', badge_
     canvas=Image.new('RGB',(1080,1350),panel_color)
     photo=Image.fromarray(cv2.cvtColor(base_img,cv2.COLOR_BGR2RGB))
     scale=min(1080/photo.width,photo_h/photo.height)
+    if kwargs.get('photo_fit')=='face-safe-cover':
+        cover_scale=max(1080/photo.width,photo_h/photo.height)
+        retained=(1080/cover_scale)*(photo_h/cover_scale)/(photo.width*photo.height)
+        if cover_scale<=1.75 and retained>=.50:
+            left=(photo.width-1080/cover_scale)/2;top=(photo.height-photo_h/cover_scale)/2
+            right=photo.width-left;bottom=photo.height-top
+            detector=cv2.CascadeClassifier(cv2.data.haarcascades+'haarcascade_frontalface_default.xml')
+            scan_scale=min(1,900/photo.width)
+            gray=cv2.resize(cv2.cvtColor(base_img,cv2.COLOR_BGR2GRAY),(round(photo.width*scan_scale),round(photo.height*scan_scale)))
+            faces=detector.detectMultiScale(gray,scaleFactor=1.15,minNeighbors=5,minSize=(35,35))
+            if all((fx/scan_scale>=left and fy/scan_scale>=top and
+                    (fx+fw)/scan_scale<=right and (fy+fh)/scan_scale<=bottom)
+                   for fx,fy,fw,fh in faces):
+                scale=cover_scale
     if scale>1.75:
         raise ValueError('Retained photograph would need excessive enlargement')
     photo=photo.resize((round(photo.width*scale),round(photo.height*scale)),Image.Resampling.LANCZOS)
     # Solid matte preserves the whole photograph without inventing blurred duplicates.
-    canvas.paste(photo,((1080-photo.width)//2,photo_top+(photo_h-photo.height)//2))
+    photo_layer=Image.new('RGB',(1080,photo_h),panel_color)
+    photo_layer.paste(photo,((1080-photo.width)//2,(photo_h-photo.height)//2))
+    canvas.paste(photo_layer,(0,photo_top))
     draw=ImageDraw.Draw(canvas)
     rule_y=panel_top if position=='bottom' else panel_h-4
     draw.rectangle((0,rule_y,1079,rule_y+3),fill=accent)

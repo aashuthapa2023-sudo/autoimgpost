@@ -364,7 +364,7 @@ def run_pipeline(mode="run", target_channel="all"):
         # 4. WEB NEWS FALLBACK — fetch from internet when Facebook sources are dry
         web_posts = []
         is_nepali_ch = (ch.get("language") == "ne" or channel_id == "nepal_speaks")
-        web_needed = (len(unposted_t1) == 0 and not is_nepali_ch and channel_id not in ('oceans_secret', 'Music Store') and ch.get('content_topic') != 'ocean' and ch.get('allow_web_fallback',False))  # Strictly disable English web fallback for Nepali channels!
+        web_needed = (len(unposted_t1) == 0 and not is_nepali_ch and channel_id not in ('oceans_secret', 'Music Store', 'daily_netflix') and not ch.get('facebook_sources_only',False) and ch.get('content_topic') != 'ocean' and ch.get('allow_web_fallback',False))
         if web_needed and WEB_SCRAPER_AVAILABLE:
             category = get_channel_category(channel_name)
             print(f" [WEB FALLBACK] No fresh FB posts available. Fetching {category.upper()} news from internet...")

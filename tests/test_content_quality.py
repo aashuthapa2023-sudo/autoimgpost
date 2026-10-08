@@ -2,6 +2,14 @@ import unittest
 from modules.content_quality import channel_accepts_post
 
 class TopicTests(unittest.TestCase):
+    def test_music_and_netflix_use_facebook_sources_only(self):
+        import json
+        from pathlib import Path
+        config=json.loads(Path('config.json').read_text(encoding='utf-8'))
+        for channel in config['channels']:
+            if channel['channel_id'] in ('Music Store','daily_netflix'):
+                self.assertTrue(channel['facebook_sources_only'])
+                self.assertFalse(channel['allow_web_fallback'])
     def test_military_page_requires_a_military_subject(self):
         channel={'content_topic':'military'}
         for caption in ['Leroy Petry saved fellow Army Rangers', 'The SR-71 Blackbird has moved', 'Taiwan receives two F-16V fighter jets']:
