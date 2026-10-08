@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-08T17:44:02.493668+00:00",
+  "updated_at": "2026-10-08T19:07:14.824634+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -1919,15 +1919,6 @@
       "retry_after": 1791484486.8000078
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1118640433855751",
-      "stage": "content_or_layout",
-      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
-      "checked_at": "2026-10-08T07:33:57.409633+00:00",
-      "policy_signature": "9e91a74c5a366f88",
-      "retry_after": 1791488037.4096508
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1537927641692809",
       "stage": "content_or_layout",
@@ -1938,48 +1929,12 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1118214090565052",
-      "stage": "content_or_layout",
-      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
-      "checked_at": "2026-10-08T08:33:47.772174+00:00",
-      "policy_signature": "9e91a74c5a366f88",
-      "retry_after": 1791491627.772192
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1117938600592601",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-08T08:34:03.926852+00:00",
-      "policy_signature": "9e91a74c5a366f88",
-      "retry_after": 1791491643.926868
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1117895587263569",
       "stage": "content_or_layout",
       "reason": "Source frame has no verified publisher anchor",
       "checked_at": "2026-10-08T08:34:19.383008+00:00",
       "policy_signature": "9e91a74c5a366f88",
       "retry_after": 1791491659.3830233
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1117867297266398",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-10-08T08:34:34.791354+00:00",
-      "policy_signature": "9e91a74c5a366f88",
-      "retry_after": 1791491674.7913709
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1117856750600786",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-10-08T08:34:50.781921+00:00",
-      "policy_signature": "9e91a74c5a366f88",
-      "retry_after": 1791491690.7819364
     },
     {
       "channel_id": "daily_netflix",
@@ -2115,15 +2070,6 @@
       "checked_at": "2026-10-08T10:34:05.505595+00:00",
       "policy_signature": "b83605506234d85a",
       "retry_after": 1791498845.50561
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1119214847131643",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-10-08T11:04:19.545523+00:00",
-      "policy_signature": "9e91a74c5a366f88",
-      "retry_after": 1791500659.5455406
     },
     {
       "channel_id": "nepal_speaks",
@@ -2412,6 +2358,87 @@
       "checked_at": "2026-10-08T17:44:02.493668+00:00",
       "policy_signature": "4a3303473d6c6146",
       "retry_after": 1791524642.4936845
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1119214847131643",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-10-08T19:05:13.643582+00:00",
+      "policy_signature": "0542191dde71eb6f",
+      "retry_after": 1791529513.6435986
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1118640433855751",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-10-08T19:05:33.518309+00:00",
+      "policy_signature": "0542191dde71eb6f",
+      "retry_after": 1791529533.5183265
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1118214090565052",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-10-08T19:05:44.110789+00:00",
+      "policy_signature": "0542191dde71eb6f",
+      "retry_after": 1791529544.1108088
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1117938600592601",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-08T19:06:00.143064+00:00",
+      "policy_signature": "0542191dde71eb6f",
+      "retry_after": 1791529560.1430788
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1117867297266398",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-08T19:06:16.241569+00:00",
+      "policy_signature": "0542191dde71eb6f",
+      "retry_after": 1791529576.2415874
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1117856750600786",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-08T19:06:32.293569+00:00",
+      "policy_signature": "0542191dde71eb6f",
+      "retry_after": 1791529592.2935858
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1470044528329454",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-08T19:06:46.967870+00:00",
+      "policy_signature": "4a3303473d6c6146",
+      "retry_after": 1791529606.96788
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1470032148330692",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-08T19:06:54.225412+00:00",
+      "policy_signature": "4a3303473d6c6146",
+      "retry_after": 1791529614.2254283
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1538255274993379",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-08T19:07:14.824634+00:00",
+      "policy_signature": "b1ae2397ff9ba878",
+      "retry_after": 1791529634.8246493
     }
   ]
 }
