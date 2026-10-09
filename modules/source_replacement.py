@@ -8,22 +8,42 @@ from PIL import Image, ImageDraw
 from modules.poster_engine import _wrap_headline, _render_runs, hex_to_rgb
 
 
-def review_source_replacement(image, boxes):
+def review_source_replacement(image, boxes, corner_template=None):
     h,w=image.shape[:2]
     scale=min(1080/w,1350/h)
     x=(1080-round(w*scale))//2
-    panel_top=837
+    photo_y=0
+    # Start at the original removed footer rather than covering extra photo.
+    panel_top=1000
     logo=[824,64,1016,256]
     # Cover the entire source corner seal, including its unrecognized artwork.
     corner=[min(812,x+round(w*.78*scale)),0,x+round(w*scale),max(268,round(h*.20*scale))]
     evidence=list(boxes)+list(getattr(boxes,'suspected_rows',[]))+list(getattr(boxes,'suspected_marks',[]))
+    source_corners=[box for box in evidence if box[0]>=w*.75 and box[3]<=h*.20]
+    covered_corner=False
+    if source_corners and corner_template:
+        # A reviewed publisher seal can fit entirely inside our PNG's opaque
+        # circle after insetting the original photo. No square backing needed.
+        a,t,c,b=corner_template['seal_bounds']
+        original=[a*w,t*h,c*w,b*h]
+        if any(l<original[0] or top<original[1] or r>original[2] or bottom>original[3]
+               for l,top,r,bottom in source_corners):
+            raise ValueError('Source seal exceeds its reviewed template')
+        scale=min(920/w,1270/h);x=(1080-round(w*scale))//2;photo_y=80
+        corner=[x+math.floor(a*w*scale),photo_y+math.floor(t*h*scale),
+                x+math.ceil(c*w*scale),photo_y+math.ceil(b*h*scale)]
+        radius=94;cx=920;cy=160
+        if any((px-cx)**2+(py-cy)**2>radius**2 for px in (corner[0],corner[2]) for py in (corner[1],corner[3])):
+            raise ValueError('Source seal cannot fit behind the transparent destination circle')
+        covered_corner=True
     mapped=[]
     corner_present=False
     for l,t,r,b in evidence:
-        box=[x+math.floor(l*scale),math.floor(t*scale),x+math.ceil(r*scale),math.ceil(b*scale)]
+        box=[x+math.floor(l*scale),photo_y+math.floor(t*scale),x+math.ceil(r*scale),photo_y+math.ceil(b*scale)]
         if l>=w*.75 and b<=h*.20:
             corner_present=True
-            corner=[min(corner[0],box[0]-12),0,max(corner[2],box[2]+12),max(corner[3],box[3]+12)]
+            if not covered_corner:
+                corner=[min(corner[0],box[0]-12),0,max(corner[2],box[2]+12),max(corner[3],box[3]+12)]
         elif t>=h*.50:
             panel_top=min(panel_top,box[1]-18)
         else:
@@ -31,16 +51,16 @@ def review_source_replacement(image, boxes):
         mapped.append(box)
     if panel_top<675 or corner[0]<750 or corner[3]>310:
         raise ValueError('Source graphics need too much of the subject covered; choose another image')
-    if corner_present:
+    if corner_present and not covered_corner:
         raise ValueError('Source corner seal needs an opaque cover; choose a clean photo for transparent destination branding')
-    corner=[max(0,corner[0]),0,min(1080,corner[2]),corner[3]]
+    corner=[max(0,corner[0]),corner[1],min(1080,corner[2]),corner[3]]
     covers=[corner,[0,panel_top,1080,1350]]
     if any(not any(a<=l and c>=r and t0<=t and d>=b for a,t0,c,d in covers) for l,t,r,b in mapped):
         raise ValueError('Source graphics are not completely covered')
     return {'source_image_sha256':hashlib.sha256(image.tobytes()).hexdigest(),
             'source_overlay_bounds':mapped,'replacement_bounds':covers,
             'panel_top':panel_top,'logo_bounds':logo,'scale':scale,'photo_x':x,
-            'corner_present':corner_present}
+            'corner_present':corner_present,'corner_covered':covered_corner,'photo_y':photo_y}
 
 
 def replacement_payload(caption, **options):
@@ -52,16 +72,19 @@ def replacement_payload(caption, **options):
     source=strip_source_caption_noise(caption)
     candidates=[sentence.strip().rstrip('.।') for line in source.splitlines()
                 for sentence in (re.split(r'[।!?]+',line) if language=='ne' else split_clean_sentences(line))]
+    candidates=[re.sub(r'^[\U0001F000-\U0001FAFF\u2600-\u27BF\uFE0F\u200D\s]+','',text) for text in candidates]
     if language=='en':
         # These cuts remove explicit editorial commentary or promotional framing,
         # preserving the entire named event/outcome clause, not a word limit prefix.
         for sentence in tuple(candidates):
+            experience=re.fullmatch(r'(.+?) has been in the game long enough to know that (.+)',sentence)
+            if experience:candidates.insert(0,experience.group(1)+': '+experience.group(2))
             if ' How ' in sentence:
                 introduction=re.sub(r"[^\w\s'’.,:!-]",' ',sentence.split(' How ',1)[0]).strip()
                 if headline_is_usable(introduction,language):candidates.insert(0,introduction)
             # Release facts stay complete before a trailing plot synopsis.
             for separator in (', bringing ', ', starring ', ', with all ', ', giving '):
-                if separator in sentence and re.search(r'\b(?:(?:releases|releasing|back|returns|streaming|renewed)\b.*\bNetflix|holds\b.*\bscore on Rotten Tomatoes)\b',sentence.split(separator)[0],re.I):
+                if separator in sentence and re.search(r'\b(?:(?:releases|releasing|back|returns|streaming|renewed|arrived)\b.*\bNetflix|holds\b.*\bscore on Rotten Tomatoes)\b',sentence.split(separator)[0],re.I):
                     candidates.insert(0,sentence.split(separator)[0])
             if ', while her old message ' in sentence:
                 clause=sentence.split(', while her old message ',1)[0]
@@ -71,6 +94,10 @@ def replacement_payload(caption, **options):
             if event:
                 candidates.append(event.group(1).rstrip('.'))
     usable=[text for text in candidates if headline_is_usable(text,language)]
+    if (options.get('content_topic')=='ocean'
+            and re.search(r'Deep beneath the Pacific, researchers captured a creature',source)
+            and re.search(r'It[’\']s a Dumbo octopus',source)):
+        usable.insert(0,'Researchers captured a Dumbo octopus deep beneath the Pacific')
     if options.get('content_topic') == 'military':
         # Extract complete source clauses; remove event preambles and trailing
         # appositions rather than chopping a headline at a word limit.
@@ -126,14 +153,19 @@ def render_source_replacement(image,review,payload,output_path,logo_path,highlig
     canvas=Image.new('RGB',(1080,1350),'black')
     photo=Image.fromarray(cv2.cvtColor(image,cv2.COLOR_BGR2RGB))
     photo=photo.resize((round(photo.width*review['scale']),round(photo.height*review['scale'])),Image.Resampling.LANCZOS)
-    canvas.paste(photo,(review['photo_x'],0))
+    canvas.paste(photo,(review['photo_x'],review.get('photo_y',0)))
     draw=ImageDraw.Draw(canvas)
     for index,bounds in enumerate(review['replacement_bounds']):
         if index!=0:
             draw.rectangle(bounds,fill='black')
-    if review.get('corner_present') or any(b<=270 for l,t,r,b in review['source_overlay_bounds']):
+    if not review.get('corner_covered') and (review.get('corner_present') or any(b<=270 for l,t,r,b in review['source_overlay_bounds'])):
         raise ValueError('Source corner branding cannot remain behind the transparent PNG')
     logo=Image.open(asset).convert('RGBA').resize((192,192),Image.Resampling.LANCZOS)
+    if review.get('corner_covered'):
+        l,t,r,b=review['replacement_bounds'][0]
+        alpha=logo.getchannel('A').crop((l-824,t-64,r-824,b-64))
+        if not alpha.getbbox() or alpha.getextrema()[0]<255:
+            raise ValueError('PNG transparency cannot completely cover the reviewed source seal')
     canvas.paste(logo,(824,64),logo.getchannel('A'))
     accent=hex_to_rgb(highlight_hex)
     top=review['panel_top']

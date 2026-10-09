@@ -10,6 +10,20 @@ from unittest.mock import Mock, patch
 from modules import ingestion, publisher
 
 class DiscoveryTests(unittest.TestCase):
+    def test_one_failed_source_does_not_block_other_configured_sources(self):
+        post={'post_id':'123','photo_id':'456','created_time':int(time.time()),'caption':'A singer releases a new album','image_url':'https://cdn.example/photo.jpg'}
+        with patch.object(ingestion,'fetch_facebook_public_posts',side_effect=[ValueError('Source temporarily unavailable'),[post]]):
+            result=ingestion.fetch_source_posts(source_pages=['one','two'],limit=60)
+        self.assertEqual(result[0]['post_id'],'123');self.assertEqual(result[0]['source_page_url'],'two')
+    def test_numeric_profile_recovers_same_source_posts_route(self):
+        story={'post_id':'123','creation_time':int(time.time()),'message':{'text':'A marine discovery'},'attachments':[{'media':{'id':'456','image':{'uri':'https://cdn.example/photo.jpg'}}}]}
+        html='<script type="application/json">'+json.dumps({'story':story})+'</script>'
+        responses=[SimpleNamespace(status_code=200,url='https://www.facebook.com/login/',text=''),SimpleNamespace(status_code=200,url='https://www.facebook.com/profile.php?id=615123&sk=posts',text=html)]
+        with patch.object(ingestion.requests,'get',side_effect=responses) as fetch,patch.object(ingestion,'fetch_facebook_mobile_playwright') as browser:
+            posts=ingestion.fetch_facebook_public_posts('https://www.facebook.com/profile.php?id=615123')
+        self.assertEqual(posts[0]['post_id'],'123')
+        self.assertEqual(fetch.call_args_list[1].args[0],'https://www.facebook.com/profile.php?id=615123&sk=posts')
+        browser.assert_not_called()
     def test_login_shell_recovers_verified_public_posts_route(self):
         story={'post_id':'123','creation_time':int(time.time()),'message':{'text':'An Army veteran receives an award'},'attachments':[{'media':{'id':'456','image':{'uri':'https://cdn.example/photo.jpg'}}}]}
         html='<script type="application/json">'+json.dumps({'story':story})+'</script>'

@@ -120,6 +120,7 @@ jobs:
             quality_report.json
             posters_cache.json
             feed_cache.json
+            source_cache.json
             publication_journal.json
           if-no-files-found: warn
           retention-days: 30

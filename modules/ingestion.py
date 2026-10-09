@@ -498,13 +498,19 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
         # Facebook can serve a login shell for one route while its public
         # posts route still contains exact same-page caption/photo stories.
         # Do not transform direct story links into unrelated page feeds.
-        from urllib.parse import urlsplit
+        from urllib.parse import urlsplit,parse_qs
         parsed=urlsplit(url)
         path=parsed.path.strip('/')
-        if not path or '/' in path or path=='profile.php':
+        if not path or '/' in path:
             return []
-        for alternate in (f'https://www.facebook.com/{path}/posts/',
-                          f'https://www.facebook.com/{path}?sk=posts'):
+        if path=='profile.php':
+            identity=parse_qs(parsed.query).get('id',[''])[0]
+            if not identity.isdigit() or 'story_fbid' in parse_qs(parsed.query):return []
+            alternates=(f'https://www.facebook.com/profile.php?id={identity}&sk=posts',
+                        f'https://www.facebook.com/{identity}/posts/')
+        else:
+            alternates=(f'https://www.facebook.com/{path}/posts/',f'https://www.facebook.com/{path}?sk=posts')
+        for alternate in alternates:
             try:
                 response=requests.get(alternate,headers=FB_BOT_HEADERS,timeout=20)
                 if response.status_code!=200 or 'facebook.com/login' in response.url.lower():
@@ -568,7 +574,11 @@ def fetch_source_posts(source_page_id: str = "", access_token: str = "", process
 
     for target in targets:
         per_source_limit = max(15, limit)
-        fb_posts = fetch_facebook_public_posts(target, processed_ids=list(seen_ids), limit=per_source_limit)
+        try:
+            fb_posts = fetch_facebook_public_posts(target, processed_ids=list(seen_ids), limit=per_source_limit)
+        except (requests.RequestException,ValueError,RuntimeError):
+            print(' [SOURCE FETCH WAIT] One configured Facebook source is unavailable; checking remaining sources')
+            continue
         for p in fb_posts:
             pid = str(p.get("post_id", ""))
             photo_id = str(p.get("photo_id", ""))

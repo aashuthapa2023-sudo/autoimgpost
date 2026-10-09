@@ -9,7 +9,7 @@ import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
-GENERATED_FILES = ('state.json', 'feed_cache.json', 'posters_cache.json', 'quality_report.json')
+GENERATED_FILES = ('state.json', 'feed_cache.json', 'posters_cache.json', 'quality_report.json', 'source_cache.json')
 _MISSING = object()
 
 

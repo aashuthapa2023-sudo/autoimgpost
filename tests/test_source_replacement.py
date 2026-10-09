@@ -8,6 +8,26 @@ from modules.source_replacement import review_source_replacement,render_source_r
 from modules.poster_quality import verify_publishable_poster
 
 class SourceReplacementTests(unittest.TestCase):
+ def test_leading_emoji_does_not_hide_the_main_marine_outcome(self):
+  caption='💔 A beloved bottlenose dolphin named Carl has died at Sendai Uminomori Aquarium in Japan.\nThe aquarium previously shared stories about Carl’s favorite toys.'
+  self.assertIn('Carl has died',replacement_payload(caption,content_topic='ocean')['headline'])
+ def test_reviewed_source_seal_is_covered_by_png_circle_without_square_backing(self):
+  image=self.image();boxes=SourceTextBoxes([(1050,110,1154,164)])
+  review=review_source_replacement(image,boxes,corner_template={'seal_bounds':[.85,.018,.98,.13]})
+  self.assertTrue(review['corner_covered'])
+  with tempfile.TemporaryDirectory() as folder:
+   path=Path(folder)/'poster.jpg'
+   render_source_replacement(image,review,self.payload(),path,logo_path='assets/branding/oceans_secret.png')
+   verify_publishable_poster(path,self.payload()['rewritten_caption'])
+ def test_source_seal_outside_reviewed_template_stays_blocked(self):
+  with self.assertRaisesRegex(ValueError,'exceeds'):
+   review_source_replacement(self.image(),SourceTextBoxes([(950,30,1170,170)]),corner_template={'seal_bounds':[.85,.018,.98,.13]})
+ def test_owned_panel_does_not_cover_photo_above_original_footer(self):
+  review=review_source_replacement(self.image(),SourceTextBoxes([(80,1100,1100,1180)]))
+  self.assertEqual(review['panel_top'],972)
+ def test_octopus_hook_names_the_subject_from_the_exact_source_caption(self):
+  caption='Deep beneath the Pacific, researchers captured a creature that looks almost unreal.\nIt’s a Dumbo octopus — a deep-sea animal named for the ear-like fins on its head.'
+  self.assertEqual(replacement_payload(caption,content_topic='ocean')['headline'],'Researchers captured a Dumbo octopus deep beneath the Pacific')
  def test_original_png_alpha_is_preserved_without_black_backing(self):
   with Image.open('assets/branding/oceans_secret.png') as logo:
    self.assertEqual(logo.mode,'RGBA');self.assertEqual(logo.getpixel((0,0))[3],0)

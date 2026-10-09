@@ -6,6 +6,16 @@ from modules.source_editorial import extract_editorial_photo,source_profile
 from modules.source_replacement import replacement_payload
 
 class EditorialSourceTests(unittest.TestCase):
+ def test_repeated_uniform_labels_are_kept_as_one_photographed_row(self):
+  boxes=self.boxes([((80,250,200,300),'थुनुवा'),((400,250,520,300),'थुनुवा'),((310,720,490,770),'NEWS')])
+  boxes.suspected_rows=[(80,250,520,300)]
+  profile=dict(self.profile,scene_labels=['थुनुवा'],allow_edge_zoom=True,header_max_fraction=.35)
+  photo,top,bottom=extract_editorial_photo(self.image,boxes,profile,'News about an arrest')
+  self.assertEqual(top,0);np.testing.assert_array_equal(photo[250:300],self.image[250:300])
+ def test_stage_hook_preserves_negation_without_guessing_a_fall(self):
+  source='Celine Dion has been in the game long enough to know that a little stage mishap isn’t going to stop the show.'
+  payload=replacement_payload(source,language='en',content_topic='music')
+  self.assertIn("isn't going to stop the show",payload['headline']);self.assertNotIn('falls',payload['headline'].lower())
  def test_rating_hook_keeps_title_score_and_rating_source(self):
   caption='Ben Affleck’s ANIMALS currently holds a 42% critics score on Rotten Tomatoes, giving the new Netflix thriller a Rotten rating shortly after its release.'
   payload=replacement_payload(caption,language='en',content_topic='entertainment')

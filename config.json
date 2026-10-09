@@ -118,7 +118,7 @@
       "max_candidates_per_run": 6,
       "source_cleanup_profiles": {
         "billboard": {
-          "credit_pattern": "billboard|latin music|week beach|miami",
+          "credit_pattern": "billboard|latin music|week beach|miami|^b$",
           "header_fraction": 0.17,
           "footer_fraction": 0.72,
           "scene_labels": [],
@@ -227,7 +227,9 @@
       "source_cleanup_profiles": {
         "whatsonnetflix": {
           "credit_pattern": "news|what.?s\\s*on\\s*netflix",
-          "scene_labels": []
+          "scene_labels": [],
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.24
         }
       }
     },
@@ -284,8 +286,11 @@
             "परम्पराको",
             "१५",
             "H1B Visa Application",
-            "HIB Visa Application"
-          ]
+            "HIB Visa Application",
+            "थुनुवा"
+          ],
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.35
         },
         "smartmedianp": {
           "credit_pattern": "smart|media",
@@ -348,7 +353,17 @@
         "logo_path": "assets/branding/oceans_secret.png"
       },
       "max_candidates_per_run": 6,
-      "preserve_readable_source_cards": false
+      "preserve_readable_source_cards": false,
+      "source_branding_templates": {
+        "livingoceans000": {
+          "seal_bounds": [
+            0.85,
+            0.018,
+            0.98,
+            0.13
+          ]
+        }
+      }
     },
     {
       "channel_id": "US Army Fans AI",
@@ -395,7 +410,8 @@
           "scene_labels": [
             "US ARMY",
             "ISV(L)-Ol",
-            "6728"
+            "6728",
+            "300"
           ],
           "footer_start_fraction": 0.65,
           "footer_fraction": 0.65

@@ -282,6 +282,8 @@ def run_pipeline(mode="run", target_channel="all"):
                 limit=60,
                 source_urls=source_pages
             )
+            from modules.source_cache import merge_source_candidates
+            candidate_posts = merge_source_candidates(ch,candidate_posts,channel_processed_ids)
             print(f" [INGEST] Scanned {len(candidate_posts)} recent post(s) across {len(source_pages)} source page(s)")
             
             # Cache the latest source posts for UI feed
@@ -494,7 +496,9 @@ def run_pipeline(mode="run", target_channel="all"):
                 editorial_profile = source_profile(ch,post)
                 if ch.get('poster_style',{}).get('layout_kind')=='source_replacement':
                     from modules.source_replacement import review_source_replacement
-                    replacement_review = review_source_replacement(raw_img,text_boxes)
+                    template_key=post.get('source_page_url','').rstrip('/').rsplit('/',1)[-1].lower()
+                    replacement_review = review_source_replacement(raw_img,text_boxes,
+                        corner_template=ch.get('source_branding_templates',{}).get(template_key))
                 try:
                     if replacement_review:
                         cleaned_img,crop_top,crop_bottom = raw_img,0,raw_img.shape[0]

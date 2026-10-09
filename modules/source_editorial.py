@@ -34,30 +34,34 @@ def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
     for raw in boxes:
         l,t,r,b=box=tuple(raw);text=str(labels.get(box,''))
         is_credit=bool(credits.search(text))
-        if is_credit and t<h*.2 and r-l<w*.25 and b-t<h*.14:
+        if is_credit and not zoom and t<h*.2 and r-l<w*.25 and b-t<h*.14:
             if r<=w*.28 or l>=w*.72:
                 corners.append(box);continue
         configured_footer = profile.get('footer_start_fraction')
         if t>=h*.55 and (is_credit or r-l>=w*.25 or
                 (configured_footer is not None and t>=h*float(configured_footer)) or zoom):
             footer.append(box);continue
-        if (profile.get('header_fraction') or zoom) and b<=h*header_limit:
-            headers.append(box);continue
         if (not is_credit and _normal(text) in allowed and confidence.get(box,0)>=.45
                 and t<h*.52 and r-l<w*.50 and b-t<h*.09):
             scene.append(box);continue
+        if (profile.get('header_fraction') or zoom) and b<=h*header_limit:
+            headers.append(box);continue
         raise ValueError('Unknown source lettering or watermark overlaps the subject')
     rows=list(getattr(boxes,'suspected_rows',[]));marks=list(getattr(boxes,'suspected_marks',[]))
     for raw in rows+marks:
         l,t,r,b=box=tuple(raw)
         if t>=h*.55:
             footer.append(box);continue
-        if (profile.get('header_fraction') or zoom) and b<=h*header_limit:
-            headers.append(box);continue
         if any(a<=l and c>=r and y<=t and d>=b for a,y,c,d in corners):continue
         # A detector row can extend beyond individual recognized sign words.
         # It cannot grant arbitrary vertical space or excuse publisher marks.
         if any(abs(t-y)<h*.02 and abs(b-d)<h*.025 and r-l<=w*.50 for a,y,c,d in scene):continue
+        # OCR merges repeated labels on separate uniforms into one detector
+        # row. Keep that photographed row only inside the reviewed label span.
+        aligned=[item for item in scene if abs(t-item[1])<h*.03 and abs(b-item[3])<h*.03]
+        if len(aligned)>=2 and l>=min(item[0] for item in aligned)-8 and r<=max(item[2] for item in aligned)+8:continue
+        if (profile.get('header_fraction') or zoom) and b<=h*header_limit:
+            headers.append(box);continue
         raise ValueError('Unrecognized source typography overlaps the subject')
     top=round(h*profile.get('header_fraction',0)) if headers else 0
     if headers and zoom:
@@ -74,9 +78,9 @@ def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
     # A repeated named subject in the paired caption can verify a publisher
     # frame when a stylized masthead or NEWS badge is unreadable. This is
     # enabled only for reviewed source templates, not arbitrary photos.
-    caption_words={word.lower() for word in re.findall(r'\b\w{5,}\b',caption)}-{'officially','releases','season','november','october','music','awards','news','which','their','there'}
+    caption_words={word.lower() for word in re.findall(r'[\w\u0900-\u097F]{5,}',caption)}-{'officially','releases','season','november','october','music','awards','news','which','their','there'}
     named_anchor=zoom and any(confidence.get(tuple(box),0)>=.55 and
-        caption_words.intersection(word.lower() for word in re.findall(r'\b\w{5,}\b',str(labels.get(tuple(box),''))))
+        caption_words.intersection(word.lower() for word in re.findall(r'[\w\u0900-\u097F]{5,}',str(labels.get(tuple(box),''))))
         for box in boxes if tuple(box) in footer or tuple(box) in headers)
     if (top or bottom<h or corners) and not (verified_credit or named_anchor):
         raise ValueError('Source frame has no verified publisher anchor')
