@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-09T08:17:54.250737+00:00",
+  "updated_at": "2026-10-09T09:05:07.465937+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -2682,6 +2682,42 @@
       "checked_at": "2026-10-09T08:17:54.250737+00:00",
       "policy_signature": "b1ae2397ff9ba878",
       "retry_after": 1791577074.2507524
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1538932728258967",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-10-09T09:04:38.032160+00:00",
+      "policy_signature": "b1ae2397ff9ba878",
+      "retry_after": 1791579878.0321817
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1538929054926001",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-09T09:04:48.483732+00:00",
+      "policy_signature": "b1ae2397ff9ba878",
+      "retry_after": 1791579888.483747
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1538824928269747",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 15.8 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-09T09:04:57.869479+00:00",
+      "policy_signature": "b1ae2397ff9ba878",
+      "retry_after": 1791579897.8694954
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1538822411603332",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-09T09:05:07.465937+00:00",
+      "policy_signature": "b1ae2397ff9ba878",
+      "retry_after": 1791579907.4659529
     }
   ]
 }
