@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-09T16:05:20.677293+00:00",
+  "updated_at": "2026-10-09T16:35:22.889381+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -2306,15 +2306,6 @@
       "retry_after": 1791558252.6587753
     },
     {
-      "channel_id": "oceans_secret",
-      "post_id": "122139987573240703",
-      "stage": "content_or_layout",
-      "reason": "Replacement headline cannot fit at large readable type",
-      "checked_at": "2026-10-09T04:05:16.209367+00:00",
-      "policy_signature": "fe8dba7e23999f0f",
-      "retry_after": 1791561916.2093878
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1538768374942069",
       "stage": "content_or_layout",
@@ -2601,33 +2592,6 @@
       "checked_at": "2026-10-09T12:05:27.895055+00:00",
       "policy_signature": "b83605506234d85a",
       "retry_after": 1791590727.8950741
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1142609074933013",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-09T12:05:46.018070+00:00",
-      "policy_signature": "b1ae2397ff9ba878",
-      "retry_after": 1791590746.018088
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1142596744934246",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-09T12:05:56.879819+00:00",
-      "policy_signature": "b1ae2397ff9ba878",
-      "retry_after": 1791590756.879838
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1539042224914684",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 5.7 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-09T12:06:13.945193+00:00",
-      "policy_signature": "b1ae2397ff9ba878",
-      "retry_after": 1791590773.945213
     },
     {
       "channel_id": "nepal_speaks",
@@ -3033,6 +2997,69 @@
       "checked_at": "2026-10-09T16:05:20.677293+00:00",
       "policy_signature": "fe8dba7e23999f0f",
       "retry_after": 1791605120.6773107
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1539306608221579",
+      "stage": "source_language",
+      "reason": "Source caption does not match the page language",
+      "checked_at": "2026-10-09T16:33:38.036996+00:00",
+      "policy_signature": "f5538cd914ab610b",
+      "retry_after": 1791606818.0370126
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1539296754889231",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-09T16:34:01.371314+00:00",
+      "policy_signature": "f5538cd914ab610b",
+      "retry_after": 1791606841.3713298
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1539287644890142",
+      "stage": "content_or_layout",
+      "reason": "Unrecognized source typography overlaps the subject",
+      "checked_at": "2026-10-09T16:34:24.156004+00:00",
+      "policy_signature": "f5538cd914ab610b",
+      "retry_after": 1791606864.1560197
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1142609074933013",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-09T16:34:35.820575+00:00",
+      "policy_signature": "f5538cd914ab610b",
+      "retry_after": 1791606875.82059
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1142596744934246",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-09T16:34:46.343196+00:00",
+      "policy_signature": "f5538cd914ab610b",
+      "retry_after": 1791606886.3432114
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1539042224914684",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 5.7 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-09T16:35:02.613525+00:00",
+      "policy_signature": "f5538cd914ab610b",
+      "retry_after": 1791606902.6135426
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122139987573240703",
+      "stage": "content_or_layout",
+      "reason": "Replacement headline cannot fit at large readable type",
+      "checked_at": "2026-10-09T16:35:22.889381+00:00",
+      "policy_signature": "fe8dba7e23999f0f",
+      "retry_after": 1791606922.8893986
     }
   ]
 }
