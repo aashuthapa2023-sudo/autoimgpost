@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-09T01:34:07.141433+00:00",
+  "updated_at": "2026-10-09T02:34:23.386505+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -2520,6 +2520,33 @@
       "checked_at": "2026-10-09T01:34:07.141433+00:00",
       "policy_signature": "4a3303473d6c6146",
       "retry_after": 1791552847.141442
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1470277758306131",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-09T02:33:34.482287+00:00",
+      "policy_signature": "4a3303473d6c6146",
+      "retry_after": 1791556414.4823034
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1538682714950635",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-09T02:34:06.570268+00:00",
+      "policy_signature": "b1ae2397ff9ba878",
+      "retry_after": 1791556446.5702853
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1538677971617776",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-10-09T02:34:23.386505+00:00",
+      "policy_signature": "b1ae2397ff9ba878",
+      "retry_after": 1791556463.3865213
     }
   ]
 }
