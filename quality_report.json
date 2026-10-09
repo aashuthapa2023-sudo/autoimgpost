@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-09T17:06:34.912608+00:00",
+  "updated_at": "2026-10-09T17:16:14.824113+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -2558,15 +2558,6 @@
       "retry_after": 1791592442.1643612
     },
     {
-      "channel_id": "Music Store",
-      "post_id": "1465015238819871",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-09T13:04:30.891610+00:00",
-      "policy_signature": "4a3303473d6c6146",
-      "retry_after": 1791594270.8916264
-    },
-    {
       "channel_id": "oceans_secret",
       "post_id": "122123154837298539",
       "stage": "content_or_layout",
@@ -2865,15 +2856,6 @@
     },
     {
       "channel_id": "nepal_speaks",
-      "post_id": "1539306608221579",
-      "stage": "source_language",
-      "reason": "Source caption does not match the page language",
-      "checked_at": "2026-10-09T16:33:38.036996+00:00",
-      "policy_signature": "f5538cd914ab610b",
-      "retry_after": 1791606818.0370126
-    },
-    {
-      "channel_id": "nepal_speaks",
       "post_id": "1539296754889231",
       "stage": "content_or_layout",
       "reason": "Unknown source lettering or watermark overlaps the subject",
@@ -2999,15 +2981,6 @@
       "retry_after": 1791607265.7182128
     },
     {
-      "channel_id": "Music Store",
-      "post_id": "1620161410150997",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-09T17:04:53.690521+00:00",
-      "policy_signature": "4a3303473d6c6146",
-      "retry_after": 1791608693.6905332
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1538932728258967",
       "stage": "content_or_layout",
@@ -3060,6 +3033,33 @@
       "checked_at": "2026-10-09T17:06:34.912608+00:00",
       "policy_signature": "f5538cd914ab610b",
       "retry_after": 1791608794.912624
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1620161410150997",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-09T17:15:47.945038+00:00",
+      "policy_signature": "7a695a5cf4fef1f2",
+      "retry_after": 1791609347.9450445
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1465015238819871",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-09T17:15:58.071247+00:00",
+      "policy_signature": "7a695a5cf4fef1f2",
+      "retry_after": 1791609358.0712652
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1539306608221579",
+      "stage": "source_language",
+      "reason": "Source caption does not match the page language",
+      "checked_at": "2026-10-09T17:16:14.824113+00:00",
+      "policy_signature": "4ea9e288005bbe6e",
+      "retry_after": 1791609374.824128
     }
   ]
 }
