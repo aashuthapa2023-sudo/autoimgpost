@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-09T06:34:30.582292+00:00",
+  "updated_at": "2026-10-09T07:35:57.089138+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -2180,60 +2180,6 @@
       "retry_after": 1791524642.4936845
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1119214847131643",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-10-08T19:05:13.643582+00:00",
-      "policy_signature": "0542191dde71eb6f",
-      "retry_after": 1791529513.6435986
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1118640433855751",
-      "stage": "content_or_layout",
-      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
-      "checked_at": "2026-10-08T19:05:33.518309+00:00",
-      "policy_signature": "0542191dde71eb6f",
-      "retry_after": 1791529533.5183265
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1118214090565052",
-      "stage": "content_or_layout",
-      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
-      "checked_at": "2026-10-08T19:05:44.110789+00:00",
-      "policy_signature": "0542191dde71eb6f",
-      "retry_after": 1791529544.1108088
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1117938600592601",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-08T19:06:00.143064+00:00",
-      "policy_signature": "0542191dde71eb6f",
-      "retry_after": 1791529560.1430788
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1117867297266398",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-08T19:06:16.241569+00:00",
-      "policy_signature": "0542191dde71eb6f",
-      "retry_after": 1791529576.2415874
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1117856750600786",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-08T19:06:32.293569+00:00",
-      "policy_signature": "0542191dde71eb6f",
-      "retry_after": 1791529592.2935858
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1470044528329454",
       "stage": "topic_or_caption",
@@ -2628,6 +2574,60 @@
       "checked_at": "2026-10-09T06:34:30.582292+00:00",
       "policy_signature": "b1ae2397ff9ba878",
       "retry_after": 1791570870.5823104
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1119214847131643",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-10-09T07:34:39.512921+00:00",
+      "policy_signature": "0542191dde71eb6f",
+      "retry_after": 1791574479.512937
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1118640433855751",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-10-09T07:34:59.202578+00:00",
+      "policy_signature": "0542191dde71eb6f",
+      "retry_after": 1791574499.2025933
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1118214090565052",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-10-09T07:35:09.706899+00:00",
+      "policy_signature": "0542191dde71eb6f",
+      "retry_after": 1791574509.7069142
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1117938600592601",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-09T07:35:25.486849+00:00",
+      "policy_signature": "0542191dde71eb6f",
+      "retry_after": 1791574525.486865
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1117867297266398",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-09T07:35:41.274371+00:00",
+      "policy_signature": "0542191dde71eb6f",
+      "retry_after": 1791574541.274388
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1117856750600786",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-09T07:35:57.089138+00:00",
+      "policy_signature": "0542191dde71eb6f",
+      "retry_after": 1791574557.0891843
     }
   ]
 }
