@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-09T17:34:51.799581+00:00",
+  "updated_at": "2026-10-09T18:05:11.890518+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -2324,15 +2324,6 @@
       "retry_after": 1791563700.1006432
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1119440090442452",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-09T05:04:15.669890+00:00",
-      "policy_signature": "0542191dde71eb6f",
-      "retry_after": 1791565455.669907
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1538843751601198",
       "stage": "content_or_layout",
@@ -2358,33 +2349,6 @@
       "checked_at": "2026-10-09T06:34:30.582292+00:00",
       "policy_signature": "b1ae2397ff9ba878",
       "retry_after": 1791570870.5823104
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1119214847131643",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-10-09T07:34:39.512921+00:00",
-      "policy_signature": "0542191dde71eb6f",
-      "retry_after": 1791574479.512937
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1118640433855751",
-      "stage": "content_or_layout",
-      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
-      "checked_at": "2026-10-09T07:34:59.202578+00:00",
-      "policy_signature": "0542191dde71eb6f",
-      "retry_after": 1791574499.2025933
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1118214090565052",
-      "stage": "content_or_layout",
-      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
-      "checked_at": "2026-10-09T07:35:09.706899+00:00",
-      "policy_signature": "0542191dde71eb6f",
-      "retry_after": 1791574509.7069142
     },
     {
       "channel_id": "daily_netflix",
@@ -2891,24 +2855,6 @@
       "retry_after": 1791606922.8893986
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1119671120419349",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-09T16:39:03.280910+00:00",
-      "policy_signature": "a383d0fffbdb2d98",
-      "retry_after": 1791607143.2809293
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1119614170425044",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-09T16:39:20.288742+00:00",
-      "policy_signature": "a383d0fffbdb2d98",
-      "retry_after": 1791607160.2887614
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1142565714937349",
       "stage": "content_or_layout",
@@ -3060,6 +3006,60 @@
       "checked_at": "2026-10-09T17:34:51.799581+00:00",
       "policy_signature": "b8a8878f96745300",
       "retry_after": 1791610491.7995994
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1119671120419349",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-09T18:04:14.807300+00:00",
+      "policy_signature": "3d4d4fdb75102971",
+      "retry_after": 1791612254.8073158
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1119614170425044",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-09T18:04:26.256913+00:00",
+      "policy_signature": "3d4d4fdb75102971",
+      "retry_after": 1791612266.2569284
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1119440090442452",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-09T18:04:37.629726+00:00",
+      "policy_signature": "3d4d4fdb75102971",
+      "retry_after": 1791612277.629743
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1119214847131643",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-10-09T18:04:48.947326+00:00",
+      "policy_signature": "3d4d4fdb75102971",
+      "retry_after": 1791612288.947342
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1118640433855751",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-10-09T18:05:03.653063+00:00",
+      "policy_signature": "3d4d4fdb75102971",
+      "retry_after": 1791612303.653079
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1118214090565052",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-10-09T18:05:11.890518+00:00",
+      "policy_signature": "3d4d4fdb75102971",
+      "retry_after": 1791612311.890534
     }
   ]
 }
