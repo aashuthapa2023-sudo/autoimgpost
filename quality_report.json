@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-09T04:35:00.100625+00:00",
+  "updated_at": "2026-10-09T05:04:32.574804+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -2072,15 +2072,6 @@
       "retry_after": 1791520501.6957936
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1119440090442452",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-08T16:44:30.363802+00:00",
-      "policy_signature": "0542191dde71eb6f",
-      "retry_after": 1791521070.363823
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1469790291688211",
       "stage": "topic_or_caption",
@@ -2097,15 +2088,6 @@
       "checked_at": "2026-10-08T16:44:57.946590+00:00",
       "policy_signature": "4a3303473d6c6146",
       "retry_after": 1791521097.9465973
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1620161410150997",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-08T16:44:57.949077+00:00",
-      "policy_signature": "4a3303473d6c6146",
-      "retry_after": 1791521097.9490845
     },
     {
       "channel_id": "nepal_speaks",
@@ -2601,6 +2583,24 @@
       "checked_at": "2026-10-09T04:35:00.100625+00:00",
       "policy_signature": "b1ae2397ff9ba878",
       "retry_after": 1791563700.1006432
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1119440090442452",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-09T05:04:15.669890+00:00",
+      "policy_signature": "0542191dde71eb6f",
+      "retry_after": 1791565455.669907
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1620161410150997",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-09T05:04:32.574804+00:00",
+      "policy_signature": "4a3303473d6c6146",
+      "retry_after": 1791565472.574817
     }
   ]
 }
