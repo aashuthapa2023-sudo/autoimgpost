@@ -6,6 +6,13 @@ from modules.source_editorial import extract_editorial_photo,source_profile
 from modules.source_replacement import replacement_payload
 
 class EditorialSourceTests(unittest.TestCase):
+ def test_rating_hook_keeps_title_score_and_rating_source(self):
+  caption='Ben Affleck’s ANIMALS currently holds a 42% critics score on Rotten Tomatoes, giving the new Netflix thriller a Rotten rating shortly after its release.'
+  payload=replacement_payload(caption,language='en',content_topic='entertainment')
+  self.assertEqual(payload['headline'],"Ben Affleck's ANIMALS currently holds a 42% critics score on Rotten Tomatoes")
+ def test_streaming_hook_keeps_complete_fact_before_plot(self):
+  caption='ANIMALS is now officially streaming on Netflix, starring Ben Affleck and Kerry Washington as a married couple whose seemingly perfect life is shattered when their son is kidnapped.'
+  self.assertEqual(replacement_payload(caption,language='en',content_topic='entertainment')['headline'],'ANIMALS is now officially streaming on Netflix')
  def test_reviewed_zoom_uses_caption_subject_when_news_badge_is_missing(self):
   boxes=self.boxes([((40,740,760,820),'ANIMALS starring Ben Affleck')])
   profile=dict(self.profile,allow_edge_zoom=True)

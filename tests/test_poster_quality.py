@@ -12,6 +12,21 @@ from modules.story_dedup import is_repeated_story
 
 
 class PublishApprovalTests(unittest.TestCase):
+    def test_nepali_words_share_baseline_despite_different_upper_marks(self):
+        from modules.poster_engine import fit_headline_line, get_font
+        from PIL import ImageDraw
+        font=get_font(80,language='ne')
+        words=['नेपाल ', 'भूकम्प ']
+        probe=ImageDraw.Draw(Image.new('RGBA',(1,1)))
+        bounds=[probe.textbbox((0,0),word,font=font,stroke_width=2,anchor='ls') for word in words]
+        widths=[max(r-min(0,l),__import__('math').ceil(probe.textlength(word,font=font)))+4 for word,(l,t,r,b) in zip(words,bounds)]
+        with patch('modules.poster_engine.os.name','posix'):
+            row=fit_headline_line([(word,'white') for word in words],font,80,(255,200,59),10000,10000)
+        # Crop-to-visible removes only common padding: the second word still
+        # begins lower by exactly its measured baseline-relative offset.
+        first=row.getchannel('A').crop((0,0,widths[0]-2,row.height)).getbbox()
+        second=row.getchannel('A').crop((widths[0]-2,0,row.width,row.height)).getbbox()
+        self.assertLessEqual(abs((second[1]-first[1])-(bounds[1][1]-bounds[0][1])),1)
     def test_cover_zoom_falls_back_when_it_would_cut_a_face(self):
         photo=np.full((800,1600,3),240,dtype=np.uint8)
         with patch('modules.poster_engine.cv2.CascadeClassifier') as detector:

@@ -60,8 +60,8 @@ def replacement_payload(caption, **options):
                 introduction=re.sub(r"[^\w\s'’.,:!-]",' ',sentence.split(' How ',1)[0]).strip()
                 if headline_is_usable(introduction,language):candidates.insert(0,introduction)
             # Release facts stay complete before a trailing plot synopsis.
-            for separator in (', bringing ', ', starring ', ', with all '):
-                if separator in sentence and re.search(r'\b(?:releases|releasing|back|returns)\b.*\bNetflix\b',sentence.split(separator)[0],re.I):
+            for separator in (', bringing ', ', starring ', ', with all ', ', giving '):
+                if separator in sentence and re.search(r'\b(?:(?:releases|releasing|back|returns|streaming|renewed)\b.*\bNetflix|holds\b.*\bscore on Rotten Tomatoes)\b',sentence.split(separator)[0],re.I):
                     candidates.insert(0,sentence.split(separator)[0])
             if ', while her old message ' in sentence:
                 clause=sentence.split(', while her old message ',1)[0]

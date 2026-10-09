@@ -272,24 +272,30 @@ def detect_image_text_position(img: np.ndarray) -> str:
 def fit_headline_line(tokens, font, font_size, highlight_rgb, max_width, max_height):
     """Rasterize full glyph bounds before fitting, so strokes and matras stay safe."""
     tiles = []
+    offsets = []
     for text, kind in tokens:
         color = highlight_rgb if kind == "highlight" else (255, 255, 255)
         if is_devanagari(text) and os.name == 'nt':
             mask, width, height = render_gdi_token(text, font_size, bold=True)
             tile = Image.new('RGBA', (max(1, width), max(1, height)))
             tile.paste(color, (0, 0), Image.fromarray(mask).convert('L'))
+            offsets.append(-font.getmetrics()[0])
         else:
             probe = ImageDraw.Draw(Image.new('RGBA', (1, 1)))
-            left, top, right, bottom = probe.textbbox((0, 0), text, font=font, stroke_width=2)
+            left, top, right, bottom = probe.textbbox((0, 0), text, font=font, stroke_width=2, anchor='ls')
             width = max(right - min(0, left), math.ceil(probe.textlength(text, font=font)))
             tile = Image.new('RGBA', (max(1, width + 4), max(1, bottom - top + 4)))
             ImageDraw.Draw(tile).text((2 - min(0, left), 2 - top), text, font=font,
-                                     fill=color, stroke_width=2, stroke_fill=(0, 0, 0))
+                                     fill=color, stroke_width=2, stroke_fill=(0, 0, 0), anchor='ls')
+            offsets.append(top - 2)
         tiles.append(tile)
-    line = Image.new('RGBA', (max(1, sum(t.width for t in tiles)), max([t.height for t in tiles] or [1])))
+    # Preserve each glyph's baseline offset instead of aligning cropped word tops.
+    origin = min(offsets or [0])
+    height = max([offset + tile.height for offset, tile in zip(offsets, tiles)] or [1]) - origin
+    line = Image.new('RGBA', (max(1, sum(t.width for t in tiles)), max(1, height)))
     x = 0
-    for tile in tiles:
-        line.alpha_composite(tile, (x, 0))
+    for tile, offset in zip(tiles, offsets):
+        line.alpha_composite(tile, (x, offset - origin))
         x += tile.width
     scale = min(1.0, max_width / line.width, max_height / line.height)
     if scale < 1:
