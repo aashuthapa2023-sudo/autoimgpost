@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-09T09:05:07.465937+00:00",
+  "updated_at": "2026-10-09T09:34:57.687738+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -2207,24 +2207,6 @@
       "retry_after": 1791529634.8246493
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1119614170425044",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-08T21:05:07.669725+00:00",
-      "policy_signature": "0542191dde71eb6f",
-      "retry_after": 1791536707.6697445
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1565288958945758",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-08T21:05:29.524323+00:00",
-      "policy_signature": "b83605506234d85a",
-      "retry_after": 1791536729.5243404
-    },
-    {
       "channel_id": "Daily Hollywood",
       "post_id": "1564965185644802",
       "stage": "content_or_layout",
@@ -2286,24 +2268,6 @@
       "checked_at": "2026-10-08T21:06:53.173357+00:00",
       "policy_signature": "b1ae2397ff9ba878",
       "retry_after": 1791536813.1733718
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1563827802445011",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-08T21:07:18.648048+00:00",
-      "policy_signature": "a7c0cd38621b751f",
-      "retry_after": 1791536838.648057
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1570529221774869",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-08T21:07:26.068524+00:00",
-      "policy_signature": "a7c0cd38621b751f",
-      "retry_after": 1791536846.0685396
     },
     {
       "channel_id": "Music Store",
@@ -2718,6 +2682,42 @@
       "checked_at": "2026-10-09T09:05:07.465937+00:00",
       "policy_signature": "b1ae2397ff9ba878",
       "retry_after": 1791579907.4659529
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1119614170425044",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-09T09:34:08.583450+00:00",
+      "policy_signature": "0542191dde71eb6f",
+      "retry_after": 1791581648.583473
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1565288958945758",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-09T09:34:28.046272+00:00",
+      "policy_signature": "b83605506234d85a",
+      "retry_after": 1791581668.0462904
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1563827802445011",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-09T09:34:54.060624+00:00",
+      "policy_signature": "a7c0cd38621b751f",
+      "retry_after": 1791581694.0606377
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1570529221774869",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-09T09:34:57.687738+00:00",
+      "policy_signature": "a7c0cd38621b751f",
+      "retry_after": 1791581697.6877553
     }
   ]
 }
