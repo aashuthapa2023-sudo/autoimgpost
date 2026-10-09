@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-09T11:34:18.734980+00:00",
+  "updated_at": "2026-10-09T12:06:25.618652+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -2270,24 +2270,6 @@
       "retry_after": 1791538456.3429918
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1566767985464522",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-08T22:04:44.741180+00:00",
-      "policy_signature": "b83605506234d85a",
-      "retry_after": 1791540284.7411952
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1566791052128882",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-08T23:04:38.488554+00:00",
-      "policy_signature": "b83605506234d85a",
-      "retry_after": 1791543878.488573
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1538196531665920",
       "stage": "content_or_layout",
@@ -2718,6 +2700,69 @@
       "checked_at": "2026-10-09T11:34:18.734980+00:00",
       "policy_signature": "0542191dde71eb6f",
       "retry_after": 1791588858.7349956
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1470611638272743",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-09T12:05:05.556525+00:00",
+      "policy_signature": "4a3303473d6c6146",
+      "retry_after": 1791590705.556535
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1566791052128882",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-09T12:05:20.054327+00:00",
+      "policy_signature": "b83605506234d85a",
+      "retry_after": 1791590720.0543458
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1566767985464522",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-09T12:05:27.895055+00:00",
+      "policy_signature": "b83605506234d85a",
+      "retry_after": 1791590727.8950741
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1142609074933013",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-09T12:05:46.018070+00:00",
+      "policy_signature": "b1ae2397ff9ba878",
+      "retry_after": 1791590746.018088
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1142596744934246",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-09T12:05:56.879819+00:00",
+      "policy_signature": "b1ae2397ff9ba878",
+      "retry_after": 1791590756.879838
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1539042224914684",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 5.7 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-09T12:06:13.945193+00:00",
+      "policy_signature": "b1ae2397ff9ba878",
+      "retry_after": 1791590773.945213
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1142565714937349",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-09T12:06:25.618652+00:00",
+      "policy_signature": "b1ae2397ff9ba878",
+      "retry_after": 1791590785.618671
     }
   ]
 }
