@@ -494,7 +494,8 @@ def check_source_grounding(text, source, language='en'):
         source_words.update(word[:-2] for word in tuple(source_words) if word.endswith("'s"))
         # Multiple capitalized words are usually a name/title. Compare their
         # words to source tokens, tolerating lower-case source spelling.
-        for phrase in re.findall(r"\b(?:[A-Z][a-z]+|[A-Z]{2,})(?:'[A-Za-z]+)?(?:\s+(?:[A-Z][a-z]+|[A-Z]{2,})(?:'[A-Za-z]+)?)+", text):
+        name_word = r"(?:[A-Z][a-z]+|[A-Z]{2,}s?)(?:'[A-Za-z]+)?\b"
+        for phrase in re.findall(r"\b" + name_word + r"(?:\s+" + name_word + r")+", text):
             if any(word.lower() not in source_words for word in phrase.split()):
                 return False
         # Also catch single invented artist/place names at sentence starts.
@@ -607,7 +608,7 @@ def generate_social_payload(raw_caption: str, language: str = "en", channel_name
 
 def generate_preserved_card_payload(raw_caption: str, reviewed_headline: str, language: str = "en",
                                     channel_name: str = "", channel_id: str = "", content_topic: str = "",
-                                    editorial_style: str = "") -> dict:
+                                    editorial_style: str = "", *, caption_source=None) -> dict:
     """Keep an image-reviewed title while independently preparing its caption.
 
     The intact card already supplies the display headline. Its caption must not
@@ -671,10 +672,11 @@ def generate_preserved_card_payload(raw_caption: str, reviewed_headline: str, la
 
     # A short source brief is an honest fallback when optional rewrite services
     # are unavailable. It is independent of their separate display-title rules.
-    caption = approved_caption(raw_caption)
+    caption_input = raw_caption if caption_source is None else str(caption_source)
+    caption = approved_caption(caption_input)
     if any(os.getenv(key) for key in ('GROQ_API_KEY', 'GEMINI_API_KEY', 'OPENROUTER_API_KEY')):
         try:
-            rewritten = generate_social_payload(raw_caption, effective_lang, channel_name, channel_id, topic, editorial_style)
+            rewritten = generate_social_payload(caption_input, effective_lang, channel_name, channel_id, topic, editorial_style)
             caption = approved_caption(rewritten['rewritten_caption'])
         except (ValueError, KeyError, TypeError):
             pass

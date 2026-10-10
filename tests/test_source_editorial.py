@@ -23,6 +23,29 @@ class EditorialSourceTests(unittest.TestCase):
  def test_streaming_hook_keeps_complete_fact_before_plot(self):
   caption='ANIMALS is now officially streaming on Netflix, starring Ben Affleck and Kerry Washington as a married couple whose seemingly perfect life is shattered when their son is kidnapped.'
   self.assertEqual(replacement_payload(caption,language='en',content_topic='entertainment')['headline'],'ANIMALS is now officially streaming on Netflix')
+ def test_renewal_hook_names_show_and_new_season_before_premiere_comparison(self):
+  caption=('THE HUNTING WIVES has officially been renewed for Season 3 on Netflix, more than a month before Season 2 even premieres on November 26.\n'
+           'Season 3 will consist of another eight episodes, although Netflix has not yet announced its release date or returning cast.')
+  payload=replacement_payload(caption,language='en',content_topic='entertainment')
+  self.assertEqual(payload['headline'],'THE HUNTING WIVES has officially been renewed for Season 3 on Netflix')
+  self.assertIn('November 26',payload['rewritten_caption'])
+  self.assertIn('not yet announced',payload['rewritten_caption'])
+  self.assertEqual(payload['rewritten_caption'].count('been renewed'),1)
+ def test_renewal_comparison_never_converts_qualified_event_into_confirmation(self):
+  caption='THE HUNTING WIVES may have been renewed for Season 3 on Netflix, more than a month before Season 2 premieres.'
+  payload=replacement_payload(caption,language='en',content_topic='entertainment')
+  self.assertIn('may',payload['headline'])
+ def test_release_hook_keeps_full_date_and_title_without_appended_synopsis(self):
+  caption="Netflix has set a November 12, 2026 release date for 'Never Surrender', a gritty new Indonesian home invasion thriller starring Lukman Sardi."
+  payload=replacement_payload(caption,language='en',content_topic='film')
+  self.assertEqual(payload['headline'],"Netflix has set a November 12, 2026 release date for 'Never Surrender'")
+  self.assertEqual(payload['rewritten_caption'].count('release date'),1)
+  self.assertIn('Lukman Sardi',payload['rewritten_caption'])
+ def test_music_ranking_gets_complete_hook_without_needing_photo_text(self):
+  caption='The 25 Best VMAs Performances of All Time: Critics’ Picks\n\nThe best VMAs performances of all time, from Madonna to Michael Jackson to Beyonce at the MTV Video Music Awards.'
+  payload=replacement_payload(caption,language='en',content_topic='music')
+  self.assertEqual(payload['headline'],'Critics pick the 25 best VMAs performances of all time')
+  self.assertIn('Madonna',payload['rewritten_caption'])
  def test_reviewed_zoom_uses_caption_subject_when_news_badge_is_missing(self):
   boxes=self.boxes([((40,740,760,820),'ANIMALS starring Ben Affleck')])
   profile=dict(self.profile,allow_edge_zoom=True)

@@ -44,6 +44,11 @@ class PayloadQualityTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate({'headline': 'Adele releases four new songs', 'rewritten_caption': 'Adele has released four songs.'}, source, content_topic='music')
 
+    def test_plural_acronym_is_checked_as_a_whole_source_word(self):
+        source = "The 25 Best VMAs Performances of All Time: Critics' Picks"
+        self.assertTrue(namespace['check_source_grounding'](source, source))
+        self.assertFalse(namespace['check_source_grounding']('The 25 Best EMAs Performances of All Time', source))
+
     def test_exact_source_title_with_curly_possessive_is_not_an_invented_artist(self):
         caption = namespace['clean_and_deduplicate_source_caption'](self.shakira_source, content_topic='music')
         result = validate({'headline': self.shakira_source.splitlines()[0], 'rewritten_caption': caption}, self.shakira_source, content_topic='music')

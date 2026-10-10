@@ -86,6 +86,16 @@ def replacement_payload(caption, **options):
             for separator in (', bringing ', ', starring ', ', with all ', ', giving '):
                 if separator in sentence and re.search(r'\b(?:(?:releases|releasing|back|returns|streaming|renewed|arrived)\b.*\bNetflix|holds\b.*\bscore on Rotten Tomatoes)\b',sentence.split(separator)[0],re.I):
                     candidates.insert(0,sentence.split(separator)[0])
+            # A confirmed renewal is a complete event before a comparison to
+            # another season's premiere. Keep that comparison in the caption;
+            # it must not displace the show's name with an anonymous cast fact.
+            if ', more than ' in sentence:
+                renewal=sentence.split(', more than ',1)[0]
+                if re.search(r'\bhas (?:officially )?been renewed for Season \d+ on Netflix$',renewal,re.I):
+                    candidates.insert(0,renewal)
+            release=re.match(r"^(Netflix has set a [A-Za-z]+ \d{1,2}, \d{4} release date for '[^']+'), ",sentence)
+            if release:
+                candidates.insert(0,release.group(1))
             if ', while her old message ' in sentence:
                 clause=sentence.split(', while her old message ',1)[0]
                 clause=re.sub(r'^More than a decade after making that statement,\s*','',clause,flags=re.I)
@@ -93,6 +103,9 @@ def replacement_payload(caption, **options):
             event=re.search(r'\b([A-Z][\w]+(?: [A-Z][\w]+){0,3} show at .+)',sentence)
             if event:
                 candidates.append(event.group(1).rstrip('.'))
+            ranking=re.fullmatch(r"The (\d+) Best (VMAs Performances) of All Time: Critics' Picks",sentence,re.I)
+            if ranking:
+                candidates.insert(0,f"Critics pick the {ranking.group(1)} best VMAs performances of all time")
     usable=[text for text in candidates if headline_is_usable(text,language)]
     if (options.get('content_topic')=='ocean'
             and re.search(r'Deep beneath the Pacific, researchers captured a creature',source)
@@ -124,9 +137,19 @@ def replacement_payload(caption, **options):
             not bool(re.search(r'\b(?:died|dies|discovered|rescued|survival|declined|identified)\b',text,re.I))))
     for headline in usable:
         try:
-            # Lead the caption with the same outcome as the image; cleanup
-            # deduplicates the repeated original sentence later in the source.
-            payload=generate_preserved_card_payload(headline+'.\n'+caption,headline,**options)
+            # Focus on the original sentence containing this fact. Adding an
+            # extracted headline to that same long sentence repeats its news;
+            # keep the complete source sentence once in the actual caption.
+            normalize=lambda text:' '.join(re.findall(r"[\w]+(?:'[\w]+)?",str(text).lower()))
+            original_facts=[fact for line in source.splitlines() for fact in
+                (re.split(r'[।!?]+',line) if language=='ne' else split_clean_sentences(line)) if fact.strip()]
+            focus=next((index for index,fact in enumerate(original_facts)
+                        if f' {normalize(headline)} ' in f' {normalize(fact)} '),None)
+            caption_source=caption
+            if focus is not None:
+                caption_source='\n'.join([original_facts[focus]]+original_facts[:focus]+original_facts[focus+1:])
+            payload=generate_preserved_card_payload(headline+'.\n'+caption,headline,**options,
+                caption_source=caption_source)
             # Condense a stated condition and outcome without guessing a cause,
             # location, count or diagnosis. Validate the edit against that fact.
             match=re.fullmatch(r'The (.+?) was already in a weakened condition and (died\b.+)',headline,re.I)

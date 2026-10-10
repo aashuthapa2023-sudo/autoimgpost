@@ -6,7 +6,7 @@ A multi-page publisher with a GitHub Pages control panel. Each destination uses 
 
 1. Fetch a source post with its own full caption and associated photo. Topic and language checks run before image processing. Generic web fallback is disabled on the six configured pages.
 2. Check native resolution, sharpness and contrast. Thumbnails are not artificially enlarged to pass this check.
-3. Detect English/Nepali text across the source. Extract a photograph only from a separable solid source panel. Small corner source credits remain intact; photo headlines and body paragraphs cannot be treated as logos. No broad text/logo inpainting is used. Ocean's Secret may preserve a readable original card intact, with one page-brand footer and no additional headline, when its existing lettering matches the exact caption.
+3. Detect English/Nepali text across the source. Reviewed publisher frames can be cropped only when the photograph remains usable and faces stay intact. Small corner source credits remain intact; photo headlines and body paragraphs cannot be treated as logos. No broad text/logo inpainting is used. Ocean's Secret uses its configured replacement layout and transparent circular destination logo; an approved source seal must fit entirely behind its opaque circle.
 4. Rewrite from the exact paired caption. Reject repetition, page metadata, incomplete hooks and observable changes to names, numbers, species, negation or uncertainty. An invalid AI response moves to another provider; fallback must still be a complete source fact.
 5. Render a 1080×1350 editorial card with the full photograph, at most three centered headline lines, readable minimum font sizes and 64px safe margins. Source-specific branding positions reserve space instead of covering the subject.
 6. Verify the approved image/caption hashes and layout before upload. Only Meta-confirmed publication updates state and deduplication history.
@@ -15,7 +15,7 @@ Ambiguous sources are skipped rather than forced into a scheduled slot. Checks r
 
 ## Page settings
 
-The six profiles in `config.json` are Daily Netflix, Music Store, Anisha, Daily Hollywood, Nepal Speaks and Ocean's Secret. Each includes `content_topic`, `editorial_style`, `poster_style`, and `source_layouts`.
+The seven profiles in `config.json` are Daily Netflix, Music Store, Anisha, Daily Hollywood, Nepal Speaks, Ocean's Secret and US Army Fans. Each includes `content_topic`, `editorial_style`, `poster_style`, and `source_layouts`. Anisha is intentionally paused.
 
 Use the control panel's page/source settings to choose headline and branding positions. **Push pages to GitHub** saves the current configuration to `main`; the GitHub token must have permission to update repository contents. Updating an existing page preserves its detailed styling settings.
 
@@ -33,6 +33,10 @@ The [six-page audit and tuning report](docs/page-quality-audit-2026-10-06.md) do
 - `queue_worker.py` uses the same checked pipeline for every page. Older queued posters are retained for review and are not uploaded directly.
 
 GitHub Actions runs regression checks before generation/publishing, checks out current `main` when queued work starts, and backs up confirmed receipts and state before pushing. Generated results merge into the latest repository history with normal push retries, preserving publication history when another update lands during the run. Normal posting runs retain the latest scanned feed; manual ingestion honors the selected source and preserves an existing usable feed when that source is unavailable.
+
+The cloud workflow schedules a check every 15 minutes, at minutes 7, 22, 37 and 52. Your PC and browser may be off: GitHub-hosted runners perform source ingestion, image generation and publishing using repository configuration and credentials. The local `daemon` and `run_scheduler.bat` modes require the PC to remain on. The cloud workflow does not depend on them.
+
+A check publishes at most one post per page after its configured interval (one hour on most pages, two hours for Army). New valid Facebook sources, working page credentials and passing image/caption checks are required. GitHub can delay or drop native scheduled events under load; the configured interval is not a promise of exact posting times. See [GitHub's schedule documentation](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule). The [October 10 publication audit](docs/publishing-audit-2026-10-10.md) distinguishes runner activity from actual page publications.
 
 ## Local use
 
