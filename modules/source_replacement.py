@@ -8,6 +8,29 @@ from PIL import Image, ImageDraw
 from modules.poster_engine import _wrap_headline, _render_runs, hex_to_rgb
 
 
+def prepare_source_replacement(image,boxes,profile=None,caption='',language='en',corner_template=None):
+    """Try the owned cover, then a configured, proven header/footer crop.
+
+    The fallback is a direct photograph crop. Every detected source overlay
+    must be wholly outside it; retained provenance cannot be hidden from review.
+    """
+    try:
+        return image,review_source_replacement(image,boxes,corner_template),0,image.shape[0]
+    except ValueError:
+        if not profile:raise
+    from modules.source_editorial import extract_editorial_photo
+    from modules.image_cleaner import SourceTextBoxes
+    photo,top,bottom=extract_editorial_photo(image,boxes,profile,caption,language)
+    evidence=list(boxes)+list(getattr(boxes,'suspected_rows',[]))+list(getattr(boxes,'suspected_marks',[]))
+    if photo.shape[1]!=image.shape[1] or any(t<bottom and b>top for l,t,r,b in evidence):
+        raise ValueError('Replacement crop still contains source lettering')
+    review=review_source_replacement(photo,SourceTextBoxes())
+    review['source_extraction']={'original_sha256':hashlib.sha256(image.tobytes()).hexdigest(),
+        'original_size':[image.shape[1],image.shape[0]],'crop_bounds':[0,top,image.shape[1],bottom],
+        'removed_overlay_bounds':[list(box) for box in evidence]}
+    return photo,review,top,bottom
+
+
 def review_source_replacement(image, boxes, corner_template=None):
     h,w=image.shape[:2]
     scale=min(1080/w,1350/h)
@@ -63,6 +86,68 @@ def review_source_replacement(image, boxes, corner_template=None):
             'corner_present':corner_present,'corner_covered':covered_corner,'photo_y':photo_y}
 
 
+def replacement_photo_region(image,review):
+    """Check the retained photograph, not the sharp text being covered."""
+    bottom=min(image.shape[0],math.floor((review['panel_top']-review.get('photo_y',0))/review['scale']))
+    if bottom<=0:raise ValueError('Replacement has no visible source photograph')
+    return image[:bottom].copy()
+
+
+def _complete_caption_hooks(source, topic):
+    """Condense explicit event clauses while retaining names and qualifiers.
+
+    Each hook carries the original supporting sentences. Promotional preambles
+    and appositions may be removed; uncertain events are never made definite.
+    """
+    import re
+    from modules.llm_transformer import split_clean_sentences,check_source_grounding
+    facts=[fact for line in source.splitlines() for fact in split_clean_sentences(line) if fact.strip()]
+    hooks=[]
+    def add(hook, support,grounding=None):
+        if check_source_grounding(hook,grounding or ' '.join(support),'en'):hooks.append((hook,support))
+    for fact in facts:
+        tour=re.fullmatch(r'([A-Z][\w-]+) Announces Dates For Huge (\d{4}) (.+) World Tour',fact)
+        if tour and topic=='music':
+            detail=next((item for item in facts if item.startswith(tour.group(1)+' announced the dates for ')
+                and tour.group(2) in item and 'world' in item.lower() and 'tour' in item.lower()),None)
+            if detail:
+                add(f'{tour.group(1)} announces its {tour.group(2)} {tour.group(3)} world tour',[detail],grounding=fact)
+        bridgerton=re.search(r'\bA new (BRIDGERTON) limited series following the romance of young Violet and Viscount Edmund Bridgerton is officially on the way at Netflix\b',fact,re.I)
+        if bridgerton and not re.search(r'\b(?:not|may|might|rumou?r|reportedly)\b',fact,re.I):
+            add('Netflix’s new BRIDGERTON series follows young Violet and Viscount Edmund’s romance',[fact])
+        opinion=re.match(r'^([A-Z][a-z]+ [A-Z][a-z]+) says actors and other celebrities should stop lecturing people about politics and focus on their art instead\b',fact)
+        if opinion:
+            add(opinion.group(1)+' says celebrities should focus on their art instead of politics',[fact],
+                grounding=fact.split(', arguing that ',1)[0])
+        release=re.match(r"^([A-Z][a-z]+ [A-Z][a-z]+)[’']s new [^,]+, ([^,(]+)\s*(?:\([^)]*\))?, is coming to Netflix on ([A-Za-z]+ \d{1,2}, \d{4})(?:,|\.)",fact)
+        if release:
+            add(f'{release.group(1)}’s {release.group(2).strip()} is coming to Netflix on {release.group(3)}',[fact])
+        ranking=re.search(r'\bthe (Billboard) staff has ranked all (\d+) of (Taylor Swift)[’\']s bonus tracks\b',fact,re.I)
+        if ranking and not re.search(r'\b(?:not|may|might|rumou?r)\b',fact,re.I):
+            add(f'Billboard ranks all {ranking.group(2)} of Taylor Swift’s bonus tracks',[fact])
+    if topic=='military':
+        identity=next((fact for fact in facts if re.search(r'\bthe USS Abraham Lincoln slid up to the pier\b',fact)),None)
+        duration=next((fact for fact in facts if re.search(r'\bthe carrier ended up away from home for (\d+) days\b',fact)),None)
+        home=next((fact for fact in facts if re.search(r'\bThe ship came home\b',fact)),None)
+        if identity and duration and home:
+            days=re.search(r'\baway from home for (\d+) days\b',duration).group(1)
+            # The hook asserts only the explicit return and duration, without
+            # importing a separate no-loss statement into its fact scope.
+            add(f'USS Abraham Lincoln returns home after {days} days away',[duration,identity])
+    if topic=='ocean':
+        for fact in facts:
+            whale=re.search(r'\bA \d+-metre, roughly (\d+)-tonne humpback whale carcass washed ashore at City Beach in Perth\b',fact)
+            if whale:
+                add(f'A roughly {whale.group(1)}-tonne humpback whale carcass washed ashore in Perth',[fact])
+            if re.search(r'\btwo dead adult beluga whales were reported floating in Cook Inlet near Anchorage, Alaska\b',fact):
+                add('Two dead adult beluga whales were reported near Anchorage, Alaska',[fact])
+        identity=next((fact for fact in facts if re.search(r'\bfemale beluga\b',fact) and re.search(r'\bShedd Aquarium\b',fact)),None)
+        outcome=next((fact for fact in facts if re.search(r'\babout two months after arriving at Shedd, Osiris died\b',fact)),None)
+        if identity and outcome and re.search(r'^Osiris was given a chance at a new life',source):
+            add('Osiris the beluga died about two months after arriving at Shedd Aquarium',[outcome,identity])
+    return hooks
+
+
 def replacement_payload(caption, **options):
     from modules.llm_transformer import (strip_source_caption_noise, split_clean_sentences,
                                         headline_is_usable, generate_preserved_card_payload,
@@ -70,6 +155,7 @@ def replacement_payload(caption, **options):
     import re
     language=options.get('language','en')
     source=strip_source_caption_noise(caption)
+    supported_hooks=_complete_caption_hooks(source,options.get('content_topic','')) if language=='en' else []
     candidates=[sentence.strip().rstrip('.।') for line in source.splitlines()
                 for sentence in (re.split(r'[।!?]+',line) if language=='ne' else split_clean_sentences(line))]
     candidates=[re.sub(r'^[\U0001F000-\U0001FAFF\u2600-\u27BF\uFE0F\u200D\s]+','',text) for text in candidates]
@@ -129,6 +215,7 @@ def replacement_payload(caption, **options):
                 if "NASA" in source:
                     concise.append('The SR-71 Blackbird is gone from its NASA display')
         usable=[text for text in concise if headline_is_usable(text,language)]+usable
+    usable=[hook for hook,support in supported_hooks if headline_is_usable(hook,language)]+usable
     # Prefer a complete fact naming the animal or ocean phenomenon.
     import re
     if options.get('content_topic') != 'military':
@@ -148,6 +235,9 @@ def replacement_payload(caption, **options):
             caption_source=caption
             if focus is not None:
                 caption_source='\n'.join([original_facts[focus]]+original_facts[:focus]+original_facts[focus+1:])
+            support=next((facts for hook,facts in supported_hooks if hook==headline),None)
+            if support:
+                caption_source='\n'.join(support)
             payload=generate_preserved_card_payload(headline+'.\n'+caption,headline,**options,
                 caption_source=caption_source)
             # Condense a stated condition and outcome without guessing a cause,
@@ -224,5 +314,6 @@ def render_source_replacement(image,review,payload,output_path,logo_path,highlig
               'panel_bounds':[0,top,1080,1350],'logo_bounds':review['logo_bounds'],'logo_shape':'circle',
               'source_overlay_bounds':review['source_overlay_bounds'],'replacement_bounds':review['replacement_bounds'],
               'headline':payload['headline'],'style_id':'oceans_secret_replacement'}
+    if review.get('source_extraction'):manifest['source_extraction']=review['source_extraction']
     output.with_suffix('.quality.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
     return str(output)

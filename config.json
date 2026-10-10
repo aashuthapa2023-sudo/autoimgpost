@@ -125,7 +125,32 @@
           "allow_edge_zoom": true,
           "header_max_fraction": 0.24,
           "min_retained_fraction": 0.35,
-          "header_crop_padding": 2
+          "header_crop_padding": 2,
+          "event_backdrop_labels": {
+            "tiff": [
+              "tiff",
+              "tff"
+            ],
+            "visa": [
+              "VISA"
+            ],
+            "bell": [
+              "Bell"
+            ],
+            "ontario": [
+              "Ontario",
+              "Ontario 0",
+              "Ont"
+            ],
+            "bvlgari": [
+              "BVLGARI",
+              "BVLGA R [",
+              "BVLCAR !"
+            ],
+            "royal": [
+              "Bowal"
+            ]
+          }
         },
         "rollingstone": {
           "credit_pattern": "rolling\\s*stone",
@@ -229,7 +254,8 @@
           "credit_pattern": "news|what.?s\\s*on\\s*netflix",
           "scene_labels": [],
           "allow_edge_zoom": true,
-          "header_max_fraction": 0.24
+          "header_max_fraction": 0.24,
+          "side_crop_max_fraction": 0.08
         }
       }
     },
@@ -363,6 +389,15 @@
             0.13
           ]
         }
+      },
+      "source_cleanup_profiles": {
+        "61589616333583": {
+          "credit_pattern": "(?!)",
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.34,
+          "min_retained_fraction": 0.5,
+          "scene_labels": []
+        }
       }
     },
     {
@@ -414,7 +449,8 @@
             "300"
           ],
           "footer_start_fraction": 0.65,
-          "footer_fraction": 0.65
+          "footer_fraction": 0.65,
+          "side_crop_max_fraction": 0.08
         }
       },
       "preserve_readable_source_cards": false

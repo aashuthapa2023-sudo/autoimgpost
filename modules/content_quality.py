@@ -2,7 +2,7 @@
 
 import re
 
-OCEAN_TERMS = r"\b(?:oceans?|marine|maritime|seabed|seafloor|seawater|underwater|coral|reefs?|whales?|dolphins?|sharks?|orcas?|octopus|octopuses|squid|jellyfish|seaweed|seagrass|plankton|mangroves?|coastal|coastlines?|deep[- ]sea|oceanography|seals?|walrus|turtles?|seahorses?|manta rays?|stingrays?)\b"
+OCEAN_TERMS = r"\b(?:oceans?|marine|maritime|seabed|seafloor|seawater|underwater|coral|reefs?|whales?|belugas?|narwhals?|porpoises?|manatees?|dugongs?|dolphins?|sharks?|orcas?|octopus|octopuses|squid|jellyfish|seaweed|seagrass|plankton|mangroves?|coastal|coastlines?|deep[- ]sea|oceanography|seals?|walrus|turtles?|seahorses?|manta rays?|stingrays?)\b"
 MUSIC_TERMS = r"\b(?:music|musicians?|singers?|songs?|albums?|concerts?|billboard|grammys?|bands?|rappers?|rap|hip[- ]hop|guitars?|soundtracks?|vocalists?|drummers?|composers?|symphony|orchestra|lyrics|singles?|duets?|vocals?|VMA|VMAs|EP|LP|headliners?|record label|record deal|music video|listening party|video of the year|stage mishap|stage performance)\b"
 SCREEN_TERMS = r"\b(?:netflix|streaming|series|seasons?|episodes?|films?|movies?|cinema|hollywood|actors?|actresses?|directors?|cast|casting|screenplay|box[- ]office|trailers?|oscars?|emmys?|hbo|disney|paramount|sitcom|documentary|television|tv show)\b"
 

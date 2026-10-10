@@ -165,6 +165,7 @@ def strip_source_caption_noise(raw_caption):
     lines = []
     for line in text.splitlines():
         line = line.strip(' {}:*[]')
+        line = re.sub(r';\s*see the dates\.?\s*$', '.', line, flags=re.I)
         line = re.sub(r'(?:Follow\s+(?:our\s+page|us)|Subscribe\s+to|Link\s+in\s+(?:bio|comment)|Click\s+here|Read\s+more|(?:Details?|Full\s+story|More\s+info)\s+in\s+(?:the\s+)?comments|Photo\s*:|Credit\s*:|थप\s+(?:समाचार|जानकारी|विवरण)|हाम्रो\s+(?:फेसबुक\s+)?पेज|लिंक\s+कमेन्टमा|तस्बिर\s*:|फोटो\s*:|साभार\s*:).*', '', line, flags=re.IGNORECASE).strip()
         if line:
             lines.append(line)
@@ -186,7 +187,7 @@ def clean_and_deduplicate_source_caption(raw_caption: str, language: str = "en",
         sentence = re.sub(r'\s+', ' ', candidate.replace('_DOT_', '.')).strip(' {}:*[]')
         if not sentence or sentence.endswith('?') or re.match(r'^we asked .* (?:what|how|why)\b', sentence, re.IGNORECASE):
             continue
-        if re.search(r'\b(?:find out|read the full|tap (?:here|the link)|what you need to know|link below|industry reporting|verified production and distribution documentation|see (?:the (?:full )?list|who made|which acts))\b|यस विषयमा सम्बन्धित निकाय तथा सरोकारवालाहरूले आवश्यक अध्ययन|यस विकासक्रमले दीर्घकालीन', sentence, re.IGNORECASE):
+        if re.search(r'\b(?:find out|read the full|tap (?:here|the link)|what you need to know|link below|industry reporting|verified production and distribution documentation|see (?:the (?:full )?list|who made|which acts))\b|यस विषयमा सम्बन्धित निकाय तथा सरोकारवालाहरूले आवश्यक अध्ययन|यस विकासक्रमले दीर्घकालीन', sentence, re.IGNORECASE) or re.search(r"\bhere['’]s why\b.*\b(?:full review|must[- ]watch|read)\b",sentence,re.I):
             continue
         words = re.findall(r'[\w\u0900-\u097F]+', sentence.lower())
         if len(words) < 2:
@@ -496,12 +497,12 @@ def check_source_grounding(text, source, language='en'):
         # words to source tokens, tolerating lower-case source spelling.
         name_word = r"(?:[A-Z][a-z]+|[A-Z]{2,}s?)(?:'[A-Za-z]+)?\b"
         for phrase in re.findall(r"\b" + name_word + r"(?:\s+" + name_word + r")+", text):
-            if any(word.lower() not in source_words for word in phrase.split()):
+            if any(word.lower().removesuffix("'s") not in source_words for word in phrase.split()):
                 return False
         # Also catch single invented artist/place names at sentence starts.
         starters = {'a', 'an', 'the', 'this', 'these', 'that', 'those', 'new', 'fans', 'researchers', 'scientists', 'reports', 'according', 'after', 'before', 'with', 'while', 'it', 'its', 'their', 'his', 'her', 'he', 'she', 'they', 'we', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'}
         for word in re.findall(r"\b[A-Z][a-z]+(?:'[A-Za-z]+)?\b", text):
-            normalized = word.lower()
+            normalized = word.lower().removesuffix("'s")
             if normalized not in source_words and normalized not in starters:
                 return False
     source_tokens = set(re.findall(r'[\w\u0900-\u097F]+', source_lower))

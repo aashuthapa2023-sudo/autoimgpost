@@ -40,6 +40,15 @@ def verify_publishable_poster(image_path, caption):
         if box and (box[0]<margin or box[2]>1080-margin or box[1]<margin or box[3]>1350-margin):
             raise ValueError('Branding is outside the safe area')
     if data.get('layout_kind') == 'source_replacement':
+        extraction=data.get('source_extraction')
+        if extraction:
+            width,height=extraction.get('original_size',[0,0])
+            left,top,right,bottom=extraction.get('crop_bounds',[0,0,0,0])
+            if (not 0<=left<right<=width or not 0<=top<bottom<=height
+                    or not extraction.get('original_sha256')
+                    or any(l<right and r>left and t<bottom and b>top
+                           for l,t,r,b in extraction.get('removed_overlay_bounds',[]))):
+                raise ValueError('Source extraction proof leaves lettering inside the retained photograph')
         covers=data.get('replacement_bounds',[])
         if not covers or not data.get('logo_bounds'):
             raise ValueError('Source replacement needs opaque panels and destination logo')

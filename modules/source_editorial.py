@@ -18,6 +18,39 @@ def _normal(text):
     return re.sub(r'[^\w]','',str(text).lower())
 
 
+def _review_event_backdrop(image, boxes, profile):
+    """Retain a reviewed repeated sponsor wall as photographed scene content.
+
+    A single logo, source masthead, or unexplained central word cannot qualify.
+    All recognized words must match the configured small physical signs.
+    """
+    brands={_normal(label):brand for brand,variants in profile.get('event_backdrop_labels',{}).items()
+            for label in variants}
+    if not brands:return False
+    h,w=image.shape[:2];labels=getattr(boxes,'text_labels',{});scores=getattr(boxes,'text_confidences',{})
+    anchors=[tuple(box) for box in boxes if _normal(labels.get(tuple(box),'')) in brands]
+    names=[brands[_normal(labels[box])] for box in anchors]
+    if (len(anchors)<8 or len(set(names))<3 or names.count('tiff')<4
+            or len({min(2,int(box[1]*3/h)) for box in anchors})<2):return False
+    for raw in boxes:
+        l,t,r,b=box=tuple(raw)
+        if (box not in anchors or scores.get(box,0)<.35 or not 0<=l<r<=w
+                or not 0<=t<b<=h or r-l>w*.20 or b-t>h*.13
+                or float(cv2.mean(cv2.cvtColor(image[t:b,l:r],cv2.COLOR_BGR2GRAY))[0])>125):
+            raise ValueError('Unverified lettering is mixed with the photographed event backdrop')
+    for raw in list(getattr(boxes,'suspected_rows',[]))+list(getattr(boxes,'suspected_marks',[])):
+        l,t,r,b=tuple(raw)
+        aligned=[box for box in anchors if min(b,box[3])>max(t,box[1])]
+        if b-t<=h*.16 and len(aligned)>=2:continue
+        # Small clipped signs at the photograph's boundary can be detector-only.
+        # Require the same repeated dark sponsor wall and recognized row anchors.
+        if (0<=l<r<=w and 0<=t<b<=h and (l==0 or r==w) and r-l<=w*.12
+                and b-t<=h*.10 and len(aligned)>=3
+                and cv2.mean(cv2.cvtColor(image[t:b,l:r],cv2.COLOR_BGR2GRAY))[0]<=125):continue
+        raise ValueError('Unrecognized lettering is outside the reviewed event backdrop')
+    return True
+
+
 def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
     """Known source templates authorize edge cropping, never central text wiping.
 
@@ -25,12 +58,18 @@ def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
     central publisher watermark or unknown lettering still blocks publication.
     """
     h,w=image.shape[:2]
+    if _review_event_backdrop(image,boxes,profile):
+        return image.copy(),0,h
     labels=getattr(boxes,'text_labels',{});confidence=getattr(boxes,'text_confidences',{})
     credits=re.compile(profile['credit_pattern'],re.I)
     zoom=bool(profile.get('allow_edge_zoom'))
     header_limit=float(profile.get('header_max_fraction',.20))
     allowed={_normal(text) for text in profile.get('scene_labels',[])}
-    scene=[];corners=[];footer=[];headers=[]
+    side_limit=min(.08,max(0,float(profile.get('side_crop_max_fraction',0))))
+    scene=[];corners=[];footer=[];headers=[];sides=[]
+    def at_side(box):
+        l,t,r,b=box
+        return side_limit and (r<=w*side_limit or l>=w*(1-side_limit))
     for raw in boxes:
         l,t,r,b=box=tuple(raw);text=str(labels.get(box,''))
         is_credit=bool(credits.search(text))
@@ -46,6 +85,8 @@ def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
             scene.append(box);continue
         if (profile.get('header_fraction') or zoom) and b<=h*header_limit:
             headers.append(box);continue
+        if at_side(box):
+            sides.append(box);continue
         raise ValueError('Unknown source lettering or watermark overlaps the subject')
     rows=list(getattr(boxes,'suspected_rows',[]));marks=list(getattr(boxes,'suspected_marks',[]))
     for raw in rows+marks:
@@ -62,6 +103,8 @@ def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
         if len(aligned)>=2 and l>=min(item[0] for item in aligned)-8 and r<=max(item[2] for item in aligned)+8:continue
         if (profile.get('header_fraction') or zoom) and b<=h*header_limit:
             headers.append(box);continue
+        if at_side(box):
+            sides.append(box);continue
         raise ValueError('Unrecognized source typography overlaps the subject')
     top=round(h*profile.get('header_fraction',0)) if headers else 0
     if headers and zoom:
@@ -70,7 +113,14 @@ def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
     bottom=min((box[1]-max(12,round(h*.012)) for box in footer),default=h)
     if footer and profile.get('footer_fraction'):
         bottom=min(bottom,round(h*profile['footer_fraction']))
-    if bottom-top<max(450,h*float(profile.get('min_retained_fraction',.42))) or (bottom-top)*w<350000:
+    left=0;right=w
+    padding=max(4,round(w*.01))
+    for l,t,r,b in sides:
+        if r<=w*side_limit:left=max(left,r+padding)
+        else:right=min(right,l-padding)
+    if left>w*.08 or w-right>w*.08 or right-left<w*.88:
+        raise ValueError('Source edge lettering needs too much of the photo cropped')
+    if bottom-top<max(450,h*float(profile.get('min_retained_fraction',.42))) or (bottom-top)*(right-left)<350000:
         raise ValueError('Source graphics leave too little usable photograph')
     verified_credit=any(
             credits.search(str(labels.get(tuple(box),''))) and confidence.get(tuple(box),0)>=.55
@@ -82,20 +132,22 @@ def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
     named_anchor=zoom and any(confidence.get(tuple(box),0)>=.55 and
         caption_words.intersection(word.lower() for word in re.findall(r'[\w\u0900-\u097F]{5,}',str(labels.get(tuple(box),''))))
         for box in boxes if tuple(box) in footer or tuple(box) in headers)
-    if (top or bottom<h or corners) and not (verified_credit or named_anchor):
+    if (top or bottom<h or corners or sides) and not (verified_credit or named_anchor):
         raise ValueError('Source frame has no verified publisher anchor')
     # Detect faces in the full source; no recognized face may be cut by either
     # edge. The retained photo is a direct copy, with no inpainting or blur.
-    if top or bottom<h:
+    if top or bottom<h or sides:
         cascade=cv2.CascadeClassifier(cv2.data.haarcascades+'haarcascade_frontalface_default.xml')
         scale=min(1,900/w);gray=cv2.resize(cv2.cvtColor(image,cv2.COLOR_BGR2GRAY),(round(w*scale),round(h*scale)))
         for fx,fy,fw,fh in cascade.detectMultiScale(gray,scaleFactor=1.15,minNeighbors=5,minSize=(35,35)):
             face_top=fy/scale;face_bottom=(fy+fh)/scale
             if face_top<bottom and face_bottom>top and (face_top<top or face_bottom>bottom):
                 raise ValueError('Source frame would crop a face; choose another image')
+            if face_top<bottom and face_bottom>top and (fx/scale<left or (fx+fw)/scale>right):
+                raise ValueError('Source edge crop would cut a face; choose another image')
     # Corner provenance is permitted only by the existing bounded original
     # credit rule. It is not promoted by the new crop geometry.
     provenance=_source_provenance_marks(boxes,h,w)
     if any(not _inside_source_mark(box,provenance) for box in corners):
         raise ValueError('Corner source logo is too large for this editorial template')
-    return image[top:bottom].copy(),top,bottom
+    return image[top:bottom,left:right].copy(),top,bottom

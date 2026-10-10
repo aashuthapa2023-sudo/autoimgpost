@@ -24,4 +24,27 @@ Anisha remained paused as requested. A green workflow means the runner completed
 
 All three previews passed the existing resolution/sharpness, source extraction, caption approval and 1080×1350 poster gates. Photos were inspected visually. The unchanged safety gates still reject uncertain lettering over a subject, graphics that would require cropping a face, and stale/duplicate sources. Policy revision 12 allows previously rejected candidates to be reconsidered under the repaired caption rules without clearing publication history.
 
-The currently rejected Army source has an unrecognized detector mark in its photograph. The Taylor Swift source has a large publisher seal overlapping the portrait area. These were not excused by the headline repairs. Regular slots still depend on enough new, usable configured source photos; a schedule cannot make an unusable source acceptable.
+At that snapshot, the Army source still had an unrecognized detector mark in its photograph. The Taylor Swift source has a large publisher seal overlapping the portrait area. These were not excused by the initial headline repairs. Regular slots still depend on enough new, usable configured source photos; a schedule cannot make an unusable source acceptable.
+
+## Quality recovery follow-up
+
+Eight additional rejected Facebook caption/photo pairs were replayed with their actual OCR evidence. All passed retained-photo quality, caption, source coverage and poster approval at 1080×1350. Their previews were inspected visually; type ranges from 72 to 94px. Resolution and sharpness thresholds remain unchanged.
+
+| Page | Source post | Repair |
+| --- | --- | --- |
+| US Army Fans | 1571452095015915 | Trim a 63px left edge detector hit and the original footer; keep the people and carrier. Hook names USS Abraham Lincoln and its 322-day absence. |
+| Daily Hollywood | 1568994228575231 | Trim a 77px edge containing a partial photographed sign; preserve the characters. Hook keeps Ray Gunn, Brad Bird, Netflix and December 18, 2026. |
+| Daily Netflix | 1119440090442452 | Use the exact caption's complete Bridgerton romance fact when footer OCR is uncertain. |
+| Daily Netflix | 1119614170425044 | Keep Gene Simmons's opinion attributed to him; remove excess commentary from the hook. |
+| Music Store | 1471481508185756 | Keep the repeated physical TIFF sponsor wall intact; use a complete tour hook and one distinct caption fact. |
+| Ocean's Secret | 122119506615320544 | Crop the detected header, retain the whale photo and add the owned bottom panel and circular transparent logo. Preserve the source's event date and approximate weight. |
+| Ocean's Secret | 122119559067320544 | Crop the detected header; use the caption's complete reported beluga death/location fact. |
+| Ocean's Secret | 122123046069298539 | Recognize beluga as a marine species and keep the approximate two-month timeline and named aquarium. |
+
+Side crops are opt-in for reviewed sources, limited to 8% per edge and 12% total, and cannot cut a detected face. The TIFF exception requires at least eight small recognized physical labels, three brands, four TIFF labels and multiple vertical bands. Unknown recognized words, unexplained central detector rows and a lone publisher logo still fail review. Ocean header extraction requires every source text region to lie outside the retained crop; that proof is checked before publication.
+
+Replacement quality now measures the visible native photograph rather than the sharp source footer that will be covered. Caption fallbacks preserve complete supporting sentences without repeating a source title or padding the caption with promotional review text. Proper-name possessives no longer produce false fact-validation failures; invented names and new numeric facts still fail. Policy revision 13 reconsiders prior false rejections without clearing duplicate/publication history.
+
+The full-page Bridgerton announcement letter, the Taylor Swift portrait with a large overlapping seal, and genuinely blurry or centrally watermarked sources remain unsuitable for a clean photo poster. The engine continues checking other candidates and pages when a source fails. Anisha remains paused.
+
+Validation: 309 Python tests, the GitHub UI save/pending-page tests, and the eight real-source poster replays.

@@ -492,16 +492,19 @@ def run_pipeline(mode="run", target_channel="all"):
                 print(f"           [Source text cleanup] Checking {len(text_boxes)} regions for safe photo extraction")
                 preserved_review = None
                 replacement_review = None
+                replacement_image = raw_img
                 from modules.source_editorial import source_profile, extract_editorial_photo
                 editorial_profile = source_profile(ch,post)
                 if ch.get('poster_style',{}).get('layout_kind')=='source_replacement':
-                    from modules.source_replacement import review_source_replacement
+                    from modules.source_replacement import prepare_source_replacement
                     template_key=post.get('source_page_url','').rstrip('/').rsplit('/',1)[-1].lower()
-                    replacement_review = review_source_replacement(raw_img,text_boxes,
+                    replacement_image,replacement_review,crop_top,crop_bottom = prepare_source_replacement(raw_img,text_boxes,
+                        profile=editorial_profile,caption=post.get('caption',''),language=ocr_language,
                         corner_template=ch.get('source_branding_templates',{}).get(template_key))
                 try:
                     if replacement_review:
-                        cleaned_img,crop_top,crop_bottom = raw_img,0,raw_img.shape[0]
+                        from modules.source_replacement import replacement_photo_region
+                        cleaned_img = replacement_photo_region(replacement_image,replacement_review)
                     elif editorial_profile:
                         cleaned_img,crop_top,crop_bottom = extract_editorial_photo(raw_img,text_boxes,editorial_profile,post.get('caption',''),ocr_language)
                     else:
@@ -582,7 +585,7 @@ def run_pipeline(mode="run", target_channel="all"):
                 print(f"     [4/4] Compositing 4:5 studio poster to {rendered_file}...")
                 if replacement_review:
                     from modules.source_replacement import render_source_replacement
-                    render_source_replacement(raw_img,replacement_review,ai_data,rendered_file,
+                    render_source_replacement(replacement_image,replacement_review,ai_data,rendered_file,
                         highlight_hex=ch.get('highlight_color','#FFC83B'),**ch.get('poster_style',{}))
                 elif preserved_review:
                     from modules.source_card import render_preserved_source_card
