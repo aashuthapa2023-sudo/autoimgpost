@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-10T06:06:14.605973+00:00",
+  "updated_at": "2026-10-10T06:34:52.345368+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -2604,51 +2604,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1119614170425044",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-09T18:04:26.256913+00:00",
-      "policy_signature": "3d4d4fdb75102971",
-      "retry_after": 1791612266.2569284
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1119440090442452",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-09T18:04:37.629726+00:00",
-      "policy_signature": "3d4d4fdb75102971",
-      "retry_after": 1791612277.629743
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1119214847131643",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-10-09T18:04:48.947326+00:00",
-      "policy_signature": "3d4d4fdb75102971",
-      "retry_after": 1791612288.947342
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1118640433855751",
-      "stage": "content_or_layout",
-      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
-      "checked_at": "2026-10-09T18:05:03.653063+00:00",
-      "policy_signature": "3d4d4fdb75102971",
-      "retry_after": 1791612303.653079
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1118214090565052",
-      "stage": "content_or_layout",
-      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
-      "checked_at": "2026-10-09T18:05:11.890518+00:00",
-      "policy_signature": "3d4d4fdb75102971",
-      "retry_after": 1791612311.890534
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1117938600592601",
       "stage": "content_or_layout",
       "reason": "Unknown source lettering or watermark overlaps the subject",
@@ -3267,6 +3222,51 @@
       "checked_at": "2026-10-10T06:06:14.605973+00:00",
       "policy_signature": "4ea9e288005bbe6e",
       "retry_after": 1791655574.6059964
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1119614170425044",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-10T06:34:00.604078+00:00",
+      "policy_signature": "3d4d4fdb75102971",
+      "retry_after": 1791657240.6040952
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1119440090442452",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-10T06:34:14.019023+00:00",
+      "policy_signature": "3d4d4fdb75102971",
+      "retry_after": 1791657254.019041
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1119214847131643",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-10-10T06:34:27.442439+00:00",
+      "policy_signature": "3d4d4fdb75102971",
+      "retry_after": 1791657267.4424572
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1118640433855751",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-10-10T06:34:43.709978+00:00",
+      "policy_signature": "3d4d4fdb75102971",
+      "retry_after": 1791657283.7099948
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1118214090565052",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-10-10T06:34:52.345368+00:00",
+      "policy_signature": "3d4d4fdb75102971",
+      "retry_after": 1791657292.345385
     }
   ]
 }
