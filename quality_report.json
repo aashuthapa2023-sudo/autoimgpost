@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-10T16:05:10.931670+00:00",
+  "updated_at": "2026-10-10T16:08:55.230452+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -3333,15 +3333,6 @@
     },
     {
       "channel_id": "Music Store",
-      "post_id": "1620161410150997",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-10T15:31:06.021870+00:00",
-      "policy_signature": "784f0edb9e5cd5b4",
-      "retry_after": 1791689466.0218785
-    },
-    {
-      "channel_id": "Music Store",
       "post_id": "1471481508185756",
       "stage": "content_or_layout",
       "reason": "Unknown source lettering or watermark overlaps the subject",
@@ -3396,15 +3387,6 @@
     },
     {
       "channel_id": "oceans_secret",
-      "post_id": "122140357107240703",
-      "stage": "content_or_layout",
-      "reason": "Replacement headline cannot fit at large readable type",
-      "checked_at": "2026-10-10T16:04:29.106966+00:00",
-      "policy_signature": "6767ce754cfa94ae",
-      "retry_after": 1791691469.1069822
-    },
-    {
-      "channel_id": "oceans_secret",
       "post_id": "122119764657320544",
       "stage": "content_or_layout",
       "reason": "Source lettering overlaps the marine subject outside replacement zones",
@@ -3447,6 +3429,24 @@
       "checked_at": "2026-10-10T16:05:10.931670+00:00",
       "policy_signature": "6767ce754cfa94ae",
       "retry_after": 1791691510.9316852
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1620161410150997",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-10T16:08:17.686997+00:00",
+      "policy_signature": "3bc7f98ca423b1e7",
+      "retry_after": 1791691697.687005
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122140357107240703",
+      "stage": "content_or_layout",
+      "reason": "Replacement headline cannot fit at large readable type",
+      "checked_at": "2026-10-10T16:08:55.230452+00:00",
+      "policy_signature": "80ea3ade91200df7",
+      "retry_after": 1791691735.230468
     }
   ]
 }
