@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-10T16:08:55.230452+00:00",
+  "updated_at": "2026-10-10T16:34:35.188207+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -3297,15 +3297,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1119671120419349",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-10T15:29:55.205393+00:00",
-      "policy_signature": "1bf4ffbb92d0e24e",
-      "retry_after": 1791689395.2054071
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1119614170425044",
       "stage": "content_or_layout",
       "reason": "Removed source headline contains uncertain OCR words",
@@ -3431,15 +3422,6 @@
       "retry_after": 1791691510.9316852
     },
     {
-      "channel_id": "Music Store",
-      "post_id": "1620161410150997",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-10T16:08:17.686997+00:00",
-      "policy_signature": "3bc7f98ca423b1e7",
-      "retry_after": 1791691697.687005
-    },
-    {
       "channel_id": "oceans_secret",
       "post_id": "122140357107240703",
       "stage": "content_or_layout",
@@ -3447,6 +3429,33 @@
       "checked_at": "2026-10-10T16:08:55.230452+00:00",
       "policy_signature": "80ea3ade91200df7",
       "retry_after": 1791691735.230468
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1119671120419349",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-10T16:33:38.179543+00:00",
+      "policy_signature": "00b8a3d778fb4961",
+      "retry_after": 1791693218.1795614
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1620161410150997",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-10T16:34:07.769986+00:00",
+      "policy_signature": "98ed46cdb6e1a0ee",
+      "retry_after": 1791693247.7699955
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1540223348129905",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-10T16:34:35.188207+00:00",
+      "policy_signature": "98e2edfc750db0bc",
+      "retry_after": 1791693275.1882238
     }
   ]
 }
