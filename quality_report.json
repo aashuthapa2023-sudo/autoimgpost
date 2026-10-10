@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-10T06:34:52.345368+00:00",
+  "updated_at": "2026-10-10T07:10:44.105174+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -2594,15 +2594,6 @@
       "retry_after": 1791608783.875735
     },
     {
-      "channel_id": "nepal_speaks",
-      "post_id": "1539306608221579",
-      "stage": "source_language",
-      "reason": "Source caption does not match the page language",
-      "checked_at": "2026-10-09T17:16:14.824113+00:00",
-      "policy_signature": "4ea9e288005bbe6e",
-      "retry_after": 1791609374.824128
-    },
-    {
       "channel_id": "daily_netflix",
       "post_id": "1117938600592601",
       "stage": "content_or_layout",
@@ -2628,15 +2619,6 @@
       "checked_at": "2026-10-09T18:34:24.573158+00:00",
       "policy_signature": "3d4d4fdb75102971",
       "retry_after": 1791614064.5731761
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1539287644890142",
-      "stage": "content_or_layout",
-      "reason": "Unrecognized source typography overlaps the subject",
-      "checked_at": "2026-10-09T18:35:35.587354+00:00",
-      "policy_signature": "4ea9e288005bbe6e",
-      "retry_after": 1791614135.5873716
     },
     {
       "channel_id": "Daily Hollywood",
@@ -3267,6 +3249,33 @@
       "checked_at": "2026-10-10T06:34:52.345368+00:00",
       "policy_signature": "3d4d4fdb75102971",
       "retry_after": 1791657292.345385
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1539684458183794",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-10-10T07:10:34.084815+00:00",
+      "policy_signature": "4ea9e288005bbe6e",
+      "retry_after": 1791659434.0848339
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1539306608221579",
+      "stage": "source_language",
+      "reason": "Source caption does not match the page language",
+      "checked_at": "2026-10-10T07:10:34.087529+00:00",
+      "policy_signature": "4ea9e288005bbe6e",
+      "retry_after": 1791659434.087539
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1539287644890142",
+      "stage": "content_or_layout",
+      "reason": "Unrecognized source typography overlaps the subject",
+      "checked_at": "2026-10-10T07:10:44.105174+00:00",
+      "policy_signature": "4ea9e288005bbe6e",
+      "retry_after": 1791659444.105194
     }
   ]
 }
