@@ -79,6 +79,14 @@ class QualityRecoveryTests(unittest.TestCase):
    self.assertTrue(channel_accepts_post({'content_topic':'ocean'},{'caption':f'A {species} was rescued.'}))
   self.assertFalse(channel_accepts_post({'content_topic':'ocean'},{'caption':'Ocean’s Eleven is now streaming on Netflix.'}))
   self.assertFalse(channel_accepts_post({'content_topic':'ocean'},{'caption':'A Beluga cryptocurrency wallet was released.'}))
+ def test_squidworm_hook_keeps_observed_object_uncertain_and_does_not_confirm_feeding(self):
+  source=('At 18,300 feet beneath the Pacific Ocean, scientists spotted one of the strangest sights in the deep sea.\n'
+          'Meet the flamboyant squidworm (Teuthidodrilus samae), a segmented marine worm with shimmering, paddle-like appendages.\n'
+          'During an expedition near Hawaii, researchers filmed it floating with what looked like a piece of sea cucumber. They suspect it may have been feeding on the remains.')
+  data=replacement_payload(source,content_topic='ocean')
+  self.assertEqual(data['headline'],'18,300 feet down: squidworm filmed with a possible sea cucumber piece')
+  self.assertIn('suspect it may',data['rewritten_caption'])
+  self.assertNotIn('feeding',data['headline'])
  def test_possessives_of_source_names_are_grounded_but_invented_names_are_not(self):
   self.assertTrue(check_source_grounding('Viscount Edmund’s romance will appear on Netflix.','Viscount Edmund has a romance in the new Netflix series.'))
   self.assertFalse(check_source_grounding('Viscount Edward’s romance will appear on Netflix.','Viscount Edmund has a romance in the new Netflix series.'))

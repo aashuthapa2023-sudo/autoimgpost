@@ -135,6 +135,16 @@ def _complete_caption_hooks(source, topic):
             # importing a separate no-loss statement into its fact scope.
             add(f'USS Abraham Lincoln returns home after {days} days away',[duration,identity])
     if topic=='ocean':
+        identity=next((fact for fact in facts if re.search(r'\bflamboyant squidworm \(Teuthidodrilus samae\), a segmented marine worm\b',fact)),None)
+        observation=next((fact for fact in facts if re.search(r'\bresearchers filmed it floating with what looked like a piece of sea cucumber\b',fact)),None)
+        if identity and observation:
+            speculation=[fact for fact in facts if re.search(r'\bThey suspect it may have been feeding on the remains\b',fact)]
+            depth=next((fact for fact in facts if re.search(r'\bAt ([\d,]+) feet beneath the Pacific Ocean\b',fact)),None)
+            hook='Researchers filmed a squidworm with what looked like a piece of sea cucumber'
+            if depth:
+                feet=re.search(r'\bAt ([\d,]+) feet beneath the Pacific Ocean\b',depth).group(1)
+                hook=f'{feet} feet down: squidworm filmed with a possible sea cucumber piece'
+            add(hook,[observation,identity]+speculation,grounding=' '.join([observation,identity,depth or '']))
         for fact in facts:
             whale=re.search(r'\bA \d+-metre, roughly (\d+)-tonne humpback whale carcass washed ashore at City Beach in Perth\b',fact)
             if whale:
@@ -218,8 +228,10 @@ def replacement_payload(caption, **options):
     usable=[hook for hook,support in supported_hooks if headline_is_usable(hook,language)]+usable
     # Prefer a complete fact naming the animal or ocean phenomenon.
     import re
-    if options.get('content_topic') != 'military':
+    if options.get('content_topic') == 'ocean':
+        reviewed_hooks={hook for hook,support in supported_hooks}
         usable.sort(key=lambda text: (
+            text not in reviewed_hooks,
             not bool(re.search(r'\b(?:whales?|dolphins?|coral|ocean|marine|sharks?|sponges?|seafloor)\b',text,re.I)),
             not bool(re.search(r'\b(?:died|dies|discovered|rescued|survival|declined|identified)\b',text,re.I))))
     for headline in usable:

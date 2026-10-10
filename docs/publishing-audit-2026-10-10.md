@@ -28,7 +28,7 @@ At that snapshot, the Army source still had an unrecognized detector mark in its
 
 ## Quality recovery follow-up
 
-Eight additional rejected Facebook caption/photo pairs were replayed with their actual OCR evidence. All passed retained-photo quality, caption, source coverage and poster approval at 1080×1350. Their previews were inspected visually; type ranges from 72 to 94px. Resolution and sharpness thresholds remain unchanged.
+Nine additional rejected Facebook caption/photo pairs were replayed with their actual OCR evidence. All passed retained-photo quality, caption, source coverage and poster approval at 1080×1350. Their previews were inspected visually; type ranges from 72 to 94px. Resolution and sharpness thresholds remain unchanged.
 
 | Page | Source post | Repair |
 | --- | --- | --- |
@@ -40,11 +40,14 @@ Eight additional rejected Facebook caption/photo pairs were replayed with their 
 | Ocean's Secret | 122119506615320544 | Crop the detected header, retain the whale photo and add the owned bottom panel and circular transparent logo. Preserve the source's event date and approximate weight. |
 | Ocean's Secret | 122119559067320544 | Crop the detected header; use the caption's complete reported beluga death/location fact. |
 | Ocean's Secret | 122123046069298539 | Recognize beluga as a marine species and keep the approximate two-month timeline and named aquarium. |
+| Ocean's Secret | 122140357107240703 | Replace the vague, overlong deep-sea introduction with a complete squidworm hook. Keep the 18,300-foot depth and possible sea-cucumber identification; feeding remains suspected in the caption. Verified at 80px type after the live run exposed this candidate. |
 
 Side crops are opt-in for reviewed sources, limited to 8% per edge and 12% total, and cannot cut a detected face. The TIFF exception requires at least eight small recognized physical labels, three brands, four TIFF labels and multiple vertical bands. Unknown recognized words, unexplained central detector rows and a lone publisher logo still fail review. Ocean header extraction requires every source text region to lie outside the retained crop; that proof is checked before publication.
 
-Replacement quality now measures the visible native photograph rather than the sharp source footer that will be covered. Caption fallbacks preserve complete supporting sentences without repeating a source title or padding the caption with promotional review text. Proper-name possessives no longer produce false fact-validation failures; invented names and new numeric facts still fail. Policy revision 13 reconsiders prior false rejections without clearing duplicate/publication history.
+Replacement quality now measures the visible native photograph rather than the sharp source footer that will be covered. Caption fallbacks preserve complete supporting sentences without repeating a source title or padding the caption with promotional review text. Proper-name possessives no longer produce false fact-validation failures; invented names and new numeric facts still fail. Policy revision 14 reconsiders prior false rejections without clearing duplicate/publication history. Reviewed complete hooks take precedence over vague introductory sentences; marine hook ranking applies only to the ocean page.
 
 The full-page Bridgerton announcement letter, the Taylor Swift portrait with a large overlapping seal, and genuinely blurry or centrally watermarked sources remain unsuitable for a clean photo poster. The engine continues checking other candidates and pages when a source fails. Anisha remains paused.
 
-Validation: 309 Python tests, the GitHub UI save/pending-page tests, and the eight real-source poster replays.
+Validation: 310 Python tests, the GitHub UI save/pending-page tests, and the nine real-source poster replays.
+
+Live cloud verification: [38066142735](https://github.com/aashuthapa2023-sudo/autoimgpost/actions/runs/38066142735) completed successfully with 309 tests before the final squidworm regression was added. Facebook confirmed Ocean's Secret source `122119764657320544` as Meta post `122109648495493170` at 16:09:08 UTC, and the repaired Army source `1571452095015915` as Meta post `122147728749353591` at 16:09:25 UTC. Netflix, Music Store, Hollywood and Nepal waited for their configured hourly intervals (36–37 minutes had elapsed), with no quality blocking on those pages in this run. Anisha stayed paused. Publication state saved to latest main at 16:09:39 UTC; the live website's cleanup settings matched the deployed repository.
