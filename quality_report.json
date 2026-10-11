@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-11T13:09:40.754402+00:00",
+  "updated_at": "2026-10-11T14:04:16.407283+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -3771,6 +3771,24 @@
       "checked_at": "2026-10-11T13:09:40.754402+00:00",
       "policy_signature": "98e2edfc750db0bc",
       "retry_after": 1791767380.754418
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1122024780183983",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-11T14:03:54.935597+00:00",
+      "policy_signature": "00b8a3d778fb4961",
+      "retry_after": 1791770634.9356132
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1472449894755584",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-11T14:04:16.407283+00:00",
+      "policy_signature": "98ed46cdb6e1a0ee",
+      "retry_after": 1791770656.4072976
     }
   ]
 }
