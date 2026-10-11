@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-11T23:04:12.236309+00:00",
+  "updated_at": "2026-10-11T23:34:57.436066+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -3683,15 +3683,6 @@
       "retry_after": 1791765329.095629
     },
     {
-      "channel_id": "nepal_speaks",
-      "post_id": "1144516651408922",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-11T13:09:40.754402+00:00",
-      "policy_signature": "98e2edfc750db0bc",
-      "retry_after": 1791767380.754418
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1472449894755584",
       "stage": "content_or_layout",
@@ -3915,6 +3906,24 @@
       "checked_at": "2026-10-11T23:04:12.236309+00:00",
       "policy_signature": "885f42e542d01298",
       "retry_after": 1791803052.2363248
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1541131178039122",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-11T23:34:46.012457+00:00",
+      "policy_signature": "d984add6d100783b",
+      "retry_after": 1791804886.012472
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1144516651408922",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-11T23:34:57.436066+00:00",
+      "policy_signature": "d984add6d100783b",
+      "retry_after": 1791804897.436084
     }
   ]
 }
