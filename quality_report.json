@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-11T08:35:42.608576+00:00",
+  "updated_at": "2026-10-11T09:06:46.004252+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -2775,15 +2775,6 @@
     },
     {
       "channel_id": "nepal_speaks",
-      "post_id": "1539575084861398",
-      "stage": "content_or_layout",
-      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
-      "checked_at": "2026-10-10T19:38:58.112875+00:00",
-      "policy_signature": "98e2edfc750db0bc",
-      "retry_after": 1791704338.112892
-    },
-    {
-      "channel_id": "nepal_speaks",
       "post_id": "1539569798195260",
       "stage": "source_language",
       "reason": "Source caption does not match the page language",
@@ -2829,66 +2820,12 @@
     },
     {
       "channel_id": "nepal_speaks",
-      "post_id": "1143610414832879",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-10T20:34:39.230560+00:00",
-      "policy_signature": "98e2edfc750db0bc",
-      "retry_after": 1791707679.23059
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1143591784834742",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-10T20:34:47.164494+00:00",
-      "policy_signature": "98e2edfc750db0bc",
-      "retry_after": 1791707687.1645136
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1143569991503588",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-10T20:34:54.202348+00:00",
-      "policy_signature": "98e2edfc750db0bc",
-      "retry_after": 1791707694.2023644
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1143545274839393",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-10T20:35:00.887826+00:00",
-      "policy_signature": "98e2edfc750db0bc",
-      "retry_after": 1791707700.8878443
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1143523681508219",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-10T20:35:08.925412+00:00",
-      "policy_signature": "98e2edfc750db0bc",
-      "retry_after": 1791707708.9254305
-    },
-    {
-      "channel_id": "nepal_speaks",
       "post_id": "1539306608221579",
       "stage": "source_language",
       "reason": "Source caption does not match the page language",
       "checked_at": "2026-10-10T20:35:08.929056+00:00",
       "policy_signature": "98e2edfc750db0bc",
       "retry_after": 1791707708.929068
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1121398146913313",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 10.7 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-10T21:03:46.659844+00:00",
-      "policy_signature": "00b8a3d778fb4961",
-      "retry_after": 1791709426.659865
     },
     {
       "channel_id": "nepal_speaks",
@@ -3726,6 +3663,78 @@
       "checked_at": "2026-10-11T08:35:42.608576+00:00",
       "policy_signature": "98e2edfc750db0bc",
       "retry_after": 1791750942.6085935
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1121398146913313",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 10.7 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-11T09:04:19.729369+00:00",
+      "policy_signature": "00b8a3d778fb4961",
+      "retry_after": 1791752659.7293856
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1143610414832879",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-11T09:05:18.564098+00:00",
+      "policy_signature": "98e2edfc750db0bc",
+      "retry_after": 1791752718.5641139
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1143591784834742",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-11T09:05:31.238157+00:00",
+      "policy_signature": "98e2edfc750db0bc",
+      "retry_after": 1791752731.2381728
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1143569991503588",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-11T09:05:42.433016+00:00",
+      "policy_signature": "98e2edfc750db0bc",
+      "retry_after": 1791752742.433034
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1143545274839393",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-11T09:05:53.051504+00:00",
+      "policy_signature": "98e2edfc750db0bc",
+      "retry_after": 1791752753.0515208
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1143523681508219",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-11T09:06:05.681287+00:00",
+      "policy_signature": "98e2edfc750db0bc",
+      "retry_after": 1791752765.681307
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1539575084861398",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-10-11T09:06:25.970019+00:00",
+      "policy_signature": "98e2edfc750db0bc",
+      "retry_after": 1791752785.9700353
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122140579323240703",
+      "stage": "content_or_layout",
+      "reason": "Replacement headline cannot fit at large readable type",
+      "checked_at": "2026-10-11T09:06:46.004252+00:00",
+      "policy_signature": "f23573fd53659612",
+      "retry_after": 1791752806.0042694
     }
   ]
 }
