@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-11T21:05:49.650600+00:00",
+  "updated_at": "2026-10-11T21:34:36.514807+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -3711,15 +3711,6 @@
     },
     {
       "channel_id": "nepal_speaks",
-      "post_id": "1541151788037061",
-      "stage": "content_or_layout",
-      "reason": "Unrecognized source typography overlaps the subject",
-      "checked_at": "2026-10-11T14:35:07.547608+00:00",
-      "policy_signature": "98e2edfc750db0bc",
-      "retry_after": 1791772507.5476255
-    },
-    {
-      "channel_id": "nepal_speaks",
       "post_id": "1541265154692391",
       "stage": "content_or_layout",
       "reason": "Headline cannot fit at readable type size; rewrite before publishing",
@@ -3879,6 +3870,24 @@
       "checked_at": "2026-10-11T21:05:49.650600+00:00",
       "policy_signature": "e4ca797971174adc",
       "retry_after": 1791795949.6506188
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1144550244738896",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-11T21:34:28.613405+00:00",
+      "policy_signature": "d984add6d100783b",
+      "retry_after": 1791797668.6134222
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1541151788037061",
+      "stage": "content_or_layout",
+      "reason": "Unrecognized source typography overlaps the subject",
+      "checked_at": "2026-10-11T21:34:36.514807+00:00",
+      "policy_signature": "d984add6d100783b",
+      "retry_after": 1791797676.5148458
     }
   ]
 }
