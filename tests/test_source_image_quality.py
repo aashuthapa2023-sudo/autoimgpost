@@ -39,6 +39,24 @@ class SourceImageQualityTests(unittest.TestCase):
             with self.subTest(score=score),patch('modules.image_cleaner.cv2.Laplacian',return_value=SimpleNamespace(var=lambda:score)):
                 self.assertEqual(validate_image_quality(photo,min_sharpness=80)[0],accepted)
 
+    def test_portrait_exception_requires_clear_native_face_and_near_threshold_photo(self):
+        photo=np.random.default_rng(13).integers(0,256,(800,800,3),dtype=np.uint8)
+        for global_score,face_score,size,accepted in [(32.3,52.2,156,True),(15,100,156,False),
+                                                    (32.3,30,156,False),(32.3,100,90,False)]:
+            with self.subTest(global_score=global_score,face_score=face_score,size=size):
+                detector=SimpleNamespace(detectMultiScale=lambda *a,**k:[(200,200,size,size)])
+                scores=[SimpleNamespace(var=lambda:global_score),SimpleNamespace(var=lambda:face_score)]
+                with patch('modules.image_cleaner.cv2.CascadeClassifier',return_value=detector),patch('modules.image_cleaner.cv2.Laplacian',side_effect=scores):
+                    self.assertEqual(validate_image_quality(photo,min_sharpness=35,allow_portrait_background=True)[0],accepted)
+
+    def test_portrait_exception_never_accepts_absent_or_one_unclear_face(self):
+        photo=np.random.default_rng(14).integers(0,256,(800,800,3),dtype=np.uint8)
+        for faces in [[],[(200,200,156,156),(400,200,156,156)]]:
+            scores=[SimpleNamespace(var=lambda:32.3),SimpleNamespace(var=lambda:60),SimpleNamespace(var=lambda:20)]
+            detector=SimpleNamespace(detectMultiScale=lambda *a,**k:faces)
+            with patch('modules.image_cleaner.cv2.CascadeClassifier',return_value=detector),patch('modules.image_cleaner.cv2.Laplacian',side_effect=scores):
+                self.assertFalse(validate_image_quality(photo,min_sharpness=35,allow_portrait_background=True)[0])
+
 
 if __name__ == '__main__':
     unittest.main()

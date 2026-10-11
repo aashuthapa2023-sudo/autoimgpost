@@ -338,6 +338,34 @@ def _wrap_headline(words, size, language, max_width, accent):
     return lines
 
 
+def _select_title_rows(words,language,accent,options):
+    margin=max(56,min(80,int(options.get('safe_margin',64))))
+    width=1080-2*margin
+    minimum=max(64,int(options.get('min_font_size',68)))
+    maximum=min(100,int(options.get('max_font_size',94)))
+    line_limit=min(3,int(options.get('max_lines',3)))
+    gap=20 if language=='ne' else 14
+    masthead=options.get('text_position','bottom')=='bottom' and options.get('logo_position','with-text')=='with-text'
+    height_limit=min(296,470-110-margin) if masthead else 290
+    for size in range(maximum,minimum-1,-2):
+        lines=_wrap_headline(words,size,language,width,accent)
+        images=[_render_runs(line,size,language,accent) for line in lines]
+        if (len(lines)<=line_limit and all(0<im.width<=width and im.getbbox() for im in images)
+                and sum(im.height for im in images)+gap*(len(images)-1)<=height_limit):
+            return size,images
+    raise ValueError('Headline cannot fit at readable type size; rewrite before publishing')
+
+
+def headline_fits_poster(headline,highlight_hex='#FFC83B',**options):
+    """Measure the actual glyphs with exactly the final renderer's limits."""
+    language='ne' if is_devanagari(headline) else 'en'
+    try:
+        _select_title_rows([(word,'white') for word in headline.split()],language,
+                           hex_to_rgb(highlight_hex if highlight_hex!='random' else '#FFC83B'),options)
+        return True
+    except ValueError:return False
+
+
 def render_final_poster(base_img, overlay_lines, highlight_hex='#FFC83B', badge_label='',
                         dest_page_name='', output_path='output/poster.jpg', **kwargs):
     """Render a measured editorial card and write a verifiable quality manifest."""
@@ -361,27 +389,12 @@ def render_final_poster(base_img, overlay_lines, highlight_hex='#FFC83B', badge_
         raise ValueError('Brand colours do not provide safe headline contrast')
     margin = max(56,min(80,int(kwargs.get('safe_margin',64))))
     max_width = 1080 - 2*margin
-    min_size = max(64,int(kwargs.get('min_font_size',68)))
-    max_size = min(100,int(kwargs.get('max_font_size',94)))
-    max_lines = min(3,int(kwargs.get('max_lines',3)))
     line_gap = 14 if language=='en' else 20
     # Bottom mastheads start the title 110px into a maximum470px panel.
     # Use the actual remaining glyph space without sacrificing the global margin.
     bottom_masthead = (kwargs.get('text_position','bottom')=='bottom'
                        and kwargs.get('logo_position','with-text')=='with-text')
-    max_title_height = min(296,470-110-margin) if bottom_masthead else 290
-    selected = None
-    for size in range(max_size,min_size-1,-2):
-        lines = _wrap_headline(words,size,language,max_width,accent)
-        images = [_render_runs(line,size,language,accent) for line in lines]
-        if len(lines)<=max_lines and all(0<im.width<=max_width and im.getbbox() for im in images):
-            height = sum(im.height for im in images)+line_gap*(len(images)-1)
-            if height <= max_title_height:
-                selected = size,images
-                break
-    if selected is None:
-        raise ValueError('Headline cannot fit at readable type size; rewrite before publishing')
-    size,images = selected
+    size,images = _select_title_rows(words,language,accent,kwargs)
     title_height=sum(im.height for im in images)+line_gap*(len(images)-1)
     brand_name=dest_page_name or badge_label
     brand_font=get_font(28,language='ne' if is_devanagari(brand_name) else 'en')

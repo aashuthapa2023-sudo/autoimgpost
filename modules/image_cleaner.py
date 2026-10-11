@@ -452,7 +452,7 @@ def erase_text_and_watermarks(img: np.ndarray, source_text_boxes=None, return_cr
     return (photo,top,bottom) if return_crop_bounds else photo
 
 
-def validate_image_quality(img: np.ndarray, min_dim: int = 500, min_sharpness: float = 100.0) -> tuple:
+def validate_image_quality(img: np.ndarray, min_dim: int = 500, min_sharpness: float = 100.0, *, allow_portrait_background=False) -> tuple:
     """
     Validates image resolution and clarity to strictly eliminate blurry or pixelated images:
     - Verifies native dimensions are at least min_dim x min_dim and area >= 350,000 px
@@ -472,7 +472,24 @@ def validate_image_quality(img: np.ndarray, min_dim: int = 500, min_sharpness: f
     # This score is an approximate JPEG/noise metric, not a perceptual cliff.
     # Half a variance unit avoids rejecting visually identical threshold ties.
     if lap_var + .5 < min_sharpness:
-        return False, f"Blurry image detected: Sharpness variance {lap_var:.1f} is below minimum threshold of {min_sharpness:.1f}"
+        # A cinematic portrait can have a clear subject against a deliberately
+        # soft background. Only a near-threshold extracted photograph qualifies:
+        # verify native face detail, never sharp source lettering or an upsample.
+        clear_portrait=False
+        if allow_portrait_background and lap_var>=min_sharpness*.75:
+            detector=cv2.CascadeClassifier(cv2.data.haarcascades+'haarcascade_frontalface_default.xml')
+            scale=min(1,900/w)
+            scan=cv2.resize(gray,(round(w*scale),round(h*scale)))
+            faces=detector.detectMultiScale(scan,scaleFactor=1.15,minNeighbors=5,minSize=(64,64))
+            details=[]
+            for x,y,fw,fh in faces:
+                left,top,right,bottom=map(round,(x/scale,y/scale,(x+fw)/scale,(y+fh)/scale))
+                face=gray[top:bottom,left:right]
+                details.append(min(face.shape)>=120 and np.std(face)>=22
+                    and float(cv2.Laplacian(face,cv2.CV_64F).var())>=min_sharpness*1.4)
+            clear_portrait=bool(details) and all(details)
+        if not clear_portrait:
+            return False, f"Blurry image detected: Sharpness variance {lap_var:.1f} is below minimum threshold of {min_sharpness:.1f}"
 
     # Check contrast / std deviation
     std_dev = float(np.std(gray))

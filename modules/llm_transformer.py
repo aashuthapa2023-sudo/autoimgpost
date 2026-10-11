@@ -187,6 +187,7 @@ def clean_and_deduplicate_source_caption(raw_caption: str, language: str = "en",
         sentence = re.sub(r'\s+', ' ', candidate.replace('_DOT_', '.')).strip(' {}:*[]')
         if not sentence or sentence.endswith('?') or re.match(r'^we asked .* (?:what|how|why)\b', sentence, re.IGNORECASE):
             continue
+        if re.match(r'^(?:Our|Read our|In our) (?:full )?review\b',sentence,re.I):continue
         if re.search(r'\b(?:find out|read the full|tap (?:here|the link)|what you need to know|link below|industry reporting|verified production and distribution documentation|see (?:the (?:full )?list|who made|which acts))\b|यस विषयमा सम्बन्धित निकाय तथा सरोकारवालाहरूले आवश्यक अध्ययन|यस विकासक्रमले दीर्घकालीन', sentence, re.IGNORECASE) or re.search(r"\bhere['’]s why\b.*\b(?:full review|must[- ]watch|read)\b",sentence,re.I):
             continue
         words = re.findall(r'[\w\u0900-\u097F]+', sentence.lower())
@@ -549,7 +550,7 @@ def validate_model_payload(payload, raw_caption, language='en', channel_name='',
     return {'headline': headline, 'overlay_lines': format_balanced_overlay(headline, language), 'rewritten_caption': cleaned_caption}
 
 
-def generate_social_payload(raw_caption: str, language: str = "en", channel_name: str = "", channel_id: str = "", content_topic: str = "", editorial_style: str = "") -> dict:
+def generate_social_payload(raw_caption: str, language: str = "en", channel_name: str = "", channel_id: str = "", content_topic: str = "", editorial_style: str = "", *, max_headline_words=None, headline_accept=None) -> dict:
     raw_caption = str(raw_caption or '').strip()
     if not raw_caption:
         raise ValueError('Source image has no caption to rewrite')
@@ -561,10 +562,16 @@ def generate_social_payload(raw_caption: str, language: str = "en", channel_name
             raise ValueError('Source caption does not match the page topic')
     prompt = build_system_prompt(effective_lang, channel_name, topic, editorial_style)
     prompt += '\nWEB METADATA: Author bylines, publication timestamps, navigation, cast-table labels, attachment controls and community guidelines are not story facts. Do not repeat them in the headline or caption.'
+    if max_headline_words:
+        prompt += f'\nIMAGE SPACE: Rewrite the complete key event in at most {max_headline_words} words. Keep named subjects, attribution and uncertainty; remove optional framing. Do not cut a sentence prefix.'
     user_content = f"Exact source caption for {channel_name or channel_id}:\n{raw_caption}"
 
     def accept(candidate):
-        return validate_model_payload(candidate, raw_caption, effective_lang, channel_name, channel_id, topic)
+        payload=validate_model_payload(candidate, raw_caption, effective_lang, channel_name, channel_id, topic)
+        if (max_headline_words and len(payload['headline'].split())>max_headline_words
+                or headline_accept and not headline_accept(payload['headline'])):
+            raise ValueError('Grounded headline needs a shorter complete rewrite to fit the image')
+        return payload
 
     # Invalid output moves to the next provider; an arbitrary JSON object is
     # never sufficient to publish. No source/caption/token content is logged.
@@ -604,7 +611,8 @@ def generate_social_payload(raw_caption: str, language: str = "en", channel_name
             pass
     # Source excerpts remain honest, but only complete concise facts qualify.
     # Translation or synthesis is not guessed when all providers are invalid.
-    return smart_heuristic_headline(raw_caption, effective_lang, channel_name, channel_id, topic, editorial_style)
+    fallback=smart_heuristic_headline(raw_caption, effective_lang, channel_name, channel_id, topic, editorial_style)
+    return accept(fallback) if max_headline_words or headline_accept else fallback
 
 
 def generate_preserved_card_payload(raw_caption: str, reviewed_headline: str, language: str = "en",

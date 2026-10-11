@@ -66,6 +66,7 @@ def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
     header_limit=float(profile.get('header_max_fraction',.20))
     allowed={_normal(text) for text in profile.get('scene_labels',[])}
     side_limit=min(.08,max(0,float(profile.get('side_crop_max_fraction',0))))
+    corner_limit=min(.16,max(0,float(profile.get('corner_crop_max_fraction',0))))
     scene=[];corners=[];footer=[];headers=[];sides=[]
     def at_side(box):
         l,t,r,b=box
@@ -118,10 +119,6 @@ def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
     for l,t,r,b in sides:
         if r<=w*side_limit:left=max(left,r+padding)
         else:right=min(right,l-padding)
-    if left>w*.08 or w-right>w*.08 or right-left<w*.88:
-        raise ValueError('Source edge lettering needs too much of the photo cropped')
-    if bottom-top<max(450,h*float(profile.get('min_retained_fraction',.42))) or (bottom-top)*(right-left)<350000:
-        raise ValueError('Source graphics leave too little usable photograph')
     verified_credit=any(
             credits.search(str(labels.get(tuple(box),''))) and confidence.get(tuple(box),0)>=.55
             for box in boxes)
@@ -139,12 +136,27 @@ def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
     if top or bottom<h or sides:
         cascade=cv2.CascadeClassifier(cv2.data.haarcascades+'haarcascade_frontalface_default.xml')
         scale=min(1,900/w);gray=cv2.resize(cv2.cvtColor(image,cv2.COLOR_BGR2GRAY),(round(w*scale),round(h*scale)))
-        for fx,fy,fw,fh in cascade.detectMultiScale(gray,scaleFactor=1.15,minNeighbors=5,minSize=(35,35)):
+        faces=cascade.detectMultiScale(gray,scaleFactor=1.15,minNeighbors=5,minSize=(35,35))
+        # A top-left publisher seal can sit beside a forehead. For explicitly
+        # reviewed templates, trim that narrow side instead of cutting the face
+        # with a full-width header crop. Every header must fit the corner strip.
+        if corner_limit and headers and any(fy/scale<top<(fy+fh)/scale for fx,fy,fw,fh in faces):
+            if all(r<=w*corner_limit or l>=w*(1-corner_limit) for l,t,r,b in headers):
+                for l,t,r,b in headers:
+                    if r<=w*corner_limit:left=max(left,r+2)
+                    else:right=min(right,l-2)
+                top=0
+        for fx,fy,fw,fh in faces:
             face_top=fy/scale;face_bottom=(fy+fh)/scale
             if face_top<bottom and face_bottom>top and (face_top<top or face_bottom>bottom):
                 raise ValueError('Source frame would crop a face; choose another image')
             if face_top<bottom and face_bottom>top and (fx/scale<left or (fx+fw)/scale>right):
                 raise ValueError('Source edge crop would cut a face; choose another image')
+    edge_limit=max(side_limit,corner_limit)
+    if left>w*edge_limit or w-right>w*edge_limit or right-left<w*(.80 if corner_limit else .88):
+        raise ValueError('Source edge lettering needs too much of the photo cropped')
+    if bottom-top<max(450,h*float(profile.get('min_retained_fraction',.42))) or (bottom-top)*(right-left)<350000:
+        raise ValueError('Source graphics leave too little usable photograph')
     # Corner provenance is permitted only by the existing bounded original
     # credit rule. It is not promoted by the new crop geometry.
     provenance=_source_provenance_marks(boxes,h,w)

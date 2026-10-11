@@ -125,7 +125,20 @@ def _complete_caption_hooks(source, topic):
         ranking=re.search(r'\bthe (Billboard) staff has ranked all (\d+) of (Taylor Swift)[’\']s bonus tracks\b',fact,re.I)
         if ranking and not re.search(r'\b(?:not|may|might|rumou?r)\b',fact,re.I):
             add(f'Billboard ranks all {ranking.group(2)} of Taylor Swift’s bonus tracks',[fact])
+    if topic=='music':
+        name=next((re.match(r'^([A-Z][a-z]+ [A-Z][a-z]+) wants to take .+ to the White House',fact) for fact in facts
+                   if re.match(r'^([A-Z][a-z]+ [A-Z][a-z]+) wants to take .+ to the White House',fact)),None)
+        campaign=next((fact for fact in facts if re.search(r'\bThe rapper teased a \d{4} presidential run\b',fact)),None)
+        if name and campaign:
+            year=re.search(r'\bteased a (\d{4}) presidential run\b',campaign).group(1)
+            add(f'{name.group(1)} teases a {year} presidential run',[campaign,facts[0]])
     if topic=='military':
+        contract=next((fact for fact in facts if re.search(r'\bRaytheon announced a five-year contract worth \$[\d.]+ billion\b',fact)
+                       and 'Standard Missile-3 Block IB' in fact),None)
+        interceptor=next((fact for fact in facts if 'SM-3' in fact),None)
+        if contract and interceptor:
+            amount=re.search(r'\bcontract worth (\$[\d.]+ billion)\b',contract).group(1)
+            add(f'Raytheon announces {amount} SM-3 missile production contract',[contract],grounding=contract+' '+interceptor)
         identity=next((fact for fact in facts if re.search(r'\bthe USS Abraham Lincoln slid up to the pier\b',fact)),None)
         duration=next((fact for fact in facts if re.search(r'\bthe carrier ended up away from home for (\d+) days\b',fact)),None)
         home=next((fact for fact in facts if re.search(r'\bThe ship came home\b',fact)),None)
@@ -135,6 +148,19 @@ def _complete_caption_hooks(source, topic):
             # importing a separate no-loss statement into its fact scope.
             add(f'USS Abraham Lincoln returns home after {days} days away',[duration,identity])
     if topic=='ocean':
+        for fact in facts:
+            laser=re.search(r'\bteam filmed a camouflaged octopus appearing to pursue the (green scaling lasers) on their underwater vehicle, .+ near ([^.!]+)',fact)
+            if laser:
+                add(f'Octopus filmed appearing to pursue {laser.group(1)} near {laser.group(2)}',[fact])
+            orca=re.search(r'\bdocumented a female orca known as ([^ (]+) \([^)]*\) carrying the body of her roughly two-week-old calf off .+, ([^,.]+)\.?$',fact)
+            if orca:
+                add(f'Orca {orca.group(1)} documented carrying her calf’s body off {orca.group(2).rstrip(".")}',[fact])
+            belugas=re.search(r'^([A-Z][a-z]+ and [A-Z][a-z]+) were raised at ([^,]+), where trainers .+ with the belugas\b',fact)
+            if belugas:
+                add(f'Belugas {belugas.group(1)} were raised at {belugas.group(2)}',[fact])
+            birth=re.search(r'\b(Project CETI) researchers published (two) studies .+, documenting a (sperm whale birth) filmed off ([^,]+) on ',fact)
+            if birth:
+                add(f'Two {birth.group(1)} studies document a {birth.group(3)} off {birth.group(4)}',[fact])
         identity=next((fact for fact in facts if re.search(r'\bflamboyant squidworm \(Teuthidodrilus samae\), a segmented marine worm\b',fact)),None)
         observation=next((fact for fact in facts if re.search(r'\bresearchers filmed it floating with what looked like a piece of sea cucumber\b',fact)),None)
         if identity and observation:
@@ -163,9 +189,17 @@ def replacement_payload(caption, **options):
                                         headline_is_usable, generate_preserved_card_payload,
                                         validate_model_payload, format_balanced_overlay)
     import re
+    headline_accept=options.pop('headline_accept',None)
     language=options.get('language','en')
     source=strip_source_caption_noise(caption)
     supported_hooks=_complete_caption_hooks(source,options.get('content_topic','')) if language=='en' else []
+    if language=='ne':
+        relief=re.search(r'बुढीगण्डकी बाढीपीडितको उद्धार र राहतमा तीव्रता दिएका छौँ\s*:\s*(गृहमन्त्री गुरुङ)',source)
+        if relief:
+            fact=next((line for line in source.splitlines() if relief.group(0) in line),None)
+            hook=relief.group(1)+'ले बुढीगण्डकी बाढीपीडितको उद्धार र राहत तीव्र भएको बताए'
+            from modules.llm_transformer import check_source_grounding
+            if fact and check_source_grounding(hook,fact,'ne'):supported_hooks.append((hook,[fact]))
     candidates=[sentence.strip().rstrip('.।') for line in source.splitlines()
                 for sentence in (re.split(r'[।!?]+',line) if language=='ne' else split_clean_sentences(line))]
     candidates=[re.sub(r'^[\U0001F000-\U0001FAFF\u2600-\u27BF\uFE0F\u200D\s]+','',text) for text in candidates]
@@ -202,7 +236,15 @@ def replacement_payload(caption, **options):
             ranking=re.fullmatch(r"The (\d+) Best (VMAs Performances) of All Time: Critics' Picks",sentence,re.I)
             if ranking:
                 candidates.insert(0,f"Critics pick the {ranking.group(1)} best VMAs performances of all time")
-    usable=[text for text in candidates if headline_is_usable(text,language)]
+        chart=re.search(r'\b([A-Z][A-Z ]+) has officially overtaken every other series on Netflix[’\']s U\.S\. TV chart, reaching the No\. 1 spot just one day after',source)
+        if chart:
+            fact=next((fact for line in source.splitlines() for fact in split_clean_sentences(line)
+                       if chart.group(0) in fact),None)
+            hook=f'Netflix’s U.S. TV chart: {chart.group(1).strip()} reaches No. 1 after one day'
+            from modules.llm_transformer import check_source_grounding
+            if fact and check_source_grounding(hook,fact):supported_hooks.insert(0,(hook,[fact]))
+    usable=[text for text in candidates if headline_is_usable(text,language)
+            and not re.match(r'^(?:Imagine\b|For years\b|Watching\b|Researchers say this curious behavior\b)',text,re.I)]
     if (options.get('content_topic')=='ocean'
             and re.search(r'Deep beneath the Pacific, researchers captured a creature',source)
             and re.search(r'It[’\']s a Dumbo octopus',source)):
@@ -235,6 +277,7 @@ def replacement_payload(caption, **options):
             not bool(re.search(r'\b(?:whales?|dolphins?|coral|ocean|marine|sharks?|sponges?|seafloor)\b',text,re.I)),
             not bool(re.search(r'\b(?:died|dies|discovered|rescued|survival|declined|identified)\b',text,re.I))))
     for headline in usable:
+        if headline_accept and not headline_accept(headline):continue
         try:
             # Focus on the original sentence containing this fact. Adding an
             # extracted headline to that same long sentence repeats its news;
@@ -265,7 +308,46 @@ def replacement_payload(caption, **options):
             return payload
         except ValueError:
             continue
+    if headline_accept:
+        # A whole sentence can be factual yet too long for a readable panel.
+        # Rewrite a complete topical source fact instead of clipping words or
+        # shrinking type. Local fact scope preserves its own uncertainty and
+        # negation even when other caption paragraphs discuss different events.
+        from modules.llm_transformer import generate_social_payload
+        facts=[fact.strip() for line in source.splitlines() for fact in
+               (re.split(r'[।!?]+',line) if language=='ne' else split_clean_sentences(line)) if fact.strip()]
+        from modules.content_quality import channel_accepts_post
+        facts=[fact for fact in facts if channel_accepts_post({'content_topic':options.get('content_topic','')},{'caption':fact})
+               and len(fact.split())>=8 and not re.match(r'^(?:Imagine\b|For years\b|Watching\b)',fact,re.I)
+               and not fact.endswith('?')]
+        # Prefer specific observation/event clauses over a generic opening hook.
+        facts.sort(key=lambda fact: (not bool(re.search(r'\b(?:filmed|documented|published|carrying|raised|overtaken|released|canceled|cancelled|renewed)\b',fact,re.I)),
+                                      not bool(re.search(r'\d|[A-Z][a-z]+ [A-Z][a-z]+',fact))))
+        for fact in facts[:2]:
+            try:
+                short=generate_social_payload(fact,**options,max_headline_words=14,headline_accept=headline_accept)
+                payload=generate_preserved_card_payload(short['headline']+'.\n'+caption,short['headline'],**options,
+                    caption_source=fact+'\n'+source)
+                payload['headline_origin']='caption_rewrite'
+                return payload
+            except ValueError:continue
     raise ValueError('Source caption has no complete grounded headline for replacement')
+
+
+def _replacement_title_rows(words,review,accent):
+    for size in range(94,67,-2):
+        rows=[_render_runs(run,size,'en',accent) for run in _wrap_headline(words,size,'en',952,accent)]
+        height=sum(row.height for row in rows)+18*(len(rows)-1)
+        if 1<=len(rows)<=5 and height<=1350-review['panel_top']-128 and all(0<row.width<=952 for row in rows):
+            return size,rows,height
+    raise ValueError('Replacement headline cannot fit at large readable type')
+
+
+def replacement_headline_fits(headline,review,highlight_hex='#FFC83B'):
+    try:
+        _replacement_title_rows([(word,'white') for word in headline.split()],review,hex_to_rgb(highlight_hex))
+        return True
+    except ValueError:return False
 
 
 def render_source_replacement(image,review,payload,output_path,logo_path,highlight_hex='#FFC83B',**kwargs):
@@ -299,17 +381,7 @@ def render_source_replacement(image,review,payload,output_path,logo_path,highlig
     for line in payload['overlay_lines']:
         for token in line:
             words.extend((word,token.get('type','white')) for word in token['text'].split())
-    selected=None
-    for size in range(94,67,-2):
-        runs=_wrap_headline(words,size,'en',952,accent)
-        rows=[_render_runs(run,size,'en',accent) for run in runs]
-        height=sum(row.height for row in rows)+18*(len(rows)-1)
-        if 1<=len(rows)<=5 and height<=1350-top-128 and all(0<row.width<=952 for row in rows):
-            selected=size,rows,height
-            break
-    if selected is None:
-        raise ValueError('Replacement headline cannot fit at large readable type')
-    size,rows,height=selected
+    size,rows,height=_replacement_title_rows(words,review,accent)
     y=top+(1350-top-height)//2
     text_bounds=[]
     for row in rows:

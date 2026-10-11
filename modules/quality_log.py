@@ -9,9 +9,21 @@ from pathlib import Path
 
 def profile_signature(channel):
     fields=('channel_id','source_pages','language','content_topic','editorial_style','poster_style','source_layouts','source_cleanup_profiles','source_branding_templates','highlight_color','preserve_readable_source_cards')
-    policy={'revision':14,
+    policy={'revision':15,
             **{key:channel.get(key) for key in fields}}
     return hashlib.sha256(json.dumps(policy,sort_keys=True,ensure_ascii=False).encode('utf-8')).hexdigest()[:16]
+
+
+def unavailable_source_ids(channel,path='quality_report.json',now=None):
+    """Let discovery look past waiting candidates without marking them posted."""
+    try:data=json.loads(Path(path).read_text(encoding='utf-8'))
+    except (OSError,ValueError):return set()
+    now=time.time() if now is None else now
+    signature=profile_signature(channel)
+    return {str(item['post_id']) for item in data.get('rejections',[])
+            if item.get('channel_id')==channel.get('channel_id')
+            and item.get('policy_signature')==signature and item.get('retry_after',0)>now
+            and item.get('post_id')}
 
 
 def ready_candidates(channel,posts,path='quality_report.json',bypass=False):

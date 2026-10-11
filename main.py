@@ -275,12 +275,15 @@ def run_pipeline(mode="run", target_channel="all"):
 
         try:
             # 1. Fetch recent candidates across all linked source pages
+            from modules.quality_log import unavailable_source_ids
             candidate_posts = fetch_source_posts(
                 page_id=source_id,
                 access_token=token,
                 processed_ids=list(channel_processed_ids),
                 limit=60,
-                source_urls=source_pages
+                source_urls=source_pages,
+                min_candidates=4,
+                excluded_ids=unavailable_source_ids(ch) if mode=='run' else ()
             )
             from modules.source_cache import merge_source_candidates
             candidate_posts = merge_source_candidates(ch,candidate_posts,channel_processed_ids)
@@ -519,7 +522,8 @@ def run_pipeline(mode="run", target_channel="all"):
 
                 # 2. Cinematic Color Grading
                 print("     [2/4] Applying OpenCV CIE-LAB CLAHE contrast grading...")
-                clean_valid, clean_reason = validate_image_quality(cleaned_img, min_dim=450, min_sharpness=35.0)
+                clean_valid, clean_reason = validate_image_quality(cleaned_img, min_dim=450, min_sharpness=35.0,
+                    allow_portrait_background=bool(editorial_profile) and not replacement_review and not preserved_review)
                 if not clean_valid:
                     reject(post_id, 'photo_extraction', clean_reason)
                     print(f" [CLEANUP QUALITY REJECT] {post_id}: {clean_reason}")
@@ -538,14 +542,18 @@ def run_pipeline(mode="run", target_channel="all"):
                 dest_name = ch.get("badge_label") or ch.get("dest_page_name") or ch.get("channel_name") or channel_id
                 print(f"     [3/4] Generating dual-tone headline & policy-compliant caption (lang={ch_lang}, page={dest_name})...")
                 try:
+                    from modules.poster_engine import headline_fits_poster
+                    from modules.source_replacement import replacement_headline_fits
+                    headline_accept=(lambda title:replacement_headline_fits(title,replacement_review,highlight_hex)) if replacement_review else (
+                        lambda title:headline_fits_poster(title,highlight_hex,**{**ch.get('poster_style',{}),**source_layout}))
                     if replacement_review:
                         from modules.source_replacement import replacement_payload
                         ai_data = replacement_payload(post.get('caption',''),language=ch_lang,channel_name=dest_name,
-                            channel_id=channel_id,content_topic=ch.get('content_topic',''),editorial_style=ch.get('editorial_style',''))
+                            channel_id=channel_id,content_topic=ch.get('content_topic',''),editorial_style=ch.get('editorial_style',''),headline_accept=headline_accept)
                     elif editorial_profile:
                         from modules.source_replacement import replacement_payload
                         ai_data = replacement_payload(post.get('caption',''),language=ch_lang,channel_name=dest_name,
-                            channel_id=channel_id,content_topic=ch.get('content_topic',''),editorial_style=ch.get('editorial_style',''))
+                            channel_id=channel_id,content_topic=ch.get('content_topic',''),editorial_style=ch.get('editorial_style',''),headline_accept=headline_accept)
                     elif preserved_review:
                         from modules.llm_transformer import generate_preserved_card_payload
                         ai_data = generate_preserved_card_payload(
