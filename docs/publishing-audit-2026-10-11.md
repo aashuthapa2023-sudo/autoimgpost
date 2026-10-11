@@ -20,4 +20,19 @@ Eight previously rejected pairs rendered at 1080×1350 and passed native-photo, 
 
 The source with a large cancellation stamp across the actors, full text-only announcement cards, centrally watermarked images, repeated photos and genuinely blurred images remain unsuitable. Regular hourly slots depend on new usable photos from the configured sources; the engine does not manufacture filler to meet a slot.
 
-Validation: 329 Python regression tests and the GitHub UI save tests. Live verification is recorded below after deployment.
+Validation: 329 Python regression tests and the GitHub UI save tests.
+
+## Live verification
+
+Deployed code `465e622`; cloud run [38152586222](https://github.com/aashuthapa2023-sudo/autoimgpost/actions/runs/38152586222) completed successfully with all 329 tests. Facebook confirmed:
+
+| Page | Source | Meta photo | UTC |
+| --- | --- | --- | --- |
+| Daily Netflix | 1121260296927098 | 1667972115339006 | 15:48:34 |
+| Music Store | 1472449894755584 | 1570382151947330 | 15:49:05 |
+| Daily Hollywood | 1568035602004427 | 1560020622806085 | 15:49:18 |
+| Ocean's Secret | 122140579323240703 | 122110119183493170 | 15:50:01 |
+
+Nepal Speaks last published at 15:34:21 and correctly waited for its configured interval. Anisha stayed paused. Publication state was saved to latest main, and the live website served the new Billboard cleanup settings.
+
+FrontlineDiary's public feed remained unavailable to this cloud run, although the exact fresh pair `1573142061513585` was accessible and independently verified locally. The official source API also returned an unavailable-object response (100/33) using the existing destination connection. The verified pair was saved to the configured-source cache for the cloud publisher; it retains the exact source caption, photo ID, URL and publication timestamp. This recovery does not grant new Facebook source-read permissions or guarantee a new photo every two hours from one source.
