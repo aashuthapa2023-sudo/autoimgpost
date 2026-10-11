@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-11T15:34:07.971772+00:00",
+  "updated_at": "2026-10-11T15:48:23.501184+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -3045,15 +3045,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1121302236922904",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-11T07:05:06.212448+00:00",
-      "policy_signature": "00b8a3d778fb4961",
-      "retry_after": 1791745506.2124553
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1119214847131643",
       "stage": "content_or_layout",
       "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
@@ -3168,15 +3159,6 @@
       "checked_at": "2026-10-11T07:36:07.532181+00:00",
       "policy_signature": "98e2edfc750db0bc",
       "retry_after": 1791747367.532198
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1121344506918677",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-11T08:03:54.618900+00:00",
-      "policy_signature": "00b8a3d778fb4961",
-      "retry_after": 1791749034.6189156
     },
     {
       "channel_id": "nepal_speaks",
@@ -3303,15 +3285,6 @@
       "checked_at": "2026-10-11T08:35:42.608576+00:00",
       "policy_signature": "98e2edfc750db0bc",
       "retry_after": 1791750942.6085935
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1121398146913313",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 10.7 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-11T09:04:19.729369+00:00",
-      "policy_signature": "00b8a3d778fb4961",
-      "retry_after": 1791752659.7293856
     },
     {
       "channel_id": "nepal_speaks",
@@ -3773,15 +3746,6 @@
       "retry_after": 1791767380.754418
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1122024780183983",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-11T14:03:54.935597+00:00",
-      "policy_signature": "00b8a3d778fb4961",
-      "retry_after": 1791770634.9356132
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1472449894755584",
       "stage": "content_or_layout",
@@ -3818,15 +3782,6 @@
       "retry_after": 1791772507.5476255
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1122077190178742",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 32.8 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-11T15:33:35.739930+00:00",
-      "policy_signature": "00b8a3d778fb4961",
-      "retry_after": 1791776015.7399507
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1541265154692391",
       "stage": "content_or_layout",
@@ -3834,6 +3789,51 @@
       "checked_at": "2026-10-11T15:34:07.971772+00:00",
       "policy_signature": "98e2edfc750db0bc",
       "retry_after": 1791776047.9717925
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1121302236922904",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-11T15:47:46.648561+00:00",
+      "policy_signature": "87915cf2aaab6318",
+      "retry_after": 1791776866.6485703
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1122077190178742",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-11T15:48:01.867094+00:00",
+      "policy_signature": "87915cf2aaab6318",
+      "retry_after": 1791776881.8671136
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1122024780183983",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-11T15:48:08.883433+00:00",
+      "policy_signature": "87915cf2aaab6318",
+      "retry_after": 1791776888.8834488
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1121398146913313",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 10.7 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-11T15:48:16.055174+00:00",
+      "policy_signature": "87915cf2aaab6318",
+      "retry_after": 1791776896.0551941
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1121344506918677",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-11T15:48:23.501184+00:00",
+      "policy_signature": "87915cf2aaab6318",
+      "retry_after": 1791776903.501201
     }
   ]
 }
