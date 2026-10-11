@@ -12,7 +12,7 @@ Billboard's reviewed template may trim a corner strip up to 16% when a full-widt
 
 A near-threshold extracted portrait can qualify through native face detail when its background is intentionally soft. Its overall sharpness must be at least 75% of the normal threshold; every detected face must be at least 120 native pixels across, have sufficient contrast and exceed 140% of the normal sharpness threshold. The raw-image check is unchanged. This recovers the reviewed Animals frame (overall 32.3, native face 52.2) without accepting the heavily blurred Netflix or Nepal sources.
 
-Policy revision 15 permits review under these actual repairs without clearing publication history. Anisha remains paused. Music Store and Netflix still use only configured Facebook sources; Ocean still requires marine content. The existing cloud schedules remain independent of the user's PC.
+Policy revision 16 permits review under these actual repairs without clearing publication history. The follow-up recognizes a complete season announcement whose source heading ends in a stray comma, independently of uncertain footer OCR and speculation about other production details. Anisha remains paused. Music Store and Netflix still use only configured Facebook sources; Ocean still requires marine content. The existing cloud schedules remain independent of the user's PC.
 
 ## Actual-source validation
 
@@ -20,7 +20,7 @@ Eight previously rejected pairs rendered at 1080×1350 and passed native-photo, 
 
 The source with a large cancellation stamp across the actors, full text-only announcement cards, centrally watermarked images, repeated photos and genuinely blurred images remain unsuitable. Regular hourly slots depend on new usable photos from the configured sources; the engine does not manufacture filler to meet a slot.
 
-Validation: 329 Python regression tests and the GitHub UI save tests.
+Validation: 330 Python regression tests and the GitHub UI save tests. The two live verification runs below passed the 329 tests present before the final punctuation regression was added.
 
 ## Live verification
 
@@ -36,3 +36,5 @@ Deployed code `465e622`; cloud run [38152586222](https://github.com/aashuthapa20
 Nepal Speaks last published at 15:34:21 and correctly waited for its configured interval. Anisha stayed paused. Publication state was saved to latest main, and the live website served the new Billboard cleanup settings.
 
 FrontlineDiary's public feed remained unavailable to this cloud run, although the exact fresh pair `1573142061513585` was accessible and independently verified locally. The official source API also returned an unavailable-object response (100/33) using the existing destination connection. The verified pair was saved to the configured-source cache for the cloud publisher; it retains the exact source caption, photo ID, URL and publication timestamp. This recovery does not grant new Facebook source-read permissions or guarantee a new photo every two hours from one source.
+
+Army recovery run [38153397885](https://github.com/aashuthapa2023-sudo/autoimgpost/actions/runs/38153397885) completed successfully. Facebook confirmed source `1573142061513585` as Meta photo `122148062769353591` at 15:59:48 UTC; state was saved at 16:00:00 UTC. Five active pages therefore resumed confirmed publication in the verification runs. The next source availability check remains important: caching this verified pair recovers the current post but cannot supply an unlimited stream of new Army photographs.

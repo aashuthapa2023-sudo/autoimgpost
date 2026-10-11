@@ -106,6 +106,9 @@ def _complete_caption_hooks(source, topic):
     def add(hook, support,grounding=None):
         if check_source_grounding(hook,grounding or ' '.join(support),'en'):hooks.append((hook,support))
     for fact in facts:
+        season=re.fullmatch(r'([A-Z][A-Z0-9 :\'-]+ Season \d+) is officially on the way at Netflix,\s*',fact)
+        if season:
+            add(f'Netflix: {season.group(1)} is officially on the way',[fact.rstrip(',')+'.'])
         tour=re.fullmatch(r'([A-Z][\w-]+) Announces Dates For Huge (\d{4}) (.+) World Tour',fact)
         if tour and topic=='music':
             detail=next((item for item in facts if item.startswith(tour.group(1)+' announced the dates for ')

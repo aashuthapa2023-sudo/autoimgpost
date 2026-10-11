@@ -43,6 +43,12 @@ class HeadlineFitRecoveryTests(unittest.TestCase):
         source="'Animals' has arrived on Netflix. The crime thriller follows a kidnapping. Our review breaks down the performances in the movie."
         result=replacement_payload(source,content_topic='film')
         self.assertNotIn('Our review',result['rewritten_caption'])
+    def test_complete_season_heading_with_stray_comma_does_not_need_uncertain_ocr(self):
+        source='BEAUTY IN BLACK Season 4 is officially on the way at Netflix,\n\nProduction is reportedly taking place in Atlanta. A release date has not been announced.'
+        result=replacement_payload(source,content_topic='entertainment',headline_accept=lambda title:len(title)<95)
+        self.assertEqual(result['headline'],'Netflix: BEAUTY IN BLACK Season 4 is officially on the way')
+        self.assertNotIn('reportedly',result['headline'])
+        self.assertNotIn('Netflix,',result['rewritten_caption'])
     def test_measured_fit_matches_final_renderer(self):
         photo=np.random.default_rng(1).integers(0,255,(700,1000,3),dtype=np.uint8)
         for title in ['Netflix renews the drama for Season 2','Extremelylongwordwithoutanybreaks'*6]:
