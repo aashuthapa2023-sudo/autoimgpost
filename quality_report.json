@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-12T07:35:34.921478+00:00",
+  "updated_at": "2026-10-12T09:06:19.082586+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -3683,24 +3683,6 @@
       "retry_after": 1791790474.0128617
     },
     {
-      "channel_id": "oceans_secret",
-      "post_id": "122123438637298539",
-      "stage": "content_or_layout",
-      "reason": "Source lettering overlaps the marine subject outside replacement zones",
-      "checked_at": "2026-10-11T21:05:27.255880+00:00",
-      "policy_signature": "39d1d3fff754ba3b",
-      "retry_after": 1791795927.2559035
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1573423378152120",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-11T21:05:49.650600+00:00",
-      "policy_signature": "e4ca797971174adc",
-      "retry_after": 1791795949.6506188
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1144550244738896",
       "stage": "content_or_layout",
@@ -4059,6 +4041,33 @@
       "checked_at": "2026-10-12T07:35:34.921478+00:00",
       "policy_signature": "39d1d3fff754ba3b",
       "retry_after": 1791833734.9214976
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1541843217967918",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-12T09:05:14.908032+00:00",
+      "policy_signature": "d984add6d100783b",
+      "retry_after": 1791839114.908048
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122123438637298539",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-10-12T09:06:13.384075+00:00",
+      "policy_signature": "39d1d3fff754ba3b",
+      "retry_after": 1791839173.3840911
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1573423378152120",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-12T09:06:19.082586+00:00",
+      "policy_signature": "e4ca797971174adc",
+      "retry_after": 1791839179.0825937
     }
   ]
 }
