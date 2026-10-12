@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-12T13:35:31.163141+00:00",
+  "updated_at": "2026-10-12T15:06:26.960693+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4176,6 +4176,24 @@
       "checked_at": "2026-10-12T13:35:31.163141+00:00",
       "policy_signature": "d984add6d100783b",
       "retry_after": 1791855331.1631627
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1541935397958700",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 6.3 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-12T15:06:15.399484+00:00",
+      "policy_signature": "d984add6d100783b",
+      "retry_after": 1791860775.3995008
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1145245061336081",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-12T15:06:26.960693+00:00",
+      "policy_signature": "d984add6d100783b",
+      "retry_after": 1791860786.9607089
     }
   ]
 }
