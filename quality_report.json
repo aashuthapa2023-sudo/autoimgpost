@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-12T16:05:14.020929+00:00",
+  "updated_at": "2026-10-12T17:05:17.625115+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -3827,24 +3827,6 @@
       "retry_after": 1791821111.3970244
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1121302236922904",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-12T05:04:18.392268+00:00",
-      "policy_signature": "885f42e542d01298",
-      "retry_after": 1791824658.3922787
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1472376968096210",
-      "stage": "duplicate_photo",
-      "reason": "Source image was already published to this page",
-      "checked_at": "2026-10-12T05:04:47.971246+00:00",
-      "policy_signature": "49daf510138eb11f",
-      "retry_after": 1791824687.9712613
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1144346011425986",
       "stage": "content_or_layout",
@@ -4212,6 +4194,24 @@
       "checked_at": "2026-10-12T16:05:14.020929+00:00",
       "policy_signature": "d984add6d100783b",
       "retry_after": 1791864314.0209465
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1121302236922904",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-12T17:04:51.869841+00:00",
+      "policy_signature": "885f42e542d01298",
+      "retry_after": 1791867891.86985
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1472376968096210",
+      "stage": "duplicate_photo",
+      "reason": "Source image was already published to this page",
+      "checked_at": "2026-10-12T17:05:17.625115+00:00",
+      "policy_signature": "49daf510138eb11f",
+      "retry_after": 1791867917.6251292
     }
   ]
 }
