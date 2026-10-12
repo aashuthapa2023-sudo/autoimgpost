@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-12T17:05:17.625115+00:00",
+  "updated_at": "2026-10-12T17:34:39.903435+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -3881,24 +3881,6 @@
       "retry_after": 1791824789.226461
     },
     {
-      "channel_id": "Music Store",
-      "post_id": "1471147874885786",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-12T05:34:24.890340+00:00",
-      "policy_signature": "49daf510138eb11f",
-      "retry_after": 1791826464.890356
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1471114214889152",
-      "stage": "duplicate_photo",
-      "reason": "Source image was already published to this page",
-      "checked_at": "2026-10-12T05:34:25.313781+00:00",
-      "policy_signature": "49daf510138eb11f",
-      "retry_after": 1791826465.313794
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1144245351436052",
       "stage": "content_or_layout",
@@ -4212,6 +4194,33 @@
       "checked_at": "2026-10-12T17:05:17.625115+00:00",
       "policy_signature": "49daf510138eb11f",
       "retry_after": 1791867917.6251292
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1473569631310277",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-12T17:34:29.403939+00:00",
+      "policy_signature": "49daf510138eb11f",
+      "retry_after": 1791869669.4039462
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1471147874885786",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-12T17:34:39.587500+00:00",
+      "policy_signature": "49daf510138eb11f",
+      "retry_after": 1791869679.587514
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1471114214889152",
+      "stage": "duplicate_photo",
+      "reason": "Source image was already published to this page",
+      "checked_at": "2026-10-12T17:34:39.903435+00:00",
+      "policy_signature": "49daf510138eb11f",
+      "retry_after": 1791869679.9034483
     }
   ]
 }
