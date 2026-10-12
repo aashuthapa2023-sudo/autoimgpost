@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-12T21:35:49.928539+00:00",
+  "updated_at": "2026-10-12T22:04:45.063504+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4311,6 +4311,24 @@
       "checked_at": "2026-10-12T21:35:49.928539+00:00",
       "policy_signature": "e4ca797971174adc",
       "retry_after": 1791884149.9285486
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1473759537957953",
+      "stage": "content_or_layout",
+      "reason": "Source edge crop would cut a face; choose another image",
+      "checked_at": "2026-10-12T22:04:20.883326+00:00",
+      "policy_signature": "49daf510138eb11f",
+      "retry_after": 1791885860.8833435
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1145519641308623",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-12T22:04:45.063504+00:00",
+      "policy_signature": "d984add6d100783b",
+      "retry_after": 1791885885.0635228
     }
   ]
 }
