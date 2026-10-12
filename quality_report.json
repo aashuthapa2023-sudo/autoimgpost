@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-12T23:10:49.740849+00:00",
+  "updated_at": "2026-10-12T23:34:16.930476+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4347,6 +4347,15 @@
       "checked_at": "2026-10-12T23:10:49.740849+00:00",
       "policy_signature": "885f42e542d01298",
       "retry_after": 1791889849.740866
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1571397841668203",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-12T23:34:16.930476+00:00",
+      "policy_signature": "455cf061818a45df",
+      "retry_after": 1791891256.9304857
     }
   ]
 }
