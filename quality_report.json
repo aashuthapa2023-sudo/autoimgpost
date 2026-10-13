@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-13T09:11:21.862941+00:00",
+  "updated_at": "2026-10-13T10:07:06.922371+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4079,60 +4079,6 @@
       "retry_after": 1791878722.9709883
     },
     {
-      "channel_id": "Music Store",
-      "post_id": "1473737381293502",
-      "stage": "content_or_layout",
-      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
-      "checked_at": "2026-10-12T21:34:25.470011+00:00",
-      "policy_signature": "49daf510138eb11f",
-      "retry_after": 1791884065.4700265
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1473736887960218",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-12T21:34:35.709465+00:00",
-      "policy_signature": "49daf510138eb11f",
-      "retry_after": 1791884075.7094827
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122123572137298539",
-      "stage": "content_or_layout",
-      "reason": "Replacement headline cannot fit at large readable type",
-      "checked_at": "2026-10-12T21:35:35.828868+00:00",
-      "policy_signature": "39d1d3fff754ba3b",
-      "retry_after": 1791884135.8288841
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122123438637298539",
-      "stage": "content_or_layout",
-      "reason": "Source lettering overlaps the marine subject outside replacement zones",
-      "checked_at": "2026-10-12T21:35:44.001208+00:00",
-      "policy_signature": "39d1d3fff754ba3b",
-      "retry_after": 1791884144.0012245
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1573423378152120",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-12T21:35:49.928539+00:00",
-      "policy_signature": "e4ca797971174adc",
-      "retry_after": 1791884149.9285486
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1473759537957953",
-      "stage": "content_or_layout",
-      "reason": "Source edge crop would cut a face; choose another image",
-      "checked_at": "2026-10-12T22:04:20.883326+00:00",
-      "policy_signature": "49daf510138eb11f",
-      "retry_after": 1791885860.8833435
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1145519641308623",
       "stage": "content_or_layout",
@@ -4581,6 +4527,69 @@
       "checked_at": "2026-10-13T09:11:21.862941+00:00",
       "policy_signature": "d984add6d100783b",
       "retry_after": 1791925881.8629577
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1473759537957953",
+      "stage": "content_or_layout",
+      "reason": "Source edge crop would cut a face; choose another image",
+      "checked_at": "2026-10-13T10:05:15.050275+00:00",
+      "policy_signature": "49daf510138eb11f",
+      "retry_after": 1791929115.0502925
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1473737381293502",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-10-13T10:05:27.965413+00:00",
+      "policy_signature": "49daf510138eb11f",
+      "retry_after": 1791929127.965434
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1473736887960218",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-13T10:05:38.082994+00:00",
+      "policy_signature": "49daf510138eb11f",
+      "retry_after": 1791929138.0830157
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122120229849320544",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-13T10:06:36.596113+00:00",
+      "policy_signature": "39d1d3fff754ba3b",
+      "retry_after": 1791929196.5961328
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122123572137298539",
+      "stage": "content_or_layout",
+      "reason": "Replacement headline cannot fit at large readable type",
+      "checked_at": "2026-10-13T10:06:52.648585+00:00",
+      "policy_signature": "39d1d3fff754ba3b",
+      "retry_after": 1791929212.6486075
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122123438637298539",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-10-13T10:07:01.217226+00:00",
+      "policy_signature": "39d1d3fff754ba3b",
+      "retry_after": 1791929221.2172494
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1573423378152120",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-13T10:07:06.922371+00:00",
+      "policy_signature": "e4ca797971174adc",
+      "retry_after": 1791929226.9223814
     }
   ]
 }
