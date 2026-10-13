@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-13T01:06:30.923712+00:00",
+  "updated_at": "2026-10-13T01:34:52.239630+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -3998,24 +3998,6 @@
       "retry_after": 1791850185.5443642
     },
     {
-      "channel_id": "Music Store",
-      "post_id": "1467838521870876",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-10-12T13:05:18.924721+00:00",
-      "policy_signature": "49daf510138eb11f",
-      "retry_after": 1791853518.9247391
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1472913218042585",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-12T13:34:13.848758+00:00",
-      "policy_signature": "49daf510138eb11f",
-      "retry_after": 1791855253.848768
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1145335271327060",
       "stage": "content_or_layout",
@@ -4392,6 +4374,33 @@
       "checked_at": "2026-10-13T01:06:30.923712+00:00",
       "policy_signature": "e4ca797971174adc",
       "retry_after": 1791896790.9237282
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1472913218042585",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-13T01:34:24.803208+00:00",
+      "policy_signature": "49daf510138eb11f",
+      "retry_after": 1791898464.803221
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1473877117946195",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-10-13T01:34:47.366093+00:00",
+      "policy_signature": "49daf510138eb11f",
+      "retry_after": 1791898487.3661115
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1467838521870876",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-13T01:34:52.239630+00:00",
+      "policy_signature": "49daf510138eb11f",
+      "retry_after": 1791898492.239647
     }
   ]
 }
