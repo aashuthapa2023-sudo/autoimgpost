@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-13T17:35:46.831855+00:00",
+  "updated_at": "2026-10-13T18:05:22.572427+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4277,33 +4277,6 @@
       "retry_after": 1791916531.6285233
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1122024780183983",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-13T07:34:23.739091+00:00",
-      "policy_signature": "885f42e542d01298",
-      "retry_after": 1791920063.7391088
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1121398146913313",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 10.7 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-13T07:34:37.316945+00:00",
-      "policy_signature": "885f42e542d01298",
-      "retry_after": 1791920077.316964
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1121344506918677",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-13T07:34:51.108109+00:00",
-      "policy_signature": "885f42e542d01298",
-      "retry_after": 1791920091.108127
-    },
-    {
       "channel_id": "Daily Hollywood",
       "post_id": "1571272151680772",
       "stage": "content_or_layout",
@@ -4446,15 +4419,6 @@
       "checked_at": "2026-10-13T10:07:06.922371+00:00",
       "policy_signature": "e4ca797971174adc",
       "retry_after": 1791929226.9223814
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1122371060149355",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-13T11:07:36.074164+00:00",
-      "policy_signature": "885f42e542d01298",
-      "retry_after": 1791932856.0741827
     },
     {
       "channel_id": "daily_netflix",
@@ -4761,6 +4725,60 @@
       "checked_at": "2026-10-13T17:35:46.831855+00:00",
       "policy_signature": "c2efd23537adef21",
       "retry_after": 1791956146.831873
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1122371060149355",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-13T18:04:21.137413+00:00",
+      "policy_signature": "ad02389dcc26e482",
+      "retry_after": 1791957861.1374307
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1122024780183983",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-13T18:04:28.105877+00:00",
+      "policy_signature": "ad02389dcc26e482",
+      "retry_after": 1791957868.1058955
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1121398146913313",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 10.7 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-13T18:04:35.163147+00:00",
+      "policy_signature": "ad02389dcc26e482",
+      "retry_after": 1791957875.1631684
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1121344506918677",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-13T18:04:42.425176+00:00",
+      "policy_signature": "ad02389dcc26e482",
+      "retry_after": 1791957882.425193
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1474545561212684",
+      "stage": "content_or_layout",
+      "reason": "Owned corner wordmark cannot fit safely",
+      "checked_at": "2026-10-13T18:05:18.972312+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1791957918.9723341
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1474519361215304",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-13T18:05:22.572427+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1791957922.5724442
     }
   ]
 }
