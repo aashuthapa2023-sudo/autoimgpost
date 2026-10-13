@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-13T07:37:01.805865+00:00",
+  "updated_at": "2026-10-13T09:11:21.862941+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4079,33 +4079,6 @@
       "retry_after": 1791878722.9709883
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1123294540057007",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 19.2 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-12T20:34:14.239712+00:00",
-      "policy_signature": "885f42e542d01298",
-      "retry_after": 1791880454.2397296
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1473711517962755",
-      "stage": "content_or_layout",
-      "reason": "Source edge crop would cut a face; choose another image",
-      "checked_at": "2026-10-12T21:04:45.145081+00:00",
-      "policy_signature": "49daf510138eb11f",
-      "retry_after": 1791882285.1450949
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1571333945007926",
-      "stage": "duplicate_photo",
-      "reason": "Source image was already published to this page",
-      "checked_at": "2026-10-12T21:04:54.392256+00:00",
-      "policy_signature": "455cf061818a45df",
-      "retry_after": 1791882294.3922706
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1473737381293502",
       "stage": "content_or_layout",
@@ -4545,6 +4518,69 @@
       "checked_at": "2026-10-13T07:37:01.805865+00:00",
       "policy_signature": "d984add6d100783b",
       "retry_after": 1791920221.8058898
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1123294540057007",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 19.2 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-13T09:09:52.641176+00:00",
+      "policy_signature": "885f42e542d01298",
+      "retry_after": 1791925792.6411939
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1473711517962755",
+      "stage": "content_or_layout",
+      "reason": "Source edge crop would cut a face; choose another image",
+      "checked_at": "2026-10-13T09:10:26.928511+00:00",
+      "policy_signature": "49daf510138eb11f",
+      "retry_after": 1791925826.9285252
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1571333945007926",
+      "stage": "duplicate_photo",
+      "reason": "Source image was already published to this page",
+      "checked_at": "2026-10-13T09:10:33.838308+00:00",
+      "policy_signature": "455cf061818a45df",
+      "retry_after": 1791925833.8383212
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1542864021199171",
+      "stage": "source_language",
+      "reason": "Source caption does not match the page language",
+      "checked_at": "2026-10-13T09:10:46.985969+00:00",
+      "policy_signature": "d984add6d100783b",
+      "retry_after": 1791925846.9859898
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1542859241199649",
+      "stage": "source_language",
+      "reason": "Source caption does not match the page language",
+      "checked_at": "2026-10-13T09:10:46.990109+00:00",
+      "policy_signature": "d984add6d100783b",
+      "retry_after": 1791925846.9901214
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1542854481200125",
+      "stage": "source_language",
+      "reason": "Source caption does not match the page language",
+      "checked_at": "2026-10-13T09:10:46.993846+00:00",
+      "policy_signature": "d984add6d100783b",
+      "retry_after": 1791925846.9938545
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1542852594533647",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-13T09:11:21.862941+00:00",
+      "policy_signature": "d984add6d100783b",
+      "retry_after": 1791925881.8629577
     }
   ]
 }
