@@ -95,7 +95,7 @@
         "panel_color": "#121018",
         "min_font_size": 68,
         "max_font_size": 94,
-        "max_lines": 3,
+        "max_lines": 4,
         "safe_margin": 64,
         "text_position": "bottom",
         "logo_position": "with-text",
@@ -152,7 +152,8 @@
             ]
           },
           "corner_crop_max_fraction": 0.16,
-          "side_crop_max_fraction": 0.08
+          "side_crop_max_fraction": 0.08,
+          "cover_corner_branding": true
         },
         "rollingstone": {
           "credit_pattern": "rolling\\s*stone",
@@ -257,7 +258,8 @@
           "scene_labels": [],
           "allow_edge_zoom": true,
           "header_max_fraction": 0.24,
-          "side_crop_max_fraction": 0.08
+          "side_crop_max_fraction": 0.08,
+          "allow_film_artwork": true
         }
       }
     },

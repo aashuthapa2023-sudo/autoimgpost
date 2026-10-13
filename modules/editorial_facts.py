@@ -1,0 +1,102 @@
+"""Select complete source events, rather than a fixed number of caption words."""
+import re
+from modules.llm_transformer import check_source_grounding,headline_is_usable,split_clean_sentences
+
+
+EVENT = re.compile(r'\b(?:reenters?|returns?|premieres?|releases?|released|hit|hits|reaches?|reached|'
+    r'(?:has|have) (?:officially )?(?:been (?:renewed|cancelled|canceled)|died|released|announced|confirmed)|'
+    r'(?:is|are) (?:now )?(?:well )?(?:into production|in production|filming|on the way|canceling|cancelling)|'
+    r'(?:will|may|might|could) (?:begin|return|release|train)|'
+    r'(?:announced|confirmed|documented|filmed|recorded|saved|reported)|'
+    r'says? .+\b(?:saved|released|died|cancel|begin)\b)',re.I)
+OPTIONAL_TAIL = re.compile(r',\s+(?:with\b|thanks to\b|including\b|bringing\b|starring\b|debuting\b|giving\b|and\b)')
+QUALIFIER = re.compile(r'\b(?:not|never|no(?!\.)|without|neither|cannot|may|might|could|possibly|'
+    r'alleged|unconfirmed|rumou?r|denied|false|incorrect|misleading|disputed|refuted|corrected|if|unless)\b',re.I)
+
+
+def _tidy(value):
+    value=re.sub(r'^\s*(?:BREAKING\s*:\s*)','',value,flags=re.I)
+    value=re.sub(r'^[\U0001F000-\U0001FAFF\u2600-\u27BF\uFE0F\u200D\s]+|'
+                 r'[\U0001F000-\U0001FAFF\u2600-\u27BF\uFE0F\u200D\s]+$','',value)
+    return value.strip().rstrip('.!')
+
+
+def _outside_quotes(text,position):
+    quote=None;depth=0
+    for i,c in enumerate(text[:position]):
+        if c in '\"\'':
+            if c=="'" and i and text[i-1].isalnum() and i+1<len(text) and text[i+1].isalnum():continue
+            if quote==c:quote=None
+            elif c=="'" and i and text[i-1].isalnum():continue
+            elif quote is None:quote=c
+        if quote is None:
+            if c=='(':depth+=1
+            elif c==')':depth=max(0,depth-1)
+    return quote is None and depth==0
+
+
+def _named_subject(text):
+    # Anonymous sequel lines need their actual title before they can be a hook.
+    if re.match(r'^(?:It|They|He|She|The (?:show|series|film|movie|season|company|store)|Season \d+)\b',text):return False
+    if re.match(r'^(?:The only way|The most|There|These|This)\b',text,re.I):return False
+    return bool(re.search(r'[A-Z][a-z]+(?:[ -][A-Z][a-z]+)|\b[A-Z]{2,}\b|\b(?:whale|orca|dolphin|octopus|shark)\b',text))
+
+
+def complete_event_hooks(source,topic):
+    """Return each headline with the complete source sentence proving it.
+
+    Optional comma tails are removed only after a finite event clause. Dropped
+    conditions, negations and uncertainty invalidate that cut. No word-count
+    prefixes, OCR words, pronoun guessing or new entity names are synthesized.
+    """
+    facts=[fact.strip() for line in source.splitlines() for fact in split_clean_sentences(line) if fact.strip()]
+    hooks=[];seen=set()
+    def add(title,support,priority=1):
+        title=_tidy(title)
+        if (title in seen or not headline_is_usable(title,'en') or '?' in title
+                or not check_source_grounding(title,' '.join(support),'en')):return
+        # Industry vocabulary can sit in a separate source sentence. Retain one
+        # distinct context fact rather than rejecting a musician's named chart
+        # event or an aviation-maker's quantified statement as off-topic.
+        from modules.content_quality import channel_accepts_post
+        if topic and not channel_accepts_post({'content_topic':topic},{'caption':' '.join(support)}):
+            context=[fact for fact in facts if fact not in support
+                     and channel_accepts_post({'content_topic':topic},{'caption':fact})
+                     and 4<=len(fact.split())<=30 and not fact.endswith('?')]
+            if context:support=support+[min(context,key=lambda fact:len(fact.split()))]
+        seen.add(title);hooks.append((priority,len(hooks),title,support))
+    for fact in facts:
+        text=_tidy(fact)
+        if _named_subject(text) and EVENT.search(text):
+            add(text,[fact])
+            for cut in OPTIONAL_TAIL.finditer(text):
+                if not _outside_quotes(text,cut.start()):continue
+                clause=text[:cut.start()].rstrip(', ');tail=text[cut.start():]
+                if EVENT.search(clause) and not QUALIFIER.search(tail):add(clause,[fact],0)
+        # A reporting sentence explicitly supplies the speaker and a full that-
+        # clause. Keep the attribution; remove only the reporting date/audience.
+        report=re.search(r'\b([A-Z][a-z]+(?: [A-Z][a-z]+){1,3}),? (?:told|said to) .+?,? that (.+)',text)
+        if report and EVENT.search(report.group(2)):
+            add(report.group(1)+' says '+report.group(2),[fact],0)
+        # Preserve the named speaker, object and month from an explicit quote.
+        quote=re.fullmatch(r'"From ([A-Z][a-z]+), we will begin (.+?)," ([A-Z][a-z]+) said',text)
+        if quote:
+            add(quote.group(3)+': '+quote.group(2)+' will begin in '+quote.group(1),[fact],0)
+        # Temporal observation clauses refer to the same animal, not a vague
+        # commentary sentence. Species equality prevents false-killer-whale
+        # text from being silently turned into an orca.
+        observation=re.fullmatch(r'An? (.+?) captured the attention of researchers in (\d{4}) when '
+            r'(?:scientists|researchers) (documented|filmed|observed) (.+?) ((?:near|off) .+)',text)
+        if topic=='ocean' and observation:
+            species=lambda value:'false killer whale' if 'false killer whale' in value.lower() else (
+                'killer whale' if re.search(r'\b(?:orca|killer whale)\b',value,re.I) else '')
+            subject=re.sub(r'^(?:extraordinarily |extremely |very )?rare\s+','Rare ',observation.group(1),flags=re.I)
+            if species(subject) and species(subject)==species(observation.group(4)):
+                add(subject+' '+observation.group(3)+' '+observation.group(5)+' in '+observation.group(2),[fact],0)
+    # An explicit named-show introduction can resolve the following season
+    # announcement. It cannot resolve arbitrary "it/he/they" prose.
+    intro=re.search(r'\b(?:Big week|Good news) for ([A-Z][A-Z :\'-]+) fans[!.]',source)
+    if intro:
+        for fact in facts:
+            if re.match(r'^Season \d+ (?:returns|premieres)\b',fact):add(intro.group(1)+' '+_tidy(fact),[intro.group(0),fact],0)
+    return [(title,support) for priority,index,title,support in sorted(hooks)]

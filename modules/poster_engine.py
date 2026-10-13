@@ -343,7 +343,7 @@ def _select_title_rows(words,language,accent,options):
     width=1080-2*margin
     minimum=max(64,int(options.get('min_font_size',68)))
     maximum=min(100,int(options.get('max_font_size',94)))
-    line_limit=min(3,int(options.get('max_lines',3)))
+    line_limit=min(4,int(options.get('max_lines',3)))
     gap=20 if language=='ne' else 14
     masthead=options.get('text_position','bottom')=='bottom' and options.get('logo_position','with-text')=='with-text'
     height_limit=min(296,470-110-margin) if masthead else 290
@@ -356,14 +356,65 @@ def _select_title_rows(words,language,accent,options):
     raise ValueError('Headline cannot fit at readable type size; rewrite before publishing')
 
 
+def overlay_words(overlay_lines):
+    """Use identical display tokens for preview measurement and final rendering."""
+    words=[]
+    for line in overlay_lines:
+        for token in ([{'text':line,'type':'white'}] if isinstance(line,str) else line):
+            text=str(token.get('text','')) if isinstance(token,dict) else str(token)
+            kind=token.get('type','white') if isinstance(token,dict) else 'white'
+            words.extend((word,kind) for word in text.split())
+    return words
+
+
+def headline_display_words(headline,language='en'):
+    from modules.llm_transformer import format_balanced_overlay
+    return overlay_words(format_balanced_overlay(headline,language))
+
+
 def headline_fits_poster(headline,highlight_hex='#FFC83B',**options):
     """Measure the actual glyphs with exactly the final renderer's limits."""
     language='ne' if is_devanagari(headline) else 'en'
     try:
-        _select_title_rows([(word,'white') for word in headline.split()],language,
+        _select_title_rows(headline_display_words(headline,language),language,
                            hex_to_rgb(highlight_hex if highlight_hex!='random' else '#FFC83B'),options)
         return True
     except ValueError:return False
+
+
+def _draw_source_corner(canvas,review,scale,photo_x,photo_y,visible_top,photo_bottom,brand,accent,background):
+    """Replace only the reviewed publisher corner with one owned wordmark."""
+    import math,re
+    def mapped(box):
+        l,t,r,b=box
+        return [max(0,photo_x+math.floor(l*scale)),max(visible_top,photo_y+math.floor(t*scale)),
+                min(1080,photo_x+math.ceil(r*scale)),min(photo_bottom,photo_y+math.ceil(b*scale))]
+    cover=mapped(review['cover_bounds'])
+    evidence=[mapped(box) for box in review['source_overlay_bounds']]
+    evidence=[box for box in evidence if box[2]>box[0] and box[3]>box[1]]
+    if not evidence:return None
+    faces=[mapped(box) for box in review['face_bounds']]
+    from modules.source_editorial import cover_intersects_frontal_face
+    if any(cover_intersects_frontal_face(cover,face) for face in faces):
+        raise ValueError('Owned corner branding would cover a face')
+    left=max(64,cover[0]+8);top=max(64,cover[1]+8)
+    width=cover[2]-left-8;height=cover[3]-top-8
+    words=re.sub(r'([a-z])([A-Z])',r'\1 \2',brand).upper().split()
+    selected=None
+    for size in range(26,17,-2):
+        rows=[_render_runs([(word,'white')],size,'en',accent) for word in words]
+        total=sum(row.height for row in rows)+4*(len(rows)-1)
+        if rows and max(row.width for row in rows)<=width and total<=height:
+            selected=rows,total;break
+    if selected is None:raise ValueError('Owned corner wordmark cannot fit safely')
+    draw=ImageDraw.Draw(canvas);draw.rectangle(cover,fill=background)
+    draw.rectangle((cover[0],cover[3]-3,cover[2],cover[3]),fill=accent)
+    rows,total=selected;y=top+(height-total)//2;bounds=[]
+    for row in rows:
+        x=left+(width-row.width)//2;canvas.paste(row,(x,y),row)
+        bounds.append([x,y,x+row.width,y+row.height]);y+=row.height+4
+    return {'native_sha256':review['native_sha256'],'source_overlay_bounds':evidence,'cover_bounds':cover,
+            'face_bounds':faces,'face_guard':'frontal_oval','brand_bounds':bounds}
 
 
 def render_final_poster(base_img, overlay_lines, highlight_hex='#FFC83B', badge_label='',
@@ -371,12 +422,7 @@ def render_final_poster(base_img, overlay_lines, highlight_hex='#FFC83B', badge_
     """Render a measured editorial card and write a verifiable quality manifest."""
     if base_img is None or base_img.ndim != 3 or min(base_img.shape[:2]) < 240:
         raise ValueError('Clean source photograph is too small or invalid')
-    words = []
-    for line in overlay_lines:
-        for token in ([{'text':line,'type':'white'}] if isinstance(line,str) else line):
-            text = str(token.get('text','')) if isinstance(token,dict) else str(token)
-            kind = token.get('type','white') if isinstance(token,dict) else 'white'
-            words.extend((word,kind) for word in text.split())
+    words = overlay_words(overlay_lines)
     if not words or len(words) > 32:
         raise ValueError('Headline must be complete and concise before layout')
     language = 'ne' if any(is_devanagari(word) for word,_ in words) else 'en'
@@ -442,8 +488,16 @@ def render_final_poster(base_img, overlay_lines, highlight_hex='#FFC83B', badge_
     photo=photo.resize((round(photo.width*scale),round(photo.height*scale)),Image.Resampling.LANCZOS)
     # Solid matte preserves the whole photograph without inventing blurred duplicates.
     photo_layer=Image.new('RGB',(1080,photo_h),panel_color)
-    photo_layer.paste(photo,((1080-photo.width)//2,(photo_h-photo.height)//2))
+    photo_x=(1080-photo.width)//2;photo_y=photo_top+(photo_h-photo.height)//2
+    photo_layer.paste(photo,(photo_x,(photo_h-photo.height)//2))
     canvas.paste(photo_layer,(0,photo_top))
+    corner_replacement=None
+    corner_review=kwargs.get('source_corner_review')
+    if corner_review:
+        if hashlib.sha256(base_img.tobytes()).hexdigest()!=corner_review.get('render_input_sha256',corner_review['native_sha256']):
+            raise ValueError('Source photograph changed after corner branding review')
+        corner_replacement=_draw_source_corner(canvas,corner_review,scale,photo_x,photo_y,photo_top,
+            photo_top+photo_h,dest_page_name or badge_label,accent,panel_color)
     draw=ImageDraw.Draw(canvas)
     rule_y=panel_top if position=='bottom' else panel_h-4
     draw.rectangle((0,rule_y,1079,rule_y+3),fill=accent)
@@ -495,5 +549,6 @@ def render_final_poster(base_img, overlay_lines, highlight_hex='#FFC83B', badge_
               'photo_bounds':[(1080-photo.width)//2,photo_top+(photo_h-photo.height)//2,photo.width,photo.height],
               'style_id':kwargs.get('style_id','editorial'),'headline':' '.join(word for word,_ in words),
               'headline_origin':kwargs.get('headline_origin','caption')}
+    if corner_replacement:manifest['source_corner_replacement']=corner_replacement
     output.with_suffix('.quality.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf-8')
     return str(output)

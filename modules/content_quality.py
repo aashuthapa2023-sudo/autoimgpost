@@ -3,11 +3,11 @@
 import re
 
 OCEAN_TERMS = r"\b(?:oceans?|marine|maritime|seabed|seafloor|seawater|underwater|coral|reefs?|whales?|belugas?|narwhals?|porpoises?|manatees?|dugongs?|dolphins?|sharks?|orcas?|octopus|octopuses|squid|jellyfish|seaweed|seagrass|plankton|mangroves?|coastal|coastlines?|deep[- ]sea|oceanography|seals?|walrus|turtles?|seahorses?|manta rays?|stingrays?)\b"
-MUSIC_TERMS = r"\b(?:music|musicians?|singers?|songs?|albums?|concerts?|billboard|grammys?|bands?|rappers?|rap|hip[- ]hop|guitars?|soundtracks?|vocalists?|drummers?|composers?|symphony|orchestra|lyrics|singles?|duets?|vocals?|VMA|VMAs|EP|LP|headliners?|record label|record deal|music video|listening party|video of the year|stage mishap|stage performance)\b"
+MUSIC_TERMS = r"\b(?:music|musicians?|singers?|songs?|albums?|concerts?|billboard(?:200)?|Hot ?100|grammys?|bands?|rappers?|rap|hip[- ]hop|guitars?|soundtracks?|vocalists?|drummers?|composers?|symphony|orchestra|lyrics|singles?|duets?|vocals?|VMA|VMAs|EP|LP|headliners?|record label|record deal|music video|listening party|video of the year|stage mishap|stage performance|R&B tour)\b"
 SCREEN_TERMS = r"\b(?:netflix|streaming|series|seasons?|episodes?|films?|movies?|cinema|hollywood|actors?|actresses?|directors?|cast|casting|screenplay|box[- ]office|trailers?|oscars?|emmys?|hbo|disney|paramount|sitcom|documentary|television|tv show)\b"
 
 
-MILITARY_TERMS = r"\b(?:army|military|marines?|navy|USS|aircraft carriers?|strike group|air force|soldiers?|veterans?|rangers?|medal of honor|regiment|battalion|infantry|fighter jets?|F-16V?|SR-71|Blackbird|NMESIS|missiles?|armed forces)\b"
+MILITARY_TERMS = r"\b(?:army|military|marines?|navy|USS|aircraft carriers?|strike group|air forces?|soldiers?|veterans?|rangers?|medal of honor|regiment|battalion|infantry|fighter jets?|combat aircraft|F-16V?|SR-71|Blackbird|NMESIS|missiles?|armed forces)\b"
 
 
 def channel_topic(channel):
@@ -28,6 +28,8 @@ def channel_accepts_post(channel, post):
     # unlike a trailing generic category hashtag.
     if re.search(r'\b(?:wins?|winning|won|nominat(?:ed|ion|ions))\b', caption, re.IGNORECASE):
         caption = re.sub(r'#(VMA|VMAs)\b', r'\1', caption, flags=re.IGNORECASE)
+    if re.search(r'\b(?:chart|reenters?|No\.|number|rank|peaks?)\b',caption,re.I):
+        caption=re.sub(r'#(Billboard200|Hot100)\b',r'\1',caption,flags=re.I)
     caption = re.sub(r'(?:https?://|www\.)\S+|\b(?:[a-z0-9-]+\.)+[a-z]{2,}(?:/[^\s]*)?|[#@][\w]+', '', caption, flags=re.IGNORECASE)
     if not caption.strip() or re.match(r"^we asked .* (?:what|how|why)\b", caption, re.IGNORECASE):
         return False
@@ -39,7 +41,12 @@ def channel_accepts_post(channel, post):
     if topic == 'music':
         return bool(re.search(MUSIC_TERMS, caption, re.IGNORECASE))
     if topic in ('film', 'entertainment'):
-        return bool(re.search(SCREEN_TERMS, caption, re.IGNORECASE))
+        named_poster=bool(re.search(r'\b(?:first|new|official) poster for [A-Z][A-Za-z0-9 :\'’\"-]+ '
+            r'has (?:dropped|been released)\b',caption))
+        named_screen_star=bool(re.search(r'\bstar [A-Z][A-Za-z\'-]+(?: [A-Z][A-Za-z\'-]+)+ '
+            r'(?:has|is|will|joins|died|dies)\b',caption)) and not re.search(
+            r'\b(?:football|soccer|basketball|cricket|NFL|NBA|galaxy|astronomy)\b',caption,re.I)
+        return bool(re.search(SCREEN_TERMS, caption, re.IGNORECASE)) or named_screen_star or named_poster
     if topic != 'ocean':
         return True
     caption = re.sub(r"ocean['’]s (?:eleven|twelve|thirteen)|sea of (?:fans|people|faces|stars)|shark tank|baby shark", '', caption, flags=re.IGNORECASE)

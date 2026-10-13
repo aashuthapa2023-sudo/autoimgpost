@@ -39,6 +39,19 @@ def verify_publishable_poster(image_path, caption):
         box=data.get(key)
         if box and (box[0]<margin or box[2]>1080-margin or box[1]<margin or box[3]>1350-margin):
             raise ValueError('Branding is outside the safe area')
+    corner=data.get('source_corner_replacement')
+    if corner:
+        a,y,c,d=corner.get('cover_bounds',[0,0,0,0])
+        if not corner.get('native_sha256') or not 0<=a<c<=1080 or not 0<=y<d<=1350:
+            raise ValueError('Source corner replacement proof is invalid')
+        if any(not (a<=l<r<=c and y<=t<b<=d) for l,t,r,b in corner.get('source_overlay_bounds',[])):
+            raise ValueError('Publisher corner is not fully covered')
+        from modules.source_editorial import cover_intersects_frontal_face
+        if corner.get('face_guard')!='frontal_oval' or any(cover_intersects_frontal_face([a,y,c,d],face) for face in corner.get('face_bounds',[])):
+            raise ValueError('Publisher corner replacement overlaps a face')
+        if not corner.get('brand_bounds') or any(not (max(a,margin)<=l<r<=min(c,1080-margin)
+                and max(y,margin)<=t<b<=min(d,1350-margin)) for l,t,r,b in corner['brand_bounds']):
+            raise ValueError('Owned corner wordmark is outside its safe area')
     if data.get('layout_kind') == 'source_replacement':
         extraction=data.get('source_extraction')
         if extraction:

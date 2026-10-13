@@ -5,7 +5,7 @@ import math
 from pathlib import Path
 import cv2
 from PIL import Image, ImageDraw
-from modules.poster_engine import _wrap_headline, _render_runs, hex_to_rgb
+from modules.poster_engine import _wrap_headline, _render_runs, hex_to_rgb, headline_display_words, overlay_words
 
 
 def prepare_source_replacement(image,boxes,profile=None,caption='',language='en',corner_template=None):
@@ -196,6 +196,11 @@ def replacement_payload(caption, **options):
     language=options.get('language','en')
     source=strip_source_caption_noise(caption)
     supported_hooks=_complete_caption_hooks(source,options.get('content_topic','')) if language=='en' else []
+    if language=='en':
+        from modules.editorial_facts import complete_event_hooks,_tidy
+        generic_hooks=complete_event_hooks(source,options.get('content_topic',''))
+        supported_hooks+=[(title,support) for title,support in generic_hooks if title!=_tidy(support[0])]
+    else:generic_hooks=[]
     if language=='ne':
         relief=re.search(r'बुढीगण्डकी बाढीपीडितको उद्धार र राहतमा तीव्रता दिएका छौँ\s*:\s*(गृहमन्त्री गुरुङ)',source)
         if relief:
@@ -271,6 +276,7 @@ def replacement_payload(caption, **options):
                     concise.append('The SR-71 Blackbird is gone from its NASA display')
         usable=[text for text in concise if headline_is_usable(text,language)]+usable
     usable=[hook for hook,support in supported_hooks if headline_is_usable(hook,language)]+usable
+    usable += [hook for hook,support in generic_hooks if hook not in usable]
     # Prefer a complete fact naming the animal or ocean phenomenon.
     import re
     if options.get('content_topic') == 'ocean':
@@ -293,7 +299,7 @@ def replacement_payload(caption, **options):
             caption_source=caption
             if focus is not None:
                 caption_source='\n'.join([original_facts[focus]]+original_facts[:focus]+original_facts[focus+1:])
-            support=next((facts for hook,facts in supported_hooks if hook==headline),None)
+            support=next((facts for hook,facts in supported_hooks+generic_hooks if hook==headline),None)
             if support:
                 caption_source='\n'.join(support)
             payload=generate_preserved_card_payload(headline+'.\n'+caption,headline,**options,
@@ -348,7 +354,7 @@ def _replacement_title_rows(words,review,accent):
 
 def replacement_headline_fits(headline,review,highlight_hex='#FFC83B'):
     try:
-        _replacement_title_rows([(word,'white') for word in headline.split()],review,hex_to_rgb(highlight_hex))
+        _replacement_title_rows(headline_display_words(headline),review,hex_to_rgb(highlight_hex))
         return True
     except ValueError:return False
 
@@ -380,10 +386,7 @@ def render_source_replacement(image,review,payload,output_path,logo_path,highlig
     accent=hex_to_rgb(highlight_hex)
     top=review['panel_top']
     draw.rectangle((0,top,1079,top+3),fill=accent)
-    words=[]
-    for line in payload['overlay_lines']:
-        for token in line:
-            words.extend((word,token.get('type','white')) for word in token['text'].split())
+    words=overlay_words(payload['overlay_lines'])
     size,rows,height=_replacement_title_rows(words,review,accent)
     y=top+(1350-top-height)//2
     text_bounds=[]

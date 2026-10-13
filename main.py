@@ -494,10 +494,15 @@ def run_pipeline(mode="run", target_channel="all"):
                 text_boxes = detect_source_text_boxes(raw_img,language=ocr_language)
                 print(f"           [Source text cleanup] Checking {len(text_boxes)} regions for safe photo extraction")
                 preserved_review = None
+                corner_review = None
                 replacement_review = None
                 replacement_image = raw_img
                 from modules.source_editorial import source_profile, extract_editorial_photo
                 editorial_profile = source_profile(ch,post)
+                if editorial_profile and editorial_profile.get('allow_film_artwork'):
+                    from modules.source_artwork import inspect_film_artwork
+                    try:preserved_review=inspect_film_artwork(raw_img,text_boxes,post.get('caption',''))
+                    except ValueError:pass
                 if ch.get('poster_style',{}).get('layout_kind')=='source_replacement':
                     from modules.source_replacement import prepare_source_replacement
                     template_key=post.get('source_page_url','').rstrip('/').rsplit('/',1)[-1].lower()
@@ -505,11 +510,14 @@ def run_pipeline(mode="run", target_channel="all"):
                         profile=editorial_profile,caption=post.get('caption',''),language=ocr_language,
                         corner_template=ch.get('source_branding_templates',{}).get(template_key))
                 try:
-                    if replacement_review:
+                    if preserved_review:
+                        cleaned_img=raw_img
+                    elif replacement_review:
                         from modules.source_replacement import replacement_photo_region
                         cleaned_img = replacement_photo_region(replacement_image,replacement_review)
                     elif editorial_profile:
-                        cleaned_img,crop_top,crop_bottom = extract_editorial_photo(raw_img,text_boxes,editorial_profile,post.get('caption',''),ocr_language)
+                        from modules.source_editorial import prepare_editorial_photo
+                        cleaned_img,crop_top,crop_bottom,corner_review = prepare_editorial_photo(raw_img,text_boxes,editorial_profile,post.get('caption',''),ocr_language)
                     else:
                         cleaned_img,crop_top,crop_bottom = erase_text_and_watermarks(raw_img, source_text_boxes=text_boxes,return_crop_bounds=True,language=ocr_language)
                 except ValueError:
@@ -533,6 +541,9 @@ def run_pipeline(mode="run", target_channel="all"):
                     reject(post_id, 'duplicate_photo', 'Retained photograph was already published to this page')
                     continue
                 graded_img = raw_img if preserved_review else apply_cinematic_grade(cleaned_img)
+                if corner_review:
+                    import hashlib
+                    corner_review['render_input_sha256']=hashlib.sha256(graded_img.tobytes()).hexdigest()
 
                 # 3. AI Caption & Dual-Tone Headline
                 ch_lang = ch.get("language", "en")
@@ -550,7 +561,7 @@ def run_pipeline(mode="run", target_channel="all"):
                         from modules.source_replacement import replacement_payload
                         ai_data = replacement_payload(post.get('caption',''),language=ch_lang,channel_name=dest_name,
                             channel_id=channel_id,content_topic=ch.get('content_topic',''),editorial_style=ch.get('editorial_style',''),headline_accept=headline_accept)
-                    elif editorial_profile:
+                    elif editorial_profile and not preserved_review:
                         from modules.source_replacement import replacement_payload
                         ai_data = replacement_payload(post.get('caption',''),language=ch_lang,channel_name=dest_name,
                             channel_id=channel_id,content_topic=ch.get('content_topic',''),editorial_style=ch.get('editorial_style',''),headline_accept=headline_accept)
@@ -559,7 +570,8 @@ def run_pipeline(mode="run", target_channel="all"):
                         ai_data = generate_preserved_card_payload(
                             post.get("caption",""), preserved_review["headline"],
                             language=ch_lang,channel_name=dest_name,channel_id=channel_id,
-                            content_topic=ch.get('content_topic',''),editorial_style=ch.get('editorial_style',''))
+                            content_topic=ch.get('content_topic',''),editorial_style=ch.get('editorial_style',''),
+                            caption_source=preserved_review.get('caption_source'))
                     else:
                         ai_data = generate_social_payload(
                             post.get("caption", ""),
@@ -611,6 +623,7 @@ def run_pipeline(mode="run", target_channel="all"):
                         output_path=rendered_file,
                         post_id=post_id,
                         source_checked=True,
+                        source_corner_review=corner_review,
                         **{**ch.get('poster_style',{}), **source_layout}
                     )
                     if ai_data.get('headline_origin')=='removed_source_panel':

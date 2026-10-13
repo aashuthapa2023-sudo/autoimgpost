@@ -2,6 +2,8 @@
 import re
 from urllib.parse import urlsplit,parse_qs
 import cv2
+import hashlib
+import numpy as np
 from modules.image_cleaner import SourceTextBoxes,_source_provenance_marks,_inside_source_mark
 
 
@@ -16,6 +18,13 @@ def source_profile(channel,post):
 
 def _normal(text):
     return re.sub(r'[^\w]','',str(text).lower())
+
+
+def cover_intersects_frontal_face(cover,face):
+    """Protect an expanded frontal oval; detector rectangle corners include background."""
+    l,t,r,b=face;cx=(l+r)/2;cy=(t+b)/2
+    x=min(max(cx,cover[0]),cover[2]);y=min(max(cy,cover[1]),cover[3])
+    return ((x-cx)/max(1,(r-l)/2))**2+((y-cy)/max(1,(b-t)/2))**2<=1.1
 
 
 def _review_event_backdrop(image, boxes, profile):
@@ -163,3 +172,53 @@ def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
     if any(not _inside_source_mark(box,provenance) for box in corners):
         raise ValueError('Corner source logo is too large for this editorial template')
     return image[top:bottom,left:right].copy(),top,bottom
+
+
+def prepare_editorial_photo(image,boxes,profile,caption='',language='en'):
+    """Review an opt-in publisher corner for a localized owned-brand cover.
+
+    The returned photograph is untouched. Branding is composited later, after
+    native-photo quality and duplicate checks. Unknown body text is still passed
+    through the existing strict extractor and cannot be excused by this review.
+    """
+    if not profile.get('cover_corner_branding'):
+        photo,top,bottom=extract_editorial_photo(image,boxes,profile,caption,language)
+        return photo,top,bottom,None
+    h,w=image.shape[:2]
+    evidence=list(boxes)+list(getattr(boxes,'suspected_rows',[]))+list(getattr(boxes,'suspected_marks',[]))
+    corner=[tuple(box) for box in evidence if box[0]>=0 and box[1]>=0 and box[2]<=w*.16 and box[3]<=h*.16]
+    if not corner:
+        photo,top,bottom=extract_editorial_photo(image,boxes,profile,caption,language)
+        return photo,top,bottom,None
+    labels=getattr(boxes,'text_labels',{});scores=getattr(boxes,'text_confidences',{})
+    filtered=SourceTextBoxes([tuple(b) for b in boxes if tuple(b) not in corner],
+        [tuple(b) for b in getattr(boxes,'suspected_rows',[]) if tuple(b) not in corner],
+        [tuple(b) for b in getattr(boxes,'suspected_marks',[]) if tuple(b) not in corner],labels,scores)
+    photo,top,bottom=extract_editorial_photo(image,filtered,profile,caption,language)
+    # Recover the exact horizontal crop from the existing direct-pixel extractor.
+    offsets={0,w-photo.shape[1]}
+    padding=max(4,round(w*.01))
+    offsets.update(r+padding for l,t,r,b in evidence if r<=w*.08)
+    matches=[left for left in offsets if 0<=left<=w-photo.shape[1]
+             and np.array_equal(photo,image[top:bottom,left:left+photo.shape[1]])]
+    if len(matches)!=1:raise ValueError('Corner cover needs an unambiguous native photograph crop')
+    left=matches[0]
+    retained=[]
+    for l,t,r,b in corner:
+        if r>left and l<left+photo.shape[1] and b>top and t<bottom:
+            retained.append([max(0,l-left),max(0,t-top),min(photo.shape[1],r-left),min(photo.shape[0],b-top)])
+    if not retained:return photo,top,bottom,None
+    cover=[0,0,max(box[2] for box in retained)+6,max(box[3] for box in retained)+6]
+    if cover[2]>photo.shape[1]*.20 or cover[3]>photo.shape[0]*.23:
+        raise ValueError('Publisher corner needs too much of the photograph covered')
+    detector=cv2.CascadeClassifier(cv2.data.haarcascades+'haarcascade_frontalface_default.xml')
+    scale=min(1,900/photo.shape[1]);gray=cv2.resize(cv2.cvtColor(photo,cv2.COLOR_BGR2GRAY),
+        (round(photo.shape[1]*scale),round(photo.shape[0]*scale)))
+    faces=[]
+    for x,y,fw,fh in detector.detectMultiScale(gray,scaleFactor=1.15,minNeighbors=5,minSize=(35,35)):
+        face=[x/scale,y/scale,(x+fw)/scale,(y+fh)/scale];faces.append(face)
+        if cover_intersects_frontal_face(cover,face):
+            raise ValueError('Publisher corner cover would hide a face')
+    return photo,top,bottom,{'native_sha256':hashlib.sha256(photo.tobytes()).hexdigest(),
+        'native_size':[photo.shape[1],photo.shape[0]],'source_overlay_bounds':retained,'cover_bounds':cover,
+        'face_bounds':faces,'face_guard':'frontal_oval'}

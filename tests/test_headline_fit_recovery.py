@@ -8,7 +8,7 @@ from modules.poster_engine import headline_fits_poster,render_final_poster
 from modules.poster_quality import verify_publishable_poster
 from modules.image_cleaner import SourceTextBoxes
 from modules.source_editorial import extract_editorial_photo
-from modules.llm_transformer import generate_social_payload
+from modules.llm_transformer import generate_social_payload,format_balanced_overlay
 
 
 class HeadlineFitRecoveryTests(unittest.TestCase):
@@ -54,7 +54,9 @@ class HeadlineFitRecoveryTests(unittest.TestCase):
         for title in ['Netflix renews the drama for Season 2','Extremelylongwordwithoutanybreaks'*6]:
             fits=headline_fits_poster(title,min_font_size=68)
             with tempfile.TemporaryDirectory() as directory:
-                options=dict(base_img=photo,overlay_lines=[[{'text':title,'type':'white'}]],caption='Netflix renewed the drama for Season 2.',dest_page_name='TEST',source_checked=True,output_path=Path(directory)/'poster.jpg',min_font_size=68)
+                try:overlay=format_balanced_overlay(title)
+                except ValueError:overlay=[[{'text':title,'type':'white'}]]
+                options=dict(base_img=photo,overlay_lines=overlay,caption='Netflix renewed the drama for Season 2.',dest_page_name='TEST',source_checked=True,output_path=Path(directory)/'poster.jpg',min_font_size=68)
                 if fits:
                     render_final_poster(**options)
                     self.assertGreaterEqual(verify_publishable_poster(options['output_path'],options['caption'])['font_size'],68)

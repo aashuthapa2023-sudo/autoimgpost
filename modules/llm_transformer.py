@@ -414,7 +414,7 @@ def headline_is_usable(text, language='en'):
         return False
     if re.search(r'ठूलो तयारी|\b(?:big|huge|major) (?:news|update)|biggest shows are taking over', text, re.IGNORECASE):
         return False
-    if text.endswith('?') or any(ord(c) >= 0x1F000 for c in text):
+    if '?' in text or any(ord(c) >= 0x1F000 for c in text):
         return False
     if text.endswith((',', ':', ';', '—', '-')):
         return False
