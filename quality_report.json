@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-13T01:34:52.239630+00:00",
+  "updated_at": "2026-10-13T02:05:55.717701+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4401,6 +4401,51 @@
       "checked_at": "2026-10-13T01:34:52.239630+00:00",
       "policy_signature": "49daf510138eb11f",
       "retry_after": 1791898492.239647
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1542736621211911",
+      "stage": "source_language",
+      "reason": "Source caption does not match the page language",
+      "checked_at": "2026-10-13T02:04:53.109232+00:00",
+      "policy_signature": "d984add6d100783b",
+      "retry_after": 1791900293.1092484
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1542676391217934",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-13T02:05:19.805538+00:00",
+      "policy_signature": "d984add6d100783b",
+      "retry_after": 1791900319.8055534
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1145471717980082",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-13T02:05:30.300448+00:00",
+      "policy_signature": "d984add6d100783b",
+      "retry_after": 1791900330.3004646
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1542155301270043",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-13T02:05:45.998799+00:00",
+      "policy_signature": "d984add6d100783b",
+      "retry_after": 1791900345.998815
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1145452024648718",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-13T02:05:55.717701+00:00",
+      "policy_signature": "d984add6d100783b",
+      "retry_after": 1791900355.7177172
     }
   ]
 }
