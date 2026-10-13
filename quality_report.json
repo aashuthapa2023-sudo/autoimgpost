@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-13T22:36:39.504550+00:00",
+  "updated_at": "2026-10-13T22:57:00.961465+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4977,6 +4977,15 @@
       "checked_at": "2026-10-13T22:36:39.504550+00:00",
       "policy_signature": "203c70019947012b",
       "retry_after": 1791974199.504565
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1124303559956105",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 31.9 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-13T22:57:00.961465+00:00",
+      "policy_signature": "ad02389dcc26e482",
+      "retry_after": 1791975420.9614797
     }
   ]
 }
