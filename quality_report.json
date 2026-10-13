@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-13T15:50:54.592401+00:00",
+  "updated_at": "2026-10-13T16:06:20.062412+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4367,15 +4367,6 @@
       "retry_after": 1791925826.9285252
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1571333945007926",
-      "stage": "duplicate_photo",
-      "reason": "Source image was already published to this page",
-      "checked_at": "2026-10-13T09:10:33.838308+00:00",
-      "policy_signature": "455cf061818a45df",
-      "retry_after": 1791925833.8383212
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1542864021199171",
       "stage": "source_language",
@@ -4538,15 +4529,6 @@
       "retry_after": 1791938127.122299
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1571478284993492",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-13T12:35:41.461778+00:00",
-      "policy_signature": "455cf061818a45df",
-      "retry_after": 1791938141.4617882
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1146362937890960",
       "stage": "content_or_layout",
@@ -4619,15 +4601,6 @@
       "retry_after": 1791941730.9836206
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1571973001610687",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-13T13:35:48.351174+00:00",
-      "policy_signature": "455cf061818a45df",
-      "retry_after": 1791941748.3511863
-    },
-    {
       "channel_id": "US Army Fans AI",
       "post_id": "1574582984702826",
       "stage": "content_or_layout",
@@ -4671,15 +4644,6 @@
       "checked_at": "2026-10-13T14:06:09.088780+00:00",
       "policy_signature": "d984add6d100783b",
       "retry_after": 1791943569.088799
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1543359174482989",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-13T15:06:00.579604+00:00",
-      "policy_signature": "d984add6d100783b",
-      "retry_after": 1791947160.5796225
     },
     {
       "channel_id": "daily_netflix",
@@ -4743,6 +4707,51 @@
       "checked_at": "2026-10-13T15:50:54.592401+00:00",
       "policy_signature": "c2efd23537adef21",
       "retry_after": 1791949854.5924094
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1572099421598045",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-13T16:05:21.600102+00:00",
+      "policy_signature": "e17007322b8828f1",
+      "retry_after": 1791950721.6001196
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1571973001610687",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-13T16:05:29.260635+00:00",
+      "policy_signature": "e17007322b8828f1",
+      "retry_after": 1791950729.2606535
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1571478284993492",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-13T16:05:35.452094+00:00",
+      "policy_signature": "e17007322b8828f1",
+      "retry_after": 1791950735.4521132
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1571333945007926",
+      "stage": "duplicate_photo",
+      "reason": "Source image was already published to this page",
+      "checked_at": "2026-10-13T16:05:35.734893+00:00",
+      "policy_signature": "e17007322b8828f1",
+      "retry_after": 1791950735.7349076
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1543359174482989",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-13T16:06:20.062412+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1791950780.0624313
     }
   ]
 }
