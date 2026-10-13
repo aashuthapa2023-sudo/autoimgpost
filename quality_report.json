@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-13T00:05:15.788616+00:00",
+  "updated_at": "2026-10-13T00:35:01.853831+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -3962,15 +3962,6 @@
       "retry_after": 1791839114.908048
     },
     {
-      "channel_id": "Music Store",
-      "post_id": "1473314524669121",
-      "stage": "duplicate_photo",
-      "reason": "Source image was already published to this page",
-      "checked_at": "2026-10-12T12:09:04.663479+00:00",
-      "policy_signature": "49daf510138eb11f",
-      "retry_after": 1791850144.6634958
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1145407684653152",
       "stage": "content_or_layout",
@@ -4365,6 +4356,33 @@
       "checked_at": "2026-10-13T00:05:15.788616+00:00",
       "policy_signature": "d984add6d100783b",
       "retry_after": 1791893115.7886403
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1473840961283144",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-13T00:34:50.463680+00:00",
+      "policy_signature": "49daf510138eb11f",
+      "retry_after": 1791894890.4636965
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1473314524669121",
+      "stage": "duplicate_photo",
+      "reason": "Source image was already published to this page",
+      "checked_at": "2026-10-13T00:34:50.733017+00:00",
+      "policy_signature": "49daf510138eb11f",
+      "retry_after": 1791894890.7330317
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1571478284993492",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-13T00:35:01.853831+00:00",
+      "policy_signature": "455cf061818a45df",
+      "retry_after": 1791894901.8538425
     }
   ]
 }
