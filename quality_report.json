@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-14T21:06:06.095922+00:00",
+  "updated_at": "2026-10-14T21:34:28.703126+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4818,15 +4818,6 @@
     },
     {
       "channel_id": "Music Store",
-      "post_id": "1473314524669121",
-      "stage": "duplicate_photo",
-      "reason": "Source image was already published to this page",
-      "checked_at": "2026-10-14T08:35:47.404502+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792010147.4045148
-    },
-    {
-      "channel_id": "Music Store",
       "post_id": "1472376968096210",
       "stage": "duplicate_photo",
       "reason": "Source image was already published to this page",
@@ -5319,6 +5310,33 @@
       "checked_at": "2026-10-14T21:06:06.095922+00:00",
       "policy_signature": "e3588eb428506f4e",
       "retry_after": 1792055166.0959377
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1475613837772523",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-14T21:34:28.277847+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792056868.2778575
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "122189995424675290",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-14T21:34:28.283325+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792056868.2833345
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1473314524669121",
+      "stage": "duplicate_photo",
+      "reason": "Source image was already published to this page",
+      "checked_at": "2026-10-14T21:34:28.703126+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792056868.7031388
     }
   ]
 }
