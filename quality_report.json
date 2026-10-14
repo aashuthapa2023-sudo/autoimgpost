@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-14T20:36:17.024367+00:00",
+  "updated_at": "2026-10-14T20:59:14.819417+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4835,24 +4835,6 @@
       "retry_after": 1792006592.457157
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1124210206632107",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-14T08:34:58.511840+00:00",
-      "policy_signature": "ad02389dcc26e482",
-      "retry_after": 1792010098.5118563
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1124192939967167",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 51.7 is below minimum threshold of 80.0",
-      "checked_at": "2026-10-14T08:34:58.786358+00:00",
-      "policy_signature": "ad02389dcc26e482",
-      "retry_after": 1792010098.7863808
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1474595467874360",
       "stage": "content_or_layout",
@@ -5310,6 +5292,24 @@
       "checked_at": "2026-10-14T20:36:17.024367+00:00",
       "policy_signature": "203c70019947012b",
       "retry_after": 1792053377.0243847
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1124210206632107",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-14T20:59:14.373935+00:00",
+      "policy_signature": "ad02389dcc26e482",
+      "retry_after": 1792054754.3739505
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1124192939967167",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 51.7 is below minimum threshold of 80.0",
+      "checked_at": "2026-10-14T20:59:14.819417+00:00",
+      "policy_signature": "ad02389dcc26e482",
+      "retry_after": 1792054754.8194342
     }
   ]
 }
