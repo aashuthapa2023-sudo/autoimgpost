@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-14T22:34:43.117011+00:00",
+  "updated_at": "2026-10-14T23:05:34.880666+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4862,15 +4862,6 @@
       "retry_after": 1792013783.7833402
     },
     {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1575496477944810",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-14T09:37:23.976016+00:00",
-      "policy_signature": "29d487426f0a0ba0",
-      "retry_after": 1792013843.976038
-    },
-    {
       "channel_id": "daily_netflix",
       "post_id": "1124303559956105",
       "stage": "photo_extraction",
@@ -5364,6 +5355,33 @@
       "checked_at": "2026-10-14T22:34:43.117011+00:00",
       "policy_signature": "e3588eb428506f4e",
       "retry_after": 1792060483.1170228
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1475668864433687",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-14T23:04:22.780563+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792062262.7805693
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1147449211115666",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-14T23:04:48.108636+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1792062288.108652
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1575496477944810",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-14T23:05:34.880666+00:00",
+      "policy_signature": "29d487426f0a0ba0",
+      "retry_after": 1792062334.8806844
     }
   ]
 }
