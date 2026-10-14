@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-14T04:36:57.610253+00:00",
+  "updated_at": "2026-10-14T05:06:15.784992+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4251,51 +4251,6 @@
     },
     {
       "channel_id": "nepal_speaks",
-      "post_id": "1542920671193506",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-13T07:36:49.516032+00:00",
-      "policy_signature": "d984add6d100783b",
-      "retry_after": 1791920209.5160518
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1542904844528422",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 14.5 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-13T07:37:01.805865+00:00",
-      "policy_signature": "d984add6d100783b",
-      "retry_after": 1791920221.8058898
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1542864021199171",
-      "stage": "source_language",
-      "reason": "Source caption does not match the page language",
-      "checked_at": "2026-10-13T09:10:46.985969+00:00",
-      "policy_signature": "d984add6d100783b",
-      "retry_after": 1791925846.9859898
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1542859241199649",
-      "stage": "source_language",
-      "reason": "Source caption does not match the page language",
-      "checked_at": "2026-10-13T09:10:46.990109+00:00",
-      "policy_signature": "d984add6d100783b",
-      "retry_after": 1791925846.9901214
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1542854481200125",
-      "stage": "source_language",
-      "reason": "Source caption does not match the page language",
-      "checked_at": "2026-10-13T09:10:46.993846+00:00",
-      "policy_signature": "d984add6d100783b",
-      "retry_after": 1791925846.9938545
-    },
-    {
-      "channel_id": "nepal_speaks",
       "post_id": "1542852594533647",
       "stage": "content_or_layout",
       "reason": "Unknown source lettering or watermark overlaps the subject",
@@ -4383,15 +4338,6 @@
       "checked_at": "2026-10-13T15:48:36.255329+00:00",
       "policy_signature": "ad02389dcc26e482",
       "retry_after": 1791949716.2553406
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1543359174482989",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-13T16:06:20.062412+00:00",
-      "policy_signature": "203c70019947012b",
-      "retry_after": 1791950780.0624313
     },
     {
       "channel_id": "nepal_speaks",
@@ -5085,6 +5031,60 @@
       "checked_at": "2026-10-14T04:36:57.610253+00:00",
       "policy_signature": "c2efd23537adef21",
       "retry_after": 1791995817.6102724
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1542920671193506",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-14T05:05:44.451470+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1791997544.4514863
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1543359174482989",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-14T05:06:01.305868+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1791997561.3058834
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1542904844528422",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 14.5 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-14T05:06:15.769650+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1791997575.7696657
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1542864021199171",
+      "stage": "source_language",
+      "reason": "Source caption does not match the page language",
+      "checked_at": "2026-10-14T05:06:15.774950+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1791997575.7749608
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1542859241199649",
+      "stage": "source_language",
+      "reason": "Source caption does not match the page language",
+      "checked_at": "2026-10-14T05:06:15.779989+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1791997575.7799973
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1542854481200125",
+      "stage": "source_language",
+      "reason": "Source caption does not match the page language",
+      "checked_at": "2026-10-14T05:06:15.784992+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1791997575.7849998
     }
   ]
 }
