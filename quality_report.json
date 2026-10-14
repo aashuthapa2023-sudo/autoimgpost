@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-14T12:33:51.208735+00:00",
+  "updated_at": "2026-10-14T12:38:32.656790+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4268,15 +4268,6 @@
       "retry_after": 1791979628.5818484
     },
     {
-      "channel_id": "Music Store",
-      "post_id": "1474752204525353",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-14T00:34:23.543321+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1791981263.5433288
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1543122247840015",
       "stage": "content_or_layout",
@@ -5175,6 +5166,15 @@
       "checked_at": "2026-10-14T12:33:51.208735+00:00",
       "policy_signature": "e17007322b8828f1",
       "retry_after": 1792024431.208753
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1474752204525353",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-14T12:38:32.656790+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792024712.6567998
     }
   ]
 }
