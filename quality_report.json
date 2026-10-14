@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-14T23:05:34.880666+00:00",
+  "updated_at": "2026-10-14T23:35:32.330364+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4862,24 +4862,6 @@
       "retry_after": 1792013783.7833402
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1124303559956105",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 31.9 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-14T11:04:44.219923+00:00",
-      "policy_signature": "ad02389dcc26e482",
-      "retry_after": 1792019084.2199383
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1572315278243126",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-10-14T11:05:22.811157+00:00",
-      "policy_signature": "e17007322b8828f1",
-      "retry_after": 1792019122.8111727
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1475195647814342",
       "stage": "content_or_layout",
@@ -5382,6 +5364,24 @@
       "checked_at": "2026-10-14T23:05:34.880666+00:00",
       "policy_signature": "29d487426f0a0ba0",
       "retry_after": 1792062334.8806844
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1124303559956105",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 31.9 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-14T23:34:57.081402+00:00",
+      "policy_signature": "ad02389dcc26e482",
+      "retry_after": 1792064097.0814161
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1572315278243126",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-10-14T23:35:32.330364+00:00",
+      "policy_signature": "e17007322b8828f1",
+      "retry_after": 1792064132.3303819
     }
   ]
 }
