@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-14T07:36:32.457141+00:00",
+  "updated_at": "2026-10-14T08:37:25.604384+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4125,78 +4125,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1124210206632107",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-13T20:05:14.394196+00:00",
-      "policy_signature": "ad02389dcc26e482",
-      "retry_after": 1791965114.394214
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1124192939967167",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 51.7 is below minimum threshold of 80.0",
-      "checked_at": "2026-10-13T20:05:14.683906+00:00",
-      "policy_signature": "ad02389dcc26e482",
-      "retry_after": 1791965114.6839232
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1474595467874360",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-10-13T20:05:52.561378+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1791965152.5613945
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1473711517962755",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 9.2 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-13T20:05:59.836428+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1791965159.836447
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1467838521870876",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-10-13T20:06:06.165732+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1791965166.1657476
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1473314524669121",
-      "stage": "duplicate_photo",
-      "reason": "Source image was already published to this page",
-      "checked_at": "2026-10-13T20:06:06.437053+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1791965166.4370673
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1472376968096210",
-      "stage": "duplicate_photo",
-      "reason": "Source image was already published to this page",
-      "checked_at": "2026-10-13T20:06:06.680353+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1791965166.6803653
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122120297433320544",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-13T20:07:34.979348+00:00",
-      "policy_signature": "c2efd23537adef21",
-      "retry_after": 1791965254.9793622
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1124243219962139",
       "stage": "photo_extraction",
       "reason": "Blurry image detected: Sharpness variance 29.7 is below minimum threshold of 35.0",
@@ -5130,6 +5058,87 @@
       "checked_at": "2026-10-14T07:36:32.457141+00:00",
       "policy_signature": "203c70019947012b",
       "retry_after": 1792006592.457157
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1124210206632107",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-14T08:34:58.511840+00:00",
+      "policy_signature": "ad02389dcc26e482",
+      "retry_after": 1792010098.5118563
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1124192939967167",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 51.7 is below minimum threshold of 80.0",
+      "checked_at": "2026-10-14T08:34:58.786358+00:00",
+      "policy_signature": "ad02389dcc26e482",
+      "retry_after": 1792010098.7863808
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1474595467874360",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-10-14T08:35:33.707350+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792010133.7073648
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1473711517962755",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 9.2 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-14T08:35:40.920522+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792010140.9205377
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1467838521870876",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-14T08:35:47.214107+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792010147.2141232
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1473314524669121",
+      "stage": "duplicate_photo",
+      "reason": "Source image was already published to this page",
+      "checked_at": "2026-10-14T08:35:47.404502+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792010147.4045148
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1472376968096210",
+      "stage": "duplicate_photo",
+      "reason": "Source image was already published to this page",
+      "checked_at": "2026-10-14T08:35:47.683457+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792010147.6834717
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1543910074427899",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 24.7 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-14T08:36:24.344495+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1792010184.344513
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122120297433320544",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-14T08:37:25.604384+00:00",
+      "policy_signature": "c2efd23537adef21",
+      "retry_after": 1792010245.604398
     }
   ]
 }
