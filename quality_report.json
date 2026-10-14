@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-14T16:06:13.211777+00:00",
+  "updated_at": "2026-10-14T16:38:02.949684+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4386,33 +4386,6 @@
     },
     {
       "channel_id": "Daily Hollywood",
-      "post_id": "1572099421598045",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-14T04:34:58.236495+00:00",
-      "policy_signature": "e17007322b8828f1",
-      "retry_after": 1791995698.2365139
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1571973001610687",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-14T04:35:03.407261+00:00",
-      "policy_signature": "e17007322b8828f1",
-      "retry_after": 1791995703.4072797
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1571478284993492",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-14T04:35:07.511005+00:00",
-      "policy_signature": "e17007322b8828f1",
-      "retry_after": 1791995707.5110228
-    },
-    {
-      "channel_id": "Daily Hollywood",
       "post_id": "1571333945007926",
       "stage": "duplicate_photo",
       "reason": "Source image was already published to this page",
@@ -4473,15 +4446,6 @@
       "checked_at": "2026-10-14T04:36:22.473187+00:00",
       "policy_signature": "203c70019947012b",
       "retry_after": 1791995782.4732049
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122120229849320544",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-14T04:36:57.610253+00:00",
-      "policy_signature": "c2efd23537adef21",
-      "retry_after": 1791995817.6102724
     },
     {
       "channel_id": "nepal_speaks",
@@ -5211,6 +5175,87 @@
       "checked_at": "2026-10-14T16:06:13.211777+00:00",
       "policy_signature": "c2efd23537adef21",
       "retry_after": 1792037173.2117865
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1573104214830899",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-14T16:35:19.832138+00:00",
+      "policy_signature": "e17007322b8828f1",
+      "retry_after": 1792038919.83217
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1572923801515607",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-14T16:35:33.421914+00:00",
+      "policy_signature": "e17007322b8828f1",
+      "retry_after": 1792038933.42193
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1572896101518377",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-14T16:35:39.621122+00:00",
+      "policy_signature": "e17007322b8828f1",
+      "retry_after": 1792038939.6211379
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1572099421598045",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-14T16:35:45.696583+00:00",
+      "policy_signature": "e17007322b8828f1",
+      "retry_after": 1792038945.6965976
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1571973001610687",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-14T16:35:52.986561+00:00",
+      "policy_signature": "e17007322b8828f1",
+      "retry_after": 1792038952.9865744
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1571478284993492",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-14T16:35:58.890676+00:00",
+      "policy_signature": "e17007322b8828f1",
+      "retry_after": 1792038958.890691
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1544406777711562",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-14T16:36:36.104069+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1792038996.1040854
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122123721435298539",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-10-14T16:37:47.922247+00:00",
+      "policy_signature": "c2efd23537adef21",
+      "retry_after": 1792039067.9222627
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122120229849320544",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-14T16:38:02.949684+00:00",
+      "policy_signature": "c2efd23537adef21",
+      "retry_after": 1792039082.949701
     }
   ]
 }
