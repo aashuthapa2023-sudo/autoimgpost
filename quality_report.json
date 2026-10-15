@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-15T23:04:59.586182+00:00",
+  "updated_at": "2026-10-15T23:36:53.475628+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4790,15 +4790,6 @@
       "retry_after": 1792105563.0063715
     },
     {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1575496477944810",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-15T11:06:37.815039+00:00",
-      "policy_signature": "29d487426f0a0ba0",
-      "retry_after": 1792105597.815057
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1146427117884542",
       "stage": "content_or_layout",
@@ -5625,6 +5616,33 @@
       "checked_at": "2026-10-15T23:04:59.586182+00:00",
       "policy_signature": "e3588eb428506f4e",
       "retry_after": 1792148699.5861895
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1545306527621587",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-15T23:35:07.714282+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1792150507.714299
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1545021070983466",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-15T23:35:26.524052+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1792150526.5240695
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1575496477944810",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-15T23:36:53.475628+00:00",
+      "policy_signature": "29d487426f0a0ba0",
+      "retry_after": 1792150613.475648
     }
   ]
 }
