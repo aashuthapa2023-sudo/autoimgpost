@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-15T05:06:10.826923+00:00",
+  "updated_at": "2026-10-15T05:34:25.520573+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4907,15 +4907,6 @@
       "retry_after": 1792038996.1040854
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1571333945007926",
-      "stage": "duplicate_photo",
-      "reason": "Source image was already published to this page",
-      "checked_at": "2026-10-14T17:04:51.559009+00:00",
-      "policy_signature": "e17007322b8828f1",
-      "retry_after": 1792040691.5590239
-    },
-    {
       "channel_id": "oceans_secret",
       "post_id": "122123438637298539",
       "stage": "content_or_layout",
@@ -5454,6 +5445,15 @@
       "checked_at": "2026-10-15T05:06:10.826923+00:00",
       "policy_signature": "c2efd23537adef21",
       "retry_after": 1792083970.8269393
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1571333945007926",
+      "stage": "duplicate_photo",
+      "reason": "Source image was already published to this page",
+      "checked_at": "2026-10-15T05:34:25.520573+00:00",
+      "policy_signature": "e17007322b8828f1",
+      "retry_after": 1792085665.5205863
     }
   ]
 }
