@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-15T06:05:43.259051+00:00",
+  "updated_at": "2026-10-15T07:07:12.752762+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4925,24 +4925,6 @@
       "retry_after": 1792046096.2497344
     },
     {
-      "channel_id": "Music Store",
-      "post_id": "1474545561212684",
-      "stage": "content_or_layout",
-      "reason": "Owned corner wordmark cannot fit safely",
-      "checked_at": "2026-10-14T18:35:24.882665+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792046124.8826814
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1474519361215304",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-14T18:35:29.924185+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792046129.9241996
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1544375127714727",
       "stage": "content_or_layout",
@@ -5463,6 +5445,42 @@
       "checked_at": "2026-10-15T06:05:43.259051+00:00",
       "policy_signature": "203c70019947012b",
       "retry_after": 1792087543.2590666
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1474545561212684",
+      "stage": "content_or_layout",
+      "reason": "Owned corner wordmark cannot fit safely",
+      "checked_at": "2026-10-15T07:05:21.769096+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792091121.769114
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1474519361215304",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-15T07:05:29.080236+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792091129.08025
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1147309481129639",
+      "stage": "content_or_layout",
+      "reason": "Unrecognized source typography overlaps the subject",
+      "checked_at": "2026-10-15T07:06:08.110196+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1792091168.1103003
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122141106573240703",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-10-15T07:07:12.752762+00:00",
+      "policy_signature": "c2efd23537adef21",
+      "retry_after": 1792091232.7527788
     }
   ]
 }
