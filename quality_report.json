@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-15T20:35:42.466517+00:00",
+  "updated_at": "2026-10-15T21:05:35.892297+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4412,24 +4412,6 @@
       "retry_after": 1792094747.018427
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1124210206632107",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-15T09:04:53.191992+00:00",
-      "policy_signature": "ad02389dcc26e482",
-      "retry_after": 1792098293.1920085
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1124192939967167",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 51.7 is below minimum threshold of 80.0",
-      "checked_at": "2026-10-15T09:04:53.544953+00:00",
-      "policy_signature": "ad02389dcc26e482",
-      "retry_after": 1792098293.5449712
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1544406777711562",
       "stage": "content_or_layout",
@@ -5616,6 +5598,24 @@
       "checked_at": "2026-10-15T20:35:42.466517+00:00",
       "policy_signature": "e3588eb428506f4e",
       "retry_after": 1792139742.466533
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1124210206632107",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-15T21:05:35.465894+00:00",
+      "policy_signature": "ad02389dcc26e482",
+      "retry_after": 1792141535.4659114
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1124192939967167",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 51.7 is below minimum threshold of 80.0",
+      "checked_at": "2026-10-15T21:05:35.892297+00:00",
+      "policy_signature": "ad02389dcc26e482",
+      "retry_after": 1792141535.8923156
     }
   ]
 }
