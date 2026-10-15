@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-15T18:05:51.283201+00:00",
+  "updated_at": "2026-10-15T18:35:21.073443+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4412,15 +4412,6 @@
       "retry_after": 1792083970.8269393
     },
     {
-      "channel_id": "Music Store",
-      "post_id": "122189984186675290",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-15T06:05:09.337802+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792087509.3378198
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1147343407792913",
       "stage": "content_or_layout",
@@ -5580,6 +5571,24 @@
       "checked_at": "2026-10-15T18:05:51.283201+00:00",
       "policy_signature": "203c70019947012b",
       "retry_after": 1792130751.2832236
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1476421981025042",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-10-15T18:35:16.036214+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792132516.036234
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "122189984186675290",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-15T18:35:21.073443+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792132521.0734627
     }
   ]
 }
