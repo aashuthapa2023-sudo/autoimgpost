@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-15T21:05:35.892297+00:00",
+  "updated_at": "2026-10-15T21:35:28.203932+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4467,33 +4467,6 @@
     },
     {
       "channel_id": "Music Store",
-      "post_id": "1475589751108265",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-15T09:25:14.283964+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792099514.283981
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1474595467874360",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-10-15T09:25:26.422440+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792099526.4224808
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1474570377876869",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-15T09:25:37.668288+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792099537.668306
-    },
-    {
-      "channel_id": "Music Store",
       "post_id": "1473737381293502",
       "stage": "content_or_layout",
       "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
@@ -4572,24 +4545,6 @@
       "checked_at": "2026-10-15T09:28:31.792341+00:00",
       "policy_signature": "203c70019947012b",
       "retry_after": 1792099711.7923563
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1475613837772523",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-15T09:34:48.900943+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792100088.9009516
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "122189995424675290",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-15T09:34:48.906531+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792100088.9065382
     },
     {
       "channel_id": "Music Store",
@@ -5616,6 +5571,51 @@
       "checked_at": "2026-10-15T21:05:35.892297+00:00",
       "policy_signature": "ad02389dcc26e482",
       "retry_after": 1792141535.8923156
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1475613837772523",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-15T21:34:53.068305+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792143293.068427
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "122189995424675290",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-15T21:34:53.074031+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792143293.074041
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1475589751108265",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-15T21:35:05.331473+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792143305.3314888
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1474595467874360",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-10-15T21:35:17.269301+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792143317.2693155
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1474570377876869",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-15T21:35:28.203932+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792143328.2039485
     }
   ]
 }
