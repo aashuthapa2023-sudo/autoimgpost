@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-15T23:36:53.475628+00:00",
+  "updated_at": "2026-10-16T00:35:48.156154+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4844,15 +4844,6 @@
       "retry_after": 1792107307.3457265
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1124303559956105",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 31.9 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-15T12:04:51.228357+00:00",
-      "policy_signature": "ad02389dcc26e482",
-      "retry_after": 1792109091.2283711
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1476145031052737",
       "stage": "content_or_layout",
@@ -4860,24 +4851,6 @@
       "checked_at": "2026-10-15T12:05:20.393361+00:00",
       "policy_signature": "e3588eb428506f4e",
       "retry_after": 1792109120.3933778
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1573972954744025",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-15T12:05:35.421055+00:00",
-      "policy_signature": "e17007322b8828f1",
-      "retry_after": 1792109135.4210715
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1572315278243126",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-10-15T12:05:45.727002+00:00",
-      "policy_signature": "e17007322b8828f1",
-      "retry_after": 1792109145.727019
     },
     {
       "channel_id": "nepal_speaks",
@@ -4941,15 +4914,6 @@
       "checked_at": "2026-10-15T12:34:52.265000+00:00",
       "policy_signature": "e3588eb428506f4e",
       "retry_after": 1792110892.2650151
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1572398188234835",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-10-15T12:35:01.474321+00:00",
-      "policy_signature": "e17007322b8828f1",
-      "retry_after": 1792110901.4743366
     },
     {
       "channel_id": "nepal_speaks",
@@ -5643,6 +5607,42 @@
       "checked_at": "2026-10-15T23:36:53.475628+00:00",
       "policy_signature": "29d487426f0a0ba0",
       "retry_after": 1792150613.475648
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1124303559956105",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 31.9 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-16T00:34:55.613324+00:00",
+      "policy_signature": "ad02389dcc26e482",
+      "retry_after": 1792154095.6133392
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1573972954744025",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-16T00:35:33.627761+00:00",
+      "policy_signature": "e17007322b8828f1",
+      "retry_after": 1792154133.627779
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1572398188234835",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-16T00:35:37.216890+00:00",
+      "policy_signature": "e17007322b8828f1",
+      "retry_after": 1792154137.216907
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1572315278243126",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-10-16T00:35:48.156154+00:00",
+      "policy_signature": "e17007322b8828f1",
+      "retry_after": 1792154148.1561716
     }
   ]
 }
