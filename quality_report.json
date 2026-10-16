@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-16T10:06:25.957297+00:00",
+  "updated_at": "2026-10-16T11:07:41.009845+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -5141,69 +5141,6 @@
       "retry_after": 1792137982.4607017
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1124243219962139",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 29.7 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-15T22:34:36.844413+00:00",
-      "policy_signature": "ad02389dcc26e482",
-      "retry_after": 1792146876.8444295
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1474649471202293",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-15T22:35:00.371854+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792146900.3718672
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1475633847770522",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-15T22:35:08.025615+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792146908.0256307
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "122189996792675290",
-      "stage": "content_or_layout",
-      "reason": "Owned corner wordmark cannot fit safely",
-      "checked_at": "2026-10-15T22:35:15.982253+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792146915.9822693
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122141249907240703",
-      "stage": "content_or_layout",
-      "reason": "Source caption has no complete grounded headline for replacement",
-      "checked_at": "2026-10-15T22:36:43.649219+00:00",
-      "policy_signature": "c2efd23537adef21",
-      "retry_after": 1792147003.6492357
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1475668864433687",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-15T23:04:59.580832+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792148699.5808413
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1474669401200300",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-15T23:04:59.586182+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792148699.5861895
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1545306527621587",
       "stage": "content_or_layout",
@@ -5769,6 +5706,96 @@
       "checked_at": "2026-10-16T10:06:25.957297+00:00",
       "policy_signature": "203c70019947012b",
       "retry_after": 1792188385.9573147
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1124243219962139",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 29.7 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-16T11:04:43.369971+00:00",
+      "policy_signature": "ad02389dcc26e482",
+      "retry_after": 1792191883.3699892
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1475668864433687",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-16T11:05:00.205476+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792191900.2054882
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1474669401200300",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-16T11:05:00.211797+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792191900.2118084
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1474649471202293",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-16T11:05:00.217319+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792191900.2173285
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1475633847770522",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-16T11:05:08.433709+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792191908.433725
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "122189996792675290",
+      "stage": "content_or_layout",
+      "reason": "Owned corner wordmark cannot fit safely",
+      "checked_at": "2026-10-16T11:05:16.967285+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792191916.9673023
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1545957170889856",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-16T11:05:52.105963+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1792191952.105978
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1545880364230870",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-16T11:06:12.076224+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1792191972.076242
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1545858957566344",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-16T11:06:30.451694+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1792191990.45171
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122141249907240703",
+      "stage": "content_or_layout",
+      "reason": "Source caption has no complete grounded headline for replacement",
+      "checked_at": "2026-10-16T11:07:41.009845+00:00",
+      "policy_signature": "c2efd23537adef21",
+      "retry_after": 1792192061.009862
     }
   ]
 }
