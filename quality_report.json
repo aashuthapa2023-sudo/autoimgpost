@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-16T14:35:21.952820+00:00",
+  "updated_at": "2026-10-16T15:05:50.408671+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -5160,24 +5160,6 @@
     },
     {
       "channel_id": "Music Store",
-      "post_id": "1476713790995861",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-16T02:35:04.904741+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792161304.9047549
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1475789547754952",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-16T03:04:40.479518+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792163080.4795277
-    },
-    {
-      "channel_id": "Music Store",
       "post_id": "1476733020993938",
       "stage": "content_or_layout",
       "reason": "Owned corner wordmark cannot fit safely",
@@ -5814,6 +5796,33 @@
       "checked_at": "2026-10-16T14:35:21.952820+00:00",
       "policy_signature": "e17007322b8828f1",
       "retry_after": 1792204521.9528391
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1475789547754952",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-16T15:04:58.847378+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792206298.8473907
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1476713790995861",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-16T15:05:16.247183+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792206316.2472053
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1546349650850608",
+      "stage": "content_or_layout",
+      "reason": "Source graphics leave too little usable photograph",
+      "checked_at": "2026-10-16T15:05:50.408671+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1792206350.4086928
     }
   ]
 }
