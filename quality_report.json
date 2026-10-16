@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-16T20:36:14.196037+00:00",
+  "updated_at": "2026-10-16T21:06:07.841792+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -5511,15 +5511,6 @@
     },
     {
       "channel_id": "Daily Hollywood",
-      "post_id": "1572398188234835",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-10-16T13:05:36.905670+00:00",
-      "policy_signature": "e17007322b8828f1",
-      "retry_after": 1792199136.9056873
-    },
-    {
-      "channel_id": "Daily Hollywood",
       "post_id": "1572315278243126",
       "stage": "content_or_layout",
       "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
@@ -5886,6 +5877,24 @@
       "checked_at": "2026-10-16T20:36:14.196037+00:00",
       "policy_signature": "680d42bee2397595",
       "retry_after": 1792226174.1960506
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1573972954744025",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-16T21:05:25.603201+00:00",
+      "policy_signature": "8d03309ec5dcd3da",
+      "retry_after": 1792227925.6032164
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1572398188234835",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-16T21:06:07.841792+00:00",
+      "policy_signature": "70883aeacb67db71",
+      "retry_after": 1792227967.8418088
     }
   ]
 }
