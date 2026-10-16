@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-16T07:05:49.838773+00:00",
+  "updated_at": "2026-10-16T07:38:12.526762+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4413,33 +4413,6 @@
     },
     {
       "channel_id": "nepal_speaks",
-      "post_id": "1544406777711562",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-15T09:06:04.276948+00:00",
-      "policy_signature": "203c70019947012b",
-      "retry_after": 1792098364.2769656
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1544375127714727",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-15T09:06:26.936242+00:00",
-      "policy_signature": "203c70019947012b",
-      "retry_after": 1792098386.9362583
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1544326897719550",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-15T09:06:40.251247+00:00",
-      "policy_signature": "203c70019947012b",
-      "retry_after": 1792098400.2512631
-    },
-    {
-      "channel_id": "nepal_speaks",
       "post_id": "1147487111111876",
       "stage": "content_or_layout",
       "reason": "Unknown source lettering or watermark overlaps the subject",
@@ -5159,69 +5132,6 @@
       "retry_after": 1792128908.5106585
     },
     {
-      "channel_id": "Music Store",
-      "post_id": "1488401096488147",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-15T19:05:44.890063+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792134344.8900785
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1474545561212684",
-      "stage": "content_or_layout",
-      "reason": "Owned corner wordmark cannot fit safely",
-      "checked_at": "2026-10-15T19:05:54.518311+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792134354.5183284
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122141106573240703",
-      "stage": "content_or_layout",
-      "reason": "Source lettering overlaps the marine subject outside replacement zones",
-      "checked_at": "2026-10-15T19:07:38.883346+00:00",
-      "policy_signature": "c2efd23537adef21",
-      "retry_after": 1792134458.883362
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122141106237240703",
-      "stage": "content_or_layout",
-      "reason": "Source lettering overlaps the marine subject outside replacement zones",
-      "checked_at": "2026-10-15T19:07:44.382269+00:00",
-      "policy_signature": "c2efd23537adef21",
-      "retry_after": 1792134464.3822858
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122123721435298539",
-      "stage": "content_or_layout",
-      "reason": "Source lettering overlaps the marine subject outside replacement zones",
-      "checked_at": "2026-10-15T19:07:53.202930+00:00",
-      "policy_signature": "c2efd23537adef21",
-      "retry_after": 1792134473.202947
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122120229849320544",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-15T19:08:08.198163+00:00",
-      "policy_signature": "c2efd23537adef21",
-      "retry_after": 1792134488.1981792
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1474519361215304",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-15T19:34:52.636527+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792136092.6365407
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1545471770938396",
       "stage": "content_or_layout",
@@ -5733,6 +5643,123 @@
       "checked_at": "2026-10-16T07:05:49.838773+00:00",
       "policy_signature": "e3588eb428506f4e",
       "retry_after": 1792177549.8387904
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1488401096488147",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-16T07:35:15.063396+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792179315.0634143
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1474545561212684",
+      "stage": "content_or_layout",
+      "reason": "Owned corner wordmark cannot fit safely",
+      "checked_at": "2026-10-16T07:35:23.227739+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792179323.2277532
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1474519361215304",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-16T07:35:29.951080+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792179329.951094
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1544850277667212",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-16T07:36:04.489458+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1792179364.489474
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1544840307668209",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-16T07:36:14.133590+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1792179374.1336079
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1544839651001608",
+      "stage": "content_or_layout",
+      "reason": "Source graphics leave too little usable photograph",
+      "checked_at": "2026-10-16T07:36:26.600536+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1792179386.6005516
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1544406777711562",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-16T07:36:50.037840+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1792179410.0378575
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1544375127714727",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-16T07:37:08.608413+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1792179428.608429
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1544326897719550",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-16T07:37:19.964911+00:00",
+      "policy_signature": "203c70019947012b",
+      "retry_after": 1792179439.9649265
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122141106573240703",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-10-16T07:37:48.607540+00:00",
+      "policy_signature": "c2efd23537adef21",
+      "retry_after": 1792179468.607555
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122141106237240703",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-10-16T07:37:53.101075+00:00",
+      "policy_signature": "c2efd23537adef21",
+      "retry_after": 1792179473.1010897
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122123721435298539",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-10-16T07:38:00.225079+00:00",
+      "policy_signature": "c2efd23537adef21",
+      "retry_after": 1792179480.2250974
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122120229849320544",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-16T07:38:12.526762+00:00",
+      "policy_signature": "c2efd23537adef21",
+      "retry_after": 1792179492.5267785
     }
   ]
 }
