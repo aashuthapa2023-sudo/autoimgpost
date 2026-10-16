@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-16T22:05:39.056308+00:00",
+  "updated_at": "2026-10-16T22:35:36.856491+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -5895,6 +5895,24 @@
       "checked_at": "2026-10-16T22:05:39.056308+00:00",
       "policy_signature": "3d4f7c0f3fea81a0",
       "retry_after": 1792231539.0563276
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1546423320843241",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-16T22:35:18.572666+00:00",
+      "policy_signature": "680d42bee2397595",
+      "retry_after": 1792233318.5726802
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1546406814178225",
+      "stage": "content_or_layout",
+      "reason": "Source graphics leave too little usable photograph",
+      "checked_at": "2026-10-16T22:35:36.856491+00:00",
+      "policy_signature": "680d42bee2397595",
+      "retry_after": 1792233336.8565054
     }
   ]
 }
