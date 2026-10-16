@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-16T11:07:41.009845+00:00",
+  "updated_at": "2026-10-16T12:06:32.803828+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -5159,15 +5159,6 @@
       "retry_after": 1792150526.5240695
     },
     {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1575496477944810",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-15T23:36:53.475628+00:00",
-      "policy_signature": "29d487426f0a0ba0",
-      "retry_after": 1792150613.475648
-    },
-    {
       "channel_id": "daily_netflix",
       "post_id": "1124303559956105",
       "stage": "photo_extraction",
@@ -5796,6 +5787,24 @@
       "checked_at": "2026-10-16T11:07:41.009845+00:00",
       "policy_signature": "c2efd23537adef21",
       "retry_after": 1792192061.009862
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1477074067626500",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-16T12:04:58.141728+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792195498.1417403
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1575496477944810",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-16T12:06:32.803828+00:00",
+      "policy_signature": "29d487426f0a0ba0",
+      "retry_after": 1792195592.803846
     }
   ]
 }
