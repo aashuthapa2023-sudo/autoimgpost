@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-16T01:05:56.562577+00:00",
+  "updated_at": "2026-10-16T01:36:34.887423+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -4664,24 +4664,6 @@
       "retry_after": 1792102023.439448
     },
     {
-      "channel_id": "oceans_secret",
-      "post_id": "122123751165298539",
-      "stage": "content_or_layout",
-      "reason": "Source seal exceeds its reviewed template",
-      "checked_at": "2026-10-15T10:07:37.099402+00:00",
-      "policy_signature": "c2efd23537adef21",
-      "retry_after": 1792102057.0994186
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122120297433320544",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-15T10:07:45.554538+00:00",
-      "policy_signature": "c2efd23537adef21",
-      "retry_after": 1792102065.5545537
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1543393324479574",
       "stage": "content_or_layout",
@@ -4950,15 +4932,6 @@
       "checked_at": "2026-10-15T12:36:39.071447+00:00",
       "policy_signature": "203c70019947012b",
       "retry_after": 1792110999.0714636
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1475713551095885",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-15T13:05:32.828561+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792112732.8285782
     },
     {
       "channel_id": "nepal_speaks",
@@ -5661,6 +5634,42 @@
       "checked_at": "2026-10-16T01:05:56.562577+00:00",
       "policy_signature": "e3588eb428506f4e",
       "retry_after": 1792155956.5625935
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1476676410999599",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-16T01:34:52.702074+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792157692.7020826
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1475713551095885",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-16T01:35:04.689440+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792157704.689456
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122123751165298539",
+      "stage": "content_or_layout",
+      "reason": "Source seal exceeds its reviewed template",
+      "checked_at": "2026-10-16T01:36:25.966723+00:00",
+      "policy_signature": "c2efd23537adef21",
+      "retry_after": 1792157785.966739
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122120297433320544",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-16T01:36:34.887423+00:00",
+      "policy_signature": "c2efd23537adef21",
+      "retry_after": 1792157794.887437
     }
   ]
 }
