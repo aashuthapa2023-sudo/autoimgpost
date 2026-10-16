@@ -48,10 +48,12 @@ receipts, and per-page duplicate protections are retained.
 
 ## Validation and limits
 
-Python regressions and GitHub UI-save checks cover source-event extraction,
+357 Python regressions and GitHub UI-save checks pass and cover source-event extraction,
 request attribution, actual image detail, square footer geometry, tiny logos,
 publisher anchors, quoted titles and shared-source isolation. Current rejected
-source images were downloaded, rechecked and representative repaired posters
+source images were downloaded; 16 of 56 pairs passed the current image/caption
+and layout checks. Freshness, story/photo dedup and cadence are still applied
+separately by the live publisher. Representative repaired posters were
 visually inspected. Main-subject watermarks, severe blur and unsafe crops still
 fail intentionally.
 
@@ -60,4 +62,21 @@ material. A Facebook source that stops supplying usable public photo posts
 can still leave a page waiting. More frequent triggers cannot create missing
 source material, and stale or duplicate posts are not used to fill slots.
 
-Live verification follows deployment.
+## Live verification
+
+Cloud run [38935231033](https://github.com/aashuthapa2023-sudo/autoimgpost/actions/runs/38935231033)
+completed successfully against code revision 17463be. All 357 regression tests
+passed on Ubuntu as well as locally. Facebook confirmed these new publications:
+
+| Page | Confirmation ID | UTC publication time |
+| --- | --- | --- |
+| Netflix | 1673448741458010 | 16:55:21 |
+| Music Store | 1575298778122334 | 16:55:56 |
+| Hollywood | 1565255218949292 | 16:56:12 |
+| Ocean's Secret | 122112401403493170 | 16:57:04 |
+| US Army Fans | 122149678221353591 | 16:57:33 |
+
+Nepal Speaks respected its interval after its recent publication. Anisha stayed
+paused. At 16:57:49 UTC the workflow confirmed that publication state was saved
+on the latest main branch. The cronjob and GitHub schedules continue running
+in the cloud independently of the user's PC.
