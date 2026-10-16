@@ -465,7 +465,11 @@ def run_pipeline(mode="run", target_channel="all"):
                     continue
 
                 # STRICT HD QUALITY GATE: Reject very low-resolution, blank, or excessively blurry images
-                is_valid_quality, quality_msg = validate_image_quality(raw_img, min_dim=500, min_sharpness=80.0)
+                from modules.source_editorial import source_profile
+                editorial_profile=source_profile(ch,post)
+                is_valid_quality, quality_msg = validate_image_quality(raw_img, min_dim=500,
+                    min_sharpness=35.0 if editorial_profile else 80.0,
+                    allow_editorial_detail=bool(editorial_profile))
                 if not is_valid_quality:
                     reject(post_id, 'source_quality', quality_msg)
                     print(f"     [QUALITY REJECT] Post {post_id} rejected: {quality_msg}.")
@@ -531,7 +535,8 @@ def run_pipeline(mode="run", target_channel="all"):
                 # 2. Cinematic Color Grading
                 print("     [2/4] Applying OpenCV CIE-LAB CLAHE contrast grading...")
                 clean_valid, clean_reason = validate_image_quality(cleaned_img, min_dim=450, min_sharpness=35.0,
-                    allow_portrait_background=bool(editorial_profile) and not replacement_review and not preserved_review)
+                    allow_portrait_background=bool(editorial_profile) and not replacement_review and not preserved_review,
+                    allow_editorial_detail=bool(editorial_profile) and not replacement_review and not preserved_review)
                 if not clean_valid:
                     reject(post_id, 'photo_extraction', clean_reason)
                     print(f" [CLEANUP QUALITY REJECT] {post_id}: {clean_reason}")

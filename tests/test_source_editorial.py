@@ -66,7 +66,7 @@ class EditorialSourceTests(unittest.TestCase):
  def test_military_headline_keeps_complete_named_deployment_clause(self):
   caption='During the exercise Keen Sword, Marines will field the NMESIS anti-ship missile system on Yonaguni, Japan. NMESIS, the Navy-Marine Expeditionary Ship Interdiction System, is a ground-based launcher.'
   payload=replacement_payload(caption,language='en',content_topic='military')
-  self.assertEqual(payload['headline'],'Marines will field the NMESIS anti-ship missile system on Yonaguni')
+  self.assertEqual(payload['headline'],'Marines will field the NMESIS anti-ship missile system on Yonaguni, Japan')
  def test_configured_footer_removes_short_fragment_only_with_publisher_anchor(self):
   boxes=self.boxes([((310,720,490,770),'NEWS'),((80,900,130,940),'Say')])
   profile=dict(self.profile,footer_start_fraction=.65)

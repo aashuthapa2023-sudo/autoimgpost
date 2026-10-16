@@ -3,11 +3,11 @@
 import re
 
 OCEAN_TERMS = r"\b(?:oceans?|marine|maritime|seabed|seafloor|seawater|underwater|coral|reefs?|whales?|belugas?|narwhals?|porpoises?|manatees?|dugongs?|dolphins?|sharks?|orcas?|octopus|octopuses|squid|jellyfish|seaweed|seagrass|plankton|mangroves?|coastal|coastlines?|deep[- ]sea|oceanography|seals?|walrus|turtles?|seahorses?|manta rays?|stingrays?)\b"
-MUSIC_TERMS = r"\b(?:music|musicians?|singers?|songs?|albums?|concerts?|billboard(?:200)?|Hot ?100|grammys?|bands?|rappers?|rap|hip[- ]hop|guitars?|soundtracks?|vocalists?|drummers?|composers?|symphony|orchestra|lyrics|singles?|duets?|vocals?|VMA|VMAs|EP|LP|headliners?|record label|record deal|music video|listening party|video of the year|stage mishap|stage performance|R&B tour)\b"
+MUSIC_TERMS = r"\b(?:music|musicians?|singers?|songs?|albums?|concerts?|billboard(?:200)?|Hot ?100|grammys?|bands?|rappers?|rap|hip[- ]hop|guitars?|soundtracks?|vocalists?|drummers?|composers?|symphony|orchestra|lyrics|singles?|duets?|vocals?|VMA|VMAs|EP|LP|headliners?|record label|record deal|music video|listening party|video of the year|stage mishap|stage performance|R&B tour|BTS|K-pop|P-pop|J-pop)\b"
 SCREEN_TERMS = r"\b(?:netflix|streaming|series|seasons?|episodes?|films?|movies?|cinema|hollywood|actors?|actresses?|directors?|cast|casting|screenplay|box[- ]office|trailers?|oscars?|emmys?|hbo|disney|paramount|sitcom|documentary|television|tv show)\b"
 
 
-MILITARY_TERMS = r"\b(?:army|military|marines?|navy|USS|aircraft carriers?|strike group|air forces?|soldiers?|veterans?|rangers?|medal of honor|regiment|battalion|infantry|fighter jets?|combat aircraft|F-16V?|SR-71|Blackbird|NMESIS|missiles?|armed forces)\b"
+MILITARY_TERMS = r"\b(?:army|military|marines?|navy|USS|aircraft carriers?|strike group|air forces?|soldiers?|veterans?|rangers?|medal of honor|regiment|battalion|infantry|fighter jets?|combat aircraft|F-16V?|SR-71|Blackbird|NMESIS|missiles?|armed forces|Pentagon|defense secretary)\b"
 
 
 def channel_topic(channel):

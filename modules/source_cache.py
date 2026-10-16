@@ -15,7 +15,12 @@ def merge_source_candidates(channel, live_posts, processed_ids=(), path='source_
     except (OSError,ValueError):stored={}
     cid=channel['channel_id']
     rows={}
-    for post in stored.get(cid,[])+list(live_posts):
+    # Multiple destinations can subscribe to the same source. Reuse its exact
+    # already captured pair when a public feed temporarily returns no stories.
+    # The same configured-source, age, complete-pair and per-page dedup gates
+    # apply regardless of which destination originally captured it.
+    shared=[post for other,posts in stored.items() if other!=cid and isinstance(posts,list) for post in posts]
+    for post in shared+stored.get(cid,[])+list(live_posts):
         if not isinstance(post,dict):continue
         stamp=post.get('created_time')
         if (post.get('source_page_url') not in sources or not str(post.get('post_id','')).isdigit()

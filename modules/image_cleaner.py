@@ -452,11 +452,11 @@ def erase_text_and_watermarks(img: np.ndarray, source_text_boxes=None, return_cr
     return (photo,top,bottom) if return_crop_bounds else photo
 
 
-def validate_image_quality(img: np.ndarray, min_dim: int = 500, min_sharpness: float = 100.0, *, allow_portrait_background=False) -> tuple:
+def validate_image_quality(img: np.ndarray, min_dim: int = 500, min_sharpness: float = 100.0, *, allow_portrait_background=False, allow_editorial_detail=False) -> tuple:
     """
     Validates image resolution and clarity to strictly eliminate blurry or pixelated images:
     - Verifies native dimensions are at least min_dim x min_dim and area >= 350,000 px
-    - Verifies sharpness variance using Laplacian operator >= min_sharpness
+    - Verifies native sharpness, or opt-in near-threshold editorial subject/display detail
     - Verifies color / contrast standard deviation >= 20 (rejects blank, washed out, or corrupted images)
     """
     if img is None:
@@ -469,6 +469,7 @@ def validate_image_quality(img: np.ndarray, min_dim: int = 500, min_sharpness: f
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     lap_var = float(cv2.Laplacian(gray, cv2.CV_64F).var())
+    detail_basis='native full photo'
     # This score is an approximate JPEG/noise metric, not a perceptual cliff.
     # Half a variance unit avoids rejecting visually identical threshold ties.
     if lap_var + .5 < min_sharpness:
@@ -488,15 +489,29 @@ def validate_image_quality(img: np.ndarray, min_dim: int = 500, min_sharpness: f
                 details.append(min(face.shape)>=120 and np.std(face)>=22
                     and float(cv2.Laplacian(face,cv2.CV_64F).var())>=min_sharpness*1.4)
             clear_portrait=bool(details) and all(details)
-        if not clear_portrait:
+        clear_editorial=False
+        if allow_editorial_detail and lap_var>=min_sharpness*.75:
+            # Judge the retained photograph at its actual output width when a
+            # high-resolution upload spreads crisp edges across extra pixels.
+            # Never upsample or sharpen to manufacture a passing score.
+            if w>1080:
+                display=cv2.resize(gray,(1080,round(h*1080/w)),interpolation=cv2.INTER_AREA)
+                clear_editorial=float(cv2.Laplacian(display,cv2.CV_64F).var())>=min_sharpness*1.4
+            # Weather/sky and deliberate background blur can dilute a sharp
+            # central subject. Exclude all outer margins and publisher corners.
+            subject=gray[round(h*.15):round(h*.85),round(w*.15):round(w*.85)]
+            clear_editorial=clear_editorial or (min(subject.shape)>=300 and float(np.std(subject))>=22
+                and float(cv2.Laplacian(subject,cv2.CV_64F).var())>=min_sharpness*1.4)
+        if not clear_portrait and not clear_editorial:
             return False, f"Blurry image detected: Sharpness variance {lap_var:.1f} is below minimum threshold of {min_sharpness:.1f}"
+        detail_basis='verified native face detail' if clear_portrait else 'verified display/central subject detail'
 
     # Check contrast / std deviation
     std_dev = float(np.std(gray))
     if std_dev < 22.0:
         return False, f"Insufficient contrast / washed out: std dev {std_dev:.1f} < 22.0"
 
-    return True, f"Passed HD quality check (Resolution: {w}x{h}px, Sharpness: {lap_var:.1f})"
+    return True, f"Passed HD quality check (Resolution: {w}x{h}px, Sharpness: {lap_var:.1f}; {detail_basis})"
 
 def apply_cinematic_grade(img: np.ndarray) -> np.ndarray:
     """

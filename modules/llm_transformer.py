@@ -414,6 +414,10 @@ def headline_is_usable(text, language='en'):
         return False
     if re.search(r'ठूलो तयारी|\b(?:big|huge|major) (?:news|update)|biggest shows are taking over', text, re.IGNORECASE):
         return False
+    if re.search(r'^(?:think about|imagine\b|if you\b|here.?s the part|one of the (?:first )?surprises|the reassuring part|'
+                 r'the (?:political|romantic|legal|crime) (?:thriller|drama)\b)'
+                 r'|\b(?:that era|this era|the whole thing|that direction|the number it put on the table|bear fruit|keep an eye on|only complicates things)\b',text,re.I):
+        return False
     if '?' in text or any(ord(c) >= 0x1F000 for c in text):
         return False
     if text.endswith((',', ':', ';', '—', '-')):

@@ -393,13 +393,21 @@ def _draw_source_corner(canvas,review,scale,photo_x,photo_y,visible_top,photo_bo
     evidence=[mapped(box) for box in review['source_overlay_bounds']]
     evidence=[box for box in evidence if box[2]>box[0] and box[3]>box[1]]
     if not evidence:return None
+    # Tiny source seals may end above the global text safe margin. Expand only
+    # enough to fit our wordmark instead of failing every otherwise usable photo.
+    words=re.sub(r'([a-z])([A-Z])',r'\1 \2',brand).upper().split()
+    minimum_rows=[_render_runs([(word,'white')],18,'en',accent) for word in words]
+    if minimum_rows:
+        cover[2]=max(cover[2],max(64,cover[0]+8)+max(row.width for row in minimum_rows)+8)
+        cover[3]=max(cover[3],max(64,cover[1]+8)+sum(row.height for row in minimum_rows)+4*(len(words)-1)+8)
+    if cover[2]>photo_x+review['native_size'][0]*scale*.20 or cover[3]>photo_y+review['native_size'][1]*scale*.23:
+        raise ValueError('Owned corner branding needs too much of the photograph covered')
     faces=[mapped(box) for box in review['face_bounds']]
     from modules.source_editorial import cover_intersects_frontal_face
     if any(cover_intersects_frontal_face(cover,face) for face in faces):
         raise ValueError('Owned corner branding would cover a face')
     left=max(64,cover[0]+8);top=max(64,cover[1]+8)
     width=cover[2]-left-8;height=cover[3]-top-8
-    words=re.sub(r'([a-z])([A-Z])',r'\1 \2',brand).upper().split()
     selected=None
     for size in range(26,17,-2):
         rows=[_render_runs([(word,'white')],size,'en',accent) for word in words]

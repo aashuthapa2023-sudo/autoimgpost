@@ -60,7 +60,7 @@ def _review_event_backdrop(image, boxes, profile):
     return True
 
 
-def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
+def extract_editorial_photo(image,boxes,profile,caption='',language='en',*,covered_publisher_anchor=False):
     """Known source templates authorize edge cropping, never central text wiping.
 
     Scene labels are source-specific, narrowly bounded and kept untouched. A
@@ -77,6 +77,7 @@ def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
     side_limit=min(.08,max(0,float(profile.get('side_crop_max_fraction',0))))
     corner_limit=min(.16,max(0,float(profile.get('corner_crop_max_fraction',0))))
     scene=[];corners=[];footer=[];headers=[];sides=[]
+    footer_start=min(.75,max(.45,float(profile.get('footer_start_fraction',.55))))
     def at_side(box):
         l,t,r,b=box
         return side_limit and (r<=w*side_limit or l>=w*(1-side_limit))
@@ -87,7 +88,7 @@ def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
             if r<=w*.28 or l>=w*.72:
                 corners.append(box);continue
         configured_footer = profile.get('footer_start_fraction')
-        if t>=h*.55 and (is_credit or r-l>=w*.25 or
+        if t>=h*footer_start and (is_credit or r-l>=w*.25 or
                 (configured_footer is not None and t>=h*float(configured_footer)) or zoom):
             footer.append(box);continue
         if (not is_credit and _normal(text) in allowed and confidence.get(box,0)>=.45
@@ -101,7 +102,7 @@ def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
     rows=list(getattr(boxes,'suspected_rows',[]));marks=list(getattr(boxes,'suspected_marks',[]))
     for raw in rows+marks:
         l,t,r,b=box=tuple(raw)
-        if t>=h*.55:
+        if t>=h*footer_start:
             footer.append(box);continue
         if any(a<=l and c>=r and y<=t and d>=b for a,y,c,d in corners):continue
         # A detector row can extend beyond individual recognized sign words.
@@ -128,7 +129,7 @@ def extract_editorial_photo(image,boxes,profile,caption='',language='en'):
     for l,t,r,b in sides:
         if r<=w*side_limit:left=max(left,r+padding)
         else:right=min(right,l-padding)
-    verified_credit=any(
+    verified_credit=(profile.get('cover_corner_branding') and covered_publisher_anchor) or any(
             credits.search(str(labels.get(tuple(box),''))) and confidence.get(tuple(box),0)>=.55
             for box in boxes)
     # A repeated named subject in the paired caption can verify a publisher
@@ -194,7 +195,9 @@ def prepare_editorial_photo(image,boxes,profile,caption='',language='en'):
     filtered=SourceTextBoxes([tuple(b) for b in boxes if tuple(b) not in corner],
         [tuple(b) for b in getattr(boxes,'suspected_rows',[]) if tuple(b) not in corner],
         [tuple(b) for b in getattr(boxes,'suspected_marks',[]) if tuple(b) not in corner],labels,scores)
-    photo,top,bottom=extract_editorial_photo(image,filtered,profile,caption,language)
+    credits=re.compile(profile['credit_pattern'],re.I)
+    anchor=any(credits.search(str(labels.get(tuple(b),''))) and scores.get(tuple(b),0)>=.55 for b in corner)
+    photo,top,bottom=extract_editorial_photo(image,filtered,profile,caption,language,covered_publisher_anchor=anchor)
     # Recover the exact horizontal crop from the existing direct-pixel extractor.
     offsets={0,w-photo.shape[1]}
     padding=max(4,round(w*.01))

@@ -4,14 +4,17 @@ from modules.llm_transformer import check_source_grounding,headline_is_usable,sp
 
 
 EVENT = re.compile(r'\b(?:reenters?|returns?|premieres?|releases?|released|hit|hits|reaches?|reached|'
+    r'transforms?|opens?|heads?|submitted|'
+    r'(?:is|are|was|were|has|have|will|may|might|could)\b.+|'
     r'(?:has|have) (?:officially )?(?:been (?:renewed|cancelled|canceled)|died|released|announced|confirmed)|'
     r'(?:is|are) (?:now )?(?:well )?(?:into production|in production|filming|on the way|canceling|cancelling)|'
     r'(?:will|may|might|could) (?:begin|return|release|train)|'
-    r'(?:announced|confirmed|documented|filmed|recorded|saved|reported)|'
+    r'(?:announced|confirmed|documented|filmed|recorded|saved|reported|observed|spotted|submitted)|'
     r'says? .+\b(?:saved|released|died|cancel|begin)\b)',re.I)
-OPTIONAL_TAIL = re.compile(r',\s+(?:with\b|thanks to\b|including\b|bringing\b|starring\b|debuting\b|giving\b|and\b)')
+OPTIONAL_TAIL = re.compile(r',\s+(?:with\b|thanks to\b|including\b|bringing\b|starring\b|debuting\b|giving\b|and\b)'
+    r'|\s+and (?:considers?|considered|describes?|described|calls?|called)\b')
 QUALIFIER = re.compile(r'\b(?:not|never|no(?!\.)|without|neither|cannot|may|might|could|possibly|'
-    r'alleged|unconfirmed|rumou?r|denied|false|incorrect|misleading|disputed|refuted|corrected|if|unless)\b',re.I)
+    r'alleged|reportedly|unconfirmed|rumou?r|denied|false|incorrect|misleading|disputed|refuted|corrected|if|unless)\b',re.I)
 
 
 def _tidy(value):
@@ -39,7 +42,12 @@ def _named_subject(text):
     # Anonymous sequel lines need their actual title before they can be a hook.
     if re.match(r'^(?:It|They|He|She|The (?:show|series|film|movie|season|company|store)|Season \d+)\b',text):return False
     if re.match(r'^(?:The only way|The most|There|These|This)\b',text,re.I):return False
-    return bool(re.search(r'[A-Z][a-z]+(?:[ -][A-Z][a-z]+)|\b[A-Z]{2,}\b|\b(?:whale|orca|dolphin|octopus|shark)\b',text))
+    if re.match(r'''^(['"])(.+)\1\s+(?:is|are|was|were|has|have|will)\b''',text):return True
+    return bool(re.search(r'[A-Z][a-z]+(?:[ -][A-Z][a-z]+)|\b[A-Z]{2,}\b|\b(?:whale|orca|dolphin|octopus|shark|fish|isopod|anemone|sponge)\b',text))
+
+
+def _has_predicate(text):
+    return any(_outside_quotes(text,match.start()) for match in EVENT.finditer(text))
 
 
 def complete_event_hooks(source,topic):
@@ -62,17 +70,32 @@ def complete_event_hooks(source,topic):
         if topic and not channel_accepts_post({'content_topic':topic},{'caption':' '.join(support)}):
             context=[fact for fact in facts if fact not in support
                      and channel_accepts_post({'content_topic':topic},{'caption':fact})
-                     and 4<=len(fact.split())<=30 and not fact.endswith('?')]
+                     and 4<=len(fact.split())<=30 and '?' not in fact]
             if context:support=support+[min(context,key=lambda fact:len(fact.split()))]
         seen.add(title);hooks.append((priority,len(hooks),title,support))
     for fact in facts:
         text=_tidy(fact)
-        if _named_subject(text) and EVENT.search(text):
-            add(text,[fact])
-            for cut in OPTIONAL_TAIL.finditer(text):
-                if not _outside_quotes(text,cut.start()):continue
-                clause=text[:cut.start()].rstrip(', ');tail=text[cut.start():]
-                if EVENT.search(clause) and not QUALIFIER.search(tail):add(clause,[fact],0)
+        variants=[text]
+        # Drop an introductory location/date/event phrase only at its comma.
+        # Conditional "if/unless" framing and uncertainty cannot be discarded.
+        preamble=re.match(r'^(?:During|In|On|At|Speaking at) [^,]+,\s+(.+)',text)
+        if preamble and not QUALIFIER.search(text[:preamble.start(1)]):
+            clause=preamble.group(1);variants.append(clause[0].upper()+clause[1:])
+        for candidate in variants:
+            if _named_subject(candidate) and _has_predicate(candidate):
+                add(candidate,[fact])
+                for cut in OPTIONAL_TAIL.finditer(candidate):
+                    if not _outside_quotes(candidate,cut.start()):continue
+                    clause=candidate[:cut.start()].rstrip(', ');tail=candidate[cut.start():]
+                    if _has_predicate(clause) and not QUALIFIER.search(tail):add(clause,[fact],0)
+        # Two named titles can replace a long descriptive list while retaining
+        # its exact plural event clause, platform, date, and any qualification.
+        pair=re.match(r'^(?:Two|2) (.+),\s+((?:are|have|will) .+)',text)
+        if pair and not QUALIFIER.search(pair.group(1)):
+            titles=re.findall(r"(?<!\w)'(.+?)'(?!\w)|\"([^\"]+)\"",pair.group(1))
+            names=[next(part for part in item if part) for item in titles]
+            if len(names)==2:
+                add("'"+names[0]+"' and '"+names[1]+"' "+pair.group(2),[fact],0)
         # A reporting sentence explicitly supplies the speaker and a full that-
         # clause. Keep the attribution; remove only the reporting date/audience.
         report=re.search(r'\b([A-Z][a-z]+(?: [A-Z][a-z]+){1,3}),? (?:told|said to) .+?,? that (.+)',text)
@@ -82,6 +105,14 @@ def complete_event_hooks(source,topic):
         quote=re.fullmatch(r'"From ([A-Z][a-z]+), we will begin (.+?)," ([A-Z][a-z]+) said',text)
         if quote:
             add(quote.group(3)+': '+quote.group(2)+' will begin in '+quote.group(1),[fact],0)
+        request=re.search(r'\b([A-Z][a-z]+) (?:said|says) (?:that )?((?:the )?[A-Z][\w\'-]+(?: [A-Z][\w\'-]+){0,3}) '
+            r'is seeking ([^,]+), as a [^,]+ investment, to (.+)',text)
+        if request:
+            # Preserve "seeking" and approximate amounts: a request is never
+            # rewritten as awarded funding or a completed procurement.
+            add(request.group(2)+' is seeking '+request.group(3)+' to '+request.group(4)+', '+request.group(1)+' says',[fact],0)
+            subject=re.sub(r'^the\s+','',request.group(2),flags=re.I)
+            add(subject+' seeks '+request.group(3)+' to '+request.group(4)+', '+request.group(1)+' says',[fact],0)
         # Temporal observation clauses refer to the same animal, not a vague
         # commentary sentence. Species equality prevents false-killer-whale
         # text from being silently turned into an orca.

@@ -65,4 +65,7 @@ watermarks, missing caption context, unrelated topics, and duplicates still
 fail. Source availability can limit an individual page's hourly/2-hourly
 cadence even when the cloud timer is healthy.
 
-Live cloud verification is recorded below after deployment.
+Cloud run 38424660075 completed successfully with 345 tests passing. Facebook
+confirmed Netflix 1670184341784450, Music Store 1572299301755615 and Army
+122148754707353591. Anisha stayed paused; the remaining active pages retained
+their existing cadence gates. Publication state was saved back to main.

@@ -253,6 +253,9 @@ def replacement_payload(caption, **options):
             if fact and check_source_grounding(hook,fact):supported_hooks.insert(0,(hook,[fact]))
     usable=[text for text in candidates if headline_is_usable(text,language)
             and not re.match(r'^(?:Imagine\b|For years\b|Watching\b|Researchers say this curious behavior\b)',text,re.I)]
+    # A broad retrospective preamble should not displace the following named
+    # production/release fact from the same source caption.
+    usable.sort(key=lambda text:bool(re.match(r'^For the first time in years\b',text,re.I)))
     if (options.get('content_topic')=='ocean'
             and re.search(r'Deep beneath the Pacific, researchers captured a creature',source)
             and re.search(r'It[’\']s a Dumbo octopus',source)):
