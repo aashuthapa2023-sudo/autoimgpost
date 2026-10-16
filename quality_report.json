@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-16T15:35:19.582541+00:00",
+  "updated_at": "2026-10-16T16:07:35.777891+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -5159,24 +5159,6 @@
       "retry_after": 1792150526.5240695
     },
     {
-      "channel_id": "Music Store",
-      "post_id": "1476733020993938",
-      "stage": "content_or_layout",
-      "reason": "Owned corner wordmark cannot fit safely",
-      "checked_at": "2026-10-16T03:35:06.055376+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792164906.055393
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1474820624518511",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-16T03:35:13.204502+00:00",
-      "policy_signature": "e3588eb428506f4e",
-      "retry_after": 1792164913.204518
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1544940664324840",
       "stage": "content_or_layout",
@@ -5184,33 +5166,6 @@
       "checked_at": "2026-10-16T03:35:52.528000+00:00",
       "policy_signature": "203c70019947012b",
       "retry_after": 1792164952.528016
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1575630654598059",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 32.7 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-16T03:36:56.053462+00:00",
-      "policy_signature": "29d487426f0a0ba0",
-      "retry_after": 1792165016.0534801
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1577628257731632",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 3.7 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-16T04:06:21.062419+00:00",
-      "policy_signature": "29d487426f0a0ba0",
-      "retry_after": 1792166781.0624366
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1577501121077679",
-      "stage": "content_or_layout",
-      "reason": "Removed source title is ambiguous or too long",
-      "checked_at": "2026-10-16T04:06:32.765768+00:00",
-      "policy_signature": "29d487426f0a0ba0",
-      "retry_after": 1792166792.7657826
     },
     {
       "channel_id": "nepal_speaks",
@@ -5832,6 +5787,51 @@
       "checked_at": "2026-10-16T15:35:19.582541+00:00",
       "policy_signature": "e17007322b8828f1",
       "retry_after": 1792208119.5825577
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1476733020993938",
+      "stage": "content_or_layout",
+      "reason": "Owned corner wordmark cannot fit safely",
+      "checked_at": "2026-10-16T16:05:24.056279+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792209924.0562963
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1474820624518511",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-16T16:05:31.375709+00:00",
+      "policy_signature": "e3588eb428506f4e",
+      "retry_after": 1792209931.375728
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1577628257731632",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 3.7 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-16T16:07:16.347392+00:00",
+      "policy_signature": "29d487426f0a0ba0",
+      "retry_after": 1792210036.3474116
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1577501121077679",
+      "stage": "content_or_layout",
+      "reason": "Removed source title is ambiguous or too long",
+      "checked_at": "2026-10-16T16:07:28.253353+00:00",
+      "policy_signature": "29d487426f0a0ba0",
+      "retry_after": 1792210048.253383
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1575630654598059",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 32.7 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-16T16:07:35.777891+00:00",
+      "policy_signature": "29d487426f0a0ba0",
+      "retry_after": 1792210055.777909
     }
   ]
 }
