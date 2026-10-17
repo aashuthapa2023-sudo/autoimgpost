@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-17T18:35:57.607137+00:00",
+  "updated_at": "2026-10-17T19:19:31.989128+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -6228,6 +6228,51 @@
       "checked_at": "2026-10-17T18:35:57.607137+00:00",
       "policy_signature": "3ea5e62ba7cc903f",
       "retry_after": 1792305357.607153
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547295870755986",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-17T19:18:25.262336+00:00",
+      "policy_signature": "680d42bee2397595",
+      "retry_after": 1792307905.2623544
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547288080756765",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 8.6 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-17T19:18:43.810518+00:00",
+      "policy_signature": "680d42bee2397595",
+      "retry_after": 1792307923.8105397
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547281280757445",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-17T19:19:02.634036+00:00",
+      "policy_signature": "680d42bee2397595",
+      "retry_after": 1792307942.6340542
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547275557424684",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-17T19:19:17.066189+00:00",
+      "policy_signature": "680d42bee2397595",
+      "retry_after": 1792307957.0662067
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547270644091842",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-17T19:19:31.989128+00:00",
+      "policy_signature": "680d42bee2397595",
+      "retry_after": 1792307971.9891582
     }
   ]
 }
