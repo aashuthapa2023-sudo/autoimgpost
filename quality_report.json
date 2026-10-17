@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-17T12:35:39.137204+00:00",
+  "updated_at": "2026-10-17T13:05:21.807701+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -5357,24 +5357,6 @@
       "retry_after": 1792237047.7313967
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1574060144735306",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-10-17T01:04:44.629534+00:00",
-      "policy_signature": "8d03309ec5dcd3da",
-      "retry_after": 1792242284.6295497
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1573886678085986",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 26.0 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-17T01:04:45.449188+00:00",
-      "policy_signature": "8d03309ec5dcd3da",
-      "retry_after": 1792242285.4492066
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1638615124972292",
       "stage": "topic_or_caption",
@@ -6165,6 +6147,33 @@
       "checked_at": "2026-10-17T12:35:39.137204+00:00",
       "policy_signature": "70883aeacb67db71",
       "retry_after": 1792283739.1372228
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1574060144735306",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-17T13:04:59.552583+00:00",
+      "policy_signature": "8d03309ec5dcd3da",
+      "retry_after": 1792285499.5526004
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1573886678085986",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 26.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-17T13:05:00.353193+00:00",
+      "policy_signature": "8d03309ec5dcd3da",
+      "retry_after": 1792285500.3532126
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1478055347528372",
+      "stage": "source_quality",
+      "reason": "Low resolution: 650x430px (279,500 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-10-17T13:05:21.807701+00:00",
+      "policy_signature": "3d4f7c0f3fea81a0",
+      "retry_after": 1792285521.8077197
     }
   ]
 }
