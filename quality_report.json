@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-17T09:35:38.641259+00:00",
+  "updated_at": "2026-10-17T10:04:59.272678+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -6093,6 +6093,15 @@
       "checked_at": "2026-10-17T09:35:38.641259+00:00",
       "policy_signature": "3d4f7c0f3fea81a0",
       "retry_after": 1792272938.6412764
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1546935914125315",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 4.4 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-17T10:04:59.272678+00:00",
+      "policy_signature": "680d42bee2397595",
+      "retry_after": 1792274699.2726986
     }
   ]
 }
