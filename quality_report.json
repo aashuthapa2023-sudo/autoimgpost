@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-17T12:05:51.688707+00:00",
+  "updated_at": "2026-10-17T12:35:39.137204+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -5357,33 +5357,6 @@
       "retry_after": 1792237047.7313967
     },
     {
-      "channel_id": "Music Store",
-      "post_id": "1477573270909913",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-17T00:04:59.843087+00:00",
-      "policy_signature": "3d4f7c0f3fea81a0",
-      "retry_after": 1792238699.8431065
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1574060144735306",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-10-17T00:34:52.122415+00:00",
-      "policy_signature": "70883aeacb67db71",
-      "retry_after": 1792240492.1224322
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1573886678085986",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 26.0 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-17T00:34:52.551309+00:00",
-      "policy_signature": "70883aeacb67db71",
-      "retry_after": 1792240492.5513299
-    },
-    {
       "channel_id": "daily_netflix",
       "post_id": "1574060144735306",
       "stage": "content_or_layout",
@@ -6156,6 +6129,42 @@
       "checked_at": "2026-10-17T12:05:51.688707+00:00",
       "policy_signature": "680d42bee2397595",
       "retry_after": 1792281951.6887238
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1478009424199631",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-17T12:35:09.068346+00:00",
+      "policy_signature": "3d4f7c0f3fea81a0",
+      "retry_after": 1792283709.0683546
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1477573270909913",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-17T12:35:21.801281+00:00",
+      "policy_signature": "3d4f7c0f3fea81a0",
+      "retry_after": 1792283721.8012981
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1574060144735306",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-17T12:35:38.775882+00:00",
+      "policy_signature": "70883aeacb67db71",
+      "retry_after": 1792283738.7758987
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1573886678085986",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 26.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-17T12:35:39.137204+00:00",
+      "policy_signature": "70883aeacb67db71",
+      "retry_after": 1792283739.1372228
     }
   ]
 }
