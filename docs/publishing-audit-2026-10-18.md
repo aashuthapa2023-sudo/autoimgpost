@@ -88,5 +88,17 @@ retained in the existing 72-hour source cache, including the tested fast-roping
 photograph. This is a bounded source recovery, not permission to publish blurred
 images or a guarantee of future Facebook feed availability.
 
-Final source/teaser refinements at 594f32f pass 377 local tests. A subsequent cloud
-check will verify those refinements and the recovered Army source queue.
+Final source/teaser refinements at 594f32f pass 377 local tests. Regular scheduled
+run [39149871064](https://github.com/aashuthapa2023-sudo/autoimgpost/actions/runs/39149871064)
+also passed its regression, publishing and state-sync stages, completing at
+17:37:09 UTC. Facebook independently confirmed the recovered Army photograph as
+post `1208191125703552_122150280723353591`, created at 17:36:48 UTC. The saved
+original and image manifest are in `output/US Army Fans AI_1569814121840589.*`.
+Music Store's receipt remained in the same hourly slot rather than publishing a
+second copy. The existing cronjob also created the next cloud dispatch at
+17:30:46 UTC, showing that regular triggering continues without a local PC.
+
+The live GitHub Pages UI was checked over HTTP and displays the new US
+entertainment style label. Normal Git authentication and public read-only GitHub
+status endpoints were sufficient for final verification; no additional token
+access or user action was needed.
