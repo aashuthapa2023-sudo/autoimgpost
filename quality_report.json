@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-18T05:34:38.809331+00:00",
+  "updated_at": "2026-10-18T06:11:11.209250+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -5582,24 +5582,6 @@
       "retry_after": 1792300271.9927747
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1574914471316540",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-17T18:05:16.599529+00:00",
-      "policy_signature": "70883aeacb67db71",
-      "retry_after": 1792303516.5995479
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1573972954744025",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-17T18:05:22.862189+00:00",
-      "policy_signature": "70883aeacb67db71",
-      "retry_after": 1792303522.8622053
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1547377767414463",
       "stage": "content_or_layout",
@@ -6300,6 +6282,24 @@
       "checked_at": "2026-10-18T05:34:38.809331+00:00",
       "policy_signature": "3d4f7c0f3fea81a0",
       "retry_after": 1792344878.8093393
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1574914471316540",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-18T06:11:06.020429+00:00",
+      "policy_signature": "70883aeacb67db71",
+      "retry_after": 1792347066.0204475
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1573972954744025",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-18T06:11:11.209250+00:00",
+      "policy_signature": "70883aeacb67db71",
+      "retry_after": 1792347071.209266
     }
   ]
 }
