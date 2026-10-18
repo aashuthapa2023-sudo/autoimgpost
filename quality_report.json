@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-18T21:37:02.279052+00:00",
+  "updated_at": "2026-10-18T21:55:36.959942+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -7119,6 +7119,105 @@
       "checked_at": "2026-10-18T21:37:02.279052+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792402622.27906
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1465859562071534",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-18T21:53:55.159890+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792403635.1599007
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1465769625413861",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-18T21:53:55.167724+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792403635.1677334
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1465876032069887",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 7.3 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-18T21:54:13.552344+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792403653.5523612
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1465870302070460",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-18T21:54:23.405572+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792403663.4055886
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1465867705404053",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 9.8 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-18T21:54:37.316454+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792403677.3164704
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1465847885406035",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 5.6 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-18T21:54:37.670663+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792403677.6706798
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1465790138745143",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 8.1 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-18T21:54:51.204623+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792403691.2046397
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1465756705415153",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-18T21:55:04.928196+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792403704.9282293
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1465859562071534",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-18T21:55:36.945795+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792403736.9458039
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1465790138745143",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-18T21:55:36.953019+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792403736.9530284
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1465769625413861",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-18T21:55:36.959942+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792403736.9599507
     }
   ]
 }
