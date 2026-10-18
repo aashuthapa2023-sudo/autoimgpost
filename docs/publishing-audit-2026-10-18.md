@@ -64,4 +64,29 @@ caps or a Facebook API rejection can still leave a slot empty. US English and
 entertainment coverage shape the content; organic geographic reach is determined
 by Facebook, not guaranteed by a caption or page setting.
 
-Live deployment verification will be recorded after the all-page cloud run.
+## Live deployment verification
+
+Run [39148940557](https://github.com/aashuthapa2023-sudo/autoimgpost/actions/runs/39148940557)
+passed its 375 tests at revision 05889ac and confirmed four new publications:
+
+| Page | Facebook photo receipt | UTC time |
+| --- | --- | --- |
+| Daily Netflix | 1675517351251149 | 17:23:15 |
+| Music Store | 1577356797916532 | 17:25:00 |
+| Daily Hollywood | 1567261375415343 | 17:25:33 |
+| Ocean's Secret | 122113140789493170 | 17:26:26 |
+
+Facebook's page feed independently confirmed Music Store's post with a 140-word
+caption. Its Facebook-served image was visually checked at 720×900 (4:5); the
+stored original is 1080×1350. Publication state was saved on latest main at
+17:27:11 UTC. Nepal respected its interval; Anisha remained paused.
+
+Army's public Facebook feeds were unavailable from this GitHub runner. Its two
+older cached photos were correctly rejected for severe native blur. Four exact
+official-source photo/caption pairs captured during this audit were therefore
+retained in the existing 72-hour source cache, including the tested fast-roping
+photograph. This is a bounded source recovery, not permission to publish blurred
+images or a guarantee of future Facebook feed availability.
+
+Final source/teaser refinements at 594f32f pass 377 local tests. A subsequent cloud
+check will verify those refinements and the recovered Army source queue.
