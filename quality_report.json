@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-18T13:36:04.195752+00:00",
+  "updated_at": "2026-10-18T14:34:23.248428+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -5816,15 +5816,6 @@
       "retry_after": 1792332343.286109
     },
     {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1578590784302046",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 23.6 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-18T02:06:21.005480+00:00",
-      "policy_signature": "9d9a66a452e8b3c4",
-      "retry_after": 1792332381.0054991
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1477659427567964",
       "stage": "topic_or_caption",
@@ -6345,6 +6336,15 @@
       "checked_at": "2026-10-18T13:36:04.195752+00:00",
       "policy_signature": "680d42bee2397595",
       "retry_after": 1792373764.1957703
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1578590784302046",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 23.6 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-18T14:34:23.248428+00:00",
+      "policy_signature": "9d9a66a452e8b3c4",
+      "retry_after": 1792377263.2484488
     }
   ]
 }
