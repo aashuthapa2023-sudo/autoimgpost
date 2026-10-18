@@ -14,6 +14,7 @@ def build_system_prompt(language: str = "en", channel_name: str = "", content_to
     voices = {
         'ocean': 'Marine discovery editor: preserve species, location, count and scientific uncertainty. No entertainment metaphors or unrelated topics.',
         'music': 'Music editor: lead with the artist and the release, chart result or performance. Include a supplied song/album title; do not invent one.',
+        'us_entertainment': 'US entertainment editor: cover music, Hollywood, television and celebrity culture in natural US English. Lead with the named person and concrete news. Preserve allegations, quotes, dates and uncertainty. Write a detailed brief using only distinct supplied facts; never pad a short source.',
         'film': 'Film editor: name the film/show/person and the confirmed release, casting or production development. Preserve platform and date when supplied.',
         'entertainment': 'Screen and streaming editor: lead with the named show/person and a concrete confirmed development. Avoid vague fan reactions.',
         'news': 'News editor: lead with who did what and the essential location or outcome. Preserve attribution, alleged status and uncertainty.',
@@ -30,7 +31,7 @@ Prefer 8-18 words; at most 22 words and 160 characters (200 characters for Nepal
 Meaning takes priority: do not truncate, append ellipses, omit the outcome or split a person's/species' name.
 Do not use Breaking News, The Real Story, Here's Why, Special Coverage, generic questions, emojis or invented urgency.
 The renderer will balance and center 2-3 display lines. Return one headline, not unrelated phrases.
-CAPTION: An original, natural brief of 1-3 complete sentences, at most 80 words.
+CAPTION: {"An original, detailed brief of 2-5 complete sentences, at most 160 words, when the source supplies enough distinct detail" if topic=='us_entertainment' else "An original, natural brief of 1-3 complete sentences, at most 80 words"}.
 Lead with the concrete development, then add only distinct source details. A short source needs a short caption.
 No duplicated ideas, padding, fabricated significance, claims of guaranteed virality, engagement bait, links or read-more teasers.
 Preserve exact proper names, species, titles, numbers, dates, negations, attribution and qualifiers.
@@ -165,8 +166,12 @@ def strip_source_caption_noise(raw_caption):
     lines = []
     for line in text.splitlines():
         line = line.strip(' {}:*[]')
+        line=re.sub(r'\s*(?:📷|📸)\s*:?.*','',line)
+        line=re.sub(r'\b(?:Click|Tap) (?:on )?(?:the )?link\b.*','',line,flags=re.I)
+        line=re.sub(r':[a-z_]+:','',line,flags=re.I).replace('\u2060','').strip()
         line = re.sub(r';\s*see the dates\.?\s*$', '.', line, flags=re.I)
         line = re.sub(r'(?:Follow\s+(?:our\s+page|us)|Subscribe\s+to|Link\s+in\s+(?:bio|comment)|Click\s+here|Read\s+more|(?:Details?|Full\s+story|More\s+info)\s+in\s+(?:the\s+)?comments|Photo\s*:|Credit\s*:|थप\s+(?:समाचार|जानकारी|विवरण)|हाम्रो\s+(?:फेसबुक\s+)?पेज|लिंक\s+कमेन्टमा|तस्बिर\s*:|फोटो\s*:|साभार\s*:).*', '', line, flags=re.IGNORECASE).strip()
+        if re.match(r'^Follow\s+.+\s+for\s+(?:more|real|the latest)\b',line,re.I):continue
         if line:
             lines.append(line)
     text = '\n'.join(lines)
@@ -176,9 +181,22 @@ def strip_source_caption_noise(raw_caption):
 def clean_and_deduplicate_source_caption(raw_caption: str, language: str = "en", channel_name: str = "", channel_id: str = "", content_topic: str = "") -> str:
     """Keep distinct complete source facts; never pad a brief or delete new counts."""
     text = strip_source_caption_noise(raw_caption)
+    detailed=resolve_content_topic(content_topic,channel_name,channel_id)=='us_entertainment'
+    word_limit=160 if detailed else 80
     # Protect abbreviation periods, preserve Nepali danda and paragraph boundaries.
     text = re.sub(r'\b(No|Mr|Mrs|Ms|Dr|Prof|St|vs|Vol|Pt|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec|U\.S)\.\s+', r'\1_DOT_ ', text)
     candidates = re.split(r'(?<=[.!?।])\s+|\n+', text)
+    if detailed:
+        # Keep a quoted passage together so the word budget cannot cut it in
+        # half or detach the speaker's attribution. Unclosed source quotes are
+        # omitted; ordinary factual paragraphs remain available.
+        candidates=[]
+        for paragraph in text.splitlines():
+            passage=''
+            for part in re.split(r'(?<=[.!?।])\s+',paragraph):
+                passage=(passage+' '+part).strip()
+                if passage.count('"')%2:continue
+                candidates.append(passage);passage=''
     sentences = []
     keys = []
     aliases = {'discovered': 'found', 'finds': 'found', 'released': 'release', 'releases': 'release', 'dropped': 'release', 'unveiled': 'release', 'tracks': 'songs', 'track': 'song'}
@@ -186,6 +204,8 @@ def clean_and_deduplicate_source_caption(raw_caption: str, language: str = "en",
     for candidate in candidates:
         sentence = re.sub(r'\s+', ' ', candidate.replace('_DOT_', '.')).strip(' {}:*[]')
         if not sentence or sentence.endswith('?') or re.match(r'^we asked .* (?:what|how|why)\b', sentence, re.IGNORECASE):
+            continue
+        if re.search(r'[-–—:]$',sentence) or re.match(r'^(?:Inside (?:its|their|the)|We.ve been waiting for this)\b',sentence,re.I):
             continue
         if re.match(r'^(?:Our|Read our|In our) (?:full )?review\b',sentence,re.I):continue
         if re.search(r'\b(?:find out|read the full|tap (?:here|the link)|what you need to know|link below|industry reporting|verified production and distribution documentation|see (?:the (?:full )?list|who made|which acts))\b|यस विषयमा सम्बन्धित निकाय तथा सरोकारवालाहरूले आवश्यक अध्ययन|यस विकासक्रमले दीर्घकालीन', sentence, re.IGNORECASE) or re.search(r"\bhere['’]s why\b.*\b(?:full review|must[- ]watch|read)\b",sentence,re.I):
@@ -196,9 +216,15 @@ def clean_and_deduplicate_source_caption(raw_caption: str, language: str = "en",
         key = tuple(sorted(aliases.get(word, word) for word in words if word not in neutral))
         if key in keys:
             continue
+        if detailed and len(key)>=5 and any(set(key)<=set(previous) for previous in keys):continue
+        # Replace a title only after its longer fact passes the word budget.
+        # Otherwise an unusable long sentence could erase the usable lead.
+        redundant=[i for i,previous in enumerate(keys) if len(previous)>=5 and set(previous)<set(key)] if detailed else []
+        retained=[s for i,s in enumerate(sentences) if i not in redundant]
         # Do not cut a long sentence into an incomplete caption; choose another fact.
-        if len(sentence.split()) > 80 or len((' '.join(sentences + [sentence])).split()) > 80:
+        if len(sentence.split()) > word_limit or len((' '.join(retained + [sentence])).split()) > word_limit:
             continue
+        for i in reversed(redundant):sentences.pop(i);keys.pop(i)
         # A standalone source title needs its own boundary before the next
         # paragraph; otherwise a complete hook becomes an overlong fragment.
         if (not re.search(r'[.!?।:;,\u2026]$',sentence)
@@ -206,14 +232,14 @@ def clean_and_deduplicate_source_caption(raw_caption: str, language: str = "en",
             sentence += '।' if language=='ne' else '.'
         sentences.append(sentence)
         keys.append(key)
-        if len(sentences) == 3:
+        if len(sentences) == (5 if detailed else 3):
             break
-    body = ' '.join(sentences)
+    body = sentences[0]+'\n\n'+' '.join(sentences[1:]) if detailed and len(sentences)>1 else ' '.join(sentences)
     if not body:
         return ''
     brand = re.sub(r'[^a-zA-Z0-9\u0900-\u097F]', '', str(channel_name or channel_id or ''))
     topic = resolve_content_topic(content_topic, channel_name, channel_id)
-    tags = {'ocean': ['Ocean', 'MarineLife'], 'music': ['MusicNews'], 'film': ['FilmNews'], 'entertainment': ['StreamingNews'], 'news': ['NepaliNews'] if language == 'ne' else ['News']}.get(topic, [])
+    tags = {'ocean': ['Ocean', 'MarineLife'], 'music': ['MusicNews'], 'us_entertainment':['EntertainmentNews','PopCulture'], 'film': ['FilmNews'], 'entertainment': ['StreamingNews'], 'news': ['NepaliNews'] if language == 'ne' else ['News']}.get(topic, [])
     if brand:
         tags.insert(0, brand)
     return body + ('\n\n' + ' '.join('#' + tag for tag in dict.fromkeys(tags)) if tags else '')
@@ -418,6 +444,8 @@ def headline_is_usable(text, language='en'):
                  r'the (?:political|romantic|legal|crime) (?:thriller|drama)\b)'
                  r'|\b(?:that era|this era|the whole thing|that direction|the number it put on the table|bear fruit|keep an eye on|only complicates things)\b',text,re.I):
         return False
+    if re.match(r"^here['’]?s (?:a|the)\b",text,re.I):
+        return False
     if '?' in text or any(ord(c) >= 0x1F000 for c in text):
         return False
     if text.endswith((',', ':', ';', '—', '-')):
@@ -429,10 +457,15 @@ def headline_is_usable(text, language='en'):
         return False
     if language == 'en' and is_devanagari_text(text):
         return False
+    quoted_title=re.match(r'''^(['"])[^\n]+?\1\s+(?:is|are|was|were|has|have|will|returns?|premieres?|opens?|generated)\b''',text,re.I)
+    if language == 'en' and not quoted_title and re.match(r'^[\"\']?(?:(?:And|Then|So|But)\s+)?(?:I|We|You|He|She|It|They|Our|Their)\b',text,re.I):
+        return False
+    if re.search(r'\b(?:most iconic item|this is what happened|reveals? what happened)\b',text,re.I):
+        return False
     return True
 
 
-def format_balanced_overlay(text, language='en'):
+def format_balanced_overlay(text, language='en', *, preserve_case=False):
     """Maintain all text and balance line lengths, leaving font choice to renderer."""
     text = clean_factual_clause(text)
     if not headline_is_usable(text, language):
@@ -453,7 +486,13 @@ def format_balanced_overlay(text, language='en'):
             take = min(range(1, len(remaining) - number + 2), key=cost)
         line = remaining[:take]
         remaining = remaining[take:]
-        lines.append(format_nepali_thematic_tokens(line) if language == 'ne' else extract_thematic_line_tokens(line, text))
+        tokens=format_nepali_thematic_tokens(line) if language == 'ne' else extract_thematic_line_tokens(line, text)
+        if preserve_case and language=='en':
+            offset=0
+            for token in tokens:
+                count=len(token['text'].split());ending=' ' if token['text'].endswith(' ') else ''
+                token['text']=' '.join(line[offset:offset+count])+ending;offset+=count
+        lines.append(tokens)
     return lines
 
 
@@ -527,7 +566,7 @@ def validate_model_payload(payload, raw_caption, language='en', channel_name='',
     headline = clean_factual_clause(headline or overlay_text(payload.get('overlay_lines', [])))
     caption = payload['rewritten_caption'].strip()
     body = re.sub(r'#[\w\u0900-\u097F]+', '', caption).strip()
-    if not headline_is_usable(headline, language) or not 4 <= len(body.split()) <= 80:
+    if not headline_is_usable(headline, language) or not 4 <= len(body.split()) <= (160 if resolve_content_topic(content_topic)=='us_entertainment' else 80):
         raise ValueError('Model output is incomplete or too verbose')
     if language == 'ne' and not is_devanagari_text(body) or language == 'en' and is_devanagari_text(body):
         raise ValueError('Model output uses the wrong page language')
@@ -657,7 +696,7 @@ def generate_preserved_card_payload(raw_caption: str, reviewed_headline: str, la
     def approved_caption(caption):
         caption = clean_and_deduplicate_source_caption(caption, effective_lang, channel_name, channel_id, topic)
         body = re.sub(r'#[\w\u0900-\u097F]+', '', caption).strip()
-        if (not 4 <= len(body.split()) <= 80 or body.endswith('?')
+        if (not 4 <= len(body.split()) <= (160 if topic=='us_entertainment' else 80) or body.endswith('?')
                 or re.search(r'https?://|www\.|\b(?:find out|link in bio|read more|you won.t believe|comment below|share this|tag a friend|go viral)\b', body, re.IGNORECASE)):
             raise ValueError('Preserved card caption is empty, incomplete or a teaser')
         if ((effective_lang == 'ne' and not is_devanagari_text(body))

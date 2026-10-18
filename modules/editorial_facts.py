@@ -4,14 +4,14 @@ from modules.llm_transformer import check_source_grounding,headline_is_usable,sp
 
 
 EVENT = re.compile(r'\b(?:reenters?|returns?|premieres?|releases?|released|hit|hits|reaches?|reached|'
-    r'transforms?|opens?|heads?|submitted|'
+    r'transforms?|opens?|heads?|submitted|praised|praises|trolled|recalls?|called|celebrates?|performs?|debuted|generated|died|got married|says?|reveals?|wore|wears?|axed|suspended|made|tells?|wrote|joins?|joined|sharpens?|demonstrates?|conducts?|trained|'
     r'(?:is|are|was|were|has|have|will|may|might|could)\b.+|'
     r'(?:has|have) (?:officially )?(?:been (?:renewed|cancelled|canceled)|died|released|announced|confirmed)|'
     r'(?:is|are) (?:now )?(?:well )?(?:into production|in production|filming|on the way|canceling|cancelling)|'
     r'(?:will|may|might|could) (?:begin|return|release|train)|'
     r'(?:announced|confirmed|documented|filmed|recorded|saved|reported|observed|spotted|submitted)|'
     r'says? .+\b(?:saved|released|died|cancel|begin)\b)',re.I)
-OPTIONAL_TAIL = re.compile(r',\s+(?:with\b|thanks to\b|including\b|bringing\b|starring\b|debuting\b|giving\b|and\b)'
+OPTIONAL_TAIL = re.compile(r',\s+(?:with\b|thanks to\b|including\b|bringing\b|starring\b|debuting\b|giving\b|and\b|fast-roping\b|rappelling\b)'
     r'|\s+and (?:considers?|considered|describes?|described|calls?|called)\b')
 QUALIFIER = re.compile(r'\b(?:not|never|no(?!\.)|without|neither|cannot|may|might|could|possibly|'
     r'alleged|reportedly|unconfirmed|rumou?r|denied|false|incorrect|misleading|disputed|refuted|corrected|if|unless)\b',re.I)
@@ -43,7 +43,8 @@ def _named_subject(text):
     if re.match(r'^(?:It|They|He|She|The (?:show|series|film|movie|season|company|store)|Season \d+)\b',text):return False
     if re.match(r'^(?:The only way|The most|There|These|This)\b',text,re.I):return False
     if re.match(r'''^(['"])(.+)\1\s+(?:is|are|was|were|has|have|will)\b''',text):return True
-    return bool(re.search(r'[A-Z][a-z]+(?:[ -][A-Z][a-z]+)|\b[A-Z]{2,}\b|\b(?:whale|orca|dolphin|octopus|shark|fish|isopod|anemone|sponge)\b',text))
+    from modules.content_quality import PERFORMERS,MILITARY_TERMS
+    return bool(re.search(PERFORMERS+'|'+MILITARY_TERMS,text,re.I) or re.search(r'[A-Z][a-z]+(?:[ -][A-Z][a-z]+)|\b[A-Z]{2,}\b|\b(?:whale|orca|dolphin|octopus|shark|fish|isopod|anemone|sponge)\b',text))
 
 
 def _has_predicate(text):

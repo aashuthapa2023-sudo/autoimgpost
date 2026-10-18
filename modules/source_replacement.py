@@ -105,7 +105,16 @@ def _complete_caption_hooks(source, topic):
     hooks=[]
     def add(hook, support,grounding=None):
         if check_source_grounding(hook,grounding or ' '.join(support),'en'):hooks.append((hook,support))
+    # Resolve an explicitly named season followed immediately by its nominal
+    # reference. Do not infer a missing title from an anonymous sequel sentence.
+    named_return=re.search(r'Finished your binge of ([A-Z][A-Za-z\s\'’-]+ Season \d+)\?\s+'
+        r'The (?:political |romantic |legal |crime )?(?:thriller|drama|series) (returned to Netflix this week),',source)
+    if named_return and topic in ('screen','film','entertainment'):
+        add(named_return.group(1)+' '+named_return.group(2),facts,grounding=' '.join(facts[:2]))
     for fact in facts:
+        yacht=re.search(r'\borcas damaged the rudder of the sailing yacht ([A-Z][\w-]+) off [^,]+ in [^,]+, ([A-Z][A-Za-z ]+), and it sank\b',fact)
+        if topic=='ocean' and yacht:
+            add(f"Orcas damaged yacht {yacht.group(1)}'s rudder off {yacht.group(2)}; the yacht sank",[fact]+facts[1:3])
         season=re.fullmatch(r'([A-Z][A-Z0-9 :\'-]+ Season \d+) is officially on the way at Netflix,\s*',fact)
         if season:
             add(f'Netflix: {season.group(1)} is officially on the way',[fact.rstrip(',')+'.'])
@@ -280,6 +289,13 @@ def replacement_payload(caption, **options):
         usable=[text for text in concise if headline_is_usable(text,language)]+usable
     usable=[hook for hook,support in supported_hooks if headline_is_usable(hook,language)]+usable
     usable += [hook for hook,support in generic_hooks if hook not in usable]
+    if options.get('content_topic') in ('us_entertainment','military'):
+        # A source's concrete named event comes before incidental quotations or
+        # link-card titles. A short anonymous quote is never a useful hook.
+        from modules.editorial_facts import _named_subject,_has_predicate
+        named=[hook for hook,support in generic_hooks if _named_subject(hook) and _has_predicate(hook)]
+        retained=[text for text in usable if _named_subject(text)]
+        usable=list(dict.fromkeys(named+retained if options.get('content_topic')=='us_entertainment' else retained))
     # Prefer a complete fact naming the animal or ocean phenomenon.
     import re
     if options.get('content_topic') == 'ocean':
@@ -305,6 +321,8 @@ def replacement_payload(caption, **options):
             support=next((facts for hook,facts in supported_hooks+generic_hooks if hook==headline),None)
             if support:
                 caption_source='\n'.join(support)
+                if options.get('content_topic')=='us_entertainment':
+                    caption_source='\n'.join(support+[fact for fact in original_facts if fact not in support and '?' not in fact])
             payload=generate_preserved_card_payload(headline+'.\n'+caption,headline,**options,
                 caption_source=caption_source)
             # Condense a stated condition and outcome without guessing a cause,

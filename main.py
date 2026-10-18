@@ -282,7 +282,7 @@ def run_pipeline(mode="run", target_channel="all"):
                 processed_ids=list(channel_processed_ids),
                 limit=60,
                 source_urls=source_pages,
-                min_candidates=4,
+                min_candidates=max(4,min(40,int(ch.get('source_min_candidates',4)))),
                 excluded_ids=unavailable_source_ids(ch) if mode=='run' else ()
             )
             from modules.source_cache import merge_source_candidates
@@ -412,12 +412,10 @@ def run_pipeline(mode="run", target_channel="all"):
             channel_stat["last_published_time"] = last_pub_time
 
         gap_elapsed = now_current - last_pub_time
-        effective_gap_seconds = int(float(post_interval_hours) * 3600)
-        # 2-minute (120s) clock tolerance so scheduled cron checks trigger on-schedule without premature posting
-        min_required_gap = max(0, effective_gap_seconds - 120)
-
-        if last_pub_time > 0 and gap_elapsed < min_required_gap:
-            remaining_mins = max(1, int((effective_gap_seconds - gap_elapsed) / 60))
+        from modules.cadence import publication_wait
+        wait_seconds=publication_wait(ch,last_pub_time,now_current)
+        if wait_seconds>0:
+            remaining_mins = max(1, int((wait_seconds+59) / 60))
             print(f" [CADENCE WAIT] Configured interval is {post_interval_hours}h. Only {gap_elapsed // 60}m elapsed since last post.")
             print(f"                Waiting {remaining_mins}m before next post. Automated pipeline will post on next cycle.")
             continue
@@ -425,6 +423,7 @@ def run_pipeline(mode="run", target_channel="all"):
         # 5. TAKE UP TO max_posts_per_run VALID UNPOSTED RECENT PHOTO POSTS FOR THIS CYCLE
         posted_successfully = False
         posts_published_this_run = 0
+        if ch.get('cadence_mode')=='hourly_slots':max_posts=min(max_posts,1)
         candidates_to_try = unposted_recent
         if is_nepali_ch:
             candidates_to_try = [p for p in candidates_to_try if p.get("source_tag") != "Internet Web Scraper"]

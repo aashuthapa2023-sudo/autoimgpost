@@ -367,16 +367,16 @@ def overlay_words(overlay_lines):
     return words
 
 
-def headline_display_words(headline,language='en'):
+def headline_display_words(headline,language='en',*,preserve_case=False):
     from modules.llm_transformer import format_balanced_overlay
-    return overlay_words(format_balanced_overlay(headline,language))
+    return overlay_words(format_balanced_overlay(headline,language,preserve_case=preserve_case))
 
 
 def headline_fits_poster(headline,highlight_hex='#FFC83B',**options):
     """Measure the actual glyphs with exactly the final renderer's limits."""
     language='ne' if is_devanagari(headline) else 'en'
     try:
-        _select_title_rows(headline_display_words(headline,language),language,
+        _select_title_rows(headline_display_words(headline,language,preserve_case=options.get('headline_case')=='source'),language,
                            hex_to_rgb(highlight_hex if highlight_hex!='random' else '#FFC83B'),options)
         return True
     except ValueError:return False
@@ -534,6 +534,15 @@ def render_final_poster(base_img, overlay_lines, highlight_hex='#FFC83B', badge_
         logo_bounds=[group_x,brand_y-6,group_x+badge.width,brand_y-6+badge.height]
     brand_x=group_x+(badge.width+16 if badge else 0)
     canvas.paste(brand,(brand_x,brand_y),brand)
+    edition_bounds=None
+    edition=str(kwargs.get('edition_label','')).strip()
+    if edition:
+        if external_brand or position!='bottom':raise ValueError('Edition label needs a bottom editorial masthead')
+        label=fit_headline_line([(edition.upper(),'white')],get_font(20),20,accent,max_width,22)
+        label_y=panel_top+82;label_x=(1080-label.width)//2
+        if label_y+label.height>panel_top+106:raise ValueError('Edition label would overlap the headline')
+        canvas.paste(label,(label_x,label_y),label)
+        edition_bounds=[label_x,label_y,label_x+label.width,label_y+label.height]
     title_y=panel_top+(margin if external_brand else margin+68 if position=='top' else 110)
     bounds=[]
     for im in images:
@@ -553,6 +562,7 @@ def render_final_poster(base_img, overlay_lines, highlight_hex='#FFC83B', badge_
               'font_size':size,'safe_margin':margin,'text_bounds':bounds,'panel_height':panel_h,
               'panel_bounds':[0,panel_top,1080,panel_top+panel_h],
               'brand_bounds':[brand_x,brand_y,brand_x+brand.width,brand_y+brand.height],
+              'edition_bounds':edition_bounds,
               'logo_bounds':logo_bounds,
               'photo_bounds':[(1080-photo.width)//2,photo_top+(photo_h-photo.height)//2,photo.width,photo.height],
               'style_id':kwargs.get('style_id','editorial'),'headline':' '.join(word for word,_ in words),

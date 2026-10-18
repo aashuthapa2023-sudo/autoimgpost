@@ -21,7 +21,8 @@
       "source_pages": [
         "https://www.facebook.com/netflixdaily",
         "https://www.facebook.com/netflixfanslivehere",
-        "https://www.facebook.com/whatsonnetflix"
+        "https://www.facebook.com/whatsonnetflix",
+        "https://www.facebook.com/netflixlifedotcom"
       ],
       "source_page_url": "https://www.facebook.com/netflixdaily",
       "content_topic": "screen",
@@ -71,9 +72,19 @@
           "side_crop_max_fraction": 0.08,
           "allow_film_artwork": true,
           "footer_start_fraction": 0.5
+        },
+        "netflixlifedotcom": {
+          "credit_pattern": "netflix\\s*life",
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.24,
+          "footer_start_fraction": 0.5,
+          "min_retained_fraction": 0.35,
+          "cover_corner_branding": true
         }
       },
-      "facebook_sources_only": true
+      "facebook_sources_only": true,
+      "cadence_mode": "hourly_slots",
+      "source_min_candidates": 12
     },
     {
       "channel_id": "Music Store",
@@ -82,7 +93,7 @@
       "dest_page_id": "106576441624891",
       "dest_access_token_env": "EAAXSklef1o0BSSZCv3cOQpZA1PH4ZBZAgbTULcHvdCBzs6uD6HFnLgdvS6gpKr0AK7UHH0c4JbqUgq9md48L8HzLubXjKqYdg6AB3I5LPc2spj4RYygb4cVuZBkjZCWsOf6dV5vyNapnLZC3ZBuxF9vUAkktwysXUcaZB4JnAPGJmFCAh6MBpZBIIjHBHIJJO57gyPYUmM8sgZD",
       "badge_label": "Music Store",
-      "highlight_color": "#FFD166",
+      "highlight_color": "#F4C95D",
       "post_interval_hours": 1,
       "max_posts_per_run": 1,
       "cadence_mirror_enabled": true,
@@ -93,23 +104,28 @@
       "source_pages": [
         "https://www.facebook.com/Billboard",
         "https://www.facebook.com/RollingStone",
-        "https://www.facebook.com/mtv"
+        "https://www.facebook.com/mtv",
+        "https://www.facebook.com/Variety",
+        "https://www.facebook.com/peoplemag",
+        "https://www.facebook.com/enews"
       ],
       "source_page_url": "https://www.facebook.com/Billboard",
-      "content_topic": "music",
+      "content_topic": "us_entertainment",
       "language": "en",
-      "editorial_style": "Music journalism: artist, event, performance or release first; energetic without bait",
+      "editorial_style": "US entertainment desk: music, Hollywood, television and celebrity culture. Natural US English. Lead with a complete named event and key result, preserve quotes and allegations. Detailed 2-5 sentence captions with distinct sourced context when available; never pad, repeat claims or invent facts.",
       "allow_web_fallback": false,
       "poster_style": {
         "style_id": "music_store",
-        "panel_color": "#121018",
+        "panel_color": "#10131B",
         "min_font_size": 68,
         "max_font_size": 94,
         "max_lines": 4,
         "safe_margin": 64,
         "text_position": "bottom",
         "logo_position": "with-text",
-        "photo_fit": "face-safe-cover"
+        "photo_fit": "face-safe-cover",
+        "headline_case": "source",
+        "edition_label": "U.S. ENTERTAINMENT"
       },
       "source_layouts": {
         "billboard": {
@@ -125,7 +141,7 @@
           "logo_position": "with-text"
         }
       },
-      "max_candidates_per_run": 6,
+      "max_candidates_per_run": 12,
       "source_cleanup_profiles": {
         "billboard": {
           "credit_pattern": "billboard|latin music|week beach|miami|^b$",
@@ -171,9 +187,36 @@
           "allow_edge_zoom": true,
           "header_max_fraction": 0.24,
           "min_retained_fraction": 0.35
+        },
+        "variety": {
+          "credit_pattern": "variety",
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.2,
+          "footer_start_fraction": 0.5,
+          "min_retained_fraction": 0.35,
+          "cover_corner_branding": true
+        },
+        "peoplemag": {
+          "credit_pattern": "people",
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.2,
+          "footer_start_fraction": 0.5,
+          "min_retained_fraction": 0.35,
+          "cover_corner_branding": true
+        },
+        "enews": {
+          "credit_pattern": "^e!?$|e!?\\s*news",
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.2,
+          "footer_start_fraction": 0.5,
+          "min_retained_fraction": 0.35,
+          "cover_corner_branding": true
         }
       },
-      "facebook_sources_only": true
+      "facebook_sources_only": true,
+      "cadence_mode": "hourly_slots",
+      "target_audience": "United States entertainment audiences",
+      "source_min_candidates": 24
     },
     {
       "channel_id": "Anisha",
@@ -238,7 +281,8 @@
       "max_daily_posts": 24,
       "min_gap_hours": 1,
       "source_pages": [
-        "https://www.facebook.com/whatsonnetflix"
+        "https://www.facebook.com/whatsonnetflix",
+        "https://www.facebook.com/Variety"
       ],
       "source_page_url": "https://www.facebook.com/whatsonnetflix",
       "content_topic": "film",
@@ -271,8 +315,18 @@
           "side_crop_max_fraction": 0.08,
           "allow_film_artwork": true,
           "footer_start_fraction": 0.5
+        },
+        "variety": {
+          "credit_pattern": "variety",
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.2,
+          "footer_start_fraction": 0.5,
+          "min_retained_fraction": 0.35,
+          "cover_corner_branding": true
         }
-      }
+      },
+      "cadence_mode": "hourly_slots",
+      "source_min_candidates": 12
     },
     {
       "channel_id": "nepal_speaks",
@@ -343,7 +397,8 @@
             "दुध"
           ]
         }
-      }
+      },
+      "cadence_mode": "hourly_slots"
     },
     {
       "channel_id": "oceans_secret",
@@ -409,18 +464,21 @@
         "61589616333583": {
           "credit_pattern": "(?!)",
           "allow_edge_zoom": true,
-          "header_max_fraction": 0.34,
+          "header_max_fraction": 0.36,
           "min_retained_fraction": 0.5,
           "scene_labels": []
         }
-      }
+      },
+      "cadence_mode": "hourly_slots",
+      "source_min_candidates": 12
     },
     {
       "channel_id": "US Army Fans AI",
       "channel_name": "US Army Fans",
       "dest_page_name": "US Army Fans",
       "source_pages": [
-        "https://www.facebook.com/FrontlineDiary"
+        "https://www.facebook.com/FrontlineDiary",
+        "https://www.facebook.com/USarmy"
       ],
       "source_page_url": "https://www.facebook.com/FrontlineDiary",
       "dest_page_id": "1208191125703552",
@@ -466,9 +524,21 @@
           "footer_start_fraction": 0.65,
           "footer_fraction": 0.65,
           "side_crop_max_fraction": 0.08
+        },
+        "usarmy": {
+          "credit_pattern": "U\\.?S\\.? Army|army",
+          "scene_labels": [
+            "US ARMY",
+            "U.S. ARMY"
+          ],
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.18,
+          "footer_start_fraction": 0.75,
+          "min_retained_fraction": 0.7
         }
       },
-      "preserve_readable_source_cards": false
+      "preserve_readable_source_cards": false,
+      "source_min_candidates": 12
     }
   ]
 }

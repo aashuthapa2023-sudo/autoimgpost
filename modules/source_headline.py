@@ -140,6 +140,9 @@ def render_with_source_fallback(payload, source_caption, text_boxes, source_shap
         render_fn = render_final_poster
 
     def render(candidate):
+        if poster_options.get('headline_case')=='source':
+            from modules.llm_transformer import format_balanced_overlay
+            candidate['overlay_lines']=format_balanced_overlay(candidate['headline'],language,preserve_case=True)
         render_fn(overlay_lines=candidate['overlay_lines'],caption=candidate['rewritten_caption'],
                   headline_origin=candidate.get('headline_origin','caption'),**poster_options)
 

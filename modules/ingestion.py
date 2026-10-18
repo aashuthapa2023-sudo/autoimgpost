@@ -68,12 +68,14 @@ def _select_photo_from_attachment(attachment):
         photo_id = str(attachment.get('id') or '')
         if photo_id and not photo_id.isdigit():
             return None
-        image_url = None
-        for key in ('large_image', 'image', 'photo_image'):
+        candidates=[]
+        for priority,key in enumerate(('large_image', 'image', 'photo_image','huge_image')):
             value = attachment.get(key)
             if isinstance(value, dict) and isinstance(value.get('uri'), str) and value['uri'].startswith(('http://', 'https://')):
-                image_url = value['uri']
-                break
+                width=value.get('width',0);height=value.get('height',0)
+                area=width*height if all(isinstance(n,(int,float)) and not isinstance(n,bool) and n>0 for n in (width,height)) else 0
+                candidates.append((area,-priority,value['uri']))
+        image_url=max(candidates)[2] if candidates else None
         if image_url or photo_id:
             return photo_id, image_url
     for key in ('media', 'target', 'attachment'):

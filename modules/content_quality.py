@@ -9,6 +9,9 @@ SCREEN_TERMS = r"\b(?:netflix|streaming|series|seasons?|episodes?|films?|movies?
 
 MILITARY_TERMS = r"\b(?:army|military|marines?|navy|USS|aircraft carriers?|strike group|air forces?|soldiers?|veterans?|rangers?|medal of honor|regiment|battalion|infantry|fighter jets?|combat aircraft|F-16V?|SR-71|Blackbird|NMESIS|missiles?|armed forces|Pentagon|defense secretary)\b"
 
+POP_CULTURE_TERMS = r"\b(?:celebrity|celebrities|Hollywood|red carpet|gala|Broadway|theater|theatre|pop star|country star|reality star|TV host|talk show|sitcom|SNL|Dancing With the Stars|The Voice|fashion show|Victoria.s Secret)\b"
+PERFORMERS = r"\b(?:50 Cent|Diddy|Sean Combs|Britney Spears|Janet Jackson|Taylor Swift|Lady Gaga|Stephanie Mills|Travis Kelce|Drake|Harry Styles|Miley Cyrus|Dolly Parton|Selena Gomez|Benny Blanco|MGK|Machine Gun Kelly|Kacey Musgraves|Tate McRae|Morgan Wallen|Beyonc[eé]|Rihanna|Katy Perry|Cardi B|Justin Bieber|Bad Bunny|Dua Lipa|Ariana Grande|Billie Eilish|Zac Efron)\b"
+
 
 def channel_topic(channel):
     topic = str(channel.get('content_topic') or '').strip().lower()
@@ -36,6 +39,13 @@ def channel_accepts_post(channel, post):
     if re.fullmatch(r'(?:read more|link in (?:bio|comments)|breaking news|latest update)[.! ]*', caption, re.IGNORECASE):
         return False
     topic = channel_topic(channel)
+    if topic=='us_entertainment':
+        # This page explicitly covers US music, screen and celebrity culture.
+        # General crime, finance, military and animal stories cannot qualify
+        # merely because a broad entertainment publisher also carried them.
+        if re.search(r'\b(?:shop (?:now|the|these)|shopping|affiliate|promo code|discount code|add to cart|on sale|best deals)\b',caption,re.I):
+            return False
+        return bool(re.search('|'.join((MUSIC_TERMS,SCREEN_TERMS,POP_CULTURE_TERMS,PERFORMERS)),caption,re.I))
     if topic == 'military':
         return bool(re.search(MILITARY_TERMS, caption, re.IGNORECASE))
     if topic == 'music':

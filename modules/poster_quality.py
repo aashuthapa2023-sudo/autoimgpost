@@ -35,7 +35,7 @@ def verify_publishable_poster(image_path, caption):
             raise ValueError('Original card headline is outside its retained frame')
     elif not panel or any(t<panel[1]+32 or b>panel[3]-32 or abs((l+r)/2-540)>1 for l,t,r,b in bounds):
         raise ValueError('Headline is not centered inside its separate text panel')
-    for key in ('brand_bounds','logo_bounds'):
+    for key in ('brand_bounds','logo_bounds','edition_bounds'):
         box=data.get(key)
         if box and (box[0]<margin or box[2]>1080-margin or box[1]<margin or box[3]>1350-margin):
             raise ValueError('Branding is outside the safe area')
