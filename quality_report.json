@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-18T19:06:43.854268+00:00",
+  "updated_at": "2026-10-18T19:36:57.035679+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -6320,15 +6320,6 @@
       "retry_after": 1792387479.9595747
     },
     {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1577628257731632",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 3.7 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-18T17:26:53.630242+00:00",
-      "policy_signature": "97a0e0d97847176a",
-      "retry_after": 1792387613.6302583
-    },
-    {
       "channel_id": "daily_netflix",
       "post_id": "1584109686853302",
       "stage": "topic_or_caption",
@@ -6867,6 +6858,42 @@
       "checked_at": "2026-10-18T19:06:43.854268+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1792393603.8542833
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1544375134222824",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-18T19:35:26.658989+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792395326.6590037
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1477894864194697",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-18T19:35:56.820871+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792395356.8208897
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1477807670870083",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-18T19:35:58.778769+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792395358.7787838
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1577628257731632",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 3.7 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-18T19:36:57.035679+00:00",
+      "policy_signature": "3f6ab298564d2b6b",
+      "retry_after": 1792395417.0356956
     }
   ]
 }
