@@ -125,6 +125,19 @@ class EntertainmentFactsTests(unittest.TestCase):
         self.assertIn('two crew were rescued',payload['rewritten_caption'])
         self.assertNotIn('Follow',payload['rewritten_caption'])
 
+    def test_hype_and_fragments_cannot_replace_news_facts(self):
+        from modules.llm_transformer import headline_is_usable
+        self.assertFalse(headline_is_usable("Nathan Fielder's documentary has everyone talking"))
+        source='Taylor Swift released a new album. But how do you even begin to explain the whole... thing? These five essential TV episodes are a good place to start.'
+        self.assertNotIn('explain',self.caption(source))
+        self.assertNotIn('place to start',self.caption(source))
+
+    def test_red_carpet_event_drops_only_optional_anniversary_tail(self):
+        source='Jessica Biel and Justin Timberlake were among the stars who walked the red carpet at the sixth annual Academy Museum Gala, just a few weeks after celebrating their 14th wedding anniversary.'
+        payload=replacement_payload(source,content_topic='us_entertainment',headline_accept=lambda t:headline_fits_poster(t,max_lines=4,headline_case='source'))
+        self.assertEqual(payload['headline'],'Jessica Biel and Justin Timberlake walked the red carpet at the sixth annual Academy Museum Gala')
+        self.assertIn('14th wedding anniversary',payload['rewritten_caption'])
+
 
 class NativePhotoSelectionTests(unittest.TestCase):
     def test_largest_variant_stays_bound_to_same_photo(self):

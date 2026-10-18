@@ -107,7 +107,8 @@
         "https://www.facebook.com/mtv",
         "https://www.facebook.com/Variety",
         "https://www.facebook.com/peoplemag",
-        "https://www.facebook.com/enews"
+        "https://www.facebook.com/enews",
+        "https://www.facebook.com/entertainmentweekly"
       ],
       "source_page_url": "https://www.facebook.com/Billboard",
       "content_topic": "us_entertainment",
@@ -211,6 +212,14 @@
           "footer_start_fraction": 0.5,
           "min_retained_fraction": 0.35,
           "cover_corner_branding": true
+        },
+        "entertainmentweekly": {
+          "credit_pattern": "^EW$|entertainment\\s*weekly",
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.18,
+          "footer_start_fraction": 0.65,
+          "min_retained_fraction": 0.5,
+          "cover_corner_branding": true
         }
       },
       "facebook_sources_only": true,
@@ -282,7 +291,8 @@
       "min_gap_hours": 1,
       "source_pages": [
         "https://www.facebook.com/whatsonnetflix",
-        "https://www.facebook.com/Variety"
+        "https://www.facebook.com/Variety",
+        "https://www.facebook.com/entertainmentweekly"
       ],
       "source_page_url": "https://www.facebook.com/whatsonnetflix",
       "content_topic": "film",
@@ -322,6 +332,14 @@
           "header_max_fraction": 0.2,
           "footer_start_fraction": 0.5,
           "min_retained_fraction": 0.35,
+          "cover_corner_branding": true
+        },
+        "entertainmentweekly": {
+          "credit_pattern": "^EW$|entertainment\\s*weekly",
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.18,
+          "footer_start_fraction": 0.65,
+          "min_retained_fraction": 0.5,
           "cover_corner_branding": true
         }
       },

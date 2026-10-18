@@ -207,6 +207,9 @@ def clean_and_deduplicate_source_caption(raw_caption: str, language: str = "en",
             continue
         if re.search(r'[-–—:]$',sentence) or re.match(r'^(?:Inside (?:its|their|the)|We.ve been waiting for this)\b',sentence,re.I):
             continue
+        if (re.match(r'^(?:But )?(?:how|what|why|who|when|where)\b',sentence,re.I)
+                or re.match(r'^These .+\b(?:picks|favorites|place to start)\b',sentence,re.I)):
+            continue
         if re.match(r'^(?:Our|Read our|In our) (?:full )?review\b',sentence,re.I):continue
         if re.search(r'\b(?:find out|read the full|tap (?:here|the link)|what you need to know|link below|industry reporting|verified production and distribution documentation|see (?:the (?:full )?list|who made|which acts))\b|यस विषयमा सम्बन्धित निकाय तथा सरोकारवालाहरूले आवश्यक अध्ययन|यस विकासक्रमले दीर्घकालीन', sentence, re.IGNORECASE) or re.search(r"\bhere['’]s why\b.*\b(?:full review|must[- ]watch|read)\b",sentence,re.I):
             continue
@@ -460,7 +463,7 @@ def headline_is_usable(text, language='en'):
     quoted_title=re.match(r'''^(['"])[^\n]+?\1\s+(?:is|are|was|were|has|have|will|returns?|premieres?|opens?|generated)\b''',text,re.I)
     if language == 'en' and not quoted_title and re.match(r'^[\"\']?(?:(?:And|Then|So|But)\s+)?(?:I|We|You|He|She|It|They|Our|Their)\b',text,re.I):
         return False
-    if re.search(r'\b(?:most iconic item|this is what happened|reveals? what happened)\b',text,re.I):
+    if re.search(r'\b(?:most iconic item|this is what happened|reveals? what happened|has everyone talking)\b',text,re.I):
         return False
     return True
 

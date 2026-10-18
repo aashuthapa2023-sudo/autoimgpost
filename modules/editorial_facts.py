@@ -4,14 +4,14 @@ from modules.llm_transformer import check_source_grounding,headline_is_usable,sp
 
 
 EVENT = re.compile(r'\b(?:reenters?|returns?|premieres?|releases?|released|hit|hits|reaches?|reached|'
-    r'transforms?|opens?|heads?|submitted|praised|praises|trolled|recalls?|called|celebrates?|performs?|debuted|generated|died|got married|says?|reveals?|wore|wears?|axed|suspended|made|tells?|wrote|joins?|joined|sharpens?|demonstrates?|conducts?|trained|'
+    r'transforms?|opens?|heads?|submitted|praised|praises|trolled|recalls?|called|celebrates?|performs?|debuted|generated|died|got married|says?|reveals?|wore|wears?|axed|suspended|made|tells?|wrote|joins?|joined|sharpens?|demonstrates?|conducts?|trained|walked|'
     r'(?:is|are|was|were|has|have|will|may|might|could)\b.+|'
     r'(?:has|have) (?:officially )?(?:been (?:renewed|cancelled|canceled)|died|released|announced|confirmed)|'
     r'(?:is|are) (?:now )?(?:well )?(?:into production|in production|filming|on the way|canceling|cancelling)|'
     r'(?:will|may|might|could) (?:begin|return|release|train)|'
     r'(?:announced|confirmed|documented|filmed|recorded|saved|reported|observed|spotted|submitted)|'
     r'says? .+\b(?:saved|released|died|cancel|begin)\b)',re.I)
-OPTIONAL_TAIL = re.compile(r',\s+(?:with\b|thanks to\b|including\b|bringing\b|starring\b|debuting\b|giving\b|and\b|fast-roping\b|rappelling\b)'
+OPTIONAL_TAIL = re.compile(r',\s+(?:with\b|thanks to\b|including\b|bringing\b|starring\b|debuting\b|giving\b|and\b|fast-roping\b|rappelling\b|just a few weeks after\b)'
     r'|\s+and (?:considers?|considered|describes?|described|calls?|called)\b')
 QUALIFIER = re.compile(r'\b(?:not|never|no(?!\.)|without|neither|cannot|may|might|could|possibly|'
     r'alleged|reportedly|unconfirmed|rumou?r|denied|false|incorrect|misleading|disputed|refuted|corrected|if|unless)\b',re.I)
@@ -77,6 +77,8 @@ def complete_event_hooks(source,topic):
     for fact in facts:
         text=_tidy(fact)
         variants=[text]
+        members=re.match(r'^(.+?) (?:were|was) among (?:the )?(?:stars|artists|performers) who (.+)',text)
+        if members:variants.append(members.group(1)+' '+members.group(2))
         # Drop an introductory location/date/event phrase only at its comma.
         # Conditional "if/unless" framing and uncertainty cannot be discarded.
         preamble=re.match(r'^(?:During|In|On|At|Speaking at) [^,]+,\s+(.+)',text)

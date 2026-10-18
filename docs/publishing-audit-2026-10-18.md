@@ -18,8 +18,9 @@ Ocean's Secret 7, and Army 1. A green scan was not evidence of publication.
   celebrity culture. Artist-name stories no longer require the literal word
   "music". Unrelated crime, military, animal, hiring, finance and shopping stories
   do not qualify merely by being carried by a broad entertainment publisher.
-- Added verified Facebook feeds from Variety, People and E! News for Music Store;
-  Variety for Hollywood; Netflix Life for Daily Netflix; and the official US Army
+- Added verified Facebook feeds from Variety, People, E! News and Entertainment
+  Weekly for Music Store; Variety and Entertainment Weekly for Hollywood;
+  Netflix Life for Daily Netflix; and the official US Army
   feed for Army. Deeper discovery checks past rejected/consumed feed entries.
   Music Store and Daily Netflix retain Facebook-only imagery.
 - Music Store captions can retain up to 160 words of distinct source detail,
@@ -42,13 +43,13 @@ Ocean's Secret 7, and Army 1. A green scan was not evidence of publication.
 
 ## Validation before deployment
 
-375 Python tests pass, including 18 new checks for cadence jitter, same-hour
+377 Python tests pass, including 20 new checks for cadence jitter, same-hour
 deduplication, spacing, detailed captions, anonymous hooks, quoted movie titles,
 source topic filtering, native photo identity and measured image layout.
 The Git UI save/permission/pending-page tests pass, and the diff has no whitespace errors.
 
-Reviewed 70 real source pairs with OCR, native photo checks, headline generation,
-rendering and final image manifests. Twelve rendered successfully: eight Music
+Reviewed 87 real source pairs with OCR, native photo checks, headline generation,
+rendering and final image manifests. Thirteen rendered successfully: nine Music
 Store, one Netflix, one Hollywood, one Ocean and one Army. These are rendering
 proofs, not publication promises: one music example was already published, and
 live freshness, duplicate, topic and receipt checks still apply. Rejected blurred

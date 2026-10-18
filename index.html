@@ -1518,7 +1518,7 @@
               <button onclick="toggleChannelPosting('${encodeURIComponent(ch.channel_id)}')" class="mb-3 px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-xs text-neutral-200">
                 ${ch.posting_paused ? 'Resume posting' : 'Pause posting'}
               </button>
-              ${ch.poster_style ? `<div class="mb-3 text-xs text-neutral-400 leading-relaxed"><span class="text-neutral-200">${({screen:'Streaming',music:'Music',film:'Film',news:'Nepali news',ocean:'Marine science'})[ch.content_topic] || 'Editorial'} style</span> · centered headlines · full photo · single masthead</div>` : ''}
+              ${ch.poster_style ? `<div class="mb-3 text-xs text-neutral-400 leading-relaxed"><span class="text-neutral-200">${({screen:'Streaming',music:'Music',us_entertainment:'U.S. entertainment',film:'Film',news:'Nepali news',ocean:'Marine science'})[ch.content_topic] || 'Editorial'} style</span> · centered headlines · full photo · single masthead</div>` : ''}
               <div class="mb-4 bg-neutral-950 p-2.5 rounded-xl border border-neutral-800 flex items-center justify-between">
                 <div>
                   <span class="text-[11px] font-mono text-neutral-300 block font-bold">Post Interval</span>
