@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-18T18:38:24.210375+00:00",
+  "updated_at": "2026-10-18T19:06:43.854268+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -6849,6 +6849,24 @@
       "checked_at": "2026-10-18T18:38:24.210375+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792391904.2103946
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1548159010669672",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-18T19:06:27.153007+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792393587.1530228
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1548151747337065",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-18T19:06:43.854268+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792393603.8542833
     }
   ]
 }
