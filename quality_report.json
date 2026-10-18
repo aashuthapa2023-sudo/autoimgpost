@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-18T13:06:48.165213+00:00",
+  "updated_at": "2026-10-18T13:36:04.195752+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -5609,15 +5609,6 @@
       "retry_after": 1792316092.4164991
     },
     {
-      "channel_id": "Music Store",
-      "post_id": "1477573270909913",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-18T01:05:05.078913+00:00",
-      "policy_signature": "3d4f7c0f3fea81a0",
-      "retry_after": 1792328705.07893
-    },
-    {
       "channel_id": "Daily Hollywood",
       "post_id": "1574060144735306",
       "stage": "content_or_layout",
@@ -5706,15 +5697,6 @@
       "checked_at": "2026-10-18T01:16:44.017850+00:00",
       "policy_signature": "8d03309ec5dcd3da",
       "retry_after": 1792329404.0178714
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1478055347528372",
-      "stage": "source_quality",
-      "reason": "Low resolution: 650x430px (279,500 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-10-18T01:17:00.703423+00:00",
-      "policy_signature": "3d4f7c0f3fea81a0",
-      "retry_after": 1792329420.7034423
     },
     {
       "channel_id": "nepal_speaks",
@@ -6318,6 +6300,51 @@
       "checked_at": "2026-10-18T13:06:48.165213+00:00",
       "policy_signature": "680d42bee2397595",
       "retry_after": 1792372008.1652286
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1478983320768908",
+      "stage": "duplicate_photo",
+      "reason": "Source image was already published to this page",
+      "checked_at": "2026-10-18T13:34:41.048953+00:00",
+      "policy_signature": "3d4f7c0f3fea81a0",
+      "retry_after": 1792373681.048967
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1478055347528372",
+      "stage": "source_quality",
+      "reason": "Low resolution: 650x430px (279,500 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-10-18T13:34:41.515348+00:00",
+      "policy_signature": "3d4f7c0f3fea81a0",
+      "retry_after": 1792373681.5153642
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1477573270909913",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-18T13:34:53.900928+00:00",
+      "policy_signature": "3d4f7c0f3fea81a0",
+      "retry_after": 1792373693.9009547
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1548308900654683",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-18T13:35:37.641645+00:00",
+      "policy_signature": "680d42bee2397595",
+      "retry_after": 1792373737.6416671
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1548233640662209",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-18T13:36:04.195752+00:00",
+      "policy_signature": "680d42bee2397595",
+      "retry_after": 1792373764.1957703
     }
   ]
 }
