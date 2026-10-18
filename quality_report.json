@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-18T06:11:11.209250+00:00",
+  "updated_at": "2026-10-18T06:35:41.491157+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -5573,15 +5573,6 @@
       "retry_after": 1792300212.1934848
     },
     {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1577628257731632",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 3.7 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-17T17:11:11.992756+00:00",
-      "policy_signature": "9d9a66a452e8b3c4",
-      "retry_after": 1792300271.9927747
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1547377767414463",
       "stage": "content_or_layout",
@@ -6300,6 +6291,15 @@
       "checked_at": "2026-10-18T06:11:11.209250+00:00",
       "policy_signature": "70883aeacb67db71",
       "retry_after": 1792347071.209266
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1577628257731632",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 3.7 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-18T06:35:41.491157+00:00",
+      "policy_signature": "9d9a66a452e8b3c4",
+      "retry_after": 1792348541.4911788
     }
   ]
 }
