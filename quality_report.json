@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-19T17:37:26.014065+00:00",
+  "updated_at": "2026-10-19T18:07:36.742500+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -6078,15 +6078,6 @@
     },
     {
       "channel_id": "US Army Fans AI",
-      "post_id": "1578590784302046",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 23.6 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-19T06:07:30.784841+00:00",
-      "policy_signature": "3f6ab298564d2b6b",
-      "retry_after": 1792433250.7848651
-    },
-    {
-      "channel_id": "US Army Fans AI",
       "post_id": "1570010651820936",
       "stage": "content_or_layout",
       "reason": "Unknown source lettering or watermark overlaps the subject",
@@ -8307,6 +8298,24 @@
       "checked_at": "2026-10-19T17:37:26.014065+00:00",
       "policy_signature": "3f6ab298564d2b6b",
       "retry_after": 1792474646.0140805
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1587159289881675",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 15.4 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-19T18:05:13.792525+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792476313.792549
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1578590784302046",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 23.6 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-19T18:07:36.742500+00:00",
+      "policy_signature": "3f6ab298564d2b6b",
+      "retry_after": 1792476456.7425199
     }
   ]
 }
