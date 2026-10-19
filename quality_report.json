@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-19T14:07:53.159496+00:00",
+  "updated_at": "2026-10-19T14:39:29.130924+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -5997,33 +5997,6 @@
     },
     {
       "channel_id": "Music Store",
-      "post_id": "1465876032069887",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 7.3 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-18T21:54:13.552344+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792403653.5523612
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1465870302070460",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-18T21:54:23.405572+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792403663.4055886
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1465867705404053",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 9.8 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-18T21:54:37.316454+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792403677.3164704
-    },
-    {
-      "channel_id": "Music Store",
       "post_id": "1465847885406035",
       "stage": "source_quality",
       "reason": "Blurry image detected: Sharpness variance 5.6 is below minimum threshold of 35.0",
@@ -6051,138 +6024,12 @@
     },
     {
       "channel_id": "Music Store",
-      "post_id": "1544637530863251",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-18T23:06:08.321990+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792407968.322008
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1478241160826734",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-10-18T23:06:13.118119+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792407973.1181345
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1478224517495065",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-18T23:06:17.906686+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792407977.906702
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1544615877532083",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-10-18T23:06:22.770806+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792407982.770822
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1544607100866294",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 11.6 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-18T23:06:23.267644+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792407983.2676628
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1544593820867622",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-18T23:06:30.828769+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792407990.8287826
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1465954522062038",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 17.9 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-19T00:06:09.981551+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792411569.981569
-    },
-    {
-      "channel_id": "Music Store",
       "post_id": "1544571720869832",
       "stage": "content_or_layout",
       "reason": "Unknown source lettering or watermark overlaps the subject",
       "checked_at": "2026-10-19T01:06:27.080539+00:00",
       "policy_signature": "7391fa6659f622e6",
       "retry_after": 1792415187.080555
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1546935914125315",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 4.4 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-19T01:54:51.462486+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1792418091.4625106
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1149892410871346",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-19T01:55:02.335044+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1792418102.335065
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1149882817538972",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-19T01:55:14.386175+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1792418114.3861926
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1546832600802313",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-19T01:55:32.778572+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1792418132.7785902
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1149868317540422",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-19T01:55:43.412354+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1792418143.4123707
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1546796560805917",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-19T01:56:01.953338+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1792418161.9533565
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1465976285393195",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-10-19T02:06:03.580033+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792418763.580052
     },
     {
       "channel_id": "Music Store",
@@ -8280,6 +8127,168 @@
       "checked_at": "2026-10-19T14:07:53.159496+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1792462073.1595159
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1499132182086747",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-19T14:35:40.189025+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792463740.1890416
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1465976285393195",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-10-19T14:35:57.857876+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792463757.8578923
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1465954522062038",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 17.9 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-19T14:36:11.226300+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792463771.2263172
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1544637530863251",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-19T14:36:18.267754+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792463778.2677693
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1478241160826734",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-19T14:36:22.696257+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792463782.6962738
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1478224517495065",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-19T14:36:27.147944+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792463787.147959
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1544615877532083",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-19T14:36:31.647120+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792463791.647135
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1544607100866294",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 11.6 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-19T14:36:31.791322+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792463791.7913406
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1544593820867622",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-19T14:36:39.039240+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792463799.0392556
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1465876032069887",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 7.3 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-19T14:36:52.559974+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792463812.5599906
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1465870302070460",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-19T14:37:02.008153+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792463822.008169
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1465867705404053",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 9.8 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-19T14:37:15.636119+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792463835.6361363
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1546935914125315",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 4.4 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-19T14:38:20.377401+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792463900.3774178
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1149892410871346",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-19T14:38:30.706437+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792463910.7064517
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1149882817538972",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-19T14:38:42.221003+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792463922.2210174
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1546832600802313",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-19T14:39:00.085297+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792463940.0853114
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1149868317540422",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-19T14:39:10.693600+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792463950.693616
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1546796560805917",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-19T14:39:29.130924+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792463969.1309395
     }
   ]
 }
