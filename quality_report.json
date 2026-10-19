@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-19T05:36:42.997817+00:00",
+  "updated_at": "2026-10-19T06:07:36.130967+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -5915,33 +5915,6 @@
       "retry_after": 1792379132.087018
     },
     {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1578590784302046",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 23.6 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-18T17:36:26.575303+00:00",
-      "policy_signature": "3f6ab298564d2b6b",
-      "retry_after": 1792388186.5753183
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1570010651820936",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-18T17:36:34.203784+00:00",
-      "policy_signature": "3f6ab298564d2b6b",
-      "retry_after": 1792388194.2037978
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1548308900654683",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-18T18:06:34.884719+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1792389994.8847346
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1548233640662209",
       "stage": "content_or_layout",
@@ -7758,6 +7731,33 @@
       "checked_at": "2026-10-19T05:36:42.997817+00:00",
       "policy_signature": "3f6ab298564d2b6b",
       "retry_after": 1792431402.9978323
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1548308900654683",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-19T06:06:47.851635+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792433207.8516543
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1578590784302046",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 23.6 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-19T06:07:30.784841+00:00",
+      "policy_signature": "3f6ab298564d2b6b",
+      "retry_after": 1792433250.7848651
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1570010651820936",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-19T06:07:36.130967+00:00",
+      "policy_signature": "3f6ab298564d2b6b",
+      "retry_after": 1792433256.1309874
     }
   ]
 }
