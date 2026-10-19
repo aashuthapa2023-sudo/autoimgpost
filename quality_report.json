@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-19T16:06:08.680602+00:00",
+  "updated_at": "2026-10-19T16:37:27.875243+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -5987,51 +5987,6 @@
       "retry_after": 1792422471.2894
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1478336550817195",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-19T04:05:52.729780+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792425952.7297873
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1478272440823606",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-19T04:05:52.736059+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792425952.7360668
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1478260347491482",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-19T04:05:52.741772+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792425952.741779
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1478255107492006",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-19T04:05:52.747527+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792425952.7475345
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122124077637298539",
-      "stage": "content_or_layout",
-      "reason": "Source graphics need too much of the subject covered; choose another image",
-      "checked_at": "2026-10-19T04:35:47.877297+00:00",
-      "policy_signature": "9eea52c5880fafde",
-      "retry_after": 1792427747.8773124
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1478336550817195",
       "stage": "content_or_layout",
@@ -8298,6 +8253,60 @@
       "checked_at": "2026-10-19T16:06:08.680602+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1792469168.680619
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1587025456561725",
+      "stage": "content_or_layout",
+      "reason": "Source graphics leave too little usable photograph",
+      "checked_at": "2026-10-19T16:35:52.573597+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792470952.5736177
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1478336550817195",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-19T16:36:47.651480+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792471007.6514862
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1478272440823606",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-19T16:36:47.658140+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792471007.658147
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1478260347491482",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-19T16:36:47.664195+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792471007.6642015
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1478255107492006",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-19T16:36:47.670339+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792471007.670346
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122124077637298539",
+      "stage": "content_or_layout",
+      "reason": "Source graphics need too much of the subject covered; choose another image",
+      "checked_at": "2026-10-19T16:37:27.875243+00:00",
+      "policy_signature": "9eea52c5880fafde",
+      "retry_after": 1792471047.8752584
     }
   ]
 }
