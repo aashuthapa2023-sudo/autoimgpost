@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-18T23:09:08.392649+00:00",
+  "updated_at": "2026-10-19T00:10:19.124517+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -5853,24 +5853,6 @@
     },
     {
       "channel_id": "nepal_speaks",
-      "post_id": "1547377767414463",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-18T08:05:40.239629+00:00",
-      "policy_signature": "680d42bee2397595",
-      "retry_after": 1792353940.2396457
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1547364374082469",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-18T08:06:02.459766+00:00",
-      "policy_signature": "680d42bee2397595",
-      "retry_after": 1792353962.459786
-    },
-    {
-      "channel_id": "nepal_speaks",
       "post_id": "1547341477418092",
       "stage": "content_or_layout",
       "reason": "Removed source headline contains uncertain OCR words",
@@ -6219,15 +6201,6 @@
       "checked_at": "2026-10-18T13:04:57.444944+00:00",
       "policy_signature": "3d4f7c0f3fea81a0",
       "retry_after": 1792371897.4449544
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1547712787380961",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-18T13:05:58.613478+00:00",
-      "policy_signature": "680d42bee2397595",
-      "retry_after": 1792371958.6134949
     },
     {
       "channel_id": "nepal_speaks",
@@ -7497,6 +7470,123 @@
       "checked_at": "2026-10-18T23:09:08.392649+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1792408148.3926668
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1465954522062038",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 17.9 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-19T00:06:09.981551+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792411569.981569
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1465954522062038",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 17.9 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-19T00:06:58.425042+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792411618.4250603
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1464961278828029",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-19T00:07:06.300561+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792411626.3005784
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1464958012161689",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-19T00:07:20.928006+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792411640.928024
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1464870135503810",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 10.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-19T00:07:34.939244+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792411654.9392605
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1464820395508784",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-19T00:07:37.907435+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792411657.9074519
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1464777825513041",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 22.2 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-19T00:07:51.984536+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792411671.9845538
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547997027352537",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-19T00:08:25.734966+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792411705.7351863
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547992874019619",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-19T00:08:42.624374+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792411722.6243956
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547974124021494",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-19T00:08:58.988951+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792411738.9889653
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547712787380961",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-19T00:09:35.286147+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792411775.2861624
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547377767414463",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-19T00:09:53.175870+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792411793.1758838
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547364374082469",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-19T00:10:19.124517+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792411819.1245356
     }
   ]
 }
