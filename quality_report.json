@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-19T20:36:36.696037+00:00",
+  "updated_at": "2026-10-19T21:06:22.046753+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -6230,24 +6230,6 @@
       "retry_after": 1792437129.405349
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1477894864194697",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-10-19T07:36:23.245493+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792438583.2455192
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1477807670870083",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-19T07:36:27.387730+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792438587.3877473
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1464870135503810",
       "stage": "photo_extraction",
@@ -8550,6 +8532,33 @@
       "checked_at": "2026-10-19T20:36:36.696037+00:00",
       "policy_signature": "7391fa6659f622e6",
       "retry_after": 1792485396.6960533
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1587261306538140",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-19T21:05:15.752255+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792487115.7522707
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1477894864194697",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-19T21:06:17.581995+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792487177.582012
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1477807670870083",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-19T21:06:22.046753+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792487182.0467691
     }
   ]
 }
