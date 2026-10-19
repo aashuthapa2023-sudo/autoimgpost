@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-19T00:10:19.124517+00:00",
+  "updated_at": "2026-10-19T00:37:22.175533+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -5852,42 +5852,6 @@
       "retry_after": 1792347071.209266
     },
     {
-      "channel_id": "nepal_speaks",
-      "post_id": "1547341477418092",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-18T08:06:19.833342+00:00",
-      "policy_signature": "680d42bee2397595",
-      "retry_after": 1792353979.8333602
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1547310227421217",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-18T08:06:34.890119+00:00",
-      "policy_signature": "680d42bee2397595",
-      "retry_after": 1792353994.8901374
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1547295870755986",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-18T08:06:47.808011+00:00",
-      "policy_signature": "680d42bee2397595",
-      "retry_after": 1792354007.8080254
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1547288080756765",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 8.6 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-18T08:07:03.683660+00:00",
-      "policy_signature": "680d42bee2397595",
-      "retry_after": 1792354023.6836805
-    },
-    {
       "channel_id": "oceans_secret",
       "post_id": "122120726811320544",
       "stage": "content_or_layout",
@@ -5895,24 +5859,6 @@
       "checked_at": "2026-10-18T08:07:42.569732+00:00",
       "policy_signature": "3ea5e62ba7cc903f",
       "retry_after": 1792354062.569751
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1547281280757445",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-18T08:34:53.792759+00:00",
-      "policy_signature": "680d42bee2397595",
-      "retry_after": 1792355693.792775
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1547275557424684",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-18T08:34:59.787855+00:00",
-      "policy_signature": "680d42bee2397595",
-      "retry_after": 1792355699.7878692
     },
     {
       "channel_id": "nepal_speaks",
@@ -7587,6 +7533,60 @@
       "checked_at": "2026-10-19T00:10:19.124517+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1792411819.1245356
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547341477418092",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-19T00:36:35.027511+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792413395.027531
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547310227421217",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-19T00:36:44.819805+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792413404.8198216
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547295870755986",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-19T00:36:53.273092+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792413413.2731082
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547288080756765",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 8.6 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-19T00:37:03.685981+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792413423.6859992
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547281280757445",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-19T00:37:13.959839+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792413433.9598544
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547275557424684",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-19T00:37:22.175533+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792413442.1755486
     }
   ]
 }
