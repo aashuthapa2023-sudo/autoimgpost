@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-20T15:36:55.378737+00:00",
+  "updated_at": "2026-10-20T16:07:44.484701+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -7283,69 +7283,6 @@
       "retry_after": 1792510586.9986994
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1466820098642147",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 8.0 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-20T03:36:53.830123+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792510613.8301404
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1548031404015766",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-20T03:37:38.353589+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1792510658.3536026
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1150971230763464",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-20T03:37:47.765792+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1792510667.7658074
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1547997027352537",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-10-20T03:38:02.040147+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1792510682.0401647
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1547992874019619",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-20T03:38:15.773732+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1792510695.7737474
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1547974124021494",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-20T03:38:29.019432+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1792510709.0194478
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1547712787380961",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-20T03:38:58.612709+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1792510738.6127448
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1478272440823606",
       "stage": "topic_or_caption",
@@ -9909,6 +9846,105 @@
       "checked_at": "2026-10-20T15:36:55.378737+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1792553815.3787515
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579225167552137",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-20T16:05:05.603339+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792555505.603355
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579151854226135",
+      "stage": "content_or_layout",
+      "reason": "Source graphics leave too little usable photograph",
+      "checked_at": "2026-10-20T16:05:09.621315+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792555509.6213324
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1579225167552137",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-20T16:06:11.833514+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792555571.8335335
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1579151854226135",
+      "stage": "content_or_layout",
+      "reason": "Source graphics leave too little usable photograph",
+      "checked_at": "2026-10-20T16:06:15.821975+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792555575.8219924
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1466820098642147",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 8.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-20T16:06:25.132867+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792555585.1328886
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1548031404015766",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-20T16:06:49.561138+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792555609.5611598
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1150971230763464",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-20T16:06:55.953102+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792555615.9531238
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547997027352537",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-20T16:07:06.150608+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792555626.1506352
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547992874019619",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-20T16:07:16.364740+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792555636.3647614
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547974124021494",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-20T16:07:26.303665+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792555646.3036828
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1547712787380961",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-20T16:07:44.484701+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792555664.4847226
     }
   ]
 }
