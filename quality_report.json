@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-20T14:07:23.126476+00:00",
+  "updated_at": "2026-10-20T14:37:34.820176+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -7023,33 +7023,6 @@
     },
     {
       "channel_id": "Music Store",
-      "post_id": "1466646295326194",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-20T02:36:06.543980+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792506966.5439959
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1643886374445167",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 30.9 is below minimum threshold of 80.0",
-      "checked_at": "2026-10-20T02:36:06.812416+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792506966.8124335
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1466550022002488",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-20T02:36:13.054828+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792506973.0548477
-    },
-    {
-      "channel_id": "Music Store",
       "post_id": "1466430648681092",
       "stage": "content_or_layout",
       "reason": "Removed source headline contains uncertain OCR words",
@@ -9891,6 +9864,51 @@
       "checked_at": "2026-10-20T14:07:23.126476+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1792548443.126497
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579133490894638",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 28.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-20T14:36:16.905110+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792550176.9051325
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1466646295326194",
+      "stage": "duplicate_photo",
+      "reason": "Source image was already published to this page",
+      "checked_at": "2026-10-20T14:37:03.343001+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792550223.3430247
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1643886374445167",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 30.9 is below minimum threshold of 80.0",
+      "checked_at": "2026-10-20T14:37:03.992153+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792550223.9921756
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1466550022002488",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-20T14:37:10.144768+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792550230.144788
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1579133490894638",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 28.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-20T14:37:34.820176+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792550254.820198
     }
   ]
 }
