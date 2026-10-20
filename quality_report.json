@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-20T18:08:38.776845+00:00",
+  "updated_at": "2026-10-20T18:36:14.565352+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -7545,15 +7545,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1587159289881675",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 15.4 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-20T06:34:19.001651+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792521259.0016685
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1585415526722718",
       "stage": "content_or_layout",
       "reason": "Source frame would crop a face; choose another image",
@@ -10440,6 +10431,42 @@
       "checked_at": "2026-10-20T18:08:38.776845+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792562918.776857
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1587159289881675",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 15.4 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-20T18:35:07.190387+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792564507.190404
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1546645543995783",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-20T18:36:09.270459+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792564569.2704763
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1645065907660547",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 30.9 is below minimum threshold of 80.0",
+      "checked_at": "2026-10-20T18:36:09.681782+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792564569.681814
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1546616010665403",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-20T18:36:14.565352+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792564574.5653677
     }
   ]
 }
