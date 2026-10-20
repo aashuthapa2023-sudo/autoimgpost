@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-20T07:37:31.223733+00:00",
+  "updated_at": "2026-10-20T07:48:41.747919+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -6276,51 +6276,6 @@
     },
     {
       "channel_id": "Daily Hollywood",
-      "post_id": "1465870302070460",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-19T12:08:08.471346+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792454888.471363
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1465867705404053",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 9.8 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-19T12:08:23.041181+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792454903.0412085
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1465847885406035",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 5.6 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-19T12:08:23.453609+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792454903.4536273
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1478176700833180",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-19T12:08:28.286273+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792454908.2862895
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1465756705415153",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-19T12:37:40.986224+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792456660.986243
-    },
-    {
-      "channel_id": "Daily Hollywood",
       "post_id": "1477334600917390",
       "stage": "content_or_layout",
       "reason": "Source headline needs a proved nonempty removed panel",
@@ -6903,24 +6858,6 @@
       "checked_at": "2026-10-19T19:06:43.589600+00:00",
       "policy_signature": "7391fa6659f622e6",
       "retry_after": 1792480003.5896196
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1465707395420084",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 20.2 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-19T19:07:10.607523+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792480030.6075351
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1587209499876654",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-19T19:35:07.179980+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792481707.1799955
     },
     {
       "channel_id": "nepal_speaks",
@@ -9081,6 +9018,69 @@
       "checked_at": "2026-10-20T07:37:31.223733+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792525051.2237504
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1587209499876654",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-20T07:46:46.037132+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792525606.0371497
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1465870302070460",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-20T07:48:00.036657+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792525680.0366757
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1465867705404053",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 9.8 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-20T07:48:17.583977+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792525697.5839946
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1465847885406035",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 5.6 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-20T07:48:18.030433+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792525698.0304518
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1478176700833180",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-20T07:48:23.760249+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792525703.7602663
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1465756705415153",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-20T07:48:41.311006+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792525721.3110237
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1465707395420084",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 20.2 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-20T07:48:41.747919+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792525721.7479398
     }
   ]
 }
