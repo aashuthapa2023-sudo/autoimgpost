@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-20T01:06:20.875861+00:00",
+  "updated_at": "2026-10-20T01:36:30.737600+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -8982,6 +8982,42 @@
       "checked_at": "2026-10-20T01:06:20.875861+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792501580.875869
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1466945071962983",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-20T01:35:50.781002+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792503350.7810197
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1480412680625972",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-20T01:35:52.644674+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792503352.6446903
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1466924981964992",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-20T01:35:56.119592+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792503356.11961
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1466945071962983",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-20T01:36:30.737600+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792503390.7376182
     }
   ]
 }
