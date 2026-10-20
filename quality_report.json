@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-20T17:38:03.690915+00:00",
+  "updated_at": "2026-10-20T18:01:31.961694+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -7355,15 +7355,6 @@
       "retry_after": 1792512514.8180196
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1587025456561725",
-      "stage": "content_or_layout",
-      "reason": "Source graphics leave too little usable photograph",
-      "checked_at": "2026-10-20T04:36:51.465244+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792514211.4652636
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1547288080756765",
       "stage": "photo_extraction",
@@ -10233,6 +10224,96 @@
       "checked_at": "2026-10-20T17:38:03.690915+00:00",
       "policy_signature": "9eea52c5880fafde",
       "retry_after": 1792561083.6909306
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1588101593120778",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 6.8 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-20T18:00:31.972816+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792562431.9728405
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1587025456561725",
+      "stage": "content_or_layout",
+      "reason": "Source graphics leave too little usable photograph",
+      "checked_at": "2026-10-20T18:00:52.073913+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792562452.0739353
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1479907943993389",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-20T18:01:31.885393+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792562491.885412
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1479877867329730",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-20T18:01:31.896743+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792562491.896761
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1479829740667876",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-20T18:01:31.907272+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792562491.9072914
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1479814490669401",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-20T18:01:31.917503+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792562491.9175193
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1479734894010694",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-20T18:01:31.928563+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792562491.9285822
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1479719927345524",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-20T18:01:31.939247+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792562491.9392674
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1479679410682909",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-20T18:01:31.950265+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792562491.9502852
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1479616470689203",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-20T18:01:31.961694+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792562491.9617145
     }
   ]
 }
