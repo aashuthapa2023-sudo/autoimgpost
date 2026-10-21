@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-21T15:08:36.105675+00:00",
+  "updated_at": "2026-10-21T15:36:22.588528+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -9047,69 +9047,6 @@
       "retry_after": 1792591646.2410042
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1579133490894638",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 28.0 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-21T03:06:08.883906+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792595168.8839223
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1546985800628424",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-10-21T03:07:00.951647+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792595220.9516652
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1501107815222517",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-10-21T03:07:09.782258+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792595229.782277
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1546951917298479",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-10-21T03:07:18.977255+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792595238.9772732
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1480187547298762",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-10-21T03:07:27.108396+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792595247.1084156
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1546940313966306",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-21T03:07:36.033627+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792595256.0336492
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1546921560634848",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 4.2 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-21T03:07:45.190117+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792595265.1901355
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1546348640692140",
       "stage": "content_or_layout",
@@ -11765,15 +11702,6 @@
       "retry_after": 1792634851.711027
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1579225167552137",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-10-21T14:34:58.598743+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792595998.5987587
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1501602118506420",
       "stage": "topic_or_caption",
@@ -12060,6 +11988,78 @@
       "checked_at": "2026-10-21T15:08:36.105675+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1792638516.1056936
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-21T15:35:16.808283+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792599616.808292
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579133490894638",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 28.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-21T15:35:22.429771+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792640122.4297853
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1546985800628424",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-10-21T15:36:06.481002+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792640166.4810195
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1501107815222517",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-21T15:36:09.531066+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792640169.5310874
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1546951917298479",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-10-21T15:36:12.834546+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792640172.834576
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1480187547298762",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-21T15:36:16.286367+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792640176.286384
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1546940313966306",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-21T15:36:19.437059+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792640179.4370756
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1546921560634848",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 4.2 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-21T15:36:22.588528+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792640182.588545
     }
   ]
 }
