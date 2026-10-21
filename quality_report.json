@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-21T19:12:46.832825+00:00",
+  "updated_at": "2026-10-21T20:06:29.110637+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -12188,15 +12188,6 @@
       "retry_after": 1792651103.4027138
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1579225167552137",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-10-21T19:02:53.381339+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792612073.3813565
-    },
-    {
       "channel_id": "Daily Hollywood",
       "post_id": "1480875263896657",
       "stage": "topic_or_caption",
@@ -12339,6 +12330,33 @@
       "checked_at": "2026-10-21T19:12:46.832825+00:00",
       "policy_signature": "3f6ab298564d2b6b",
       "retry_after": 1792653166.8328593
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1589162193014718",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-21T20:05:45.970188+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792656345.970208
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-21T20:05:46.087537+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792615846.087558
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1480836037233913",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-21T20:06:29.110637+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792656389.1106591
     }
   ]
 }
