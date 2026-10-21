@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-21T11:08:48.455819+00:00",
+  "updated_at": "2026-10-21T11:35:30.479051+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -11441,15 +11441,6 @@
       "retry_after": 1792622115.778262
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1579225167552137",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-10-21T10:35:16.046446+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792581616.0464602
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1547293960597608",
       "stage": "topic_or_caption",
@@ -11691,6 +11682,42 @@
       "checked_at": "2026-10-21T11:08:48.455819+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1792624128.45584
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-21T11:34:44.464016+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792585184.4640276
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1480458923938291",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-21T11:35:24.423516+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792625724.423524
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1480538547263662",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 26.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-21T11:35:24.862347+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792625724.862362
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1480496900601160",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-21T11:35:30.479051+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792625730.479071
     }
   ]
 }
