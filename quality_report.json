@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-21T07:09:23.305225+00:00",
+  "updated_at": "2026-10-21T07:36:02.500684+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -7644,33 +7644,6 @@
     },
     {
       "channel_id": "Daily Hollywood",
-      "post_id": "1478937010757149",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-10-20T07:36:45.335377+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792525005.335393
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1478811120769738",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-20T07:36:49.964850+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792525009.9648654
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1478726970778153",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-20T07:36:55.055282+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792525015.0552986
-    },
-    {
-      "channel_id": "Daily Hollywood",
       "post_id": "1465954522062038",
       "stage": "photo_extraction",
       "reason": "Blurry image detected: Sharpness variance 17.9 is below minimum threshold of 35.0",
@@ -8229,15 +8202,6 @@
     },
     {
       "channel_id": "Daily Hollywood",
-      "post_id": "1577932941014693",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 22.1 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-20T10:35:56.681298+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792535756.681313
-    },
-    {
-      "channel_id": "Daily Hollywood",
       "post_id": "1464870135503810",
       "stage": "photo_extraction",
       "reason": "Blurry image detected: Sharpness variance 10.0 is below minimum threshold of 35.0",
@@ -8543,15 +8507,6 @@
       "retry_after": 1792546623.2669299
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1466945071962983",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-20T13:37:28.681308+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792546648.6813233
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1549008473918059",
       "stage": "content_or_layout",
@@ -8640,15 +8595,6 @@
       "checked_at": "2026-10-20T15:36:55.378737+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1792553815.3787515
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1466820098642147",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 8.0 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-20T16:06:25.132867+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792555585.1328886
     },
     {
       "channel_id": "nepal_speaks",
@@ -11171,15 +11117,6 @@
       "retry_after": 1792606080.4762652
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1579225167552137",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-10-21T06:34:32.795044+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792567172.7950618
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1546643433995994",
       "stage": "topic_or_caption",
@@ -11493,6 +11430,69 @@
       "checked_at": "2026-10-21T07:09:23.305225+00:00",
       "policy_signature": "3f6ab298564d2b6b",
       "retry_after": 1792609763.3052409
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-21T07:34:43.422371+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792570783.4223886
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1466945071962983",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-21T07:35:46.232809+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792611346.2328272
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1466820098642147",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 8.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-21T07:35:52.759305+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792611352.7593257
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1478937010757149",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-21T07:35:55.148809+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792611355.1488283
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1478811120769738",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-21T07:35:57.410174+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792611357.4101906
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1478726970778153",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-21T07:35:59.807208+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792611359.8072238
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1577932941014693",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 22.1 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-21T07:36:02.500684+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792611362.5006998
     }
   ]
 }
