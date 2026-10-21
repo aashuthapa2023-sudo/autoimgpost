@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-21T10:37:17.726214+00:00",
+  "updated_at": "2026-10-21T11:08:48.455819+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -8696,24 +8696,6 @@
       "retry_after": 1792573589.886605
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1579489810859006",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-10-20T22:35:29.223210+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792578929.2232287
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1577932941014693",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 22.1 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-20T22:35:36.500641+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792578936.5006602
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1467054338618723",
       "stage": "topic_or_caption",
@@ -11637,6 +11619,78 @@
       "checked_at": "2026-10-21T10:37:17.726214+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1792622237.726225
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579489810859006",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-10-21T11:06:06.059008+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792623966.0590284
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1577932941014693",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 22.1 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-21T11:06:12.782181+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792623972.7821982
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1481360757197831",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-21T11:07:04.127334+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792624024.127349
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1481326193867954",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-21T11:07:04.140728+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792624024.1407452
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1481294843871089",
+      "stage": "duplicate_photo",
+      "reason": "Source image was already published to this page",
+      "checked_at": "2026-10-21T11:07:05.216649+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792624025.2166655
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1480458923938291",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-21T11:07:35.690384+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792624055.6904058
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1480538547263662",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 26.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-21T11:07:36.674254+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792624056.674275
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1551185933700313",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-21T11:08:48.455819+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792624128.45584
     }
   ]
 }
