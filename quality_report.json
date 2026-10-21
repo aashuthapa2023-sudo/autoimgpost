@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-21T20:38:12.857315+00:00",
+  "updated_at": "2026-10-21T21:06:05.226004+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -12233,15 +12233,6 @@
       "retry_after": 1792656345.970208
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1579225167552137",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-10-21T20:05:46.087537+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792615846.087558
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1480836037233913",
       "stage": "content_or_layout",
@@ -12357,6 +12348,24 @@
       "checked_at": "2026-10-21T20:38:12.857315+00:00",
       "policy_signature": "9eea52c5880fafde",
       "retry_after": 1792658292.857333
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-21T21:05:13.985138+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792619413.9851542
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1480820830568767",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-21T21:06:05.226004+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792659965.2260222
     }
   ]
 }
