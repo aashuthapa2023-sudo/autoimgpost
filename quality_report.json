@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-21T06:35:53.103851+00:00",
+  "updated_at": "2026-10-21T07:09:23.305225+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -8336,24 +8336,6 @@
       "retry_after": 1792541180.9104295
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1466772191980271",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-20T12:06:47.647359+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792541207.6473742
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1467042431953247",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 2.9 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-20T12:06:56.559247+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792541216.5592668
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1549057103913196",
       "stage": "content_or_layout",
@@ -8442,24 +8424,6 @@
       "checked_at": "2026-10-20T13:06:11.055508+00:00",
       "policy_signature": "7391fa6659f622e6",
       "retry_after": 1792544771.0555265
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1644039951096476",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 39.2 is below minimum threshold of 80.0",
-      "checked_at": "2026-10-20T13:06:11.380012+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792544771.38003
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1579043447570309",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-20T13:06:39.016961+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792544799.0169756
     },
     {
       "channel_id": "Daily Hollywood",
@@ -8616,30 +8580,12 @@
     },
     {
       "channel_id": "Music Store",
-      "post_id": "1643886374445167",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 30.9 is below minimum threshold of 80.0",
-      "checked_at": "2026-10-20T14:37:03.992153+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792550223.9921756
-    },
-    {
-      "channel_id": "Music Store",
       "post_id": "1466550022002488",
       "stage": "content_or_layout",
       "reason": "Removed source headline contains uncertain OCR words",
       "checked_at": "2026-10-20T14:37:10.144768+00:00",
       "policy_signature": "7391fa6659f622e6",
       "retry_after": 1792550230.144788
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1579133490894638",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 28.0 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-20T14:37:34.820176+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792550254.820198
     },
     {
       "channel_id": "nepal_speaks",
@@ -8694,24 +8640,6 @@
       "checked_at": "2026-10-20T15:36:55.378737+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1792553815.3787515
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1579225167552137",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-20T16:06:11.833514+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792555571.8335335
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1579151854226135",
-      "stage": "content_or_layout",
-      "reason": "Source graphics leave too little usable photograph",
-      "checked_at": "2026-10-20T16:06:15.821975+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792555575.8219924
     },
     {
       "channel_id": "Daily Hollywood",
@@ -8910,69 +8838,6 @@
       "checked_at": "2026-10-20T18:08:38.776845+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792562918.776857
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1587159289881675",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 15.4 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-20T18:35:07.190387+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792564507.190404
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1546645543995783",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-20T18:36:09.270459+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792564569.2704763
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1645065907660547",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 30.9 is below minimum threshold of 80.0",
-      "checked_at": "2026-10-20T18:36:09.681782+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792564569.681814
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1546616010665403",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-10-20T18:36:14.565352+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792564574.5653677
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1572696191552382",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-20T19:07:42.543274+00:00",
-      "policy_signature": "3f6ab298564d2b6b",
-      "retry_after": 1792566462.5432918
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1580396280788163",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-20T19:07:52.006949+00:00",
-      "policy_signature": "3f6ab298564d2b6b",
-      "retry_after": 1792566472.0069683
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1571819411640060",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-20T19:07:58.872235+00:00",
-      "policy_signature": "3f6ab298564d2b6b",
-      "retry_after": 1792566478.8722541
     },
     {
       "channel_id": "daily_netflix",
@@ -11493,6 +11358,141 @@
       "checked_at": "2026-10-21T06:35:53.103851+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1792607753.1038694
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1587159289881675",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 15.4 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-21T07:05:17.877346+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792609517.8773649
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1546645543995783",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-21T07:06:21.294138+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792609581.2941554
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1645065907660547",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 30.9 is below minimum threshold of 80.0",
+      "checked_at": "2026-10-21T07:06:21.657007+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792609581.657027
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1546616010665403",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-21T07:06:27.387220+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792609587.3872354
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1644039951096476",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 39.2 is below minimum threshold of 80.0",
+      "checked_at": "2026-10-21T07:06:27.825663+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792609587.8256805
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1643886374445167",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 30.9 is below minimum threshold of 80.0",
+      "checked_at": "2026-10-21T07:06:28.306141+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792609588.3061597
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-21T07:06:45.863696+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792569105.8637064
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1579151854226135",
+      "stage": "content_or_layout",
+      "reason": "Source graphics leave too little usable photograph",
+      "checked_at": "2026-10-21T07:06:53.059542+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792609613.059556
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1579133490894638",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 28.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-21T07:07:00.040115+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792609620.0401287
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1579043447570309",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-21T07:07:08.977172+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792609628.9771852
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1466772191980271",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-21T07:07:25.943903+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792609645.943917
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1467042431953247",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 2.9 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-21T07:07:43.028865+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792609663.028881
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1572696191552382",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-21T07:09:07.858354+00:00",
+      "policy_signature": "3f6ab298564d2b6b",
+      "retry_after": 1792609747.8583698
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1580396280788163",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-21T07:09:16.876527+00:00",
+      "policy_signature": "3f6ab298564d2b6b",
+      "retry_after": 1792609756.876543
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1571819411640060",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-21T07:09:23.305225+00:00",
+      "policy_signature": "3f6ab298564d2b6b",
+      "retry_after": 1792609763.3052409
     }
   ]
 }
