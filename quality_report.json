@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-21T17:37:48.386720+00:00",
+  "updated_at": "2026-10-21T18:05:18.925222+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -9174,15 +9174,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1588101593120778",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 6.8 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-21T06:05:01.654208+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792605901.654228
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1587025456561725",
       "stage": "content_or_layout",
       "reason": "Source graphics leave too little usable photograph",
@@ -12036,15 +12027,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1579225167552137",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-10-21T17:06:57.752924+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792605117.7529407
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1579151854226135",
       "stage": "content_or_layout",
       "reason": "Source graphics leave too little usable photograph",
@@ -12222,6 +12204,24 @@
       "checked_at": "2026-10-21T17:37:48.386720+00:00",
       "policy_signature": "3f6ab298564d2b6b",
       "retry_after": 1792647468.3867316
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1588101593120778",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 6.8 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-21T18:05:18.759300+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792649118.7593243
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-21T18:05:18.925222+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792608618.9252439
     }
   ]
 }
