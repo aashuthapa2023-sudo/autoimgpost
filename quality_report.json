@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-21T04:06:23.102373+00:00",
+  "updated_at": "2026-10-21T04:35:09.709636+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -8696,24 +8696,6 @@
       "retry_after": 1792553815.3787515
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1579225167552137",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-20T16:05:05.603339+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792555505.603355
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1579151854226135",
-      "stage": "content_or_layout",
-      "reason": "Source graphics leave too little usable photograph",
-      "checked_at": "2026-10-20T16:05:09.621315+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792555509.6213324
-    },
-    {
       "channel_id": "Daily Hollywood",
       "post_id": "1579225167552137",
       "stage": "content_or_layout",
@@ -11376,6 +11358,24 @@
       "checked_at": "2026-10-21T04:06:23.102373+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792598783.1023905
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-21T04:34:56.568920+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792559996.5689414
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579151854226135",
+      "stage": "content_or_layout",
+      "reason": "Source graphics leave too little usable photograph",
+      "checked_at": "2026-10-21T04:35:09.709636+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792600509.7096503
     }
   ]
 }
