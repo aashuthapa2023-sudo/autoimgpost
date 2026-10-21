@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-21T08:09:23.817891+00:00",
+  "updated_at": "2026-10-21T08:37:25.429477+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -7643,51 +7643,6 @@
       "retry_after": 1792524984.0040684
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1465867705404053",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 9.8 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-20T07:48:17.583977+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792525697.5839946
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1465847885406035",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 5.6 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-20T07:48:18.030433+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792525698.0304518
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1478176700833180",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-20T07:48:23.760249+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792525703.7602663
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1465756705415153",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-20T07:48:41.311006+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792525721.3110237
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1465707395420084",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 20.2 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-20T07:48:41.747919+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792525721.7479398
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1479132380737612",
       "stage": "topic_or_caption",
@@ -8082,15 +8037,6 @@
       "checked_at": "2026-10-20T10:05:29.962179+00:00",
       "policy_signature": "7391fa6659f622e6",
       "retry_after": 1792533929.962184
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1477894864194697",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-10-20T10:06:02.142267+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792533962.1422894
     },
     {
       "channel_id": "Daily Hollywood",
@@ -11261,15 +11207,6 @@
       "retry_after": 1792609763.3052409
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1579225167552137",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-10-21T07:34:43.422371+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792570783.4223886
-    },
-    {
       "channel_id": "Daily Hollywood",
       "post_id": "1466945071962983",
       "stage": "content_or_layout",
@@ -11502,6 +11439,78 @@
       "checked_at": "2026-10-21T08:09:23.817891+00:00",
       "policy_signature": "9eea52c5880fafde",
       "retry_after": 1792613363.8179085
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-21T08:34:53.879019+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792574393.879035
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1465867705404053",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 9.8 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-21T08:36:05.219542+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792614965.2195592
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1465847885406035",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 5.6 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-21T08:36:05.570721+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792614965.5707402
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1478176700833180",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-21T08:36:08.855175+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792614968.8551931
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1465756705415153",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-21T08:36:18.658000+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792614978.658017
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1465707395420084",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 20.2 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-21T08:36:18.947184+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792614978.9472022
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1477894864194697",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-21T08:36:22.337718+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792614982.337736
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122141906709240703",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-10-21T08:37:25.429477+00:00",
+      "policy_signature": "9eea52c5880fafde",
+      "retry_after": 1792615045.429495
     }
   ]
 }
