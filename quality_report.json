@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-22T00:49:02.217097+00:00",
+  "updated_at": "2026-10-22T01:06:35.268118+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -12548,15 +12548,6 @@
       "retry_after": 1792669039.6336389
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1579225167552137",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-10-22T00:05:23.762633+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792630223.7626655
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1480579730592877",
       "stage": "topic_or_caption",
@@ -12627,6 +12618,33 @@
       "checked_at": "2026-10-22T00:49:02.217097+00:00",
       "policy_signature": "9eea52c5880fafde",
       "retry_after": 1792673342.2171133
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-22T01:05:04.966853+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792633804.966867
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1468490808475076",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-22T01:06:30.060944+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792674390.0609736
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1480775583906625",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-22T01:06:35.268118+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792674395.2681363
     }
   ]
 }
