@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-22T08:36:58.221635+00:00",
+  "updated_at": "2026-10-22T09:09:27.086559+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -10397,15 +10397,6 @@
       "retry_after": 1792656389.1106591
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1587209499876654",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-21T20:35:38.264820+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792658138.2648351
-    },
-    {
       "channel_id": "Daily Hollywood",
       "post_id": "1478891507428366",
       "stage": "topic_or_caption",
@@ -10431,24 +10422,6 @@
       "checked_at": "2026-10-21T20:36:45.105915+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792658205.1059315
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122141906709240703",
-      "stage": "content_or_layout",
-      "reason": "Source lettering overlaps the marine subject outside replacement zones",
-      "checked_at": "2026-10-21T20:38:03.884222+00:00",
-      "policy_signature": "9eea52c5880fafde",
-      "retry_after": 1792658283.884238
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122120949561320544",
-      "stage": "photo_extraction",
-      "reason": "Insufficient contrast / washed out: std dev 21.6 < 22.0",
-      "checked_at": "2026-10-21T20:38:12.857315+00:00",
-      "policy_signature": "9eea52c5880fafde",
-      "retry_after": 1792658292.857333
     },
     {
       "channel_id": "Music Store",
@@ -13107,15 +13080,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1579225167552137",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-10-22T08:05:35.280876+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792659035.2808971
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1589162193014718",
       "stage": "content_or_layout",
       "reason": "Source frame would crop a face; choose another image",
@@ -13176,6 +13140,42 @@
       "checked_at": "2026-10-22T08:36:58.221635+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792701418.2216463
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-22T09:07:13.463952+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792662733.4639723
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1587209499876654",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-22T09:07:31.168392+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792703251.16841
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122141906709240703",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-10-22T09:09:19.741801+00:00",
+      "policy_signature": "9eea52c5880fafde",
+      "retry_after": 1792703359.7418225
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122120949561320544",
+      "stage": "photo_extraction",
+      "reason": "Insufficient contrast / washed out: std dev 21.6 < 22.0",
+      "checked_at": "2026-10-22T09:09:27.086559+00:00",
+      "policy_signature": "9eea52c5880fafde",
+      "retry_after": 1792703367.086581
     }
   ]
 }
