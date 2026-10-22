@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-22T14:07:04.158584+00:00",
+  "updated_at": "2026-10-22T14:54:39.421404+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -10596,24 +10596,6 @@
     },
     {
       "channel_id": "Daily Hollywood",
-      "post_id": "1467371465253677",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-22T02:35:32.141929+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792679732.1419363
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1467349735255850",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-22T02:35:32.149610+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792679732.1496167
-    },
-    {
-      "channel_id": "Daily Hollywood",
       "post_id": "1480102900640560",
       "stage": "content_or_layout",
       "reason": "Source headline needs a proved nonempty removed panel",
@@ -10656,15 +10638,6 @@
       "checked_at": "2026-10-22T02:35:50.421135+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792679750.4211507
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1581507840677007",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-22T02:36:40.562718+00:00",
-      "policy_signature": "3f6ab298564d2b6b",
-      "retry_after": 1792679800.5627394
     },
     {
       "channel_id": "Music Store",
@@ -13311,6 +13284,33 @@
       "checked_at": "2026-10-22T14:07:04.158584+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792721224.1585932
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1467371465253677",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-22T14:53:22.207994+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792724002.2080047
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1467349735255850",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-22T14:53:22.221101+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792724002.2211127
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1581507840677007",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-22T14:54:39.421404+00:00",
+      "policy_signature": "3f6ab298564d2b6b",
+      "retry_after": 1792724079.4214213
     }
   ]
 }
