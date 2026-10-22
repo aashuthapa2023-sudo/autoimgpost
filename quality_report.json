@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-22T09:39:04.089834+00:00",
+  "updated_at": "2026-10-22T10:06:29.216325+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -10001,24 +10001,6 @@
       "retry_after": 1792624025.2166655
     },
     {
-      "channel_id": "Music Store",
-      "post_id": "1480538547263662",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 26.0 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-21T11:35:24.862347+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792625724.862362
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1480496900601160",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-10-21T11:35:30.479051+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792625730.479071
-    },
-    {
       "channel_id": "Daily Hollywood",
       "post_id": "1478241160826734",
       "stage": "topic_or_caption",
@@ -10071,24 +10053,6 @@
       "checked_at": "2026-10-21T13:07:30.126934+00:00",
       "policy_signature": "7391fa6659f622e6",
       "retry_after": 1792631250.126942
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1547325467261124",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-10-21T13:08:35.229100+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792631315.2291167
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1547314393928898",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-21T13:08:42.243193+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792631322.243223
     },
     {
       "channel_id": "Music Store",
@@ -10281,15 +10245,6 @@
     },
     {
       "channel_id": "Music Store",
-      "post_id": "1467974405193383",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 12.8 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-21T18:36:30.428529+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792650990.4285467
-    },
-    {
-      "channel_id": "Music Store",
       "post_id": "1467937751863715",
       "stage": "content_or_layout",
       "reason": "Source frame would crop a face; choose another image",
@@ -10341,15 +10296,6 @@
       "checked_at": "2026-10-21T20:36:45.105915+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792658205.1059315
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1589239803006957",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-21T22:05:06.966380+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792663506.9663908
     },
     {
       "channel_id": "daily_netflix",
@@ -12765,15 +12711,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1579225167552137",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-10-22T09:07:13.463952+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792662733.4639723
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1587209499876654",
       "stage": "content_or_layout",
       "reason": "Source frame would crop a face; choose another image",
@@ -13212,6 +13149,69 @@
       "checked_at": "2026-10-22T09:39:04.089834+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1792705144.089848
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1589239803006957",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-22T10:05:23.549617+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792706723.549624
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-22T10:05:23.856124+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792666223.8561416
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1480538547263662",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 26.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-22T10:06:11.526074+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792706771.52609
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1547325467261124",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-22T10:06:17.225979+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792706777.2259967
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1547314393928898",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-22T10:06:20.507868+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792706780.5078843
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1480496900601160",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-22T10:06:22.911990+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792706782.9120102
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1467974405193383",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 12.8 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-22T10:06:29.216325+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792706789.2163446
     }
   ]
 }
