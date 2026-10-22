@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-22T03:36:37.014586+00:00",
+  "updated_at": "2026-10-22T04:05:35.927556+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -10280,15 +10280,6 @@
       "retry_after": 1792636549.4562051
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1579133490894638",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 28.0 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-21T15:35:22.429771+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792640122.4297853
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1546985800628424",
       "stage": "content_or_layout",
@@ -12305,15 +12296,6 @@
       "retry_after": 1792679800.5627394
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1579225167552137",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-10-22T03:06:07.466166+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792641067.4661827
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1501602118506420",
       "stage": "topic_or_caption",
@@ -12960,6 +12942,24 @@
       "checked_at": "2026-10-22T03:36:37.014586+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792683397.0146024
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-22T04:05:25.376947+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792644625.3769622
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579133490894638",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 28.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-22T04:05:35.927556+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792685135.9275703
     }
   ]
 }
