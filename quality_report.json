@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-22T05:42:11.327185+00:00",
+  "updated_at": "2026-10-22T06:05:50.066926+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -9479,24 +9479,6 @@
       "retry_after": 1792609763.3052409
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1478726970778153",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-21T07:35:59.807208+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792611359.8072238
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1577932941014693",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 22.1 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-21T07:36:02.500684+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792611362.5006998
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1546578417335829",
       "stage": "content_or_layout",
@@ -12656,15 +12638,6 @@
       "retry_after": 1792686998.3122683
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1579225167552137",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-10-22T05:05:40.565234+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792648240.565255
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1547606517233019",
       "stage": "topic_or_caption",
@@ -12960,6 +12933,33 @@
       "checked_at": "2026-10-22T05:42:11.327185+00:00",
       "policy_signature": "3f6ab298564d2b6b",
       "retry_after": 1792690931.3271985
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-22T06:04:41.373263+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792651781.3732839
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1478726970778153",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-22T06:05:46.330442+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792692346.3304582
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1577932941014693",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 22.1 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-22T06:05:50.066926+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792692350.0669498
     }
   ]
 }
