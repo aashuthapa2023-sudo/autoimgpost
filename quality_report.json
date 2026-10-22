@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-22T16:35:58.132587+00:00",
+  "updated_at": "2026-10-22T17:24:56.280266+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -10911,33 +10911,6 @@
     },
     {
       "channel_id": "Music Store",
-      "post_id": "1547606517233019",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-22T05:06:27.924628+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792688787.9246418
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1547602070566797",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-22T05:06:27.938066+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792688787.9380803
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1547581343902203",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-22T05:06:27.950714+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792688787.9507272
-    },
-    {
-      "channel_id": "Music Store",
       "post_id": "1547564320570572",
       "stage": "topic_or_caption",
       "reason": "Source caption is missing, context-free or outside this page topic",
@@ -13440,15 +13413,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1579225167552137",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-10-22T16:06:02.999994+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792687863.0000153
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1579133490894638",
       "stage": "photo_extraction",
       "reason": "Blurry image detected: Sharpness variance 28.0 is below minimum threshold of 35.0",
@@ -13680,6 +13644,159 @@
       "checked_at": "2026-10-22T16:35:58.132587+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792730158.132595
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-22T17:22:36.760753+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792692456.7607706
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1547606517233019",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-22T17:23:20.349098+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792733000.3491058
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1547602070566797",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-22T17:23:20.359124+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792733000.359132
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1547581343902203",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-22T17:23:20.369375+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792733000.3693821
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1502650625068236",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-22T17:23:30.966874+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792733010.9668891
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1481639343820249",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-22T17:23:35.163804+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792733015.1638198
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1548582147135456",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-22T17:23:41.353718+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792733021.3537335
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1502603341739631",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-22T17:23:47.571473+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792733027.5714872
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1481623977155119",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-22T17:23:51.643692+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792733031.64371
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1481592277158289",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-22T17:23:55.860413+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792733035.860427
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1481577627159754",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-22T17:23:59.883483+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792733039.8835015
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1548502703810067",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-22T17:24:05.983882+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792733045.9838967
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1469286281728862",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-10-22T17:24:11.516976+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792733051.516993
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1502505228416109",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-22T17:24:17.703879+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792733057.7038922
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1481532423830941",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-22T17:24:21.683821+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792733061.6838348
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1469250891732401",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 17.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-22T17:24:33.280255+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792733073.2802727
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1481592277158289",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-22T17:24:56.280266+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792733096.280281
     }
   ]
 }
