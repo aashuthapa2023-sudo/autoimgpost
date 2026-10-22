@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-22T20:52:53.459905+00:00",
+  "updated_at": "2026-10-22T21:36:08.594057+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -13754,15 +13754,6 @@
       "retry_after": 1792740396.057992
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1579225167552137",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-10-22T20:23:38.772756+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792703318.7727726
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1481123623871821",
       "stage": "topic_or_caption",
@@ -14103,6 +14094,24 @@
       "checked_at": "2026-10-22T20:52:53.459905+00:00",
       "policy_signature": "7391fa6659f622e6",
       "retry_after": 1792745573.4599206
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-22T21:34:59.572586+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792707599.5726013
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1481845223799661",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-22T21:36:08.594057+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792748168.5940697
     }
   ]
 }
