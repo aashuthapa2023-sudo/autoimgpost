@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-23T11:08:23.564620+00:00",
+  "updated_at": "2026-10-23T11:33:46.922480+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -15075,6 +15075,24 @@
       "checked_at": "2026-10-23T11:08:23.564620+00:00",
       "policy_signature": "3f6ab298564d2b6b",
       "retry_after": 1792796903.5646443
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1581951173946203",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-23T11:32:38.823094+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792798358.8231072
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1581951173946203",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-23T11:33:46.922480+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792798426.9224935
     }
   ]
 }
