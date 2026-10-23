@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-23T01:13:34.253214+00:00",
+  "updated_at": "2026-10-23T01:38:31.861648+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -14168,15 +14168,6 @@
       "retry_after": 1792759548.0969021
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1579225167552137",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-10-23T00:45:48.339789+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792719048.3398125
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1481938153790368",
       "stage": "topic_or_caption",
@@ -14490,6 +14481,132 @@
       "checked_at": "2026-10-23T01:13:34.253214+00:00",
       "policy_signature": "3f6ab298564d2b6b",
       "retry_after": 1792761214.2532294
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-23T01:34:51.118575+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792721991.118592
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1502981655035133",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-23T01:35:52.515372+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792762552.5153925
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1481987437118773",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-23T01:35:57.107557+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792762557.1075742
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1548991453761192",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-23T01:36:04.098611+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792762564.098625
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1548979090429095",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 7.1 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-23T01:36:11.249700+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792762571.2497184
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1469724928351664",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-23T01:36:25.519162+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792762585.51918
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1548966077097063",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-23T01:36:32.668187+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792762592.6682036
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1548934677100203",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-23T01:36:39.675017+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792762599.6750345
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1481921227125394",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-23T01:36:44.174725+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792762604.1747425
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1548902060436798",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-23T01:36:51.345948+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792762611.3459675
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1548896470437357",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-23T01:36:58.576123+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792762618.5761514
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1481987437118773",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-23T01:37:32.313164+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792762652.3131824
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1469724928351664",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-23T01:37:46.748069+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792762666.7480865
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1552241743594732",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-23T01:38:31.861648+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792762711.8616624
     }
   ]
 }
