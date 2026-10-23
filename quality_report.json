@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-23T15:36:53.622464+00:00",
+  "updated_at": "2026-10-23T15:59:16.531012+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -12414,24 +12414,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1589889679608636",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-10-23T03:36:13.133806+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792769773.1338263
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1588859843044953",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-23T03:36:28.252105+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792769788.2521217
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1579043447570309",
       "stage": "content_or_layout",
       "reason": "Source frame would crop a face; choose another image",
@@ -12600,33 +12582,6 @@
       "checked_at": "2026-10-23T03:39:17.615528+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1792769957.6155412
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122141907699240703",
-      "stage": "content_or_layout",
-      "reason": "Source lettering overlaps the marine subject outside replacement zones",
-      "checked_at": "2026-10-23T03:40:54.590868+00:00",
-      "policy_signature": "9eea52c5880fafde",
-      "retry_after": 1792770054.5908842
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122141906709240703",
-      "stage": "content_or_layout",
-      "reason": "Source lettering overlaps the marine subject outside replacement zones",
-      "checked_at": "2026-10-23T03:41:02.558753+00:00",
-      "policy_signature": "9eea52c5880fafde",
-      "retry_after": 1792770062.5587697
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122120949561320544",
-      "stage": "photo_extraction",
-      "reason": "Insufficient contrast / washed out: std dev 21.6 < 22.0",
-      "checked_at": "2026-10-23T03:41:11.139285+00:00",
-      "policy_signature": "9eea52c5880fafde",
-      "retry_after": 1792770071.1393027
     },
     {
       "channel_id": "daily_netflix",
@@ -15507,6 +15462,51 @@
       "checked_at": "2026-10-23T15:36:53.622464+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792813013.6224835
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1589889679608636",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-23T15:56:58.578851+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792814218.5788767
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1588859843044953",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-23T15:57:09.176423+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792814229.1764457
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122141907699240703",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-10-23T15:59:04.525257+00:00",
+      "policy_signature": "9eea52c5880fafde",
+      "retry_after": 1792814344.5252836
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122141906709240703",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-10-23T15:59:10.288087+00:00",
+      "policy_signature": "9eea52c5880fafde",
+      "retry_after": 1792814350.2881117
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122120949561320544",
+      "stage": "photo_extraction",
+      "reason": "Insufficient contrast / washed out: std dev 21.6 < 22.0",
+      "checked_at": "2026-10-23T15:59:16.531012+00:00",
+      "policy_signature": "9eea52c5880fafde",
+      "retry_after": 1792814356.5310366
     }
   ]
 }
