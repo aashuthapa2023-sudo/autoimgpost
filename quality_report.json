@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-23T02:10:55.487125+00:00",
+  "updated_at": "2026-10-23T02:37:41.979093+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -14411,15 +14411,6 @@
       "retry_after": 1792761214.2532294
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1579225167552137",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-10-23T01:34:51.118575+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792721991.118592
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1502981655035133",
       "stage": "content_or_layout",
@@ -14607,6 +14598,69 @@
       "checked_at": "2026-10-23T02:10:55.487125+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792764655.4871364
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-23T02:35:08.798709+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792725608.7987328
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1469641041693386",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-23T02:36:27.676742+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792766187.6767626
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1481878273796356",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-23T02:36:31.069971+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792766191.0699933
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1469528945037929",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-23T02:36:41.052616+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792766201.0526402
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1552200730265500",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-23T02:37:14.320916+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792766234.3209355
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1552177476934492",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-23T02:37:27.672805+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792766247.672829
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1552139260271647",
+      "stage": "content_or_layout",
+      "reason": "Source graphics leave too little usable photograph",
+      "checked_at": "2026-10-23T02:37:41.979093+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792766261.9791276
     }
   ]
 }
