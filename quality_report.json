@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-23T07:08:46.435929+00:00",
+  "updated_at": "2026-10-23T07:36:13.742615+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -11415,15 +11415,6 @@
     },
     {
       "channel_id": "nepal_speaks",
-      "post_id": "1550170090468564",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-22T10:41:20.189521+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1792708880.1895363
-    },
-    {
-      "channel_id": "nepal_speaks",
       "post_id": "1549395387212701",
       "stage": "content_or_layout",
       "reason": "Unknown source lettering or watermark overlaps the subject",
@@ -11502,15 +11493,6 @@
       "checked_at": "2026-10-22T11:16:30.545016+00:00",
       "policy_signature": "7391fa6659f622e6",
       "retry_after": 1792710990.5450373
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1550129823805924",
-      "stage": "source_language",
-      "reason": "Source caption does not match the page language",
-      "checked_at": "2026-10-22T11:17:03.785299+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1792711023.7853076
     },
     {
       "channel_id": "Music Store",
@@ -12123,60 +12105,6 @@
       "checked_at": "2026-10-22T19:26:15.044326+00:00",
       "policy_signature": "7391fa6659f622e6",
       "retry_after": 1792740375.0443432
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1480875263896657",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-22T19:26:35.991238+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792740395.9912703
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1480862233897960",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-22T19:26:36.005039+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792740396.0050497
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1480790003905183",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-22T19:26:36.018067+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792740396.01808
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1480744987243018",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-22T19:26:36.031372+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792740396.0313845
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1468425491814941",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-22T19:26:36.044683+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792740396.0446932
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1480730863911097",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-22T19:26:36.057980+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792740396.057992
     },
     {
       "channel_id": "Music Store",
@@ -14717,15 +14645,6 @@
       "retry_after": 1792779691.8494766
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1579225167552137",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-10-23T06:35:39.020806+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792740039.0208223
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1647389640761507",
       "stage": "topic_or_caption",
@@ -15030,6 +14949,87 @@
       "checked_at": "2026-10-23T07:08:46.435929+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1792782526.4359508
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-23T07:34:44.796066+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792743584.7960768
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1480875263896657",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-23T07:35:46.498729+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792784146.4987385
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1480862233897960",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-23T07:35:46.512207+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792784146.5122159
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1480790003905183",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-23T07:35:46.525446+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792784146.5254536
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1480744987243018",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-23T07:35:46.538571+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792784146.5385792
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1468425491814941",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-23T07:35:46.552008+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792784146.5520165
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1480730863911097",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-23T07:35:46.565463+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792784146.5654712
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1550170090468564",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-23T07:36:13.725872+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792784173.7258897
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1550129823805924",
+      "stage": "source_language",
+      "reason": "Source caption does not match the page language",
+      "checked_at": "2026-10-23T07:36:13.742615+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792784173.7426317
     }
   ]
 }
