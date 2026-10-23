@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-23T11:33:46.922480+00:00",
+  "updated_at": "2026-10-23T11:58:00.456503+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -12216,33 +12216,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1579922324149088",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-10-22T23:34:57.562641+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792755297.5626597
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1469572545033569",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-22T23:36:05.453904+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792755365.4539227
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1552278026924437",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-22T23:36:56.127609+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1792755416.1276295
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1579489810859006",
       "stage": "content_or_layout",
       "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
@@ -14825,15 +14798,6 @@
       "retry_after": 1792795919.7369838
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1579225167552137",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-10-23T10:51:59.911286+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792755419.911301
-    },
-    {
       "channel_id": "Daily Hollywood",
       "post_id": "1480969380553912",
       "stage": "topic_or_caption",
@@ -14922,15 +14886,6 @@
       "checked_at": "2026-10-23T10:53:00.920109+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792795980.9201202
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1579225167552137",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-10-23T10:53:01.142735+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792755481.142751
     },
     {
       "channel_id": "nepal_speaks",
@@ -15093,6 +15048,51 @@
       "checked_at": "2026-10-23T11:33:46.922480+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792798426.9224935
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579922324149088",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-10-23T11:56:04.644668+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792799764.6446838
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-23T11:56:04.860558+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792759264.8605778
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1469572545033569",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-23T11:57:27.458326+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792799847.4583452
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1579225167552137",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-10-23T11:57:27.671652+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792759347.6716707
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1552278026924437",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-23T11:58:00.456503+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792799880.4565356
     }
   ]
 }
