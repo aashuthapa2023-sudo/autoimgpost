@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-23T20:25:36.459709+00:00",
+  "updated_at": "2026-10-23T20:35:37.621621+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -16020,6 +16020,24 @@
       "checked_at": "2026-10-23T20:25:36.459709+00:00",
       "policy_signature": "7391fa6659f622e6",
       "retry_after": 1792830336.4597173
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1470513321606158",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-23T20:35:19.152293+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792830919.1523035
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1470513321606158",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-23T20:35:37.621621+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792830937.6216304
     }
   ]
 }
