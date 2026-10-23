@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-23T09:07:11.051389+00:00",
+  "updated_at": "2026-10-23T09:36:32.655945+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -12197,15 +12197,6 @@
       "retry_after": 1792743905.8610368
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1481845223799661",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-22T21:36:08.594057+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792748168.5940697
-    },
-    {
       "channel_id": "daily_netflix",
       "post_id": "1580872494054071",
       "stage": "content_or_layout",
@@ -15066,6 +15057,15 @@
       "checked_at": "2026-10-23T09:07:11.051389+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792749131.0514028
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1481845223799661",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-23T09:36:32.655945+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792791392.6559575
     }
   ]
 }
