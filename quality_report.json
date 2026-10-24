@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-24T12:36:01.642824+00:00",
+  "updated_at": "2026-10-24T13:06:35.070460+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -14168,24 +14168,6 @@
       "retry_after": 1792843482.4854333
     },
     {
-      "channel_id": "Music Store",
-      "post_id": "1550058053654532",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-24T00:35:22.310083+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792845322.3101041
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1482906130360237",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-10-24T00:35:26.171082+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792845326.1710987
-    },
-    {
       "channel_id": "Daily Hollywood",
       "post_id": "1480458923938291",
       "stage": "topic_or_caption",
@@ -16893,6 +16875,42 @@
       "checked_at": "2026-10-24T12:36:01.642824+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792888561.6428442
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1483368260314024",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-24T13:05:10.886623+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792890310.886635
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1550058053654532",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-24T13:05:22.618335+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792890322.6183527
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1482906130360237",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-24T13:05:27.383300+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792890327.383316
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1554292613389645",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-24T13:06:35.070460+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792890395.0704763
     }
   ]
 }
