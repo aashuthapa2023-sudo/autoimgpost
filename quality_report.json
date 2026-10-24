@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-24T04:06:55.352916+00:00",
+  "updated_at": "2026-10-24T04:35:41.739646+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -13188,15 +13188,6 @@
     },
     {
       "channel_id": "Daily Hollywood",
-      "post_id": "1581951173946203",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-23T11:33:46.922480+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792798426.9224935
-    },
-    {
-      "channel_id": "Daily Hollywood",
       "post_id": "1469572545033569",
       "stage": "content_or_layout",
       "reason": "Removed source headline contains uncertain OCR words",
@@ -13221,15 +13212,6 @@
       "checked_at": "2026-10-23T12:06:04.295019+00:00",
       "policy_signature": "60a6ba0167a1798f",
       "retry_after": 1792800364.2950351
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1482444493739734",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-10-23T12:07:42.701623+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792800462.7016408
     },
     {
       "channel_id": "Music Store",
@@ -13412,15 +13394,6 @@
       "retry_after": 1792805429.483967
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1582044423936878",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-23T13:31:14.353746+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792805474.353766
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1549448353715502",
       "stage": "topic_or_caption",
@@ -13575,33 +13548,6 @@
     },
     {
       "channel_id": "Daily Hollywood",
-      "post_id": "1482504770400373",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-10-23T15:20:39.356800+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792812039.3568218
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1481987437118773",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-10-23T15:20:41.540857+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792812041.5408783
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1469724928351664",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-23T15:20:47.862521+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792812047.8625367
-    },
-    {
-      "channel_id": "Daily Hollywood",
       "post_id": "1481953457122171",
       "stage": "content_or_layout",
       "reason": "Unknown source lettering or watermark overlaps the subject",
@@ -13644,24 +13590,6 @@
       "checked_at": "2026-10-23T15:59:16.531012+00:00",
       "policy_signature": "9eea52c5880fafde",
       "retry_after": 1792814356.5310366
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1482504770400373",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-10-23T16:05:50.976954+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792814750.976972
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1503449548321677",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-23T16:05:58.643827+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792814758.6438448
     },
     {
       "channel_id": "Music Store",
@@ -16839,6 +16767,78 @@
       "checked_at": "2026-10-24T04:06:55.352916+00:00",
       "policy_signature": "9eea52c5880fafde",
       "retry_after": 1792858015.3529327
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1482504770400373",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-24T04:35:02.090503+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792859702.0905216
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1503449548321677",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-24T04:35:05.602455+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792859705.6024694
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1482504770400373",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-24T04:35:24.811890+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792859724.8119135
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1582044423936878",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-24T04:35:27.118435+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792859727.118451
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1482444493739734",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-24T04:35:29.447564+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792859729.4475877
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1581951173946203",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-24T04:35:32.379527+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792859732.3795424
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1481987437118773",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-24T04:35:34.942143+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792859734.9421642
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1469724928351664",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-24T04:35:41.739646+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792859741.7396634
     }
   ]
 }
