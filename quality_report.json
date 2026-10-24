@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-24T13:37:55.307228+00:00",
+  "updated_at": "2026-10-24T14:07:54.234847+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -14213,42 +14213,6 @@
       "retry_after": 1792847172.8619287
     },
     {
-      "channel_id": "oceans_secret",
-      "post_id": "122142206493240703",
-      "stage": "content_or_layout",
-      "reason": "Source lettering overlaps the marine subject outside replacement zones",
-      "checked_at": "2026-10-24T01:06:59.941557+00:00",
-      "policy_signature": "9eea52c5880fafde",
-      "retry_after": 1792847219.9415884
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122124491883298539",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 28.2 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-24T01:07:08.243366+00:00",
-      "policy_signature": "9eea52c5880fafde",
-      "retry_after": 1792847228.243382
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1133265142393280",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-24T01:37:39.098830+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792849059.098836
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1582044423936878",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-24T01:37:44.532244+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792849064.5322597
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1482466287070888",
       "stage": "content_or_layout",
@@ -14256,33 +14220,6 @@
       "checked_at": "2026-10-24T01:38:26.369035+00:00",
       "policy_signature": "7391fa6659f622e6",
       "retry_after": 1792849106.3690548
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1481970153787168",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-24T01:38:42.978705+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792849122.9787126
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1482880563696127",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-24T01:38:45.253761+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792849125.2537773
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1482870120363838",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-24T01:38:47.458273+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792849127.4582884
     },
     {
       "channel_id": "nepal_speaks",
@@ -14337,24 +14274,6 @@
       "checked_at": "2026-10-24T01:39:54.518522+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1792849194.518538
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1584485790379212",
-      "stage": "content_or_layout",
-      "reason": "Unrecognized source typography overlaps the subject",
-      "checked_at": "2026-10-24T01:40:41.252932+00:00",
-      "policy_signature": "3f6ab298564d2b6b",
-      "retry_after": 1792849241.2529483
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1584347857059672",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-24T01:40:44.649578+00:00",
-      "policy_signature": "3f6ab298564d2b6b",
-      "retry_after": 1792849244.6495929
     },
     {
       "channel_id": "nepal_speaks",
@@ -16920,6 +16839,87 @@
       "checked_at": "2026-10-24T13:37:55.307228+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792892275.307245
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1133265142393280",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-24T14:04:59.175731+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792893899.1757386
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1582044423936878",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-24T14:05:06.789818+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792893906.789833
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1481970153787168",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-24T14:06:08.385652+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792893968.3856602
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1482880563696127",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-24T14:06:12.443856+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792893972.4438744
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1482870120363838",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-24T14:06:16.536207+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792893976.536222
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122142206493240703",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-10-24T14:07:22.953456+00:00",
+      "policy_signature": "9eea52c5880fafde",
+      "retry_after": 1792894042.953474
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122124491883298539",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 28.2 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-24T14:07:29.993679+00:00",
+      "policy_signature": "9eea52c5880fafde",
+      "retry_after": 1792894049.9936967
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1584485790379212",
+      "stage": "content_or_layout",
+      "reason": "Unrecognized source typography overlaps the subject",
+      "checked_at": "2026-10-24T14:07:47.914896+00:00",
+      "policy_signature": "3f6ab298564d2b6b",
+      "retry_after": 1792894067.9149127
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1584347857059672",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-24T14:07:54.234847+00:00",
+      "policy_signature": "3f6ab298564d2b6b",
+      "retry_after": 1792894074.2348626
     }
   ]
 }
