@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-24T08:36:26.115297+00:00",
+  "updated_at": "2026-10-24T09:05:57.564882+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -14061,15 +14061,6 @@
     },
     {
       "channel_id": "Music Store",
-      "post_id": "1470472908276866",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 13.3 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-23T21:05:36.674072+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792832736.674092
-    },
-    {
-      "channel_id": "Music Store",
       "post_id": "1503239971675968",
       "stage": "content_or_layout",
       "reason": "Unknown source lettering or watermark overlaps the subject",
@@ -16884,6 +16875,15 @@
       "checked_at": "2026-10-24T08:36:26.115297+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792874186.1153061
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1470472908276866",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 13.3 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-24T09:05:57.564882+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792875957.5649002
     }
   ]
 }
