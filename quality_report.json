@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-24T17:35:42.194426+00:00",
+  "updated_at": "2026-10-24T17:44:19.044432+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -14573,51 +14573,6 @@
       "retry_after": 1792861558.6427372
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1581184450689542",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-24T05:35:39.671504+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792863339.6715207
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1469286281728862",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-10-24T05:35:44.868406+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792863344.8684237
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1481532423830941",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-10-24T05:35:48.662393+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792863348.6624112
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1469250891732401",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 17.0 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-24T05:35:59.970392+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792863359.9704123
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1580872494054071",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-24T05:36:05.942218+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792863365.942237
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1478869440767784",
       "stage": "content_or_layout",
@@ -17073,6 +17028,51 @@
       "checked_at": "2026-10-24T17:35:42.194426+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792906542.194445
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1581184450689542",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-24T17:43:46.936309+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792907026.9363232
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1469286281728862",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-10-24T17:43:53.563076+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792907033.5630915
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1481532423830941",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-24T17:43:58.226722+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792907038.2267382
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1469250891732401",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 17.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-24T17:44:11.864771+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792907051.8648076
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1580872494054071",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-24T17:44:19.044432+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792907059.0444477
     }
   ]
 }
