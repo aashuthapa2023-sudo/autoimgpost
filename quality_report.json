@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-24T03:40:43.633570+00:00",
+  "updated_at": "2026-10-24T04:06:55.352916+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -13637,42 +13637,6 @@
       "retry_after": 1792813013.6224835
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1589889679608636",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-10-23T15:56:58.578851+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792814218.5788767
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1588859843044953",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-23T15:57:09.176423+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792814229.1764457
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122141907699240703",
-      "stage": "content_or_layout",
-      "reason": "Source lettering overlaps the marine subject outside replacement zones",
-      "checked_at": "2026-10-23T15:59:04.525257+00:00",
-      "policy_signature": "9eea52c5880fafde",
-      "retry_after": 1792814344.5252836
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122141906709240703",
-      "stage": "content_or_layout",
-      "reason": "Source lettering overlaps the marine subject outside replacement zones",
-      "checked_at": "2026-10-23T15:59:10.288087+00:00",
-      "policy_signature": "9eea52c5880fafde",
-      "retry_after": 1792814350.2881117
-    },
-    {
       "channel_id": "oceans_secret",
       "post_id": "122120949561320544",
       "stage": "photo_extraction",
@@ -16830,6 +16794,51 @@
       "checked_at": "2026-10-24T03:40:43.633570+00:00",
       "policy_signature": "7391fa6659f622e6",
       "retry_after": 1792856443.6335864
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1589889679608636",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-24T04:04:41.022684+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792857881.022699
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1588859843044953",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-24T04:04:55.500931+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792857895.5009463
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1484048320262408",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-24T04:05:43.152251+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792857943.1522675
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122141907699240703",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-10-24T04:06:47.916290+00:00",
+      "policy_signature": "9eea52c5880fafde",
+      "retry_after": 1792858007.9163084
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122141906709240703",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-10-24T04:06:55.352916+00:00",
+      "policy_signature": "9eea52c5880fafde",
+      "retry_after": 1792858015.3529327
     }
   ]
 }
