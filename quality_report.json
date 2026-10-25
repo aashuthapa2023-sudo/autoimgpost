@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-10-25T14:02:10.871801+00:00",
+  "updated_at": "2026-10-25T14:11:02.345884+00:00",
   "rejections": [
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1867436250246829",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-06T05:03:31.752489+00:00",
-      "policy_signature": "b6e6d59db298437d",
-      "retry_after": 1791306211.7524965
-    },
     {
       "channel_id": "daily_netflix",
       "post_id": "1867039410286513",
@@ -15051,15 +15042,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1134176712302123",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-25T02:04:23.967882+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792937063.96789
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1589755966288674",
       "stage": "content_or_layout",
       "reason": "Source frame would crop a face; choose another image",
@@ -15177,15 +15159,6 @@
     },
     {
       "channel_id": "Daily Hollywood",
-      "post_id": "1481970153787168",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-25T02:07:15.589570+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1792937235.5895789
-    },
-    {
-      "channel_id": "Daily Hollywood",
       "post_id": "1481474450503405",
       "stage": "topic_or_caption",
       "reason": "Source caption is missing, context-free or outside this page topic",
@@ -15219,51 +15192,6 @@
       "checked_at": "2026-10-25T02:07:15.654674+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792937235.6546817
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1554292613389645",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-25T02:08:19.977178+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1792937299.9771929
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1553988280086745",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-25T02:08:36.802087+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1792937316.8021007
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1553969240088649",
-      "stage": "content_or_layout",
-      "reason": "Unrecognized source typography overlaps the subject",
-      "checked_at": "2026-10-25T02:08:53.563802+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1792937333.5638175
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1584485790379212",
-      "stage": "content_or_layout",
-      "reason": "Unrecognized source typography overlaps the subject",
-      "checked_at": "2026-10-25T02:10:15.757274+00:00",
-      "policy_signature": "3f6ab298564d2b6b",
-      "retry_after": 1792937415.757289
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1584347857059672",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-25T02:10:23.106061+00:00",
-      "policy_signature": "3f6ab298564d2b6b",
-      "retry_after": 1792937423.1060786
     },
     {
       "channel_id": "daily_netflix",
@@ -18000,6 +17928,78 @@
       "checked_at": "2026-10-25T14:02:10.871801+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1792980130.8718102
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1134176712302123",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-25T14:07:18.867283+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792980438.8672986
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1592665075997763",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-25T14:07:40.491784+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792980460.4918034
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1481970153787168",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-25T14:08:44.780698+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1792980524.780714
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1554292613389645",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-10-25T14:09:30.797366+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792980570.7973876
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1553988280086745",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-25T14:09:48.846356+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792980588.8463755
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1553969240088649",
+      "stage": "content_or_layout",
+      "reason": "Unrecognized source typography overlaps the subject",
+      "checked_at": "2026-10-25T14:10:07.079853+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1792980607.0798748
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1584485790379212",
+      "stage": "content_or_layout",
+      "reason": "Unrecognized source typography overlaps the subject",
+      "checked_at": "2026-10-25T14:10:54.158644+00:00",
+      "policy_signature": "3f6ab298564d2b6b",
+      "retry_after": 1792980654.1586704
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1584347857059672",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-25T14:11:02.345884+00:00",
+      "policy_signature": "3f6ab298564d2b6b",
+      "retry_after": 1792980662.3459077
     }
   ]
 }
