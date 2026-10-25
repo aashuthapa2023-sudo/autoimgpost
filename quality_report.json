@@ -1,33 +1,6 @@
 {
-  "updated_at": "2026-10-25T22:40:00.777954+00:00",
+  "updated_at": "2026-10-25T23:05:54.215741+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1468339471833293",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-06T19:33:59.940055+00:00",
-      "policy_signature": "550f9351cca2e144",
-      "retry_after": 1791358439.9400764
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1139914368535817",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-06T20:08:27.960642+00:00",
-      "policy_signature": "ba052a5595bd398a",
-      "retry_after": 1791360507.9606616
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1139877425206178",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-06T20:08:56.387146+00:00",
-      "policy_signature": "ba052a5595bd398a",
-      "retry_after": 1791360536.3871639
-    },
     {
       "channel_id": "nepal_speaks",
       "post_id": "1139862968540957",
@@ -18000,6 +17973,33 @@
       "checked_at": "2026-10-25T22:40:00.777954+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1793011200.7779713
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1593038715960399",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-25T23:04:56.208854+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1793012696.20887
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1472267518097405",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-25T23:05:40.510272+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1793012740.510282
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1472388921418598",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 10.3 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-25T23:05:54.215741+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1793012754.2157588
     }
   ]
 }
