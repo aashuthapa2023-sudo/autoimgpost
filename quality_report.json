@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-25T02:10:23.106061+00:00",
+  "updated_at": "2026-10-25T02:35:06.855744+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -14870,24 +14870,6 @@
       "retry_after": 1792888561.6428442
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1133265142393280",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-24T14:04:59.175731+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792893899.1757386
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1582044423936878",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-24T14:05:06.789818+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792893906.789833
-    },
-    {
       "channel_id": "Daily Hollywood",
       "post_id": "1482880563696127",
       "stage": "content_or_layout",
@@ -14922,15 +14904,6 @@
       "checked_at": "2026-10-24T14:07:29.993679+00:00",
       "policy_signature": "9eea52c5880fafde",
       "retry_after": 1792894049.9936967
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1591715512759386",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-24T14:34:32.981849+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792895672.9818635
     },
     {
       "channel_id": "daily_netflix",
@@ -17559,6 +17532,33 @@
       "checked_at": "2026-10-25T02:10:23.106061+00:00",
       "policy_signature": "3f6ab298564d2b6b",
       "retry_after": 1792937423.1060786
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1133265142393280",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-25T02:34:46.062976+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792938886.062992
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1591715512759386",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-25T02:35:02.926171+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792938902.9261975
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1582044423936878",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-25T02:35:06.855744+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1792938906.855767
     }
   ]
 }
