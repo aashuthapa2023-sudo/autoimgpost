@@ -1,42 +1,6 @@
 {
-  "updated_at": "2026-10-25T22:07:30.044141+00:00",
+  "updated_at": "2026-10-25T22:34:01.048797+00:00",
   "rejections": [
-    {
-      "channel_id": "Anisha",
-      "post_id": "1081903521109088",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-06T13:26:25.076015+00:00",
-      "policy_signature": "817a187a0cab80fc",
-      "retry_after": 1791336385.0760229
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1536358448516395",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-06T15:36:51.792033+00:00",
-      "policy_signature": "ba052a5595bd398a",
-      "retry_after": 1791344211.7920506
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1536351855183721",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-06T15:37:21.453804+00:00",
-      "policy_signature": "ba052a5595bd398a",
-      "retry_after": 1791344241.4538214
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1536340681851505",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-06T17:06:15.969657+00:00",
-      "policy_signature": "ba052a5595bd398a",
-      "retry_after": 1791349575.9696708
-    },
     {
       "channel_id": "nepal_speaks",
       "post_id": "1536340078518232",
@@ -18000,6 +17964,42 @@
       "checked_at": "2026-10-25T22:07:30.044141+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1793009250.0441592
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1555373439948229",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-25T22:32:12.608858+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1793010732.6088743
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1555358193283087",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-25T22:32:21.041543+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1793010741.041559
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1555343563284550",
+      "stage": "content_or_layout",
+      "reason": "Source graphics leave too little usable photograph",
+      "checked_at": "2026-10-25T22:32:39.970290+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1793010759.9703062
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1587273936767064",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-25T22:34:01.048797+00:00",
+      "policy_signature": "3f6ab298564d2b6b",
+      "retry_after": 1793010841.048813
     }
   ]
 }
