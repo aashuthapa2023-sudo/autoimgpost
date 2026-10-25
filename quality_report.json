@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-25T08:08:15.422092+00:00",
+  "updated_at": "2026-10-25T08:37:19.850539+00:00",
   "rejections": [
     {
       "channel_id": "daily_netflix",
@@ -14933,24 +14933,6 @@
       "retry_after": 1792917313.8291316
     },
     {
-      "channel_id": "oceans_secret",
-      "post_id": "122142459297240703",
-      "stage": "content_or_layout",
-      "reason": "Source lettering overlaps the marine subject outside replacement zones",
-      "checked_at": "2026-10-24T20:35:58.972492+00:00",
-      "policy_signature": "9eea52c5880fafde",
-      "retry_after": 1792917358.9725068
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1576963397792328",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-10-24T20:36:21.341754+00:00",
-      "policy_signature": "3f6ab298564d2b6b",
-      "retry_after": 1792917381.3417711
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1504213154911983",
       "stage": "topic_or_caption",
@@ -17847,6 +17829,42 @@
       "checked_at": "2026-10-25T08:08:15.422092+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1792958895.4221048
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1551197453540592",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-25T08:35:27.835118+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792960527.8351345
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1485029156830991",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-25T08:35:35.258268+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1792960535.258284
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122142459297240703",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-10-25T08:36:53.786470+00:00",
+      "policy_signature": "9eea52c5880fafde",
+      "retry_after": 1792960613.7864907
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1576963397792328",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-10-25T08:37:19.850539+00:00",
+      "policy_signature": "3f6ab298564d2b6b",
+      "retry_after": 1792960639.85056
     }
   ]
 }
