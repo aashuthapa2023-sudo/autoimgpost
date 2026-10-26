@@ -15,7 +15,7 @@ Ambiguous sources are skipped rather than forced into a scheduled slot. Checks r
 
 ## Page settings
 
-The seven profiles in `config.json` are Daily Netflix, Music Store, Anisha, Daily Hollywood, Nepal Speaks, Ocean's Secret and US Army Fans. Each includes `content_topic`, `editorial_style`, `poster_style`, and `source_layouts`. Anisha is intentionally paused.
+`config.json` contains nine destination pages. Each page needs a numeric Facebook destination ID, at least one source page, a `content_topic`, and a page-specific `dest_access_token_env`. Anisha is intentionally paused.
 
 Use the control panel's page/source settings to choose headline and branding positions. **Push pages to GitHub** saves the current configuration to `main`; the GitHub token must have permission to update repository contents. Updating an existing page preserves its detailed styling settings.
 
@@ -42,7 +42,7 @@ A check publishes at most one post per page after its configured interval (one h
 
 Install `requirements.txt` in a Python environment. Devanagari rendering requires Windows GDI or Pillow with RAQM; OCR needs its EasyOCR models. Optional provider credentials are `GROQ_API_KEY`, `GEMINI_API_KEY` and `OPENROUTER_API_KEY`.
 
-Set each destination's `dest_access_token_env` to its own environment/Actions secret name. Ocean's Secret uses `FB_TOKEN_OCEANS_SECRET`. A missing credential never falls back to another page's token.
+Store page access tokens only as GitHub Actions repository secrets or local environment variables; never put token values in `config.json`. The workflow maps the nine configured pages to `FB_TOKEN_DAILY_NETFLIX`, `FB_TOKEN_MUSIC_STORE`, `FB_TOKEN_ANISHA`, `FB_TOKEN_DAILY_HOLLYWOOD`, `FB_TOKEN_NEPAL_SPEAKS`, `FB_TOKEN_OCEANS_SECRET`, `FB_TOKEN_US_ARMY_FANS_AI`, `FB_TOKEN_LIFE_IN_ARMY_BOOTS`, and `FB_TOKEN_GUARDIANS_OF_LIBERTY`. Each secret must be added in the repository settings. New pages can use `FB_TOKEN_DEFAULT` (also add that repository secret), or a page-specific name that is explicitly mapped in `.github/workflows/pipeline.yml`. A page saved only in browser storage does not reach scheduled runs: use **Push pages to GitHub** and confirm the save succeeds. Missing credentials never fall back to another page's token.
 
 ```sh
 python -m unittest discover -s tests

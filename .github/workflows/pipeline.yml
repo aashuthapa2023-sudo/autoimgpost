@@ -86,15 +86,15 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           FB_TOKEN_DAILY_NETFLIX: ${{ secrets.FB_TOKEN_DAILY_NETFLIX }}
-          DAILY_NETFLIX_TOKEN: ${{ secrets.DAILY_NETFLIX_TOKEN }}
-          FB_TOKEN_CINEMA: ${{ secrets.FB_TOKEN_CINEMA }}
-          FB_TOKEN_OCEANS_SECRET: ${{ secrets.FB_TOKEN_OCEANS_SECRET }}
-          FB_TOKEN_GAMING: ${{ secrets.FB_TOKEN_GAMING }}
-          FB_TOKEN_TECH: ${{ secrets.FB_TOKEN_TECH }}
           FB_TOKEN_MUSIC_STORE: ${{ secrets.FB_TOKEN_MUSIC_STORE }}
-          MUSIC_STORE_TOKEN: ${{ secrets.MUSIC_STORE_TOKEN }}
-          NEPAL_SPEAKS_ACCESS_TOKEN: ${{ secrets.NEPAL_SPEAKS_ACCESS_TOKEN }}
+          FB_TOKEN_ANISHA: ${{ secrets.FB_TOKEN_ANISHA }}
+          FB_TOKEN_DAILY_HOLLYWOOD: ${{ secrets.FB_TOKEN_DAILY_HOLLYWOOD }}
+          FB_TOKEN_OCEANS_SECRET: ${{ secrets.FB_TOKEN_OCEANS_SECRET }}
           FB_TOKEN_NEPAL_SPEAKS: ${{ secrets.FB_TOKEN_NEPAL_SPEAKS }}
+          FB_TOKEN_US_ARMY_FANS_AI: ${{ secrets.FB_TOKEN_US_ARMY_FANS_AI }}
+          FB_TOKEN_LIFE_IN_ARMY_BOOTS: ${{ secrets.FB_TOKEN_LIFE_IN_ARMY_BOOTS }}
+          FB_TOKEN_GUARDIANS_OF_LIBERTY: ${{ secrets.FB_TOKEN_GUARDIANS_OF_LIBERTY }}
+          FB_TOKEN_DEFAULT: ${{ secrets.FB_TOKEN_DEFAULT }}
           FEED_SOURCE_URL: ${{ github.event.inputs.source_url }}
         run: |
           ACTION="${{ github.event.inputs.action }}"

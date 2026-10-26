@@ -516,8 +516,19 @@
           </div>
           <div>
             <label class="block text-neutral-400 mb-1">Token Env Variable</label>
-            <input type="text" id="newTokenEnv" placeholder="e.g. FB_TOKEN_STREAMING" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-neutral-100 focus:border-amber-400" />
+            <input type="text" id="newTokenEnv" placeholder="FB_TOKEN_DEFAULT or FB_TOKEN_PAGE_NAME" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-neutral-100 focus:border-amber-400" />
           </div>
+        </div>
+        <div>
+          <label class="block text-neutral-400 mb-1">Content Topic</label>
+          <select id="newChannelTopic" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-neutral-100 font-mono focus:border-amber-400">
+            <option value="news">General news</option>
+            <option value="music">Music</option>
+            <option value="film">Film and television</option>
+            <option value="us_entertainment">U.S. entertainment</option>
+            <option value="ocean">Ocean and marine science</option>
+            <option value="military">Military</option>
+          </select>
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
@@ -575,8 +586,8 @@
             <input type="text" id="editDestPageId" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-neutral-100 focus:border-amber-400" />
           </div>
           <div>
-            <label class="block text-neutral-400 mb-1">Page Access Token / Env</label>
-            <input type="text" id="editTokenEnv" placeholder="EAA... or FB_TOKEN_..." class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-neutral-100 focus:border-amber-400" />
+          <label class="block text-neutral-400 mb-1">Page Token Secret Name</label>
+          <input type="text" id="editTokenEnv" placeholder="FB_TOKEN_PAGE_NAME" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-neutral-100 focus:border-amber-400" />
           </div>
         </div>
         <div class="grid grid-cols-2 gap-3">
@@ -1615,7 +1626,18 @@
       const langVal = langEl ? langEl.value : 'ne';
       const sourcesStr = document.getElementById('editChannelSources').value.trim();
       const sources = sourcesStr ? sourcesStr.split(',').map(s => s.trim()).filter(Boolean) : [];
-
+      if (!destId || !/^\d+$/.test(destId)) {
+        alert('Enter the numeric Facebook destination Page ID.');
+        return;
+      }
+      if (!sources.length) {
+        alert('Add at least one Facebook source page.');
+        return;
+      }
+      if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(tokenVal)) {
+        alert('Enter a repository secret name such as FB_TOKEN_PAGE_NAME, not a token value.');
+        return;
+      }
       const ch = cachedChannels.find(c => c.channel_id === cid || c.channel_id.toLowerCase() === cid.toLowerCase());
       if (!ch) return;
 
@@ -1716,6 +1738,7 @@
       const sourcesStr = document.getElementById('newChannelSources').value.trim();
       const destId = document.getElementById('newDestPageId').value.trim();
       const tokenEnv = document.getElementById('newTokenEnv').value.trim();
+      const topic = document.getElementById('newChannelTopic').value;
       const color = document.getElementById('newHighlightHex').value.trim();
       const intervalEl = document.getElementById('newPostIntervalHours');
       const interval = intervalEl ? parseFloat(intervalEl.value) : 1.0;
@@ -1729,6 +1752,18 @@
       }
 
       const sources = sourcesStr ? sourcesStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+      if (!destId || !/^\d+$/.test(destId)) {
+        alert('Enter the numeric Facebook destination Page ID before creating this page.');
+        return;
+      }
+      if (!sources.length) {
+        alert('Add at least one Facebook source page before creating this page.');
+        return;
+      }
+      if (tokenEnv && !/^[A-Za-z_][A-Za-z0-9_]*$/.test(tokenEnv)) {
+        alert('Enter a repository secret name such as FB_TOKEN_PAGE_NAME, not a token value.');
+        return;
+      }
 
       const newCh = {
         channel_id: cid,
@@ -1736,8 +1771,12 @@
         dest_page_name: destName || cid,
         source_pages: sources,
         source_page_url: sources[0] || '',
-        dest_page_id: destId || 'DEMO_PAGE_ID',
+        dest_page_id: destId,
         dest_access_token_env: tokenEnv || 'FB_TOKEN_DEFAULT',
+        content_topic: topic,
+        allow_web_fallback: false,
+        facebook_sources_only: true,
+        source_min_candidates: 12,
         badge_label: destName || 'OFFICIAL',
         highlight_color: color || '#FFC83B',
         language: langVal,
