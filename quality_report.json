@@ -1,33 +1,6 @@
 {
-  "updated_at": "2026-10-26T22:04:54.942641+00:00",
+  "updated_at": "2026-10-26T22:35:38.633273+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1470611638272743",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-09T12:05:05.556525+00:00",
-      "policy_signature": "4a3303473d6c6146",
-      "retry_after": 1791590705.556535
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1566791052128882",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-09T12:05:20.054327+00:00",
-      "policy_signature": "b83605506234d85a",
-      "retry_after": 1791590720.0543458
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1120142213705573",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-09T12:33:46.929022+00:00",
-      "policy_signature": "0542191dde71eb6f",
-      "retry_after": 1791592426.9290376
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1470212391646001",
@@ -17961,45 +17934,72 @@
       "post_id": "",
       "stage": "credential",
       "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-26T22:04:54.881582+00:00",
+      "checked_at": "2026-10-26T22:34:53.281359+00:00",
       "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1793095494.8815894
+      "retry_after": 1793097293.2813706
     },
     {
       "channel_id": "Music Store",
       "post_id": "",
       "stage": "credential",
       "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-26T22:04:54.895973+00:00",
+      "checked_at": "2026-10-26T22:34:53.299143+00:00",
       "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793095494.8959835
+      "retry_after": 1793097293.2991562
     },
     {
       "channel_id": "Daily Hollywood",
       "post_id": "",
       "stage": "credential",
       "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-26T22:04:54.909727+00:00",
+      "checked_at": "2026-10-26T22:34:53.316437+00:00",
       "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793095494.9097354
+      "retry_after": 1793097293.3164513
     },
     {
       "channel_id": "nepal_speaks",
       "post_id": "",
       "stage": "credential",
       "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-26T22:04:54.925546+00:00",
+      "checked_at": "2026-10-26T22:34:53.333781+00:00",
       "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1793095494.9255564
+      "retry_after": 1793097293.333797
     },
     {
       "channel_id": "US Army Fans AI",
       "post_id": "",
       "stage": "credential",
       "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-26T22:04:54.942641+00:00",
+      "checked_at": "2026-10-26T22:34:53.351236+00:00",
       "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793095494.942651
+      "retry_after": 1793097293.3512526
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122189712584935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-26T22:35:02.149560+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793097302.1495776
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122189712584935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-26T22:35:38.615284+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793097338.6153014
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1606317218196498",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-26T22:35:38.633273+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793097338.6332908
     }
   ]
 }
