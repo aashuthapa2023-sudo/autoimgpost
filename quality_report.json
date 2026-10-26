@@ -1,60 +1,6 @@
 {
-  "updated_at": "2026-10-26T22:35:38.633273+00:00",
+  "updated_at": "2026-10-26T23:05:29.900757+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1470212391646001",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-09T12:34:02.164349+00:00",
-      "policy_signature": "4a3303473d6c6146",
-      "retry_after": 1791592442.1643612
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122123154837298539",
-      "stage": "content_or_layout",
-      "reason": "Source corner seal needs an opaque cover; choose a clean photo for transparent destination branding",
-      "checked_at": "2026-10-09T13:04:50.491861+00:00",
-      "policy_signature": "fe8dba7e23999f0f",
-      "retry_after": 1791594290.4919045
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122123054529298539",
-      "stage": "content_or_layout",
-      "reason": "Source corner seal needs an opaque cover; choose a clean photo for transparent destination branding",
-      "checked_at": "2026-10-09T13:05:07.167996+00:00",
-      "policy_signature": "fe8dba7e23999f0f",
-      "retry_after": 1791594307.1680145
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1470228194977754",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-09T13:33:59.838643+00:00",
-      "policy_signature": "4a3303473d6c6146",
-      "retry_after": 1791596039.8386524
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1539000148252225",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-09T13:34:48.752340+00:00",
-      "policy_signature": "b1ae2397ff9ba878",
-      "retry_after": 1791596088.7523577
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122119384821320544",
-      "stage": "content_or_layout",
-      "reason": "Source lettering overlaps the marine subject outside replacement zones",
-      "checked_at": "2026-10-09T14:05:51.596527+00:00",
-      "policy_signature": "fe8dba7e23999f0f",
-      "retry_after": 1791597951.5965436
-    },
     {
       "channel_id": "oceans_secret",
       "post_id": "122122866345298539",
@@ -17930,51 +17876,6 @@
       "retry_after": 1793094530.420787
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "",
-      "stage": "credential",
-      "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-26T22:34:53.281359+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1793097293.2813706
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "",
-      "stage": "credential",
-      "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-26T22:34:53.299143+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793097293.2991562
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "",
-      "stage": "credential",
-      "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-26T22:34:53.316437+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793097293.3164513
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "",
-      "stage": "credential",
-      "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-26T22:34:53.333781+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1793097293.333797
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "",
-      "stage": "credential",
-      "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-26T22:34:53.351236+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793097293.3512526
-    },
-    {
       "channel_id": "Life in Army Boots",
       "post_id": "122189712584935135",
       "stage": "topic_or_caption",
@@ -18000,6 +17901,105 @@
       "checked_at": "2026-10-26T22:35:38.633273+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793097338.6332908
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "",
+      "stage": "credential",
+      "reason": "This destination has no configured Facebook token",
+      "checked_at": "2026-10-26T23:04:08.869805+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1793099048.8698132
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "",
+      "stage": "credential",
+      "reason": "This destination has no configured Facebook token",
+      "checked_at": "2026-10-26T23:04:08.886950+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1793099048.8869576
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "",
+      "stage": "credential",
+      "reason": "This destination has no configured Facebook token",
+      "checked_at": "2026-10-26T23:04:08.903885+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793099048.903893
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "",
+      "stage": "credential",
+      "reason": "This destination has no configured Facebook token",
+      "checked_at": "2026-10-26T23:04:08.920660+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1793099048.920668
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "",
+      "stage": "credential",
+      "reason": "This destination has no configured Facebook token",
+      "checked_at": "2026-10-26T23:04:08.938371+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793099048.9383795
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122192648966952113",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-26T23:05:03.494906+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793099103.4949212
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122189713544935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-26T23:05:09.197936+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793099109.1979532
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122192644478952113",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-26T23:05:16.480004+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793099116.48002
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1440959601510716",
+      "stage": "source_quality",
+      "reason": "Low resolution: 136x178px (24,208 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-10-26T23:05:16.645695+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793099116.64571
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122189538974935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-26T23:05:22.427158+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793099122.4271731
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122189535344935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-26T23:05:29.900757+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793099129.900774
     }
   ]
 }
