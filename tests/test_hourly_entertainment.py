@@ -15,29 +15,26 @@ from modules.source_replacement import replacement_payload
 
 
 class HourlyReceiptTests(unittest.TestCase):
-    channel={'post_interval_hours':1,'cadence_mode':'hourly_slots'}
+    def test_first_post_is_immediately_eligible(self):
+        self.assertEqual(publication_wait({'post_interval_hours':1},0,1000),0)
 
-    def test_setup_jitter_does_not_lose_next_hour(self):
+    def test_one_hour_interval_is_never_shortened_or_clock_aligned(self):
         last=20*3600+5*60+20
-        self.assertEqual(publication_wait(self.channel,last,21*3600+3*60),0)
-        self.assertGreater(publication_wait({'post_interval_hours':1},last,21*3600+3*60),0)
+        channel={'post_interval_hours':1,'cadence_mode':'hourly_slots'}
+        self.assertEqual(publication_wait(channel,last,last+3599),1)
+        self.assertEqual(publication_wait(channel,last,last+3600),0)
+        self.assertEqual(publication_wait(channel,last,21*3600+3*60),140)
 
-    def test_receipt_in_same_hour_cannot_publish_twice(self):
-        self.assertEqual(publication_wait(self.channel,20*3600+120,20*3600+3500),100)
+    def test_two_hour_interval_is_exact(self):
+        last=10_000
+        channel={'post_interval_hours':2,'cadence_mode':'hourly_slots'}
+        self.assertEqual(publication_wait(channel,last,last+7199),1)
+        self.assertEqual(publication_wait(channel,last,last+7200),0)
 
-    def test_late_receipt_has_45_minute_guard(self):
-        last=20*3600+58*60
-        self.assertEqual(publication_wait(self.channel,last,21*3600+3*60),40*60)
-        self.assertEqual(publication_wait(self.channel,last,21*3600+43*60),0)
-
-    def test_first_receipt_and_day_rollover(self):
-        self.assertEqual(publication_wait(self.channel,0,1000),0)
-        self.assertEqual(publication_wait(self.channel,23*3600+120,24*3600+120),0)
-
-    def test_two_hour_pages_keep_existing_interval(self):
-        ch={'post_interval_hours':2,'cadence_mode':'hourly_slots'}
-        self.assertEqual(publication_wait(ch,10000,13599),3481)
-        self.assertEqual(publication_wait(ch,10000,17080),0)
+    def test_fractional_interval_is_exact(self):
+        last=1234
+        self.assertEqual(publication_wait({'post_interval_hours':0.5},last,last+1799),1)
+        self.assertEqual(publication_wait({'post_interval_hours':0.5},last,last+1800),0)
 
 
 class EntertainmentFactsTests(unittest.TestCase):
