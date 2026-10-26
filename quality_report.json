@@ -1,33 +1,6 @@
 {
-  "updated_at": "2026-10-26T21:16:23.852579+00:00",
+  "updated_at": "2026-10-26T21:48:50.420770+00:00",
   "rejections": [
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1563827802445011",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-09T09:34:54.060624+00:00",
-      "policy_signature": "a7c0cd38621b751f",
-      "retry_after": 1791581694.0606377
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1570529221774869",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-09T09:34:57.687738+00:00",
-      "policy_signature": "a7c0cd38621b751f",
-      "retry_after": 1791581697.6877553
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1564965185644802",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-10-09T09:38:37.110596+00:00",
-      "policy_signature": "b83605506234d85a",
-      "retry_after": 1791581917.1106114
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1470611638272743",
@@ -17894,51 +17867,6 @@
       "retry_after": 1793090035.2216654
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "",
-      "stage": "credential",
-      "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-26T21:14:34.925327+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1793092474.9253364
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "",
-      "stage": "credential",
-      "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-26T21:14:34.943067+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793092474.943082
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "",
-      "stage": "credential",
-      "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-26T21:14:34.960563+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793092474.9605784
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "",
-      "stage": "credential",
-      "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-26T21:14:34.977749+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1793092474.977764
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "",
-      "stage": "credential",
-      "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-26T21:14:34.995364+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793092474.9953785
-    },
-    {
       "channel_id": "Life in Army Boots",
       "post_id": "122192634086952113",
       "stage": "content_or_layout",
@@ -18000,6 +17928,78 @@
       "checked_at": "2026-10-26T21:16:23.852579+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793092583.8525958
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "",
+      "stage": "credential",
+      "reason": "This destination has no configured Facebook token",
+      "checked_at": "2026-10-26T21:47:45.212303+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1793094465.2123132
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "",
+      "stage": "credential",
+      "reason": "This destination has no configured Facebook token",
+      "checked_at": "2026-10-26T21:47:45.227891+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1793094465.2279077
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "",
+      "stage": "credential",
+      "reason": "This destination has no configured Facebook token",
+      "checked_at": "2026-10-26T21:47:45.248424+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793094465.2484407
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "",
+      "stage": "credential",
+      "reason": "This destination has no configured Facebook token",
+      "checked_at": "2026-10-26T21:47:45.262629+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1793094465.2626457
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "",
+      "stage": "credential",
+      "reason": "This destination has no configured Facebook token",
+      "checked_at": "2026-10-26T21:47:45.278798+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793094465.2788148
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122189555288935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-26T21:48:43.654418+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793094523.6544366
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122192209160952113",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-26T21:48:50.131835+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793094530.1318533
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1440001528273190",
+      "stage": "source_quality",
+      "reason": "Low resolution: 350x416px (145,600 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-10-26T21:48:50.420770+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793094530.420787
     }
   ]
 }
