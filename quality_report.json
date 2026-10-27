@@ -1,24 +1,6 @@
 {
-  "updated_at": "2026-10-27T11:07:00.252036+00:00",
+  "updated_at": "2026-10-27T11:12:44.856787+00:00",
   "rejections": [
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1539902228162017",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-11T07:06:34.552171+00:00",
-      "policy_signature": "98e2edfc750db0bc",
-      "retry_after": 1791745594.5521872
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1143344558192798",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-11T07:06:44.279234+00:00",
-      "policy_signature": "98e2edfc750db0bc",
-      "retry_after": 1791745604.2792492
-    },
     {
       "channel_id": "nepal_speaks",
       "post_id": "1143341391526448",
@@ -16752,51 +16734,6 @@
     },
     {
       "channel_id": "Guardians of Liberty",
-      "post_id": "122192648966952113",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-26T23:05:03.494906+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793099103.4949212
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122189713544935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-26T23:05:09.197936+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793099109.1979532
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122192644478952113",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-26T23:05:16.480004+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793099116.48002
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1440959601510716",
-      "stage": "source_quality",
-      "reason": "Low resolution: 136x178px (24,208 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-10-26T23:05:16.645695+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793099116.64571
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122189538974935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-26T23:05:22.427158+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793099122.4271731
-    },
-    {
-      "channel_id": "Guardians of Liberty",
       "post_id": "122189535344935135",
       "stage": "content_or_layout",
       "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
@@ -17831,51 +17768,6 @@
       "retry_after": 1793140545.130001
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "",
-      "stage": "credential",
-      "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-27T11:04:40.277637+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1793142280.27765
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "",
-      "stage": "credential",
-      "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-27T11:04:40.294430+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793142280.2944443
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "",
-      "stage": "credential",
-      "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-27T11:04:40.310122+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793142280.310137
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "",
-      "stage": "credential",
-      "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-27T11:04:40.325810+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1793142280.3258224
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "",
-      "stage": "credential",
-      "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-27T11:05:25.519730+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793142325.519751
-    },
-    {
       "channel_id": "Life in Army Boots",
       "post_id": "122189760752935135",
       "stage": "topic_or_caption",
@@ -18000,6 +17892,114 @@
       "checked_at": "2026-10-27T11:07:00.252036+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793142420.2520573
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "",
+      "stage": "credential",
+      "reason": "This destination has no configured Facebook token",
+      "checked_at": "2026-10-27T11:10:37.668801+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1793142637.668821
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "",
+      "stage": "credential",
+      "reason": "This destination has no configured Facebook token",
+      "checked_at": "2026-10-27T11:10:37.687256+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1793142637.687273
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "",
+      "stage": "credential",
+      "reason": "This destination has no configured Facebook token",
+      "checked_at": "2026-10-27T11:10:37.705208+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793142637.7052267
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "",
+      "stage": "credential",
+      "reason": "This destination has no configured Facebook token",
+      "checked_at": "2026-10-27T11:10:37.723085+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1793142637.7231028
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "",
+      "stage": "credential",
+      "reason": "This destination has no configured Facebook token",
+      "checked_at": "2026-10-27T11:11:06.496033+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793142666.4960475
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122189801948935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-27T11:11:43.356236+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793142703.3562539
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122189801948935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-27T11:12:17.937997+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793142737.9380147
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122192648966952113",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-27T11:12:25.602793+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793142745.60281
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122189713544935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-27T11:12:31.427282+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793142751.4272978
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122192644478952113",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-27T11:12:38.875358+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793142758.8753753
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1440959601510716",
+      "stage": "source_quality",
+      "reason": "Low resolution: 136x178px (24,208 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-10-27T11:12:39.046563+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793142759.0465794
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122189538974935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-27T11:12:44.856787+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793142764.8568041
     }
   ]
 }
