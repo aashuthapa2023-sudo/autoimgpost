@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-29T17:37:20.067327+00:00",
+  "updated_at": "2026-10-29T18:05:51.745031+00:00",
   "rejections": [
     {
       "channel_id": "nepal_speaks",
@@ -15752,24 +15752,6 @@
       "retry_after": 1793293659.9088235
     },
     {
-      "channel_id": "Life in Army Boots",
-      "post_id": "1649042649942979",
-      "stage": "source_quality",
-      "reason": "Low resolution: 357x450px (160,650 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-10-29T05:35:52.029516+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1793295352.0295374
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122192753474952113",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-29T05:36:02.768579+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1793295362.768602
-    },
-    {
       "channel_id": "Guardians of Liberty",
       "post_id": "1606317011529852",
       "stage": "topic_or_caption",
@@ -15831,15 +15813,6 @@
       "checked_at": "2026-10-29T05:37:15.727498+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793295435.727519
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122190055844935135",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-29T06:05:11.861116+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1793297111.8611295
     },
     {
       "channel_id": "Life in Army Boots",
@@ -17858,42 +17831,6 @@
       "retry_after": 1793336874.4483676
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "",
-      "stage": "credential",
-      "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-29T17:35:07.499033+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1793338507.4990554
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "",
-      "stage": "credential",
-      "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-29T17:35:07.517655+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793338507.5176678
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "",
-      "stage": "credential",
-      "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-29T17:35:07.535344+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793338507.5353565
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "",
-      "stage": "credential",
-      "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-29T17:35:07.555255+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1793338507.5552688
-    },
-    {
       "channel_id": "oceans_secret",
       "post_id": "122142991485240703",
       "stage": "topic_or_caption",
@@ -17901,15 +17838,6 @@
       "checked_at": "2026-10-29T17:35:39.411175+00:00",
       "policy_signature": "9eea52c5880fafde",
       "retry_after": 1793338539.4111938
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "",
-      "stage": "credential",
-      "reason": "This destination has no configured Facebook token",
-      "checked_at": "2026-10-29T17:35:39.430642+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793338539.4306607
     },
     {
       "channel_id": "Life in Army Boots",
@@ -18000,6 +17928,78 @@
       "checked_at": "2026-10-29T17:37:20.067327+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793338640.0673485
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "",
+      "stage": "credential",
+      "reason": "This destination has no configured Facebook token",
+      "checked_at": "2026-10-29T18:04:42.540569+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1793340282.5405974
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "",
+      "stage": "credential",
+      "reason": "This destination has no configured Facebook token",
+      "checked_at": "2026-10-29T18:04:42.652505+00:00",
+      "policy_signature": "7391fa6659f622e6",
+      "retry_after": 1793340282.6525273
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "",
+      "stage": "credential",
+      "reason": "This destination has no configured Facebook token",
+      "checked_at": "2026-10-29T18:04:42.799100+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793340282.7991197
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "",
+      "stage": "credential",
+      "reason": "This destination has no configured Facebook token",
+      "checked_at": "2026-10-29T18:04:42.843895+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1793340282.843915
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "",
+      "stage": "credential",
+      "reason": "This destination has no configured Facebook token",
+      "checked_at": "2026-10-29T18:05:13.531608+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793340313.5316286
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122190055844935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-29T18:05:36.828793+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793340336.8288164
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "1649042649942979",
+      "stage": "source_quality",
+      "reason": "Low resolution: 357x450px (160,650 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-10-29T18:05:36.977818+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793340336.9778388
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122192753474952113",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-29T18:05:51.745031+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793340351.745057
     }
   ]
 }
