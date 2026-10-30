@@ -1,60 +1,6 @@
 {
-  "updated_at": "2026-10-30T11:39:50.738443+00:00",
+  "updated_at": "2026-10-30T11:49:58.951858+00:00",
   "rejections": [
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1545021070983466",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-18T01:35:38.779447+00:00",
-      "policy_signature": "680d42bee2397595",
-      "retry_after": 1792330538.779465
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1544940664324840",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-18T01:35:56.091186+00:00",
-      "policy_signature": "680d42bee2397595",
-      "retry_after": 1792330556.0912042
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1544850277667212",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-18T01:36:13.737429+00:00",
-      "policy_signature": "680d42bee2397595",
-      "retry_after": 1792330573.7374475
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1544840307668209",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-10-18T01:36:25.254605+00:00",
-      "policy_signature": "680d42bee2397595",
-      "retry_after": 1792330585.254624
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1544839651001608",
-      "stage": "content_or_layout",
-      "reason": "Source graphics leave too little usable photograph",
-      "checked_at": "2026-10-18T01:36:40.697258+00:00",
-      "policy_signature": "680d42bee2397595",
-      "retry_after": 1792330600.6972744
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1476804290986811",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-18T05:34:38.803304+00:00",
-      "policy_signature": "3d4f7c0f3fea81a0",
-      "retry_after": 1792344878.8033123
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1476676410999599",
@@ -18000,6 +17946,60 @@
       "checked_at": "2026-10-30T11:39:50.738443+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793403590.7384615
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122190382466935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-30T11:49:29.311795+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793404169.3118157
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122190255158935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-30T11:49:36.584518+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793404176.5845354
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1651129866400924",
+      "stage": "source_quality",
+      "reason": "Low resolution: 640x518px (331,520 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-10-30T11:49:36.928675+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793404176.9286916
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122190250358935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-30T11:49:44.269202+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793404184.269219
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122190235538935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-30T11:49:51.626774+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793404191.6267917
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122190223940935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-30T11:49:58.951858+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793404198.9518821
     }
   ]
 }
