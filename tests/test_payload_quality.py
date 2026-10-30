@@ -95,6 +95,30 @@ class PayloadQualityTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             namespace['smart_heuristic_headline'](source, content_topic='music')
 
+    def test_music_list_headline_is_rejected_when_caption_does_not_show_the_list(self):
+        source='The 100 best dance songs of all time: staff list. Billboard celebrates dance music history.'
+        payload={'headline':'The 100 Best Dance Songs of All Time: Staff List',
+                 'rewritten_caption':'Billboard celebrates dance music history.'}
+        with self.assertRaisesRegex(ValueError,'no actual list'):
+            validate(payload,source,content_topic='us_entertainment')
+
+    def test_music_list_headline_passes_when_caption_names_the_entries(self):
+        source=('The 3 best dance songs of all time: staff list. The list includes '
+                '"One More Time" by Daft Punk, "Toxic" by Britney Spears, and "Hung Up" by Madonna.')
+        payload={'headline':'The 3 Best Dance Songs of All Time: Staff List',
+                 'rewritten_caption':'The list includes "One More Time" by Daft Punk, "Toxic" by Britney Spears, and "Hung Up" by Madonna.'}
+        result=validate(payload,source,content_topic='us_entertainment')
+        self.assertIn('Hung Up',result['rewritten_caption'])
+
+    def test_unconfirmed_netflix_casting_rumor_keeps_reporting_context(self):
+        source=("Variety reports Taylor Swift may be in talks to join Netflix's next music competition series, "
+                "though Netflix has not confirmed the casting.")
+        payload={'headline':'Variety Reports Taylor Swift May Be in Talks for Netflix Series; Casting Not Confirmed',
+                 'rewritten_caption':("Variety reports Taylor Swift may be in talks to join Netflix's music competition series. "
+                                      'Netflix has not confirmed the casting.')}
+        result=validate(payload,source,content_topic='us_entertainment')
+        self.assertIn('reports',result['rewritten_caption'].lower())
+
     def test_live_nepali_vague_preparation_is_not_a_headline(self):
         self.assertFalse(namespace['headline_is_usable']('नेपाल राष्ट्र बैंकको ठूलो तयारी', 'ne'))
 

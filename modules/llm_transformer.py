@@ -14,7 +14,7 @@ def build_system_prompt(language: str = "en", channel_name: str = "", content_to
     voices = {
         'ocean': 'Marine discovery editor: preserve species, location, count and scientific uncertainty. No entertainment metaphors or unrelated topics.',
         'music': 'Music editor: lead with the artist and the release, chart result or performance. Include a supplied song/album title; do not invent one.',
-        'us_entertainment': 'US entertainment editor: cover music, Hollywood, television and celebrity culture in natural US English. Lead with the named person and concrete news. Preserve allegations, quotes, dates and uncertainty. Write a detailed brief using only distinct supplied facts; never pad a short source.',
+        'us_entertainment': 'US entertainment editor: cover music, Hollywood, television, celebrity culture and Netflix in punchy natural US English. Open with the strongest specific person, title or development and a concrete turn that earns attention; use a sharp factual hook, not generic list framing, empty hype or manufactured drama. Include sourced rumors, leaks and unofficial announcements when they are the story, but clearly label them as reported, rumored, unconfirmed or unofficial and keep the source attribution and uncertainty in both headline and caption. Never upgrade speculation into fact or invent chatter.',
         'film': 'Film editor: name the film/show/person and the confirmed release, casting or production development. Preserve platform and date when supplied.',
         'entertainment': 'Screen and streaming editor: lead with the named show/person and a concrete confirmed development. Avoid vague fan reactions.',
         'news': 'News editor: lead with who did what and the essential location or outcome. Preserve attribution, alleged status and uncertainty.',
@@ -36,6 +36,8 @@ Lead with the concrete development, then add only distinct source details. A sho
 No duplicated ideas, padding, fabricated significance, claims of guaranteed virality, engagement bait, links or read-more teasers.
 Preserve exact proper names, species, titles, numbers, dates, negations, attribution and qualifiers.
 Do not turn an allegation, possible outcome or question into a confirmed event.
+If the source is a rumor, leak, unofficial announcement, report or unconfirmed claim, say so prominently and preserve who reported it. Never describe it as officially confirmed unless the source explicitly confirms it.
+Do not promise a list, ranking, "best of" roundup, or named set of picks unless the caption itself contains at least three of the promised entries. If the source only teases a list or says "see who made it," write a hook about the actual reported fact instead.
 Do not add hashtags; relevant page branding will be appended separately.
 Example schema: {{"headline": "A complete source-supported headline", "rewritten_caption": "A concise source-supported brief."}}"""
 
@@ -521,8 +523,9 @@ def check_source_grounding(text, source, language='en'):
     source_lower = source.lower()
     if any(symbol in text and symbol not in source for symbol in ('$', '€', '£', '%')):
         return False
-    if re.search(r'\b(?:may|might|could|possibly|reportedly|alleged|rumou?r|unconfirmed)\b|(?:सम्भावना|आरोप|दाबी|बताइएको)', source_lower):
-        if not re.search(r'\b(?:may|might|could|possibly|reportedly|alleged|rumou?r|unconfirmed|according|reports?|says?|said)\b|(?:सम्भावना|आरोप|दाबी|अनुसार|बताइएको|बताए)', output_lower):
+    uncertainty=r'\b(?:may|might|could|possibly|reportedly|alleged|rumou?r|unconfirmed|unofficial|not official(?:ly)?|not confirmed|in talks|expected to|is said to|report(?:s|ed)? say)\b|(?:सम्भावना|आरोप|दाबी|बताइएको|अपुष्ट|अनौपचारिक)'
+    if re.search(uncertainty, source_lower):
+        if not re.search(uncertainty+r'|\b(?:according to|reports?|says?|said|sources? say)\b|(?:अनुसार|बताए)', output_lower):
             return False
     negation = r"\b(?:not|never|no(?!\.)|without|neither|cannot|[a-z]+n't)\b|नपर्ने|नभएको|नगरेको|नहुने|नसक्ने|हुँदैन"
     if bool(re.search(negation, source_lower)) != bool(re.search(negation, output_lower)):
@@ -585,6 +588,8 @@ def validate_model_payload(payload, raw_caption, language='en', channel_name='',
             raise ValueError('Model headline stops before the source fact is complete')
     if not check_source_grounding(headline, factual_source, language) or not check_source_grounding(body, factual_source, language):
         raise ValueError('Model output changed observable source facts')
+    if _headline_promises_list(headline) and not _caption_contains_list(body):
+        raise ValueError('List-style headline has no actual list in the caption')
     cleaned_caption = sanitize_caption(caption, channel_name, channel_id, language, content_topic)
     if not cleaned_caption:
         raise ValueError('Model output has no usable caption')
@@ -594,6 +599,29 @@ def validate_model_payload(payload, raw_caption, language='en', channel_name='',
         if not channel_accepts_post({'content_topic': topic}, {'caption': headline + '. ' + body}):
             raise ValueError('Model output does not match page topic')
     return {'headline': headline, 'overlay_lines': format_balanced_overlay(headline, language), 'rewritten_caption': cleaned_caption}
+
+
+def _headline_promises_list(headline):
+    return bool(re.search(
+        r'\b(?:here are|these are|top\s+\d+|the\s+\d+\s+(?:best|greatest|top)|\d+\s+best|all\s+(?:the\s+)?(?:hits|songs|acts|artists|shows|films|movies)|'
+        r'(?:full|complete)\s+list|list\s+of|ranking\s+of|ranked\s+list|(?:staff|editor|critic)s?[’\']?\s+(?:list|picks)|(?:best|greatest)\s+(?:songs|albums|performances|artists|shows|films|movies)\s+of\s+all\s+time)\b',
+        str(headline or ''),re.I))
+
+
+def _caption_contains_list(caption):
+    """Require visible entries in the caption when a headline promises a list."""
+    lines=[line.strip() for line in str(caption or '').splitlines() if line.strip()]
+    numbered=sum(bool(re.match(r'^(?:\d{1,3}[.)]|[-*•])\s+\S',line)) for line in lines)
+    if numbered>=3:return True
+    # Accept prose lists only when introduced as entries and containing at
+    # least three comma/and-separated items. General comma-heavy sentences
+    # aren't enough to satisfy a headline promising a list.
+    for line in lines:
+        match=re.search(r'\b(?:include(?:s|d)?|feature(?:s|d)?|among(?: them)?|list\s+(?:is|includes?))\s*:?\s+(.+)',line,re.I)
+        if not match:continue
+        entries=[part.strip(' .;:') for part in re.split(r',\s*|\s+(?:and|&)\s+',match.group(1),flags=re.I) if part.strip(' .;:')]
+        if len(entries)>=3:return True
+    return False
 
 
 def generate_social_payload(raw_caption: str, language: str = "en", channel_name: str = "", channel_id: str = "", content_topic: str = "", editorial_style: str = "", *, max_headline_words=None, headline_accept=None) -> dict:
