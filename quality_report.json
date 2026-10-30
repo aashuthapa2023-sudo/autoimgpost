@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-30T22:41:32.747235+00:00",
+  "updated_at": "2026-10-30T23:08:00.265952+00:00",
   "rejections": [
     {
       "channel_id": "nepal_speaks",
@@ -13971,15 +13971,6 @@
     },
     {
       "channel_id": "Life in Army Boots",
-      "post_id": "1651748359672408",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 11.5 is below minimum threshold of 80.0",
-      "checked_at": "2026-10-30T11:05:35.303989+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1793401535.3040087
-    },
-    {
-      "channel_id": "Life in Army Boots",
       "post_id": "122192779748952113",
       "stage": "content_or_layout",
       "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
@@ -18000,6 +17991,15 @@
       "checked_at": "2026-10-30T22:41:32.747235+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793443292.747249
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "1651748359672408",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 11.5 is below minimum threshold of 80.0",
+      "checked_at": "2026-10-30T23:08:00.265952+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793444880.2659717
     }
   ]
 }
