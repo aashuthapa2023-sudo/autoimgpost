@@ -27,6 +27,20 @@ class RegularDiscoveryTests(unittest.TestCase):
         with patch.object(ingestion.requests,'get',side_effect=[self.response(first),self.response([first,later])]),patch.object(ingestion,'fetch_facebook_mobile_playwright') as browser:
             posts=ingestion.fetch_facebook_public_posts('source',min_candidates=2)
         self.assertEqual({p['post_id'] for p in posts},{'111111111','333333333'});browser.assert_not_called()
+    def test_single_fresh_nepali_pair_is_returned_after_deep_scan_cannot_fill_target(self):
+        story=self.story('1159000000000001','1159000000000002',owner='smartmedianp')
+        story['message']['text']='आज सार्वजनिक सेवासम्बन्धी नयाँ निर्णय सार्वजनिक गरिएको छ।'
+        with patch.object(ingestion.requests,'get',side_effect=[self.response(story,'https://www.facebook.com/smartmedianp'),self.response([]),self.response([])]),patch.object(ingestion,'fetch_facebook_mobile_playwright',return_value=[]) as browser:
+            posts=ingestion.fetch_facebook_public_posts('https://www.facebook.com/smartmedianp',min_candidates=12)
+        self.assertEqual([p['post_id'] for p in posts],[story['post_id']])
+        browser.assert_called_once()
+    def test_small_fresh_landing_batch_survives_empty_deeper_views(self):
+        story=self.story('1159000000000001','1159000000000002',owner='smartmedianp')
+        story['message']['text']='आज सार्वजनिक सेवासम्बन्धी नयाँ निर्णय सार्वजनिक गरिएको छ।'
+        with patch.object(ingestion.requests,'get',side_effect=[self.response(story,'https://www.facebook.com/smartmedianp'),self.response([]),self.response([])]),patch.object(ingestion,'fetch_facebook_mobile_playwright',return_value=[]) as browser:
+            posts=ingestion.fetch_facebook_public_posts('https://www.facebook.com/smartmedianp',min_candidates=12)
+        self.assertEqual([p['post_id'] for p in posts],[story['post_id']])
+        browser.assert_called_once()
     def test_old_pairs_do_not_satisfy_fresh_discovery_target(self):
         old=self.story(age=80*3600);later=self.story('333333333','444444444')
         with patch.object(ingestion.requests,'get',side_effect=[self.response(old),self.response(later)]),patch.object(ingestion,'fetch_facebook_mobile_playwright') as browser:

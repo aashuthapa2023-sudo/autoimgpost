@@ -282,7 +282,10 @@ def run_pipeline(mode="run", target_channel="all"):
                 processed_ids=list(channel_processed_ids),
                 limit=60,
                 source_urls=source_pages,
-                min_candidates=max(4,min(40,int(ch.get('source_min_candidates',4)))),
+                # Ask each Facebook source for a small cushion of candidates,
+                # not a quota. Mobile/public feeds often expose fewer cards
+                # than configured, so requiring 12 per source hid real posts.
+                min_candidates=max(1,min(8,int(ch.get('source_min_candidates',4)))),
                 excluded_ids=unavailable_source_ids(ch) if mode=='run' else ()
             )
             from modules.source_cache import merge_source_candidates

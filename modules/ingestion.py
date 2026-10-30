@@ -275,6 +275,8 @@ def fetch_facebook_mobile_playwright(page_url_or_slug: str, processed_ids: list 
             resolved_url = getattr(page, 'url', '')
             expected_source = resolved_url if _page_identity(resolved_url) else mobile_url
             hydrated_posts = _extract_facebook_story_posts(hydrated_scripts, processed_ids, limit, source_url=expected_source)
+            # With a zero target, return the landing batch immediately. A
+            # positive target asks the crawler to inspect deeper views first.
             if hydrated_posts and not min_candidates:
                 print(f" [PLAYWRIGHT FB] Retrieved {len(hydrated_posts)} exact caption/photo pairs from hydration JSON")
                 browser.close()
@@ -574,10 +576,20 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
                     print(f' [FB INGEST] Recovered {len(recovered)} verified source pairs from the public posts route')
                     batches.append(recovered)
                     combined=_merge_discovered_posts(batches,limit,recent_only=bool(min_candidates))
-                    if not min_candidates or len(combined)>=min_candidates:return combined
+                    if combined and (not min_candidates or len(combined)>=min_candidates):return combined
             except requests.RequestException:
                 continue
         return _merge_discovered_posts(batches,limit,recent_only=bool(min_candidates))
+
+    def recover_small_public_batch(posts):
+        """Use verified landing pairs when deeper Facebook routes add nothing."""
+        if posts or not min_candidates:
+            return posts
+        # This is only a last resort after posts routes and the mobile scan
+        # were attempted. The same story ownership, freshness, and photo
+        # pairing checks already ran in the extractor.
+        fresh=_merge_discovered_posts([posts],limit,recent_only=True)
+        return fresh
 
     def browser_fallback():
         options={'processed_ids':processed_ids,'limit':limit}
@@ -593,8 +605,10 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
     if res.status_code != 200 or "facebook.com/login" in res.url.lower():
         print(f" [FB INGEST] Public landing feed unavailable for {url}; checking its public posts routes...")
         posts=public_route_fallback()
-        if posts and (not min_candidates or len(posts)>=min_candidates):return posts
-        return _merge_discovered_posts([posts,browser_fallback()],limit,recent_only=bool(min_candidates))
+        if posts:return posts
+        mobile_posts=browser_fallback()
+        merged=_merge_discovered_posts([posts,mobile_posts],limit,recent_only=bool(min_candidates))
+        return merged if merged else posts
 
     html = res.text
     scripts = re.findall(r'<script\b(?=[^>]*\btype=["\']application/json["\'])[^>]*>(.*?)</script>', html, re.DOTALL)
@@ -603,9 +617,12 @@ def fetch_facebook_public_posts(page_url_or_slug: str, processed_ids: list = Non
     posts=_merge_discovered_posts([posts],limit,recent_only=bool(min_candidates))
     if not posts or min_candidates and len(posts)<min_candidates:
         print(f" [FB INGEST] Landing feed has {len(posts)} available pairs for {url}; checking deeper public feed...")
+        landing_posts=posts
         posts=_merge_discovered_posts([posts,public_route_fallback()],limit,recent_only=bool(min_candidates))
         if not posts or min_candidates and len(posts)<min_candidates:
             posts=_merge_discovered_posts([posts,browser_fallback()],limit,recent_only=bool(min_candidates))
+        if not posts:
+            posts=recover_small_public_batch(landing_posts)
     return posts
 
 
