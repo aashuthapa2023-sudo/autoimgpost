@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-10-31T22:38:00.820949+00:00",
+  "updated_at": "2026-10-31T23:09:34.921718+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1546985800628424",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-10-21T15:36:06.481002+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792640166.4810195
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1501107815222517",
@@ -13206,42 +13197,6 @@
     },
     {
       "channel_id": "Music Store",
-      "post_id": "1489756113008572",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-31T10:35:24.785428+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1793486124.785438
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1489737289677121",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-31T10:35:24.799566+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1793486124.7995737
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1489700633014120",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-31T10:35:24.813129+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1793486124.8131373
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1489682049682645",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-31T10:35:24.826837+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1793486124.8268461
-    },
-    {
-      "channel_id": "Music Store",
       "post_id": "1489628863021297",
       "stage": "topic_or_caption",
       "reason": "Source caption is missing, context-free or outside this page topic",
@@ -13358,15 +13313,6 @@
       "retry_after": 1793486358.762511
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1588392466635407",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 9.0 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-31T11:04:51.691146+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1793487891.6911652
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1489585106359006",
       "stage": "content_or_layout",
@@ -13437,15 +13383,6 @@
       "checked_at": "2026-10-31T11:08:10.493084+00:00",
       "policy_signature": "42b02d01c718ed7d",
       "retry_after": 1793488090.4931026
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1613985510763002",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-31T11:08:38.193693+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793488118.1937027
     },
     {
       "channel_id": "Guardians of Liberty",
@@ -18000,6 +17937,69 @@
       "checked_at": "2026-10-31T22:38:00.820949+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793529480.8209667
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1599087375355533",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 11.4 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-31T23:06:00.562793+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1793531160.5628176
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1588392466635407",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 9.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-31T23:06:05.753910+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1793531165.7539346
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1489756113008572",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-31T23:06:51.575929+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793531211.5759509
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1489737289677121",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-31T23:06:51.595648+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793531211.595684
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1489700633014120",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-31T23:06:51.614607+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793531211.6146293
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1489682049682645",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-31T23:06:51.633467+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793531211.633491
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1613985510763002",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-31T23:09:34.921718+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793531374.921738
     }
   ]
 }
