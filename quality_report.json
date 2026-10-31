@@ -1,33 +1,6 @@
 {
-  "updated_at": "2026-10-31T12:43:25.732172+00:00",
+  "updated_at": "2026-10-31T13:05:37.085182+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1479161327401384",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-20T20:36:33.864388+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792571793.8644018
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1475427634445298",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-20T20:37:20.604821+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792571840.6048377
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1480805953919978",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-10-20T20:37:26.809479+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792571846.8095012
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1479535774030606",
@@ -18000,6 +17973,33 @@
       "checked_at": "2026-10-31T12:43:25.732172+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793493805.732188
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1490167522967431",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-31T13:05:27.891216+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793495127.8912299
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1561674675984772",
+      "stage": "source_language",
+      "reason": "Source caption does not match the page language",
+      "checked_at": "2026-10-31T13:05:37.065323+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1793495137.06534
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1561662739319299",
+      "stage": "source_language",
+      "reason": "Source caption does not match the page language",
+      "checked_at": "2026-10-31T13:05:37.085182+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1793495137.0852008
     }
   ]
 }
