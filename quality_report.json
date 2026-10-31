@@ -1,69 +1,6 @@
 {
-  "updated_at": "2026-10-31T14:08:39.116359+00:00",
+  "updated_at": "2026-10-31T14:38:49.517673+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1500167268649905",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-10-20T20:37:50.251659+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792571870.251681
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1479295100721340",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-10-20T20:37:54.166993+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792571874.167013
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1479277377389779",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-10-20T21:06:29.886565+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792573589.886605
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1467054338618723",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-20T23:35:29.425581+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792582529.4255893
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1466772191980271",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-20T23:35:48.166313+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792582548.1663272
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1467042431953247",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 2.9 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-20T23:36:02.912490+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792582562.91251
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1546299704030367",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-21T00:06:48.359442+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792584408.3594542
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1546277480699256",
@@ -13638,24 +13575,6 @@
     },
     {
       "channel_id": "US Army Fans AI",
-      "post_id": "1592646416229816",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-30T23:38:01.688373+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793446681.6883898
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1652214746292436",
-      "stage": "source_quality",
-      "reason": "Low resolution: 640x425px (272,000 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-10-30T23:38:02.172695+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793446682.1727126
-    },
-    {
-      "channel_id": "US Army Fans AI",
       "post_id": "1651748359672408",
       "stage": "source_quality",
       "reason": "Blurry image detected: Sharpness variance 11.5 is below minimum threshold of 80.0",
@@ -18000,6 +17919,87 @@
       "checked_at": "2026-10-31T14:08:39.116359+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793498919.1163764
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1652890816224829",
+      "stage": "content_or_layout",
+      "reason": "Source panel boundary is ambiguous; choose another image",
+      "checked_at": "2026-10-31T14:36:56.117761+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793500616.117776
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122190583328935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-31T14:37:03.272930+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793500623.2729445
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1592646416229816",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-10-31T14:37:12.350526+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793500632.3505418
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1652214746292436",
+      "stage": "source_quality",
+      "reason": "Low resolution: 640x425px (272,000 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-10-31T14:37:12.542648+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793500632.5426624
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122190081602935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-31T14:37:19.517620+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793500639.5176346
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122190077924935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-31T14:37:26.584583+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793500646.5845976
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "1652890816224829",
+      "stage": "content_or_layout",
+      "reason": "Source panel boundary is ambiguous; choose another image",
+      "checked_at": "2026-10-31T14:38:06.317808+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793500686.3178232
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122190583328935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-31T14:38:13.348408+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793500693.348427
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122190583328935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-31T14:38:49.517673+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793500729.5176866
     }
   ]
 }
