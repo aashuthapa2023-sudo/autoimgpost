@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-10-31T13:44:37.844000+00:00",
+  "updated_at": "2026-10-31T14:08:39.116359+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1500185805314718",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-10-20T20:37:44.473961+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792571864.4739826
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1500167268649905",
@@ -13773,24 +13764,6 @@
     },
     {
       "channel_id": "Life in Army Boots",
-      "post_id": "122192931518952113",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-31T00:12:19.340849+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1793448739.3408628
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "1650274816486429",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 31.3 is below minimum threshold of 80.0",
-      "checked_at": "2026-10-31T00:12:19.652003+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1793448739.6520205
-    },
-    {
-      "channel_id": "Life in Army Boots",
       "post_id": "122190010190935135",
       "stage": "content_or_layout",
       "reason": "Headline cannot fit at readable type size; rewrite before publishing",
@@ -13869,15 +13842,6 @@
       "checked_at": "2026-10-31T01:14:30.855320+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1793452470.8553436
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122192909462952113",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-31T01:16:48.748561+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1793452608.7485824
     },
     {
       "channel_id": "Life in Army Boots",
@@ -14058,24 +14022,6 @@
       "checked_at": "2026-10-31T02:06:12.086406+00:00",
       "policy_signature": "76b1e04e7afade22",
       "retry_after": 1793455572.0864148
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1613985447429675",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-31T02:08:38.200331+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793455718.2003405
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1443972424542767",
-      "stage": "source_quality",
-      "reason": "Low resolution: 188x250px (47,000 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-10-31T02:08:38.486951+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793455718.4869678
     },
     {
       "channel_id": "Music Store",
@@ -18000,6 +17946,60 @@
       "checked_at": "2026-10-31T13:44:37.844000+00:00",
       "policy_signature": "42b02d01c718ed7d",
       "retry_after": 1793497477.8440166
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1598689368728667",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-31T14:05:12.530777+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1793498712.5307922
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122192931518952113",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-31T14:07:59.091433+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793498879.0914514
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "1650274816486429",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 31.3 is below minimum threshold of 80.0",
+      "checked_at": "2026-10-31T14:07:59.406635+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793498879.4066541
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122192909462952113",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-31T14:08:08.640476+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793498888.6404939
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1613985447429675",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-31T14:08:38.918678+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793498918.918695
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1443972424542767",
+      "stage": "source_quality",
+      "reason": "Low resolution: 188x250px (47,000 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-10-31T14:08:39.116359+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793498919.1163764
     }
   ]
 }
