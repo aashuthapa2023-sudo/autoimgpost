@@ -1,24 +1,6 @@
 {
-  "updated_at": "2026-10-31T13:05:37.085182+00:00",
+  "updated_at": "2026-10-31T13:36:57.720287+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1479535774030606",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-20T20:37:30.744804+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792571850.7448215
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1500194825313816",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-20T20:37:38.693198+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792571858.6932187
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1500185805314718",
@@ -13862,42 +13844,6 @@
       "retry_after": 1793450403.3441353
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1590072169800770",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 21.0 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-31T01:12:25.795444+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1793452345.7954657
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1595777552353182",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-31T01:12:35.404860+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1793452355.4048753
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1490715626262344",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output is incomplete or too verbose",
-      "checked_at": "2026-10-31T01:13:31.489697+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1793452411.4897158
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1656528529847618",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 2.7 is below minimum threshold of 80.0",
-      "checked_at": "2026-10-31T01:13:31.721971+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1793452411.7219932
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1488644273119756",
       "stage": "content_or_layout",
@@ -13995,33 +13941,6 @@
       "checked_at": "2026-10-31T01:16:51.845890+00:00",
       "policy_signature": "42b02d01c718ed7d",
       "retry_after": 1793452611.8459103
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1613985247429695",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-31T01:17:18.643825+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793452638.6438386
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122190389498935135",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 70.3 is below minimum threshold of 80.0",
-      "checked_at": "2026-10-31T01:17:18.931927+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793452638.931949
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122192909462952113",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-31T01:17:23.555905+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793452643.5559268
     },
     {
       "channel_id": "Music Store",
@@ -18000,6 +17919,87 @@
       "checked_at": "2026-10-31T13:05:37.085182+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1793495137.0852008
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1590072169800770",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 21.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-10-31T13:33:15.504617+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1793496795.504641
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1595777552353182",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-10-31T13:33:28.018391+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1793496808.0184116
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1490167522967431",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-31T13:34:12.402698+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793496852.4027169
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1490118972972286",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-10-31T13:34:16.578872+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793496856.5788934
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1490715626262344",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output is incomplete or too verbose",
+      "checked_at": "2026-10-31T13:34:23.058837+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793496863.0588582
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1656528529847618",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 2.7 is below minimum threshold of 80.0",
+      "checked_at": "2026-10-31T13:34:23.706659+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793496863.7066836
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1613985247429695",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-10-31T13:36:50.831172+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793497010.831189
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122190389498935135",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 70.3 is below minimum threshold of 80.0",
+      "checked_at": "2026-10-31T13:36:51.419660+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793497011.4196815
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122192909462952113",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-10-31T13:36:57.720287+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793497017.7203143
     }
   ]
 }
