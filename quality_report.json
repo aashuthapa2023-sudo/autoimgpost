@@ -1,42 +1,6 @@
 {
-  "updated_at": "2026-11-01T23:07:46.079194+00:00",
+  "updated_at": "2026-11-01T23:35:43.921562+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1547929003867437",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-22T15:43:32.191160+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792727012.1911697
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1547923140534690",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-22T15:43:32.203477+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792727012.203487
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1547916697202001",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-22T15:43:32.215641+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792727012.21565
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1547907503869587",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-22T15:43:32.227938+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792727012.2279468
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1501602118506420",
@@ -12963,15 +12927,6 @@
     },
     {
       "channel_id": "Music Store",
-      "post_id": "1478305237493633",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 6.3 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-01T06:35:27.077174+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1793558127.0771937
-    },
-    {
-      "channel_id": "Music Store",
       "post_id": "1490379252946258",
       "stage": "content_or_layout",
       "reason": "Source headline needs a proved nonempty removed panel",
@@ -18000,6 +17955,51 @@
       "checked_at": "2026-11-01T23:07:46.079194+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793617666.0792108
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1492320452768528",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-01T23:34:54.494217+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793619294.4942331
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1492273149439925",
+      "stage": "duplicate_photo",
+      "reason": "Source image was already published to this page",
+      "checked_at": "2026-11-01T23:34:54.632979+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793619294.6329916
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1658382942995510",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-01T23:35:22.711730+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793619322.711746
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1492226649444575",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-01T23:35:26.907533+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793619326.9075484
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1478305237493633",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 6.3 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-01T23:35:43.921562+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793619343.9215794
     }
   ]
 }
