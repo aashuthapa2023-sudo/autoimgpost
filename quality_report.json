@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-11-01T10:40:12.061537+00:00",
+  "updated_at": "2026-11-01T11:38:21.770858+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1480223357295181",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-22T03:06:49.083409+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792681609.0834215
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1501116861888279",
@@ -12279,15 +12270,6 @@
     },
     {
       "channel_id": "Music Store",
-      "post_id": "1656315969868874",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-31T09:35:46.660424+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1793482546.6604376
-    },
-    {
-      "channel_id": "Music Store",
       "post_id": "1656400959860375",
       "stage": "content_or_layout",
       "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
@@ -12753,15 +12735,6 @@
       "checked_at": "2026-10-31T13:36:57.720287+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793497017.7203143
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1655988186568319",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-31T13:41:55.092088+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1793497315.0920994
     },
     {
       "channel_id": "Music Store",
@@ -13350,15 +13323,6 @@
     },
     {
       "channel_id": "Music Store",
-      "post_id": "1654891260011345",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-31T17:58:51.960291+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1793512731.9602993
-    },
-    {
-      "channel_id": "Music Store",
       "post_id": "1654941803339624",
       "stage": "source_quality",
       "reason": "Blurry image detected: Sharpness variance 31.3 is below minimum threshold of 80.0",
@@ -13646,33 +13610,6 @@
       "retry_after": 1793529480.8209667
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1599087375355533",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 11.4 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-31T23:06:00.562793+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1793531160.5628176
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1588392466635407",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 9.0 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-31T23:06:05.753910+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1793531165.7539346
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1489756113008572",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-31T23:06:51.575929+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1793531211.5759509
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1489737289677121",
       "stage": "topic_or_caption",
@@ -13698,33 +13635,6 @@
       "checked_at": "2026-10-31T23:06:51.633467+00:00",
       "policy_signature": "76b1e04e7afade22",
       "retry_after": 1793531211.633491
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1613985510763002",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-31T23:09:34.921718+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793531374.921738
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1561652332653673",
-      "stage": "source_language",
-      "reason": "Source caption does not match the page language",
-      "checked_at": "2026-10-31T23:35:51.589784+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1793532951.5898037
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1561642412654665",
-      "stage": "source_language",
-      "reason": "Source caption does not match the page language",
-      "checked_at": "2026-10-31T23:35:51.601756+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1793532951.6017754
     },
     {
       "channel_id": "nepal_speaks",
@@ -18000,6 +17910,96 @@
       "checked_at": "2026-11-01T10:40:12.061537+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793572812.0615535
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1599087375355533",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 11.4 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-01T11:34:54.243603+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1793576094.2436256
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1588392466635407",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 9.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-01T11:34:59.272599+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1793576099.272624
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1657605096406628",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-01T11:35:44.943932+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793576144.9439433
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1489756113008572",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-01T11:35:44.960356+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793576144.9603662
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1656315969868874",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-01T11:35:44.976254+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793576144.9762642
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1655988186568319",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-01T11:35:44.991673+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793576144.991683
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1654891260011345",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-01T11:35:45.007659+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793576145.0076692
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1561652332653673",
+      "stage": "source_language",
+      "reason": "Source caption does not match the page language",
+      "checked_at": "2026-11-01T11:36:28.214797+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1793576188.2148201
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1561642412654665",
+      "stage": "source_language",
+      "reason": "Source caption does not match the page language",
+      "checked_at": "2026-11-01T11:36:28.233004+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1793576188.2330208
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1613985510763002",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-01T11:38:21.770858+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793576301.7708697
     }
   ]
 }
