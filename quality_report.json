@@ -1,60 +1,6 @@
 {
-  "updated_at": "2026-11-01T03:18:57.003592+00:00",
+  "updated_at": "2026-11-01T03:37:45.057535+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1547034447290226",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-21T23:05:49.608813+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792667149.6088212
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1547028080624196",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-21T23:05:49.621032+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792667149.6210394
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1547021380624866",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-21T23:05:49.632933+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792667149.6329403
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1547007273959610",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-21T23:05:49.644980+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792667149.6449883
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1577932941014693",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 22.1 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-21T23:35:14.048199+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1792668914.0482137
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1481360757197831",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-21T23:36:12.621201+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792668972.6212106
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1481326193867954",
@@ -18000,6 +17946,60 @@
       "checked_at": "2026-11-01T03:18:57.003592+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793546337.00361
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122190686996935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-01T03:36:54.194573+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793547414.1945848
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122190681530935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-01T03:36:54.222982+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793547414.2229996
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122190694502935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-01T03:37:06.347553+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793547426.3475723
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122190686996935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-01T03:37:37.804803+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793547457.804818
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122190681530935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-01T03:37:37.822623+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793547457.8226388
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122190694502935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-01T03:37:45.057535+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793547465.057554
     }
   ]
 }
