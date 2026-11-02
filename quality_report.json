@@ -1,24 +1,6 @@
 {
-  "updated_at": "2026-11-02T05:11:39.337223+00:00",
+  "updated_at": "2026-11-02T05:36:06.941523+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1548698120457192",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-23T06:12:22.746406+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792779142.746425
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1548690887124582",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-23T06:12:22.756036+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792779142.7560554
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1548685933791744",
@@ -13620,15 +13602,6 @@
     },
     {
       "channel_id": "nepal_speaks",
-      "post_id": "1560539069431666",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-11-01T15:36:25.979323+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1793590585.9793406
-    },
-    {
-      "channel_id": "nepal_speaks",
       "post_id": "1560346949450878",
       "stage": "content_or_layout",
       "reason": "Unknown source lettering or watermark overlaps the subject",
@@ -18000,6 +17973,33 @@
       "checked_at": "2026-11-02T05:11:39.337223+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793639499.33724
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1491700986147418",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-02T05:34:48.290415+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793640888.290426
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1491721179478732",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-02T05:34:58.679664+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793640898.6796808
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1560539069431666",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-11-02T05:36:06.941523+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1793640966.94154
     }
   ]
 }
