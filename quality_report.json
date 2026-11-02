@@ -1,24 +1,6 @@
 {
-  "updated_at": "2026-11-02T02:08:59.004229+00:00",
+  "updated_at": "2026-11-02T02:35:17.021186+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1468734695117354",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-23T00:06:11.294687+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792757171.2947025
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1481474450503405",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-23T00:46:30.185267+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1792759590.1852787
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1502359381764027",
@@ -18000,6 +17982,24 @@
       "checked_at": "2026-11-02T02:08:59.004229+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793628539.0042472
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1560116625982008",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output is incomplete or too verbose",
+      "checked_at": "2026-11-02T02:34:57.661209+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793630097.661226
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1479466400710850",
+      "stage": "content_or_layout",
+      "reason": "Removed source title is ambiguous or too long",
+      "checked_at": "2026-11-02T02:35:17.021186+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793630117.0212042
     }
   ]
 }
