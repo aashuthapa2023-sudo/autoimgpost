@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-02T12:35:43.316995+00:00",
+  "updated_at": "2026-11-02T13:04:57.515546+00:00",
   "rejections": [
     {
       "channel_id": "Daily Hollywood",
@@ -13638,15 +13638,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1600105791920358",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 9.5 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-02T01:04:23.041743+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1793624663.0417607
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1599087375355533",
       "stage": "photo_extraction",
       "reason": "Blurry image detected: Sharpness variance 11.4 is below minimum threshold of 35.0",
@@ -18000,6 +17991,15 @@
       "checked_at": "2026-11-02T12:35:43.316995+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1793666143.3170094
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1600105791920358",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 9.5 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-02T13:04:57.515546+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1793667897.5155623
     }
   ]
 }
