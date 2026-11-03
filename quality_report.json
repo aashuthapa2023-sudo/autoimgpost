@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-03T09:39:37.265039+00:00",
+  "updated_at": "2026-11-03T10:07:33.532368+00:00",
   "rejections": [
     {
       "channel_id": "Daily Hollywood",
@@ -11918,15 +11918,6 @@
       "retry_after": 1793650115.3280864
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1490236852960498",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-02T08:14:54.731844+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793650494.7318597
-    },
-    {
       "channel_id": "Life in Army Boots",
       "post_id": "122190417236935135",
       "stage": "source_quality",
@@ -11961,24 +11952,6 @@
       "checked_at": "2026-11-02T08:18:09.617628+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793650689.6176412
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1477879364202887",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-11-02T08:34:39.257953+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793651679.2579727
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1490191419631708",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-02T08:34:42.299600+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793651682.2996182
     },
     {
       "channel_id": "Daily Hollywood",
@@ -12548,15 +12521,6 @@
       "retry_after": 1793664317.9553065
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1490501126267404",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-02T12:06:00.701951+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793664360.7019694
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1479414770716013",
       "stage": "content_or_layout",
@@ -13059,33 +13023,6 @@
       "checked_at": "2026-11-02T21:39:10.976504+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793698750.976523
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122125809057298539",
-      "stage": "content_or_layout",
-      "reason": "Source lettering overlaps the marine subject outside replacement zones",
-      "checked_at": "2026-11-02T22:06:40.219257+00:00",
-      "policy_signature": "9eea52c5880fafde",
-      "retry_after": 1793700400.2192748
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122190988166935135",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-02T22:07:12.812860+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793700432.8128734
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122190823262935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-02T22:07:22.472649+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793700442.4726675
     },
     {
       "channel_id": "US Army Fans AI",
@@ -18000,6 +17937,69 @@
       "checked_at": "2026-11-03T09:39:37.265039+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793741977.2650483
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1490501126267404",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-03T10:05:48.982800+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793743548.9828167
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1490236852960498",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-03T10:05:54.301422+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793743554.3014424
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1477879364202887",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-11-03T10:05:58.689319+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793743558.6893382
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1490191419631708",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-03T10:06:03.833429+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793743563.8334484
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122125809057298539",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-11-03T10:06:50.553512+00:00",
+      "policy_signature": "9eea52c5880fafde",
+      "retry_after": 1793743610.553532
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122190988166935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-03T10:07:25.255692+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793743645.2557092
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122190823262935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-03T10:07:33.532368+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793743653.5323873
     }
   ]
 }
