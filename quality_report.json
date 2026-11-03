@@ -1,33 +1,6 @@
 {
-  "updated_at": "2026-11-03T18:48:35.623981+00:00",
+  "updated_at": "2026-11-03T19:11:42.184018+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1483532830297567",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-10-25T22:06:35.999505+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793009195.9995236
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1469909484999875",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-25T22:07:30.044141+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793009250.0441592
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1555373439948229",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-10-25T22:32:12.608858+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1793010732.6088743
-    },
     {
       "channel_id": "nepal_speaks",
       "post_id": "1555358193283087",
@@ -13250,60 +13223,6 @@
       "retry_after": 1793732863.9798725
     },
     {
-      "channel_id": "Life in Army Boots",
-      "post_id": "1654779379369306",
-      "stage": "source_quality",
-      "reason": "Low resolution: 640x426px (272,640 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-03T07:08:07.020300+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1793732887.0203161
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122190879554935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-03T07:08:13.164741+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1793732893.1647563
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122190874862935135",
-      "stage": "source_quality",
-      "reason": "Low resolution: 640x481px (307,840 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-03T07:08:13.468173+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1793732893.4681897
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122190870770935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-03T07:08:19.642953+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1793732899.6429787
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122190867728935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-03T07:08:26.235221+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1793732906.235238
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122190852500935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-03T07:08:32.360528+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1793732912.3605456
-    },
-    {
       "channel_id": "Daily Hollywood",
       "post_id": "1491424452841738",
       "stage": "topic_or_caption",
@@ -18000,6 +17919,87 @@
       "checked_at": "2026-11-03T18:48:35.623981+00:00",
       "policy_signature": "f01a39cc46b8a63a",
       "retry_after": 1793774915.6239996
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "1654779379369306",
+      "stage": "source_quality",
+      "reason": "Low resolution: 640x426px (272,640 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-03T19:10:16.668108+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793776216.6681254
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122190879554935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-03T19:10:23.717387+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793776223.7174034
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122190874862935135",
+      "stage": "source_quality",
+      "reason": "Low resolution: 640x481px (307,840 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-03T19:10:24.099633+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793776224.0996494
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122190870770935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-03T19:10:31.455666+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793776231.4556823
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122190867728935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-03T19:10:39.239317+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793776239.2393327
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122190852500935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-03T19:10:46.351176+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793776246.3511937
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122191144544935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-03T19:11:17.947309+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793776277.9473174
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122191178732935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-03T19:11:34.415280+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793776294.4153104
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122191140092935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-03T19:11:42.184018+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793776302.1840346
     }
   ]
 }
