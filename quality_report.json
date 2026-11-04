@@ -1,24 +1,6 @@
 {
-  "updated_at": "2026-11-04T10:07:20.166516+00:00",
+  "updated_at": "2026-11-04T10:39:33.404833+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1552230866770584",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-26T09:36:30.553061+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793050590.5530763
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1505439911455974",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-10-26T09:36:37.767988+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793050597.7680051
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1650221800478291",
@@ -12531,69 +12513,6 @@
     },
     {
       "channel_id": "US Army Fans AI",
-      "post_id": "122193619700952113",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-03T21:51:25.091403+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793785885.0914204
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122190940862935135",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-03T21:51:36.006101+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793785896.0061169
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122190937304935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-03T21:51:43.940360+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793785903.940389
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122190929054935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-03T21:51:51.359026+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793785911.3590434
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122190922580935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-03T21:51:58.774216+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793785918.7742338
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1654779379369306",
-      "stage": "source_quality",
-      "reason": "Low resolution: 640x426px (272,640 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-03T21:51:59.237814+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793785919.2378306
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122190988166935135",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-03T22:14:10.217223+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793787250.2172382
-    },
-    {
-      "channel_id": "US Army Fans AI",
       "post_id": "122190900806935135",
       "stage": "content_or_layout",
       "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
@@ -18000,6 +17919,87 @@
       "checked_at": "2026-11-04T10:07:20.166516+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793830040.166532
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1494779315855975",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 16.1 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-04T10:36:17.883743+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793831777.8837602
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1562542402406097",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-11-04T10:36:31.877977+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793831791.8779943
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122190988166935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-04T10:38:51.111095+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793831931.1111066
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122193619700952113",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-04T10:38:59.981750+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793831939.9817662
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122190940862935135",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-04T10:39:10.712950+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793831950.7129683
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122190937304935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-04T10:39:18.518251+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793831958.5182676
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122190929054935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-04T10:39:25.703643+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793831965.7036595
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122190922580935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-04T10:39:32.982198+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793831972.9822152
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1654779379369306",
+      "stage": "source_quality",
+      "reason": "Low resolution: 640x426px (272,640 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-04T10:39:33.404833+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793831973.4048493
     }
   ]
 }
