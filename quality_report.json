@@ -1,177 +1,6 @@
 {
-  "updated_at": "2026-11-04T16:11:48.932787+00:00",
+  "updated_at": "2026-11-04T16:24:43.040784+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1472388921418598",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 10.3 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-26T11:33:08.255951+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793057588.2559686
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1471314118192745",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output is incomplete or too verbose",
-      "checked_at": "2026-10-26T11:33:22.242383+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793057602.2423995
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1471311951526295",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-26T11:33:35.922781+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793057615.922798
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1471272194863604",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 6.5 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-26T11:33:49.773379+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793057629.7733977
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1649146940585777",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 18.8 is below minimum threshold of 80.0",
-      "checked_at": "2026-10-26T11:33:50.161949+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793057630.161969
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1648144574019347",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 15.8 is below minimum threshold of 80.0",
-      "checked_at": "2026-10-26T11:33:50.797586+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793057630.797604
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1158598550000732",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-26T11:34:33.475248+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1793057673.4752645
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1158544426672811",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-26T11:34:47.747317+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1793057687.747333
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1158452623348658",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-26T11:34:59.233890+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1793057699.233907
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1485189066798610",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-26T11:40:50.368870+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793058050.3688912
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1485148906802626",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-26T11:40:50.388127+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793058050.388146
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1470575358266621",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-26T11:40:50.406351+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793058050.4063683
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1470378964952927",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-26T11:40:50.424884+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793058050.4249015
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1470345811622909",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-26T11:40:50.443044+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793058050.4430618
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1470289141628576",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-26T11:40:50.479921+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793058050.479939
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1485106306806886",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-10-26T11:41:00.091071+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793058060.0910904
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1470472908276866",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 13.3 is below minimum threshold of 35.0",
-      "checked_at": "2026-10-26T11:41:13.935488+00:00",
-      "policy_signature": "7391fa6659f622e6",
-      "retry_after": 1793058073.9355087
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1485148906802626",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-10-26T11:41:31.624370+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793058091.6243868
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1593038715960399",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-10-26T12:05:43.482736+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1793059543.482754
-    },
     {
       "channel_id": "daily_netflix",
       "post_id": "1592051449392459",
@@ -18000,6 +17829,177 @@
       "checked_at": "2026-11-04T16:11:48.932787+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793851908.9328003
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1563152949011709",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-04T16:23:50.784089+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793852630.7840984
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1494230519227798",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-04T16:23:50.800650+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793852630.8006577
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1515686433764655",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-04T16:23:50.816773+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793852630.8167815
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1494200315897485",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-04T16:23:50.833033+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793852630.8330417
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1563115599015444",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-04T16:23:50.849289+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793852630.849297
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1515662593767039",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-04T16:23:50.865367+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793852630.865375
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1563096095684061",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-04T16:23:50.881605+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793852630.8816133
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1494184185899098",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-04T16:23:50.897643+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793852630.897651
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1563086322351705",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-04T16:23:50.913570+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793852630.9135783
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1563085952351742",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-04T16:23:50.929707+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793852630.9297154
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1494153105902206",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-04T16:23:50.946009+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793852630.9460173
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1494096922574491",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-04T16:23:50.962303+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793852630.9623113
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1494067995910717",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-04T16:23:50.978506+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793852630.978514
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1493980052586178",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-04T16:23:50.994932+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793852630.9949396
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1563134605680210",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-04T16:24:04.120142+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793852644.1201596
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1494135765903940",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-04T16:24:09.627273+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793852649.6272886
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1494023725915144",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-04T16:24:15.113344+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793852655.1133592
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1493939495923567",
+      "stage": "content_or_layout",
+      "reason": "Removed source panel contains no prominent headline",
+      "checked_at": "2026-11-04T16:24:20.723869+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793852660.723885
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1494230519227798",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-04T16:24:43.040784+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793852683.0407925
     }
   ]
 }
