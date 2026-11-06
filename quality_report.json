@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-11-06T01:36:20.548933+00:00",
+  "updated_at": "2026-11-06T02:08:23.591400+00:00",
   "rejections": [
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122128739493277454",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-31T08:12:46.915299+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793477566.9153137
-    },
     {
       "channel_id": "Guardians of Liberty",
       "post_id": "122190026828935135",
@@ -12009,24 +12000,6 @@
     },
     {
       "channel_id": "Guardians of Liberty",
-      "post_id": "122194220666952113",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-05T12:42:54.027175+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793925774.0271933
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122194208588952113",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-05T12:43:03.193383+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793925783.1933997
-    },
-    {
-      "channel_id": "Guardians of Liberty",
       "post_id": "122190948848935135",
       "stage": "source_quality",
       "reason": "Low resolution: 703x442px (310,726 pixels; minimum required is 500px short-edge & 350,000px area)",
@@ -12060,33 +12033,6 @@
       "checked_at": "2026-11-05T12:43:35.331402+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793925815.3314192
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1493413452642838",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-05T13:06:10.038785+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793927170.0388067
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1594156566058997",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-05T13:06:14.935589+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793927174.9356105
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1493359429314907",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-05T13:06:18.521587+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793927178.5216079
     },
     {
       "channel_id": "US Army Fans AI",
@@ -12351,33 +12297,6 @@
     },
     {
       "channel_id": "Daily Hollywood",
-      "post_id": "1481137313877092",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 11.8 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-05T13:38:09.008706+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793929089.0087225
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1481104417213715",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-11-05T13:38:15.841853+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793929095.8418684
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1493231725994344",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 33.6 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-05T13:38:16.477495+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793929096.4775102
-    },
-    {
-      "channel_id": "Daily Hollywood",
       "post_id": "1594009456073708",
       "stage": "content_or_layout",
       "reason": "Source frame has no verified publisher anchor",
@@ -12402,87 +12321,6 @@
       "checked_at": "2026-11-05T13:38:34.048129+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1793929114.0481458
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122191479494935135",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-05T13:39:52.000425+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793929192.0004334
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122194116068952113",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-05T13:39:52.017848+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793929192.0178573
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1657256779121566",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-05T13:39:52.034025+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793929192.0340333
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122194103576952113",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-05T13:39:52.050284+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793929192.0502937
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122191364702935135",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-05T13:39:52.066721+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793929192.0667295
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122191337378935135",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-05T13:39:52.083106+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793929192.0831137
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122191315022935135",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-05T13:39:52.099153+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793929192.0991614
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122191308266935135",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-05T13:39:52.115151+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793929192.115159
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122191215680935135",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-05T13:39:52.131464+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1793929192.1314723
     },
     {
       "channel_id": "US Army Fans AI",
@@ -12540,24 +12378,6 @@
     },
     {
       "channel_id": "Life in Army Boots",
-      "post_id": "122191479494935135",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-05T13:41:03.917935+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1793929263.9179444
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122191215680935135",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-05T13:41:03.936476+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1793929263.9364848
-    },
-    {
-      "channel_id": "Life in Army Boots",
       "post_id": "122191506908935135",
       "stage": "content_or_layout",
       "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
@@ -12612,60 +12432,6 @@
     },
     {
       "channel_id": "Guardians of Liberty",
-      "post_id": "122191479494935135",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-05T13:42:32.674947+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793929352.6749563
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122191215680935135",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-05T13:42:32.692124+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793929352.6921322
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1622233396604880",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-05T13:42:32.709621+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793929352.7096293
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122191506908935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-05T13:42:40.067117+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793929360.0671303
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122191500620935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-05T13:42:46.805619+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793929366.8056324
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122191485230935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-05T13:42:54.247469+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793929374.2474828
-    },
-    {
-      "channel_id": "Guardians of Liberty",
       "post_id": "122191468106935135",
       "stage": "content_or_layout",
       "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
@@ -12690,15 +12456,6 @@
       "checked_at": "2026-11-05T13:43:18.665421+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793929398.6654341
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1145981844454943",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-05T14:04:14.162016+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1793930654.1620307
     },
     {
       "channel_id": "Music Store",
@@ -18000,6 +17757,249 @@
       "checked_at": "2026-11-06T01:36:20.548933+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1793972180.5489485
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1145981844454943",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-06T02:04:14.478090+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1793973854.4781053
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1493413452642838",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-06T02:05:16.114972+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793973916.114995
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1594156566058997",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-06T02:05:21.023427+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793973921.023447
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1493359429314907",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-06T02:05:24.659317+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793973924.6593382
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1481137313877092",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 11.8 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-06T02:05:27.882630+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793973927.8826532
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1481104417213715",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-11-06T02:05:32.569700+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793973932.5697443
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1493231725994344",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 33.6 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-06T02:05:32.788143+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793973932.7881644
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122191479494935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-06T02:06:38.532318+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793973998.5323336
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122194116068952113",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-06T02:06:38.552830+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793973998.5528443
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1657256779121566",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-06T02:06:38.572120+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793973998.5721335
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122194103576952113",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-06T02:06:38.591377+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793973998.59139
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122191364702935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-06T02:06:38.611301+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793973998.6113133
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122191337378935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-06T02:06:38.631205+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793973998.6312177
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122191315022935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-06T02:06:38.650194+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793973998.6502059
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122191308266935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-06T02:06:38.669715+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793973998.6697283
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122191215680935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-06T02:06:38.689301+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1793973998.6893132
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122191479494935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-06T02:07:13.398390+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793974033.3984046
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122191215680935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-06T02:07:13.421026+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1793974033.4210396
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122191479494935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-06T02:07:53.046017+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793974073.0460317
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122191215680935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-06T02:07:53.068689+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793974073.068703
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1622233396604880",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-06T02:07:53.087156+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793974073.0871708
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122194288466952113",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-06T02:07:58.761027+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793974078.7610457
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122191506908935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-06T02:08:03.312204+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793974083.3122241
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122191500620935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-06T02:08:07.354527+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793974087.3545458
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122194220666952113",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-06T02:08:13.128423+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793974093.1284456
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122194208588952113",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-06T02:08:18.985727+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793974098.9857466
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122191485230935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-06T02:08:23.591400+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1793974103.5914173
     }
   ]
 }
