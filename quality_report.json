@@ -1,42 +1,6 @@
 {
-  "updated_at": "2026-11-06T17:38:04.331353+00:00",
+  "updated_at": "2026-11-06T17:45:15.627078+00:00",
   "rejections": [
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1613985277429692",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-01T00:10:19.505893+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793535019.505902
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1443399987933344",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-01T00:10:22.858818+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793535022.8588314
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122190166436935135",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 9.3 is below minimum threshold of 80.0",
-      "checked_at": "2026-11-01T00:18:07.393629+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1793535487.3936515
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122190159536935135",
-      "stage": "source_quality",
-      "reason": "Low resolution: 529x580px (306,820 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-01T00:18:07.755350+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1793535487.75537
-    },
     {
       "channel_id": "Life in Army Boots",
       "post_id": "122190139196935135",
@@ -12836,15 +12800,6 @@
       "retry_after": 1793986535.9394865
     },
     {
-      "channel_id": "nepal_speaks",
-      "post_id": "1566138205538419",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-06T05:36:09.800989+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1793986569.8010101
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1565032662157071",
       "stage": "topic_or_caption",
@@ -18000,6 +17955,51 @@
       "checked_at": "2026-11-06T17:38:04.331353+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1794029884.3313725
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1565686365425034",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-06T17:43:50.507218+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794030230.5072272
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1483978476926309",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-06T17:43:50.521946+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794030230.5219564
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1565654532094884",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-11-06T17:44:02.232164+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794030242.2321813
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1483978476926309",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-06T17:44:31.620324+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794030271.6203363
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1566138205538419",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-06T17:45:15.627078+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1794030315.6270952
     }
   ]
 }
