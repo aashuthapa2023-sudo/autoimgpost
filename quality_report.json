@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-11-06T01:11:39.561639+00:00",
+  "updated_at": "2026-11-06T01:36:20.548933+00:00",
   "rejections": [
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122192886860952113",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-10-31T08:12:37.061787+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1793477557.0618057
-    },
     {
       "channel_id": "Guardians of Liberty",
       "post_id": "122128739493277454",
@@ -11936,33 +11927,6 @@
       "retry_after": 1793925298.3660467
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1493601405957376",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-11-05T12:36:40.946482+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793925400.9465
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1493598492624334",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-05T12:36:46.835681+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793925406.835698
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1481339703856853",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-05T12:36:52.140677+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793925412.1406908
-    },
-    {
       "channel_id": "oceans_secret",
       "post_id": "122125809057298539",
       "stage": "content_or_layout",
@@ -12099,33 +12063,6 @@
     },
     {
       "channel_id": "Daily Hollywood",
-      "post_id": "1493543219296528",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 25.4 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-05T13:05:55.121331+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793927155.1213503
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1481290540528436",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-11-05T13:06:02.711106+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793927162.711128
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1493482272635956",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-05T13:06:06.344466+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793927166.344488
-    },
-    {
-      "channel_id": "Daily Hollywood",
       "post_id": "1493413452642838",
       "stage": "content_or_layout",
       "reason": "Unknown source lettering or watermark overlaps the subject",
@@ -12150,33 +12087,6 @@
       "checked_at": "2026-11-05T13:06:18.521587+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1793927178.5216079
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1166387715888482",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-05T13:06:43.140074+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1793927203.1400983
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1564621762356730",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-05T13:07:04.835884+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1793927224.8359065
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1166372149223372",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-05T13:07:14.137073+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1793927234.1370966
     },
     {
       "channel_id": "US Army Fans AI",
@@ -18000,6 +17910,96 @@
       "checked_at": "2026-11-06T01:11:39.561639+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1793970699.561653
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1483277106996446",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-06T01:34:20.138751+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1793972060.13876
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1493601405957376",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-11-06T01:34:56.215563+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793972096.2155797
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1493598492624334",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-06T01:35:00.974697+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793972100.9747124
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1481339703856853",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-06T01:35:05.355355+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793972105.3553698
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1493543219296528",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 25.4 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-06T01:35:05.608193+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793972105.6082115
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1481290540528436",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-11-06T01:35:09.968145+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793972109.9681623
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1493482272635956",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-06T01:35:14.713420+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1793972114.7134387
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1166387715888482",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-06T01:35:38.952666+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1793972138.9526827
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1564621762356730",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-06T01:36:08.404708+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1793972168.4047232
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1166372149223372",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-06T01:36:20.548933+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1793972180.5489485
     }
   ]
 }
