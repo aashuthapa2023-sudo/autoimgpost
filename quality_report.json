@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-09T04:09:27.412876+00:00",
+  "updated_at": "2026-11-09T04:21:04.526601+00:00",
   "rejections": [
     {
       "channel_id": "Music Store",
@@ -12828,33 +12828,6 @@
     },
     {
       "channel_id": "Music Store",
-      "post_id": "1520013903331908",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-08T16:11:17.350153+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794197477.3501608
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1498451905472326",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-08T16:11:22.901168+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794197482.9011867
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1498451905472326",
-      "stage": "duplicate_photo",
-      "reason": "Source image was already published to this page",
-      "checked_at": "2026-11-08T16:11:41.194152+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794197501.1941628
-    },
-    {
-      "channel_id": "Music Store",
       "post_id": "1498162192184354",
       "stage": "content_or_layout",
       "reason": "Unknown source lettering or watermark overlaps the subject",
@@ -18000,6 +17973,33 @@
       "checked_at": "2026-11-09T04:09:27.412876+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1794240567.4128993
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1520013903331908",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-09T04:20:34.993254+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794241234.9932644
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1498451905472326",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-09T04:20:45.275614+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794241245.275632
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1498451905472326",
+      "stage": "duplicate_photo",
+      "reason": "Source image was already published to this page",
+      "checked_at": "2026-11-09T04:21:04.526601+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794241264.5266156
     }
   ]
 }
