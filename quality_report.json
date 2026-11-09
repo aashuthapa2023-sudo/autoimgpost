@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-11-09T18:38:16.710149+00:00",
+  "updated_at": "2026-11-09T19:06:38.460908+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1493013876016129",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-04T01:42:41.870403+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1793799761.8704126
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1658560169644454",
@@ -18000,6 +17991,15 @@
       "checked_at": "2026-11-09T18:38:16.710149+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1794292696.7101674
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122192351846935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-09T19:06:38.460908+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1794294398.46093
     }
   ]
 }
