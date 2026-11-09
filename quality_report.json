@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-11-09T17:12:06.800248+00:00",
+  "updated_at": "2026-11-09T17:35:33.840564+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1493101889340661",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-04T01:42:41.843720+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1793799761.84373
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1493054566012060",
@@ -13179,15 +13170,6 @@
     },
     {
       "channel_id": "Daily Hollywood",
-      "post_id": "1496839742300209",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-09T05:35:21.827522+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794245721.8275433
-    },
-    {
-      "channel_id": "Daily Hollywood",
       "post_id": "1496350479015802",
       "stage": "topic_or_caption",
       "reason": "Source caption is missing, context-free or outside this page topic",
@@ -18000,6 +17982,24 @@
       "checked_at": "2026-11-09T17:12:06.800248+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1794287526.8002625
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1608272907770313",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-09T17:34:34.641880+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794288874.6418962
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1496839742300209",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-09T17:35:33.840564+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794288933.840574
     }
   ]
 }
