@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-09T19:41:44.410850+00:00",
+  "updated_at": "2026-11-09T20:07:59.672864+00:00",
   "rejections": [
     {
       "channel_id": "Daily Hollywood",
@@ -12926,15 +12926,6 @@
       "retry_after": 1794245726.040554
     },
     {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122192083190935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-09T05:37:18.624505+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794245838.624525
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1568039198523084",
       "stage": "topic_or_caption",
@@ -13025,15 +13016,6 @@
       "retry_after": 1794247545.3176997
     },
     {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1661036128743631",
-      "stage": "content_or_layout",
-      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
-      "checked_at": "2026-11-09T06:07:02.138896+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794247622.1389139
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1499950085338898",
       "stage": "photo_extraction",
@@ -13115,15 +13097,6 @@
       "retry_after": 1794251318.4594584
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1607255231205414",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-09T07:35:12.685960+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794252912.6859753
-    },
-    {
       "channel_id": "Daily Hollywood",
       "post_id": "1496399585677558",
       "stage": "topic_or_caption",
@@ -13140,24 +13113,6 @@
       "checked_at": "2026-11-09T07:36:27.508043+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1794252987.508054
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122194464632952113",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-09T07:39:19.623348+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794253159.6233659
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1452048677068475",
-      "stage": "source_quality",
-      "reason": "Low resolution: 300x300px (90,000 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-09T07:39:19.946971+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794253159.9469867
     },
     {
       "channel_id": "Guardians of Liberty",
@@ -18000,6 +17955,51 @@
       "checked_at": "2026-11-09T19:41:44.410850+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1794296504.410867
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1607255231205414",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-09T20:04:42.915144+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794297882.9151626
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122192083190935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-09T20:06:54.772137+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794298014.7721505
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1661036128743631",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-11-09T20:07:00.885866+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794298020.8858838
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122194464632952113",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-09T20:07:59.438569+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1794298079.4385867
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1452048677068475",
+      "stage": "source_quality",
+      "reason": "Low resolution: 300x300px (90,000 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-09T20:07:59.672864+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1794298079.67288
     }
   ]
 }
