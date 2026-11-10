@@ -1,60 +1,6 @@
 {
-  "updated_at": "2026-11-10T20:31:04.357116+00:00",
+  "updated_at": "2026-11-10T20:38:51.957604+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1516102203723078",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-11-05T05:04:34.883297+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1793898274.8833177
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1494623422521841",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-05T05:04:39.115928+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1793898279.1159472
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1516246273708671",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-11-05T06:35:21.073649+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1793903721.0736687
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1516235630376402",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-05T06:35:26.970758+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1793903726.9707754
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1516205180379447",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-05T06:35:33.101436+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1793903733.1014535
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1563765938950410",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-05T06:35:39.039452+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1793903739.039472
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1563755542284783",
@@ -13358,33 +13304,6 @@
       "retry_after": 1794339745.3979666
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1607255231205414",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-10T08:34:25.046603+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794342865.04662
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122192083190935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-10T08:36:34.377270+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794342994.3772879
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1661036128743631",
-      "stage": "content_or_layout",
-      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
-      "checked_at": "2026-11-10T08:36:40.527628+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794343000.527645
-    },
-    {
       "channel_id": "US Army Fans AI",
       "post_id": "122194549250952113",
       "stage": "content_or_layout",
@@ -18000,6 +17919,87 @@
       "checked_at": "2026-11-10T20:31:04.357116+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1794345364.3571339
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1607255231205414",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-10T20:35:20.102362+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794386120.1023817
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1570646038262400",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-10T20:36:19.409741+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794386179.4097605
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1570644361595901",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 5.5 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-10T20:36:25.944108+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794386185.9441283
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1488370233153800",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 8.2 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-10T20:36:37.546112+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794386197.5461357
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1570606131599724",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-10T20:36:41.583363+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794386201.583385
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1570584378268566",
+      "stage": "content_or_layout",
+      "reason": "Removed source title is ambiguous or too long",
+      "checked_at": "2026-11-10T20:36:47.772115+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794386207.7721386
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1598105652353870",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-10T20:38:42.543096+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794386322.5431128
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122192083190935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-10T20:38:47.551734+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794386327.551757
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1661036128743631",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-11-10T20:38:51.957604+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794386331.9576259
     }
   ]
 }
