@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-10T15:12:53.825336+00:00",
+  "updated_at": "2026-11-10T15:37:49.616451+00:00",
   "rejections": [
     {
       "channel_id": "nepal_speaks",
@@ -12899,24 +12899,6 @@
       "retry_after": 1794309157.4128954
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1497642762219907",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 16.1 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-10T00:05:32.602381+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794312332.6024013
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1497584015559115",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-10T00:05:37.429264+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794312337.4292917
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1521190619880903",
       "stage": "photo_extraction",
@@ -12998,33 +12980,6 @@
       "retry_after": 1794314153.672384
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1486168930040597",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 12.3 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-10T00:37:01.500516+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794314221.5005343
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1599449405529713",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-10T00:37:09.491833+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794314229.4918492
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1485366163454207",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 5.1 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-10T00:37:24.057621+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794314244.0576415
-    },
-    {
       "channel_id": "US Army Fans AI",
       "post_id": "122194501286952113",
       "stage": "topic_or_caption",
@@ -13059,15 +13014,6 @@
       "checked_at": "2026-11-10T01:06:26.795928+00:00",
       "policy_signature": "76b1e04e7afade22",
       "retry_after": 1794315986.7959394
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1497729342211249",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-10T01:06:59.614408+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794316019.6144302
     },
     {
       "channel_id": "nepal_speaks",
@@ -13151,15 +13097,6 @@
       "retry_after": 1794319580.9325502
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1606355814628689",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-10T02:35:20.375194+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794321320.3752098
-    },
-    {
       "channel_id": "Daily Hollywood",
       "post_id": "1497256528925197",
       "stage": "topic_or_caption",
@@ -13178,24 +13115,6 @@
       "retry_after": 1794321478.5916977
     },
     {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122192231456935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-10T02:38:05.368607+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794321485.3686228
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122192226194935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-10T02:38:12.351122+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794321492.3511355
-    },
-    {
       "channel_id": "Life in Army Boots",
       "post_id": "122194513454952113",
       "stage": "topic_or_caption",
@@ -13203,42 +13122,6 @@
       "checked_at": "2026-11-10T02:38:36.635192+00:00",
       "policy_signature": "42b02d01c718ed7d",
       "retry_after": 1794321516.6352003
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "1662031008644143",
-      "stage": "content_or_layout",
-      "reason": "Source panel boundary is ambiguous; choose another image",
-      "checked_at": "2026-11-10T02:38:54.208106+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1794321534.2081203
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "1661847538662490",
-      "stage": "content_or_layout",
-      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
-      "checked_at": "2026-11-10T02:39:37.167042+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1794321577.1670566
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122192231456935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-10T02:39:43.869838+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1794321583.8698509
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122192226194935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-10T02:39:50.840631+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1794321590.8406453
     },
     {
       "channel_id": "Guardians of Liberty",
@@ -13257,15 +13140,6 @@
       "checked_at": "2026-11-10T03:05:34.744776+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1794323134.7447855
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1662031008644143",
-      "stage": "content_or_layout",
-      "reason": "Source panel boundary is ambiguous; choose another image",
-      "checked_at": "2026-11-10T03:07:08.492177+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794323228.4921937
     },
     {
       "channel_id": "Music Store",
@@ -18000,6 +17874,132 @@
       "checked_at": "2026-11-10T15:12:53.825336+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1794366773.8253522
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1606355814628689",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-10T15:34:05.367583+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794368045.3676004
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1486168930040597",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 12.3 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-10T15:35:06.862555+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794368106.8625786
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1599449405529713",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-10T15:35:11.563097+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794368111.5631135
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1497729342211249",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-10T15:35:14.540275+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794368114.5402935
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1485366163454207",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 5.1 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-10T15:35:23.557607+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794368123.5576293
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1497642762219907",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 16.1 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-10T15:35:23.822645+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794368123.8226655
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1497584015559115",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-10T15:35:27.007808+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794368127.0078313
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1662031008644143",
+      "stage": "content_or_layout",
+      "reason": "Source panel boundary is ambiguous; choose another image",
+      "checked_at": "2026-11-10T15:36:42.018634+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794368202.0186543
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122192231456935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-10T15:36:45.814917+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794368205.8149319
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122192226194935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-10T15:36:49.706979+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794368209.7069952
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "1662031008644143",
+      "stage": "content_or_layout",
+      "reason": "Source panel boundary is ambiguous; choose another image",
+      "checked_at": "2026-11-10T15:37:20.080657+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1794368240.080676
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "1661847538662490",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-11-10T15:37:42.394518+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1794368262.3945377
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122192231456935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-10T15:37:45.961527+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1794368265.9615474
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122192226194935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-10T15:37:49.616451+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1794368269.6164713
     }
   ]
 }
