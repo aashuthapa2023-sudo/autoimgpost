@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-10T04:37:51.580845+00:00",
+  "updated_at": "2026-11-10T04:53:06.647933+00:00",
   "rejections": [
     {
       "channel_id": "Music Store",
@@ -12683,15 +12683,6 @@
       "retry_after": 1794283783.9082468
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1600916748716312",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-09T16:37:53.320732+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794285473.3207579
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1520507409949224",
       "stage": "content_or_layout",
@@ -12798,69 +12789,6 @@
       "checked_at": "2026-11-09T16:39:18.578228+00:00",
       "policy_signature": "76b1e04e7afade22",
       "retry_after": 1794285558.5782542
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1600916748716312",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-09T16:39:38.778672+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794285578.7786944
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1498451905472326",
-      "stage": "duplicate_photo",
-      "reason": "Source image was already published to this page",
-      "checked_at": "2026-11-09T16:39:39.067838+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794285579.067856
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1602574021903722",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-09T16:40:51.418787+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794285651.4188073
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1602423628585428",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-09T16:40:55.881089+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794285655.8811097
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1601904445304013",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-09T16:41:00.312809+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794285660.3128273
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1601445095349948",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output is incomplete or too verbose",
-      "checked_at": "2026-11-09T16:41:04.800609+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794285664.8006299
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1600794402081684",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-09T16:41:09.334903+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794285669.3349206
     },
     {
       "channel_id": "Music Store",
@@ -18000,6 +17928,78 @@
       "checked_at": "2026-11-10T04:37:51.580845+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1794328671.5808642
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1600916748716312",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-10T04:50:05.844724+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794329405.844742
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1600916748716312",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-10T04:51:07.676405+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794329467.6764216
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1498451905472326",
+      "stage": "duplicate_photo",
+      "reason": "Source image was already published to this page",
+      "checked_at": "2026-11-10T04:51:07.889071+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794329467.8890853
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1602574021903722",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-10T04:52:31.209517+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794329551.2095368
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1602423628585428",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-10T04:52:40.045640+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794329560.0456562
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1601904445304013",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-10T04:52:48.819013+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794329568.8190303
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1601445095349948",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output is incomplete or too verbose",
+      "checked_at": "2026-11-10T04:52:57.759239+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794329577.759255
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1600794402081684",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-10T04:53:06.647933+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794329586.6479514
     }
   ]
 }
