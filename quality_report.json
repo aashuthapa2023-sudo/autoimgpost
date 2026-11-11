@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-11T23:14:29.376415+00:00",
+  "updated_at": "2026-11-11T23:37:16.970890+00:00",
   "rejections": [
     {
       "channel_id": "Guardians of Liberty",
@@ -12800,15 +12800,6 @@
       "retry_after": 1794401578.9936893
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1601834038624583",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 8.9 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-11T01:04:34.801246+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794402274.8012626
-    },
-    {
       "channel_id": "US Army Fans AI",
       "post_id": "122194621592952113",
       "stage": "content_or_layout",
@@ -13071,24 +13062,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1609236994340571",
-      "stage": "content_or_layout",
-      "reason": "Source graphics leave too little usable photograph",
-      "checked_at": "2026-11-11T03:34:32.906004+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794411272.9060292
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1601901805284473",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 14.4 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-11T03:34:37.712345+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794411277.7123687
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1600664882074832",
       "stage": "photo_extraction",
       "reason": "Blurry image detected: Sharpness variance 20.7 is below minimum threshold of 35.0",
@@ -13338,15 +13311,6 @@
       "checked_at": "2026-11-11T06:10:18.203093+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1794420618.2031116
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1608272907770313",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-11T06:34:55.561320+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794422095.561337
     },
     {
       "channel_id": "daily_netflix",
@@ -13653,24 +13617,6 @@
       "checked_at": "2026-11-11T07:35:21.781555+00:00",
       "policy_signature": "76b1e04e7afade22",
       "retry_after": 1794425721.7815714
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1609518197645784",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-11T08:34:43.116453+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794429283.1164746
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1608359557761648",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-11T08:35:01.713707+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794429301.7137237
     },
     {
       "channel_id": "Music Store",
@@ -14013,51 +13959,6 @@
       "checked_at": "2026-11-11T11:05:44.454342+00:00",
       "policy_signature": "76b1e04e7afade22",
       "retry_after": 1794438344.4543638
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122192249456935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-11T11:08:16.598229+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794438496.5982504
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122192244728935135",
-      "stage": "source_quality",
-      "reason": "Low resolution: 512x512px (262,144 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-11T11:08:16.812653+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794438496.8126726
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122192235830935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-11T11:08:22.128003+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794438502.1280737
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122192231456935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-11T11:08:27.003113+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794438507.003135
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122192226194935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-11T11:08:32.368327+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794438512.3683484
     },
     {
       "channel_id": "US Army Fans AI",
@@ -17372,24 +17273,6 @@
       "retry_after": 1794478655.2592244
     },
     {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122192382344935135",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-11T22:36:38.794229+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794439298.7942398
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122192266166935135",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-11T22:37:04.301441+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1794439324.3014562
-    },
-    {
       "channel_id": "daily_netflix",
       "post_id": "1610813490849588",
       "stage": "content_or_layout",
@@ -18000,6 +17883,123 @@
       "checked_at": "2026-11-11T23:14:29.376415+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1794441569.376437
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1609518197645784",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-11T23:33:59.266675+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794483239.2666905
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1609236994340571",
+      "stage": "content_or_layout",
+      "reason": "Source graphics leave too little usable photograph",
+      "checked_at": "2026-11-11T23:34:08.447149+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794483248.4471707
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1601901805284473",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 14.4 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-11T23:34:12.231446+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794483252.2314706
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1601834038624583",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 8.9 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-11T23:34:16.825013+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794483256.8250334
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1608359557761648",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-11T23:34:25.911073+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794483265.9110904
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1608272907770313",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-11T23:34:34.945845+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794483274.9458616
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122192382344935135",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-11T23:36:40.308290+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794442900.3083072
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122192249456935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-11T23:36:43.727967+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794483403.7279835
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122192244728935135",
+      "stage": "source_quality",
+      "reason": "Low resolution: 512x512px (262,144 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-11T23:36:43.930628+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794483403.9306483
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122192235830935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-11T23:36:47.625088+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794483407.6251066
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122192231456935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-11T23:36:51.514164+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794483411.5141833
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122192226194935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-11T23:36:55.333730+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794483415.3337512
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122192266166935135",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-11T23:37:16.970890+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1794442936.9709167
     }
   ]
 }
