@@ -1,24 +1,6 @@
 {
-  "updated_at": "2026-11-12T16:38:06.693928+00:00",
+  "updated_at": "2026-11-12T17:05:28.287114+00:00",
   "rejections": [
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1493580642626119",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-06T13:47:58.656507+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794016078.6565223
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1493565462627637",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-06T13:47:58.676365+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794016078.6763794
-    },
     {
       "channel_id": "Daily Hollywood",
       "post_id": "1493557975961719",
@@ -18000,6 +17982,24 @@
       "checked_at": "2026-11-12T16:38:06.693928+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1794504186.6939461
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1604415688366418",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-11-12T17:04:31.296538+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794546271.2965577
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1604415688366418",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-11-12T17:05:28.287114+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794546328.2871325
     }
   ]
 }
