@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-12T12:12:30.106253+00:00",
+  "updated_at": "2026-11-12T12:38:31.629960+00:00",
   "rejections": [
     {
       "channel_id": "Music Store",
@@ -11073,15 +11073,6 @@
     },
     {
       "channel_id": "Daily Hollywood",
-      "post_id": "1487561976567959",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 13.3 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-10T21:37:14.010889+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794389834.0109072
-    },
-    {
-      "channel_id": "Daily Hollywood",
       "post_id": "1487364916587665",
       "stage": "content_or_layout",
       "reason": "Removed source headline contains uncertain OCR words",
@@ -11709,33 +11700,6 @@
       "checked_at": "2026-11-11T02:05:55.479214+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1794405955.4792335
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1487438603246963",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-11T02:06:21.290402+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794405981.290417
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1499726345344882",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-11T02:06:25.676324+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794405985.6763449
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1499681745349342",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-11T02:06:30.018979+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794405990.0189993
     },
     {
       "channel_id": "Daily Hollywood",
@@ -12809,24 +12773,6 @@
       "retry_after": 1794441948.0493934
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1499970775320439",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-11T12:06:31.218245+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794441991.2182622
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1487664326557724",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 12.5 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-11T12:06:48.521827+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794442008.5218444
-    },
-    {
       "channel_id": "US Army Fans AI",
       "post_id": "1661304488716795",
       "stage": "content_or_layout",
@@ -13629,33 +13575,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1600916748716312",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-12T00:04:00.572678+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794485040.5726957
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1600832838724703",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-12T00:04:05.514363+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794485045.5143805
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1608153067782297",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-11-12T00:04:15.103375+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794485055.103396
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1600664882074832",
       "stage": "photo_extraction",
       "reason": "Blurry image detected: Sharpness variance 20.7 is below minimum threshold of 35.0",
@@ -13683,15 +13602,6 @@
     },
     {
       "channel_id": "Music Store",
-      "post_id": "1489707106353446",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-12T00:34:48.111778+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794486888.1117957
-    },
-    {
-      "channel_id": "Music Store",
       "post_id": "1571538654839805",
       "stage": "content_or_layout",
       "reason": "Unknown source lettering or watermark overlaps the subject",
@@ -13707,42 +13617,6 @@
       "checked_at": "2026-11-12T00:35:06.260038+00:00",
       "policy_signature": "76b1e04e7afade22",
       "retry_after": 1794486906.2600558
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1489707106353446",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-12T00:35:30.750727+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794486930.750738
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1500876928563157",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-12T00:35:30.764597+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794486930.7646058
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1500872088563641",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-12T00:35:30.777289+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794486930.7773008
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1500853915232125",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-12T00:35:30.789917+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794486930.7899272
     },
     {
       "channel_id": "daily_netflix",
@@ -17768,15 +17642,6 @@
       "retry_after": 1794526777.2893457
     },
     {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122192300636935135",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-12T11:40:00.624523+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1794486300.6245327
-    },
-    {
       "channel_id": "daily_netflix",
       "post_id": "1153447553708372",
       "stage": "topic_or_caption",
@@ -18000,6 +17865,141 @@
       "checked_at": "2026-11-12T12:12:30.106253+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1794488250.1062667
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1600916748716312",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-12T12:34:27.511672+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794530067.5116851
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1600832838724703",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-12T12:34:36.523836+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794530076.5238502
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1608153067782297",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-11-12T12:34:54.401073+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794530094.4010882
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1489707106353446",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-12T12:35:32.817903+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794530132.8179147
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1489707106353446",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-12T12:35:49.025547+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794530149.0255601
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1500876928563157",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-12T12:35:49.047709+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794530149.0477202
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1500872088563641",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-12T12:35:49.064441+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794530149.0644505
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1500853915232125",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-12T12:35:49.080904+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794530149.080914
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1499970775320439",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-12T12:35:54.665199+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794530154.6652145
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1487664326557724",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 12.5 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-12T12:36:11.592280+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794530171.592297
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1487561976567959",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 13.3 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-12T12:36:30.746040+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794530190.746056
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1487438603246963",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-12T12:36:49.573892+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794530209.5739095
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1499726345344882",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-12T12:36:55.132461+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794530215.1324747
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1499681745349342",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-12T12:37:00.691021+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794530220.6910357
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122192300636935135",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-12T12:38:31.629960+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1794489811.6299732
     }
   ]
 }
