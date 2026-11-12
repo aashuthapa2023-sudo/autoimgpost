@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-11-12T14:08:14.549305+00:00",
+  "updated_at": "2026-11-12T15:08:21.416008+00:00",
   "rejections": [
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122191178732935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-06T12:09:46.415812+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1794010186.4158294
-    },
     {
       "channel_id": "Life in Army Boots",
       "post_id": "122193858860952113",
@@ -13557,15 +13548,6 @@
     },
     {
       "channel_id": "oceans_secret",
-      "post_id": "122122941825320544",
-      "stage": "content_or_layout",
-      "reason": "Source caption has no complete grounded headline for replacement",
-      "checked_at": "2026-11-12T01:36:05.434011+00:00",
-      "policy_signature": "9eea52c5880fafde",
-      "retry_after": 1794490565.4340277
-    },
-    {
-      "channel_id": "oceans_secret",
       "post_id": "122126515335298539",
       "stage": "content_or_layout",
       "reason": "Source lettering overlaps the marine subject outside replacement zones",
@@ -17958,39 +17940,12 @@
     },
     {
       "channel_id": "US Army Fans AI",
-      "post_id": "122192382344935135",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-12T14:07:20.567703+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794495140.5677154
-    },
-    {
-      "channel_id": "US Army Fans AI",
       "post_id": "122192300636935135",
       "stage": "source_image",
       "reason": "Image is unavailable or corrupt",
       "checked_at": "2026-11-12T14:07:20.736171+00:00",
       "policy_signature": "f01a39cc46b8a63a",
       "retry_after": 1794495140.7361815
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122192382344935135",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-12T14:07:44.334453+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1794495164.3344653
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122192382344935135",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-12T14:08:14.357557+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794495194.3575697
     },
     {
       "channel_id": "Guardians of Liberty",
@@ -18000,6 +17955,51 @@
       "checked_at": "2026-11-12T14:08:14.549305+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1794495194.5493193
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1611572240773713",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-12T15:04:48.489488+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794539088.4895108
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122122941825320544",
+      "stage": "content_or_layout",
+      "reason": "Source caption has no complete grounded headline for replacement",
+      "checked_at": "2026-11-12T15:06:56.314823+00:00",
+      "policy_signature": "9eea52c5880fafde",
+      "retry_after": 1794539216.3148468
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122192382344935135",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-12T15:07:30.289273+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794498750.289334
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122192382344935135",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-12T15:07:52.971345+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1794498772.97137
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122192382344935135",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-12T15:08:21.416008+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1794498801.4160297
     }
   ]
 }
