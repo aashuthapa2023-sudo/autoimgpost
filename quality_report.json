@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-11T23:37:16.970890+00:00",
+  "updated_at": "2026-11-12T00:07:28.324048+00:00",
   "rejections": [
     {
       "channel_id": "Guardians of Liberty",
@@ -13062,24 +13062,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1600664882074832",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 20.7 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-11T03:34:43.511733+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794411283.5117557
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1600154955459158",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 25.2 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-11T03:34:49.367137+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794411289.3671582
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1607452051185732",
       "stage": "content_or_layout",
       "reason": "Unknown source lettering or watermark overlaps the subject",
@@ -13203,33 +13185,6 @@
       "checked_at": "2026-11-11T05:34:08.912276+00:00",
       "policy_signature": "76b1e04e7afade22",
       "retry_after": 1794418448.912293
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1600916748716312",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-11T06:04:39.467581+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794420279.4675996
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1600832838724703",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-11T06:04:49.058815+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794420289.0588326
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1608153067782297",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-11-11T06:05:08.593199+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794420308.5932193
     },
     {
       "channel_id": "daily_netflix",
@@ -13959,15 +13914,6 @@
       "checked_at": "2026-11-11T11:05:44.454342+00:00",
       "policy_signature": "76b1e04e7afade22",
       "retry_after": 1794438344.4543638
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1602574021903722",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-11T11:36:17.617823+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794440177.6178393
     },
     {
       "channel_id": "US Army Fans AI",
@@ -17814,75 +17760,12 @@
     },
     {
       "channel_id": "US Army Fans AI",
-      "post_id": "122192300636935135",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-11T23:13:22.064514+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794441502.0645332
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122192266166935135",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-11T23:13:22.336698+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794441502.3367205
-    },
-    {
-      "channel_id": "US Army Fans AI",
       "post_id": "122192260664935135",
       "stage": "content_or_layout",
       "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
       "checked_at": "2026-11-11T23:13:30.519318+00:00",
       "policy_signature": "f01a39cc46b8a63a",
       "retry_after": 1794482010.5193365
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122192382344935135",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-11T23:13:56.194787+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1794441536.194805
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122192300636935135",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-11T23:13:56.492647+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1794441536.4926667
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122192382344935135",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-11T23:14:28.776536+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794441568.7765577
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122192300636935135",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-11T23:14:29.060047+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794441569.0600693
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122192266166935135",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-11T23:14:29.376415+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794441569.376437
     },
     {
       "channel_id": "daily_netflix",
@@ -18000,6 +17883,123 @@
       "checked_at": "2026-11-11T23:37:16.970890+00:00",
       "policy_signature": "42b02d01c718ed7d",
       "retry_after": 1794442936.9709167
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1600916748716312",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-12T00:04:00.572678+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794485040.5726957
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1600832838724703",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-12T00:04:05.514363+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794485045.5143805
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1608153067782297",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-11-12T00:04:15.103375+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794485055.103396
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1600664882074832",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 20.7 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-12T00:04:19.744480+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794485059.7445
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1600154955459158",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 25.2 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-12T00:04:24.364379+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794485064.3643994
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122192300636935135",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-12T00:06:31.915870+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794444691.915892
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122192266166935135",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-12T00:06:32.043116+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794444692.0431352
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1602574021903722",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-12T00:06:36.561448+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794485196.5614665
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122192382344935135",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-12T00:06:59.265471+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1794444719.2654839
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122192300636935135",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-12T00:06:59.428047+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1794444719.4280598
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122192382344935135",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-12T00:07:28.030839+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1794444748.0308595
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122192300636935135",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-12T00:07:28.189757+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1794444748.189778
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122192266166935135",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-12T00:07:28.324048+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1794444748.3240802
     }
   ]
 }
