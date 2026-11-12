@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-11-12T03:06:35.381757+00:00",
+  "updated_at": "2026-11-12T03:10:41.800254+00:00",
   "rejections": [
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1493164449334405",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-06T02:36:40.881189+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1793975800.8812087
-    },
     {
       "channel_id": "daily_netflix",
       "post_id": "1143914651328329",
@@ -18000,6 +17991,15 @@
       "checked_at": "2026-11-12T03:06:35.381757+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1794455495.3817673
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1489227743068049",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 12.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-12T03:10:41.800254+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794496241.800268
     }
   ]
 }
