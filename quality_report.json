@@ -1,123 +1,6 @@
 {
-  "updated_at": "2026-11-13T12:11:56.434647+00:00",
+  "updated_at": "2026-11-13T12:37:38.102414+00:00",
   "rejections": [
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1566078798877693",
-      "stage": "source_language",
-      "reason": "Source caption does not match the page language",
-      "checked_at": "2026-11-07T08:35:26.140078+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1794083726.1400974
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1566064178879155",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-11-07T08:35:46.462355+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1794083746.4623744
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1566056418879931",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-07T08:35:52.192621+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1794083752.1926384
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1482139643776859",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-07T08:58:34.244374+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794085114.2443838
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1145223334530794",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-07T09:33:54.281211+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794087234.2812202
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1602962234968047",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-07T09:35:26.705876+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794087326.7058916
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1602802304984040",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-07T10:04:20.471410+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794089060.4714253
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1144920164561111",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-11-07T10:04:28.001944+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794089068.0019615
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1602629618334642",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 10.0 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-07T10:04:43.438652+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794089083.438671
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1565951095398561",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-07T10:35:41.550412+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794090941.5504203
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1565934082066929",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-07T10:35:41.567606+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794090941.5676153
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1518121993521099",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-07T10:35:41.584730+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794090941.5847385
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1565918972068440",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-07T10:35:41.601668+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794090941.6016784
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1565915015402169",
@@ -13844,51 +13727,6 @@
       "retry_after": 1794568214.7586138
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1153447553708372",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-13T00:06:15.586150+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794571575.5861669
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1609518197645784",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-13T00:06:32.940031+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794571592.9400516
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1609236994340571",
-      "stage": "content_or_layout",
-      "reason": "Source graphics leave too little usable photograph",
-      "checked_at": "2026-11-13T00:06:46.420852+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794571606.4208753
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1601901805284473",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 14.4 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-13T00:06:52.071506+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794571612.071541
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1601834038624583",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 8.9 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-13T00:06:58.853977+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794571618.8539999
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1502488165068700",
       "stage": "content_or_layout",
@@ -13896,15 +13734,6 @@
       "checked_at": "2026-11-13T00:07:52.393553+00:00",
       "policy_signature": "76b1e04e7afade22",
       "retry_after": 1794571672.393576
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1575110601307846",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-11-13T00:09:07.124669+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1794571747.1246932
     },
     {
       "channel_id": "daily_netflix",
@@ -18000,6 +17829,177 @@
       "checked_at": "2026-11-13T12:11:56.434647+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1794615116.434664
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1153447553708372",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-13T12:33:49.763513+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794616429.7635298
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1605363838271603",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 19.9 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-13T12:33:56.880835+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794616436.8808591
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1609518197645784",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-13T12:34:06.203693+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794616446.2037098
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1609236994340571",
+      "stage": "content_or_layout",
+      "reason": "Source graphics leave too little usable photograph",
+      "checked_at": "2026-11-13T12:34:15.842886+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794616455.8429081
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1601901805284473",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 14.4 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-13T12:34:19.720528+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794616459.720549
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1601834038624583",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 8.9 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-13T12:34:24.520183+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794616464.520208
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1605363838271603",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 19.9 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-13T12:35:21.338982+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794616521.339002
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1575110601307846",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-11-13T12:35:44.197041+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1794616544.197061
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122192963276935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-13T12:36:39.090477+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794616599.090488
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122192957612935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-13T12:36:39.101759+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794616599.1017718
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122192951864935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-13T12:36:39.111833+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794616599.111844
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122130155229277454",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-13T12:36:39.121922+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794616599.1219313
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122130145947277454",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-13T12:36:39.132028+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794616599.1320374
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122130132333277454",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-13T12:36:39.141824+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794616599.1418347
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122130128937277454",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-13T12:36:39.151498+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794616599.1515095
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122130127677277454",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-13T12:37:19.192545+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1794616639.1925619
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "1665700691610508",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-11-13T12:37:21.832087+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1794616641.8321073
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "1665531184960792",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-11-13T12:37:37.923807+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1794616657.923826
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "1665172044996706",
+      "stage": "source_quality",
+      "reason": "Low resolution: 376x720px (270,720 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-13T12:37:38.102414+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1794616658.1024354
     }
   ]
 }
