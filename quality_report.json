@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-11-13T12:37:38.102414+00:00",
+  "updated_at": "2026-11-13T13:05:39.515411+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1565915015402169",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-07T10:35:41.618681+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794090941.6186898
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1565898738737130",
@@ -18000,6 +17991,15 @@
       "checked_at": "2026-11-13T12:37:38.102414+00:00",
       "policy_signature": "42b02d01c718ed7d",
       "retry_after": 1794616658.1024354
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1504485204885386",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 9.4 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-13T13:05:39.515411+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794618339.5154302
     }
   ]
 }
