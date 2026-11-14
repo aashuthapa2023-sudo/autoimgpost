@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-14T08:36:02.156066+00:00",
+  "updated_at": "2026-11-14T09:07:08.944558+00:00",
   "rejections": [
     {
       "channel_id": "US Army Fans AI",
@@ -13547,42 +13547,6 @@
       "retry_after": 1794643524.4977245
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1490472539610236",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-13T20:41:26.024717+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794645686.024734
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122126861967298539",
-      "stage": "content_or_layout",
-      "reason": "Source lettering overlaps the marine subject outside replacement zones",
-      "checked_at": "2026-11-13T20:42:20.102732+00:00",
-      "policy_signature": "9eea52c5880fafde",
-      "retry_after": 1794645740.1027486
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1666791551501422",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-13T20:43:06.877758+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794645786.8777761
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "1666791551501422",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-13T20:43:29.335436+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1794645809.3354464
-    },
-    {
       "channel_id": "Life in Army Boots",
       "post_id": "122192596880935135",
       "stage": "topic_or_caption",
@@ -13599,15 +13563,6 @@
       "checked_at": "2026-11-13T20:43:29.362750+00:00",
       "policy_signature": "42b02d01c718ed7d",
       "retry_after": 1794645809.3627582
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "1666669928180251",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-13T20:43:32.062099+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1794645812.0621207
     },
     {
       "channel_id": "Life in Army Boots",
@@ -13644,15 +13599,6 @@
       "checked_at": "2026-11-13T20:44:19.825921+00:00",
       "policy_signature": "42b02d01c718ed7d",
       "retry_after": 1794645859.8259401
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1459463582993651",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-13T20:44:44.435009+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794645884.4350202
     },
     {
       "channel_id": "Guardians of Liberty",
@@ -13707,15 +13653,6 @@
       "checked_at": "2026-11-13T20:44:44.517010+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1794645884.5170243
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1459613266312016",
-      "stage": "source_quality",
-      "reason": "Low resolution: 125x200px (25,000 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-13T20:44:44.875577+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794645884.875594
     },
     {
       "channel_id": "daily_netflix",
@@ -18000,6 +17937,69 @@
       "checked_at": "2026-11-14T08:36:02.156066+00:00",
       "policy_signature": "8821a6e8f53da85d",
       "retry_after": 1794688562.156083
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1490472539610236",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-14T09:04:57.468639+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794690297.468646
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122126861967298539",
+      "stage": "content_or_layout",
+      "reason": "Source lettering overlaps the marine subject outside replacement zones",
+      "checked_at": "2026-11-14T09:05:46.069591+00:00",
+      "policy_signature": "9eea52c5880fafde",
+      "retry_after": 1794690346.0696084
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1666791551501422",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-14T09:06:19.198357+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1794690379.1983654
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "1666791551501422",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-14T09:06:40.887788+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1794690400.8877954
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "1666669928180251",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-14T09:06:42.447137+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1794690402.4471521
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1459463582993651",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-14T09:07:08.708342+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1794690428.7083497
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1459613266312016",
+      "stage": "source_quality",
+      "reason": "Low resolution: 125x200px (25,000 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-14T09:07:08.944558+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1794690428.9445658
     }
   ]
 }
