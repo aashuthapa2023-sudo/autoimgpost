@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-15T16:37:30.740841+00:00",
+  "updated_at": "2026-11-15T17:03:19.153356+00:00",
   "rejections": [
     {
       "channel_id": "Music Store",
@@ -13142,15 +13142,6 @@
       "retry_after": 1794753284.7185647
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1503922531591930",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-11-15T02:54:02.501932+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794754442.5019495
-    },
-    {
       "channel_id": "Life in Army Boots",
       "post_id": "1665531184960792",
       "stage": "content_or_layout",
@@ -13167,51 +13158,6 @@
       "checked_at": "2026-11-15T02:57:07.523524+00:00",
       "policy_signature": "42b02d01c718ed7d",
       "retry_after": 1794754627.5235434
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1503851964932320",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 32.9 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-15T03:05:57.169142+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794755157.1691582
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1605559251585395",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-15T03:06:11.854516+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794755171.8545306
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1503593001624883",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-15T03:06:17.957895+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794755177.9579122
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1605363838271603",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 19.9 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-15T03:06:25.595205+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794755185.5952218
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1490787459578744",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 28.7 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-15T03:06:30.888666+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794755190.88868
     },
     {
       "channel_id": "Daily Hollywood",
@@ -13347,15 +13293,6 @@
       "checked_at": "2026-11-15T04:05:50.290450+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1794758750.2904673
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122130136113277454",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-15T04:37:38.546890+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794760658.5469081
     },
     {
       "channel_id": "daily_netflix",
@@ -18000,6 +17937,69 @@
       "checked_at": "2026-11-15T16:37:30.740841+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1794803850.7408566
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1503922531591930",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-11-15T17:00:59.663582+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794805259.6636
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1503851964932320",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 32.9 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-15T17:00:59.961189+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794805259.9612103
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1605559251585395",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-15T17:01:05.117235+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794805265.1172566
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1503593001624883",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-15T17:01:08.181193+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794805268.1812167
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1605363838271603",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 19.9 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-15T17:01:12.210230+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794805272.2102535
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1490787459578744",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 28.7 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-15T17:01:14.874144+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794805274.8741617
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122130136113277454",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-15T17:03:19.153356+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1794805399.1533775
     }
   ]
 }
