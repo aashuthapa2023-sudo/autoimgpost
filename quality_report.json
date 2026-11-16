@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-16T23:07:52.471830+00:00",
+  "updated_at": "2026-11-16T23:36:52.508313+00:00",
   "rejections": [
     {
       "channel_id": "Daily Hollywood",
@@ -13484,69 +13484,6 @@
       "retry_after": 1794868539.670306
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1614323583831912",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-11-16T11:04:44.670145+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794870284.670162
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1576975264296144",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-16T11:05:39.529603+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794870339.5296164
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1576959717631032",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-16T11:05:39.546637+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794870339.5466523
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1576951424298528",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-16T11:05:39.563193+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794870339.5632071
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1576922880968049",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-16T11:05:39.579516+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794870339.5795274
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1576880327638971",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-16T11:05:39.596059+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794870339.5960734
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1576842590976078",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-16T11:05:39.611969+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794870339.6119804
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1675068951326909",
       "stage": "topic_or_caption",
@@ -13680,42 +13617,6 @@
       "checked_at": "2026-11-16T11:06:25.920347+00:00",
       "policy_signature": "76b1e04e7afade22",
       "retry_after": 1794870385.920365
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1179228324604421",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-16T11:07:20.935518+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1794870440.9355342
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1179209931272927",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-16T11:07:34.876135+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1794870454.8761508
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "1667846644729246",
-      "stage": "content_or_layout",
-      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
-      "checked_at": "2026-11-16T11:09:30.444173+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1794870570.4441915
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "1667587374755173",
-      "stage": "content_or_layout",
-      "reason": "Source panel boundary is ambiguous; choose another image",
-      "checked_at": "2026-11-16T11:09:49.372234+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1794870589.3722498
     },
     {
       "channel_id": "Life in Army Boots",
@@ -18000,6 +17901,105 @@
       "checked_at": "2026-11-16T23:07:52.471830+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1794913672.4718468
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1614323583831912",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-11-16T23:33:48.588631+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794915228.5886521
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1576975264296144",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-16T23:34:27.363897+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794915267.3639095
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1576959717631032",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-16T23:34:27.377212+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794915267.3772318
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1576951424298528",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-16T23:34:27.390131+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794915267.3901432
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1576922880968049",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-16T23:34:27.403107+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794915267.4031196
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1576880327638971",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-16T23:34:27.415670+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794915267.4156816
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1576842590976078",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-16T23:34:27.428295+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794915267.4283063
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1179228324604421",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-16T23:35:05.215858+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1794915305.2158787
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1179209931272927",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-16T23:35:12.383742+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1794915312.3837593
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "1667846644729246",
+      "stage": "content_or_layout",
+      "reason": "Headline cannot fit at readable type size; rewrite before publishing",
+      "checked_at": "2026-11-16T23:36:42.372320+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1794915402.3723407
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "1667587374755173",
+      "stage": "content_or_layout",
+      "reason": "Source panel boundary is ambiguous; choose another image",
+      "checked_at": "2026-11-16T23:36:52.508313+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1794915412.5083299
     }
   ]
 }
