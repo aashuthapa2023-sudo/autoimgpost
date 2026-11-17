@@ -1,42 +1,6 @@
 {
-  "updated_at": "2026-11-17T19:08:47.121919+00:00",
+  "updated_at": "2026-11-17T19:32:23.804888+00:00",
   "rejections": [
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122194598312952113",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-11T01:07:35.318253+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794402455.3182707
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122192040734935135",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-11T01:08:29.874240+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794402509.8742487
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122192040734935135",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-11T01:36:36.284975+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794404196.2849941
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122192040734935135",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-11T01:37:04.236178+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1794404224.2361953
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1500311428619707",
@@ -13584,15 +13548,6 @@
     },
     {
       "channel_id": "Music Store",
-      "post_id": "1506629891321194",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-17T06:35:32.189646+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794940532.189657
-    },
-    {
-      "channel_id": "Music Store",
       "post_id": "1506614647989385",
       "stage": "topic_or_caption",
       "reason": "Source caption is missing, context-free or outside this page topic",
@@ -18000,6 +17955,51 @@
       "checked_at": "2026-11-17T19:08:47.121919+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1794985727.1219347
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1506629891321194",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-17T19:29:23.592853+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794986963.5928733
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1507599791224204",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-17T19:29:50.775713+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794986990.7757306
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1610344397773547",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 23.9 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-17T19:29:51.072181+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1794986991.072201
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122130609957277454",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-17T19:32:16.524527+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1794987136.5245478
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122193492638935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-17T19:32:23.804888+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1794987143.8049088
     }
   ]
 }
