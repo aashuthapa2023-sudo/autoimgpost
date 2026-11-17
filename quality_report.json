@@ -1,51 +1,6 @@
 {
-  "updated_at": "2026-11-17T19:38:39.629511+00:00",
+  "updated_at": "2026-11-17T20:09:31.738558+00:00",
   "rejections": [
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1498837115433805",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-11-11T02:35:45.685317+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794407745.6853364
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1498510168799833",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-11-11T02:35:49.844435+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794407749.844454
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1498451905472326",
-      "stage": "duplicate_photo",
-      "reason": "Source image was already published to this page",
-      "checked_at": "2026-11-11T03:05:19.936189+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794409519.9362087
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1498417845475732",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-11T03:05:27.237317+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794409527.2373407
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1498391655478351",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-11T03:05:30.933879+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794409530.9338992
-    },
     {
       "channel_id": "Daily Hollywood",
       "post_id": "1498364715481045",
@@ -17562,15 +17517,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1615540480376889",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-17T19:03:54.927187+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794944934.9272068
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1615118283752442",
       "stage": "content_or_layout",
       "reason": "Source frame would crop a face; choose another image",
@@ -18000,6 +17946,60 @@
       "checked_at": "2026-11-17T19:38:39.629511+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1794987519.6295304
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1615540480376889",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-17T20:04:08.522753+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794948548.5227737
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1503717214949673",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-17T20:05:07.659800+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794989107.659821
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1503695431618518",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-17T20:05:07.677349+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1794989107.6773684
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1181329821060938",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-17T20:06:00.568057+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1794989160.5680788
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1181301714397082",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-17T20:06:17.810798+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1794989177.810817
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122193696932935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-17T20:09:31.738558+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1794989371.738579
     }
   ]
 }
