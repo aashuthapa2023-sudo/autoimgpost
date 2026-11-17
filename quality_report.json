@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-17T07:06:26.462569+00:00",
+  "updated_at": "2026-11-17T07:37:08.259920+00:00",
   "rejections": [
     {
       "channel_id": "Music Store",
@@ -14105,69 +14105,6 @@
       "retry_after": 1794898095.2966652
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1609481611193159",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 18.0 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-16T19:04:04.832815+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794899044.8328393
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1616275646970039",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-16T19:04:09.449148+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794899049.4491658
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122193359222935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-16T19:07:01.691975+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1794899221.6919956
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122130419775277454",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-16T19:07:32.554485+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794899252.5544975
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122130415911277454",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-16T19:07:32.568327+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794899252.568339
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122193359222935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-16T19:07:38.828787+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794899258.8288069
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122130310005277454",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-16T19:07:45.258692+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794899265.2587113
-    },
-    {
       "channel_id": "Guardians of Liberty",
       "post_id": "122130278055277454",
       "stage": "content_or_layout",
@@ -17571,15 +17508,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1615540480376889",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-17T06:34:29.078402+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1794899969.078422
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1615118283752442",
       "stage": "content_or_layout",
       "reason": "Source frame would crop a face; choose another image",
@@ -18000,6 +17928,78 @@
       "checked_at": "2026-11-17T07:06:26.462569+00:00",
       "policy_signature": "42b02d01c718ed7d",
       "retry_after": 1794942386.4625766
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1609481611193159",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 18.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-17T07:33:31.817219+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794944011.817244
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1616275646970039",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-17T07:33:34.746555+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794944014.7465727
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1615540480376889",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-17T07:33:34.975327+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1794903514.9753478
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122193359222935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-17T07:36:29.976806+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1794944189.9768205
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122130419775277454",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-17T07:37:00.269116+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1794944220.2691321
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122130415911277454",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-17T07:37:00.281124+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1794944220.281144
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122193359222935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-17T07:37:04.246063+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1794944224.2460797
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122130310005277454",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-17T07:37:08.259920+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1794944228.259943
     }
   ]
 }
