@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-11-18T09:10:21.831057+00:00",
+  "updated_at": "2026-11-18T09:24:17.019107+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1501018178549032",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-11T17:09:07.568844+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794460147.568863
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1522712106395421",
@@ -16814,15 +16805,6 @@
       "retry_after": 1795026856.1056137
     },
     {
-      "channel_id": "nepal_speaks",
-      "post_id": "1140819331826930",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-18T06:34:26.199223+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1794986366.199234
-    },
-    {
       "channel_id": "oceans_secret",
       "post_id": "122127284799298539",
       "stage": "content_or_layout",
@@ -18000,6 +17982,24 @@
       "checked_at": "2026-11-18T09:10:21.831057+00:00",
       "policy_signature": "42b02d01c718ed7d",
       "retry_after": 1795036221.831075
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1140819331826930",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-18T09:23:12.918152+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1794996492.9181654
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1671015657745678",
+      "stage": "source_quality",
+      "reason": "Low resolution: 640x485px (310,400 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-18T09:24:17.019107+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1795037057.0191255
     }
   ]
 }
