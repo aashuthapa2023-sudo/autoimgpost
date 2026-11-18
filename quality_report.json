@@ -1,33 +1,6 @@
 {
-  "updated_at": "2026-11-18T00:08:43.339368+00:00",
+  "updated_at": "2026-11-18T00:37:25.585441+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1500840838566766",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-11T11:05:21.248630+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794438321.2486508
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1500818785235638",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-11T11:05:21.265822+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794438321.2658422
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1522518346414797",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-11T11:05:21.282743+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794438321.2827637
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1500807475236769",
@@ -13376,15 +13349,6 @@
       "retry_after": 1794960253.4329445
     },
     {
-      "channel_id": "nepal_speaks",
-      "post_id": "1179209931272927",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-17T12:06:29.708106+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1794960389.708123
-    },
-    {
       "channel_id": "Life in Army Boots",
       "post_id": "1667846644729246",
       "stage": "content_or_layout",
@@ -13401,51 +13365,6 @@
       "checked_at": "2026-11-17T12:08:29.914993+00:00",
       "policy_signature": "42b02d01c718ed7d",
       "retry_after": 1794960509.915011
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1461356016137741",
-      "stage": "source_quality",
-      "reason": "Low resolution: 490x350px (171,500 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-17T12:08:58.585230+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794960538.5852408
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1461706392769370",
-      "stage": "source_quality",
-      "reason": "Low resolution: 300x420px (126,000 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-17T12:08:58.722322+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794960538.7223303
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1461354299471246",
-      "stage": "source_quality",
-      "reason": "Low resolution: 188x250px (47,000 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-17T12:08:58.899782+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794960538.8997905
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1461572096116133",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-17T12:09:04.574453+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794960544.5744667
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1461358396137503",
-      "stage": "source_quality",
-      "reason": "Low resolution: 300x300px (90,000 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-17T12:09:04.747538+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794960544.7475474
     },
     {
       "channel_id": "nepal_speaks",
@@ -17705,15 +17624,6 @@
       "retry_after": 1795001652.861136
     },
     {
-      "channel_id": "nepal_speaks",
-      "post_id": "1140819331826930",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-17T23:34:42.552436+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1794961182.552452
-    },
-    {
       "channel_id": "US Army Fans AI",
       "post_id": "122193418562935135",
       "stage": "content_or_layout",
@@ -18000,6 +17910,96 @@
       "checked_at": "2026-11-18T00:08:43.339368+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1795003723.3393946
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1140819331826930",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-18T00:35:06.909754+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1794964806.9097762
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1179209931272927",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-18T00:35:19.571332+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1795005319.5713532
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122193725654935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-18T00:36:23.590533+00:00",
+      "policy_signature": "f01a39cc46b8a63a",
+      "retry_after": 1795005383.5905488
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122193725654935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-18T00:36:49.245987+00:00",
+      "policy_signature": "42b02d01c718ed7d",
+      "retry_after": 1795005409.2460015
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122193725654935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-18T00:37:19.833083+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1795005439.8330977
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1461356016137741",
+      "stage": "source_quality",
+      "reason": "Low resolution: 490x350px (171,500 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-18T00:37:20.034895+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1795005440.034917
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1461706392769370",
+      "stage": "source_quality",
+      "reason": "Low resolution: 300x420px (126,000 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-18T00:37:20.202739+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1795005440.202774
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1461354299471246",
+      "stage": "source_quality",
+      "reason": "Low resolution: 188x250px (47,000 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-18T00:37:20.363609+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1795005440.3636293
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1461572096116133",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-18T00:37:25.404694+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1795005445.4047177
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1461358396137503",
+      "stage": "source_quality",
+      "reason": "Low resolution: 300x300px (90,000 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-18T00:37:25.585441+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1795005445.585461
     }
   ]
 }
