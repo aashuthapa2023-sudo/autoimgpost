@@ -1,78 +1,6 @@
 {
-  "updated_at": "2026-11-18T11:37:59.452498+00:00",
+  "updated_at": "2026-11-18T12:05:52.438346+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1501861595147747",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-11T18:35:00.843866+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794465300.8438792
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122192249456935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-11T19:08:42.287068+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794467322.2870822
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122192244728935135",
-      "stage": "source_quality",
-      "reason": "Low resolution: 512x512px (262,144 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-11T19:08:42.475255+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794467322.4752686
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122192235830935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-11T20:09:41.917530+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794470981.9175541
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122192231456935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-11T20:09:47.470930+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794470987.470955
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1571137155038524",
-      "stage": "source_language",
-      "reason": "Source caption does not match the page language",
-      "checked_at": "2026-11-11T21:05:42.308351+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1794474342.3083615
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "1662031008644143",
-      "stage": "content_or_layout",
-      "reason": "Source panel boundary is ambiguous; choose another image",
-      "checked_at": "2026-11-11T21:07:56.808790+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1794474476.808804
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122192226194935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-11T21:08:32.392682+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794474512.3926985
-    },
     {
       "channel_id": "Guardians of Liberty",
       "post_id": "1454284483511561",
@@ -17345,15 +17273,6 @@
       "retry_after": 1795041839.0494628
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1615540480376889",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-18T11:04:23.811475+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1795002563.8114913
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1508312034486313",
       "stage": "topic_or_caption",
@@ -18000,6 +17919,87 @@
       "checked_at": "2026-11-18T11:37:59.452498+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1795045079.452511
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1615540480376889",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-18T12:04:07.550617+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795006147.550637
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1508355974481919",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-18T12:05:04.788014+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795046704.7880294
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1579298284063842",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-18T12:05:04.805141+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795046704.8051574
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1579274127399591",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-18T12:05:04.821783+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795046704.8218002
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1579262467400757",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-18T12:05:04.837748+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795046704.8377628
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1578969310763406",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-18T12:05:04.854290+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795046704.8543046
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1579261834067487",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-11-18T12:05:15.889257+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795046715.8892734
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1508271467823703",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-18T12:05:20.023481+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795046720.0234988
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1508355974481919",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-18T12:05:52.438346+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795046752.4383585
     }
   ]
 }
