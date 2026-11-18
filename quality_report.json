@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-11-18T09:24:17.019107+00:00",
+  "updated_at": "2026-11-18T09:34:35.194647+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1522712106395421",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-11T17:09:07.584910+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794460147.5849283
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1500989138551936",
@@ -18000,6 +17991,15 @@
       "checked_at": "2026-11-18T09:24:17.019107+00:00",
       "policy_signature": "f01a39cc46b8a63a",
       "retry_after": 1795037057.0191255
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1611067091034611",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-18T09:34:35.194647+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795037675.1946647
     }
   ]
 }
