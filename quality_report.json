@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-11-18T19:45:13.981522+00:00",
+  "updated_at": "2026-11-18T20:07:57.103250+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1571444458182558",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-12T01:05:30.594330+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794488730.594339
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1571441408182863",
@@ -13673,15 +13664,6 @@
       "retry_after": 1795028904.9337494
     },
     {
-      "channel_id": "nepal_speaks",
-      "post_id": "1579715954180644",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-11-18T07:10:28.026310+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1795029028.0263286
-    },
-    {
       "channel_id": "US Army Fans AI",
       "post_id": "122130415125277454",
       "stage": "topic_or_caption",
@@ -18000,6 +17982,24 @@
       "checked_at": "2026-11-18T19:45:13.981522+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1795074313.981542
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1579715954180644",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-11-18T20:05:42.183106+00:00",
+      "policy_signature": "8821a6e8f53da85d",
+      "retry_after": 1795075542.183124
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122193880070935135",
+      "stage": "content_or_layout",
+      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
+      "checked_at": "2026-11-18T20:07:57.103250+00:00",
+      "policy_signature": "07959af165dc14e8",
+      "retry_after": 1795075677.1032708
     }
   ]
 }
