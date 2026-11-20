@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-20T17:09:19.163529+00:00",
+  "updated_at": "2026-11-20T17:35:16.524467+00:00",
   "rejections": [
     {
       "channel_id": "Daily Hollywood",
@@ -13286,15 +13286,6 @@
       "retry_after": 1795177055.5262797
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1509922370991946",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-20T00:35:01.003707+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795178101.0037234
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1140819331826930",
       "stage": "source_image",
@@ -13356,42 +13347,6 @@
       "checked_at": "2026-11-20T02:05:00.463642+00:00",
       "policy_signature": "76b1e04e7afade22",
       "retry_after": 1795183500.463658
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1510000877650762",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 8.0 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-20T03:08:19.749652+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795187299.7496803
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1509980234319493",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-20T03:08:24.554612+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795187304.5546277
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1509850444332472",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-11-20T03:08:32.919841+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795187312.9198565
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1612322314242422",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-20T03:08:40.336837+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795187320.3368526
     },
     {
       "channel_id": "Guardians of Liberty",
@@ -13536,15 +13491,6 @@
       "checked_at": "2026-11-20T04:12:31.614360+00:00",
       "policy_signature": "76b1e04e7afade22",
       "retry_after": 1795191151.614369
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1612416100899710",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 23.6 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-20T04:12:57.277938+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795191177.2779524
     },
     {
       "channel_id": "Daily Hollywood",
@@ -13725,15 +13671,6 @@
       "checked_at": "2026-11-20T04:41:25.977819+00:00",
       "policy_signature": "07959af165dc14e8",
       "retry_after": 1795192885.9778354
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1612521230889197",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 23.9 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-20T05:04:30.791339+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1795194270.791356
     },
     {
       "channel_id": "Life in Army Boots",
@@ -18000,6 +17937,69 @@
       "checked_at": "2026-11-20T17:09:19.163529+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795237759.1635454
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1612521230889197",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 23.9 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-20T17:33:59.622196+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795239239.6222153
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1510000877650762",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 8.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-20T17:34:55.700430+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795239295.700449
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1509980234319493",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-20T17:34:58.833268+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795239298.8332882
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1509922370991946",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-20T17:35:01.830523+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795239301.830541
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1509850444332472",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-11-20T17:35:07.662958+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795239307.662977
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1612416100899710",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 23.6 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-20T17:35:11.699036+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795239311.6990528
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1612322314242422",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-20T17:35:16.524467+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795239316.5244858
     }
   ]
 }
