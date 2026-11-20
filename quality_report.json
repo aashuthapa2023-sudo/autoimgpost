@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-20T18:37:00.494299+00:00",
+  "updated_at": "2026-11-20T19:35:33.540741+00:00",
   "rejections": [
     {
       "channel_id": "US Army Fans AI",
@@ -14042,24 +14042,6 @@
       "retry_after": 1795199876.5705137
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1618223856775218",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-20T07:07:06.729563+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1795201626.729577
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1531527375513894",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-11-20T07:07:54.804146+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1795201674.8041637
-    },
-    {
       "channel_id": "Daily Hollywood",
       "post_id": "1507674724550044",
       "stage": "topic_or_caption",
@@ -18000,6 +17982,24 @@
       "checked_at": "2026-11-20T18:37:00.494299+00:00",
       "policy_signature": "c295b18b43236d9c",
       "retry_after": 1795243020.4943166
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1618223856775218",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-20T19:34:48.432466+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795246488.4324844
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1531527375513894",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-11-20T19:35:33.540741+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795246533.540761
     }
   ]
 }
