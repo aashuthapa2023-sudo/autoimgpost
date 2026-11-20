@@ -364,7 +364,9 @@
       "language": "ne",
       "source_pages": [
         "https://www.facebook.com/HimaliMedia",
-        "https://www.facebook.com/smartmedianp"
+        "https://www.facebook.com/smartmedianp",
+        "https://www.facebook.com/onlinekhabar",
+        "https://www.facebook.com/setopati"
       ],
       "source_page_url": "https://www.facebook.com/HimaliMedia",
       "source_layouts": {
@@ -373,6 +375,14 @@
           "logo_position": "with-text"
         },
         "smartmedianp": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        },
+        "onlinekhabar": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        },
+        "setopati": {
           "text_position": "bottom",
           "logo_position": "with-text"
         }
@@ -414,6 +424,22 @@
             "दृवध",
             "दुध"
           ]
+        },
+        "onlinekhabar": {
+          "credit_pattern": "onlinekhabar|अनलाइनखबर|समाचार|news",
+          "scene_labels": [],
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.22,
+          "footer_start_fraction": 0.6,
+          "min_retained_fraction": 0.35
+        },
+        "setopati": {
+          "credit_pattern": "setopati|सेतोपाटी|समाचार|news",
+          "scene_labels": [],
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.22,
+          "footer_start_fraction": 0.6,
+          "min_retained_fraction": 0.35
         }
       },
       "cadence_mode": "hourly_slots"
@@ -485,6 +511,20 @@
           "header_max_fraction": 0.36,
           "min_retained_fraction": 0.5,
           "scene_labels": []
+        },
+        "61587221117884": {
+          "credit_pattern": "(?!)",
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.36,
+          "min_retained_fraction": 0.5,
+          "scene_labels": []
+        },
+        "livingoceans000": {
+          "credit_pattern": "living\\s*oceans?",
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.36,
+          "min_retained_fraction": 0.5,
+          "scene_labels": []
         }
       },
       "cadence_mode": "hourly_slots",
@@ -531,6 +571,26 @@
         "frontlinediary": {
           "text_position": "bottom",
           "logo_position": "with-text"
+        },
+        "specopsmag": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        },
+        "61578563400579": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        },
+        "61578054077504": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        },
+        "wrhstol": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        },
+        "thegiftofvalor": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
         }
       },
       "source_cleanup_profiles": {
@@ -556,6 +616,68 @@
           "header_max_fraction": 0.18,
           "footer_start_fraction": 0.75,
           "min_retained_fraction": 0.7
+        },
+        "61578054077504": {
+          "credit_pattern": "srs.?clips|srsclips|marine|usmc|navy|army|air.?force|coast.?guard|soldier|military|veteran|valor|war|wwii|frontline|diary|gift|history|online|wrhstol|hector|cafferata|gonzalez|deployed|shawn|foust|hero|delta|seal|ranger|special.?forces|green.?beret|vietnam|korea|iwo.?jima",
+          "scene_labels": [
+            "44",
+            "6055",
+            "US ARMY",
+            "U.S. ARMY",
+            "ISV(L)-Ol",
+            "6728",
+            "300",
+            "SRSCLIPS",
+            "TATES Ot"
+          ],
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.2,
+          "footer_start_fraction": 0.55,
+          "min_retained_fraction": 0.4
+        },
+        "specopsmag": {
+          "credit_pattern": "spec\\s*ops|special\\s*operations|military|marine|army|navy|soldier|veteran|ranger|sniper",
+          "scene_labels": [
+            "US ARMY",
+            "U.S. ARMY"
+          ],
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.2,
+          "footer_start_fraction": 0.6,
+          "min_retained_fraction": 0.4
+        },
+        "61578563400579": {
+          "credit_pattern": "army|soldier|veteran|military|boots|service",
+          "scene_labels": [
+            "US ARMY",
+            "U.S. ARMY"
+          ],
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.2,
+          "footer_start_fraction": 0.6,
+          "min_retained_fraction": 0.4
+        },
+        "wrhstol": {
+          "credit_pattern": "history|military|war|liberty|valor|soldier|army",
+          "scene_labels": [
+            "US ARMY",
+            "U.S. ARMY"
+          ],
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.2,
+          "footer_start_fraction": 0.6,
+          "min_retained_fraction": 0.4
+        },
+        "thegiftofvalor": {
+          "credit_pattern": "valor|gift|veteran|military|hero|army|marine",
+          "scene_labels": [
+            "US ARMY",
+            "U.S. ARMY"
+          ],
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.2,
+          "footer_start_fraction": 0.6,
+          "min_retained_fraction": 0.4
         }
       },
       "preserve_readable_source_cards": false,
@@ -585,7 +707,76 @@
       "min_gap_hours": 1,
       "content_topic": "military",
       "allow_web_fallback": false,
-      "facebook_sources_only": true
+      "facebook_sources_only": true,
+      "editorial_style": "Respectful military service stories and historical events. Use only verified facts from the source caption; preserve names, units and outcomes. No invented quotes or exploits.",
+      "poster_style": {
+        "style_id": "life_in_army_boots",
+        "panel_color": "#0d1b10",
+        "min_font_size": 68,
+        "max_font_size": 94,
+        "max_lines": 4,
+        "safe_margin": 64,
+        "text_position": "bottom",
+        "logo_position": "with-text"
+      },
+      "source_layouts": {
+        "61578054077504": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        },
+        "specopsmag": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        },
+        "61578563400579": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        }
+      },
+      "source_cleanup_profiles": {
+        "61578054077504": {
+          "credit_pattern": "srs.?clips|srsclips|marine|usmc|navy|army|air.?force|coast.?guard|soldier|military|veteran|valor|war|wwii|frontline|diary|gift|history|online|wrhstol|hector|cafferata|gonzalez|deployed|shawn|foust|hero|delta|seal|ranger|special.?forces|green.?beret|vietnam|korea|iwo.?jima",
+          "scene_labels": [
+            "44",
+            "6055",
+            "US ARMY",
+            "U.S. ARMY",
+            "ISV(L)-Ol",
+            "6728",
+            "300",
+            "SRSCLIPS",
+            "TATES Ot"
+          ],
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.2,
+          "footer_start_fraction": 0.55,
+          "min_retained_fraction": 0.4
+        },
+        "specopsmag": {
+          "credit_pattern": "spec\\s*ops|special\\s*operations|military|marine|army|navy|soldier|veteran|ranger|sniper",
+          "scene_labels": [
+            "US ARMY",
+            "U.S. ARMY"
+          ],
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.2,
+          "footer_start_fraction": 0.6,
+          "min_retained_fraction": 0.4
+        },
+        "61578563400579": {
+          "credit_pattern": "army|soldier|veteran|military|boots|service",
+          "scene_labels": [
+            "US ARMY",
+            "U.S. ARMY"
+          ],
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.2,
+          "footer_start_fraction": 0.6,
+          "min_retained_fraction": 0.4
+        }
+      },
+      "max_candidates_per_run": 6,
+      "source_min_candidates": 12
     },
     {
       "channel_id": "Guardians of Liberty",
@@ -612,7 +803,91 @@
       "min_gap_hours": 1,
       "content_topic": "military",
       "allow_web_fallback": false,
-      "facebook_sources_only": true
+      "facebook_sources_only": true,
+      "editorial_style": "Honoring American service members, military history and veteran stories with grounded facts and dignified tone.",
+      "poster_style": {
+        "style_id": "guardians_of_liberty",
+        "panel_color": "#12141c",
+        "min_font_size": 68,
+        "max_font_size": 94,
+        "max_lines": 4,
+        "safe_margin": 64,
+        "text_position": "bottom",
+        "logo_position": "with-text"
+      },
+      "source_layouts": {
+        "61578054077504": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        },
+        "61578563400579": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        },
+        "wrhstol": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        },
+        "thegiftofvalor": {
+          "text_position": "bottom",
+          "logo_position": "with-text"
+        }
+      },
+      "source_cleanup_profiles": {
+        "61578054077504": {
+          "credit_pattern": "srs.?clips|srsclips|marine|usmc|navy|army|air.?force|coast.?guard|soldier|military|veteran|valor|war|wwii|frontline|diary|gift|history|online|wrhstol|hector|cafferata|gonzalez|deployed|shawn|foust|hero|delta|seal|ranger|special.?forces|green.?beret|vietnam|korea|iwo.?jima",
+          "scene_labels": [
+            "44",
+            "6055",
+            "US ARMY",
+            "U.S. ARMY",
+            "ISV(L)-Ol",
+            "6728",
+            "300",
+            "SRSCLIPS",
+            "TATES Ot"
+          ],
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.2,
+          "footer_start_fraction": 0.55,
+          "min_retained_fraction": 0.4
+        },
+        "61578563400579": {
+          "credit_pattern": "army|soldier|veteran|military|boots|service",
+          "scene_labels": [
+            "US ARMY",
+            "U.S. ARMY"
+          ],
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.2,
+          "footer_start_fraction": 0.6,
+          "min_retained_fraction": 0.4
+        },
+        "wrhstol": {
+          "credit_pattern": "history|military|war|liberty|valor|soldier|army",
+          "scene_labels": [
+            "US ARMY",
+            "U.S. ARMY"
+          ],
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.2,
+          "footer_start_fraction": 0.6,
+          "min_retained_fraction": 0.4
+        },
+        "thegiftofvalor": {
+          "credit_pattern": "valor|gift|veteran|military|hero|army|marine",
+          "scene_labels": [
+            "US ARMY",
+            "U.S. ARMY"
+          ],
+          "allow_edge_zoom": true,
+          "header_max_fraction": 0.2,
+          "footer_start_fraction": 0.6,
+          "min_retained_fraction": 0.4
+        }
+      },
+      "max_candidates_per_run": 6,
+      "source_min_candidates": 12
     }
   ]
 }
