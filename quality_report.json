@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-11-21T07:36:58.398730+00:00",
+  "updated_at": "2026-11-21T08:05:17.556242+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1503631301621053",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-14T04:06:29.473039+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794672389.4730632
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1491138589543631",
@@ -14817,24 +14808,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1618223856775218",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-20T19:34:48.432466+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1795246488.4324844
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1531527375513894",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-11-20T19:35:33.540741+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1795246533.540761
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1612665624208091",
       "stage": "content_or_layout",
       "reason": "Unknown source lettering or watermark overlaps the subject",
@@ -18000,6 +17973,33 @@
       "checked_at": "2026-11-21T07:36:58.398730+00:00",
       "policy_signature": "4d68babce634874c",
       "retry_after": 1795289818.3987467
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1618223856775218",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-21T08:04:01.196379+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795291441.196398
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1531527375513894",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-11-21T08:04:42.726114+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795291482.726134
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1185112504016003",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-21T08:05:17.556242+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795291517.5562618
     }
   ]
 }
