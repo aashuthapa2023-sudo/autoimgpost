@@ -1,24 +1,6 @@
 {
-  "updated_at": "2026-11-21T18:08:49.833878+00:00",
+  "updated_at": "2026-11-21T18:37:47.365034+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1574130677913936",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-14T12:05:26.610100+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794701126.6101208
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1525481179451847",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-14T12:05:30.917253+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794701130.9172695
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1503814134936103",
@@ -14222,15 +14204,6 @@
       "retry_after": 1795277222.1352704
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1619107390020198",
-      "stage": "content_or_layout",
-      "reason": "Source graphics leave too little usable photograph",
-      "checked_at": "2026-11-21T05:04:53.079595+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1795280693.079615
-    },
-    {
       "channel_id": "Daily Hollywood",
       "post_id": "1613385234136130",
       "stage": "photo_extraction",
@@ -14256,24 +14229,6 @@
       "checked_at": "2026-11-21T05:06:05.412981+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1795280765.4129984
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1612416100899710",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 23.6 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-21T05:34:12.042696+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1795282452.0427256
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1619032563361014",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 7.6 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-21T05:34:31.686957+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1795282471.6869776
     },
     {
       "channel_id": "daily_netflix",
@@ -14454,15 +14409,6 @@
       "checked_at": "2026-11-21T05:40:14.125071+00:00",
       "policy_signature": "51c812be1db27acd",
       "retry_after": 1795282814.1250904
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1612521230889197",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 23.9 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-21T06:04:30.518073+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1795284270.5180898
     },
     {
       "channel_id": "Music Store",
@@ -18000,6 +17946,60 @@
       "checked_at": "2026-11-21T18:08:49.833878+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795327729.8338954
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1621363889794548",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 7.3 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-21T18:33:48.203095+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795329228.203113
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1612521230889197",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 23.9 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-21T18:33:52.894501+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795329232.8945167
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1619107390020198",
+      "stage": "content_or_layout",
+      "reason": "Source graphics leave too little usable photograph",
+      "checked_at": "2026-11-21T18:34:02.363383+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795329242.3634002
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1612416100899710",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 23.6 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-21T18:34:06.313395+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795329246.3134103
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1619032563361014",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 7.6 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-21T18:34:15.391242+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795329255.3912628
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122194329728935135",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-21T18:37:47.365034+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795329467.3650491
     }
   ]
 }
