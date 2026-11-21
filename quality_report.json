@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-21T09:07:46.214857+00:00",
+  "updated_at": "2026-11-21T09:37:43.826524+00:00",
   "rejections": [
     {
       "channel_id": "Music Store",
@@ -13431,15 +13431,6 @@
     },
     {
       "channel_id": "Guardians of Liberty",
-      "post_id": "1464567962483213",
-      "stage": "source_quality",
-      "reason": "Low resolution: 220x348px (76,560 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-20T09:10:00.891632+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1795209000.8916492
-    },
-    {
-      "channel_id": "Guardians of Liberty",
       "post_id": "122193696932935135",
       "stage": "content_or_layout",
       "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
@@ -18000,6 +17991,15 @@
       "checked_at": "2026-11-21T09:07:46.214857+00:00",
       "policy_signature": "4d68babce634874c",
       "retry_after": 1795295266.2148728
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1464567962483213",
+      "stage": "source_quality",
+      "reason": "Low resolution: 220x348px (76,560 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-21T09:37:43.826524+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795297063.826541
     }
   ]
 }
