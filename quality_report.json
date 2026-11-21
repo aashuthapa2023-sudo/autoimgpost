@@ -1,24 +1,6 @@
 {
-  "updated_at": "2026-11-21T20:09:05.976005+00:00",
+  "updated_at": "2026-11-21T21:05:38.795055+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1573960474597623",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-14T12:37:37.480144+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794703057.4801595
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1457571206516222",
-      "stage": "source_quality",
-      "reason": "Low resolution: 675x350px (236,250 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-14T12:40:51.720300+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794703251.720321
-    },
     {
       "channel_id": "Guardians of Liberty",
       "post_id": "122192768798935135",
@@ -14061,24 +14043,6 @@
     },
     {
       "channel_id": "Daily Hollywood",
-      "post_id": "1613385234136130",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 16.5 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-21T05:05:57.191852+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795280757.191876
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1509809174336599",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-21T05:06:00.680213+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795280760.680234
-    },
-    {
-      "channel_id": "Daily Hollywood",
       "post_id": "1509803674337149",
       "stage": "content_or_layout",
       "reason": "Unknown source lettering or watermark overlaps the subject",
@@ -14202,42 +14166,6 @@
       "checked_at": "2026-11-21T05:37:26.663949+00:00",
       "policy_signature": "76b1e04e7afade22",
       "retry_after": 1795282646.6639693
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1510000877650762",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 8.0 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-21T05:37:42.997200+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795282662.9972196
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1509980234319493",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-21T05:37:48.877960+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795282668.877979
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1509922370991946",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-21T05:37:54.749820+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795282674.7498372
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1509850444332472",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-11-21T05:38:05.434403+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795282685.4344213
     },
     {
       "channel_id": "Daily Hollywood",
@@ -18000,6 +17928,78 @@
       "checked_at": "2026-11-21T20:09:05.976005+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795334945.9760234
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1511985027468737",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-21T21:04:50.878258+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795338290.8782773
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1511852564148650",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-21T21:04:53.343149+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795338293.343168
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1613385234136130",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 16.5 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-21T21:05:23.523438+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795338323.523465
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1510000877650762",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 8.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-21T21:05:23.634693+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795338323.6347125
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1509980234319493",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-21T21:05:26.700131+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795338326.7001505
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1509922370991946",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-21T21:05:29.853093+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795338329.8531103
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1509850444332472",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-11-21T21:05:35.431609+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795338335.4316406
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1509809174336599",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-21T21:05:38.795055+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795338338.7950745
     }
   ]
 }
