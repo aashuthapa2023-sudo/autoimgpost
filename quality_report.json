@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-22T08:10:07.181324+00:00",
+  "updated_at": "2026-11-22T09:07:45.768400+00:00",
   "rejections": [
     {
       "channel_id": "Life in Army Boots",
@@ -12593,24 +12593,6 @@
       "retry_after": 1795233815.206008
     },
     {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122194092758935135",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 16.1 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-20T16:03:57.504674+00:00",
-      "policy_signature": "51c812be1db27acd",
-      "retry_after": 1795233837.5046928
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122130946407277454",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-11-20T16:04:02.671225+00:00",
-      "policy_signature": "51c812be1db27acd",
-      "retry_after": 1795233842.671241
-    },
-    {
       "channel_id": "Life in Army Boots",
       "post_id": "122193725654935135",
       "stage": "topic_or_caption",
@@ -14105,15 +14087,6 @@
       "retry_after": 1795322127.293062
     },
     {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122194313144935135",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 32.6 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-21T17:14:49.722791+00:00",
-      "policy_signature": "51c812be1db27acd",
-      "retry_after": 1795324489.7228045
-    },
-    {
       "channel_id": "Life in Army Boots",
       "post_id": "122194313144935135",
       "stage": "photo_extraction",
@@ -14220,33 +14193,6 @@
       "checked_at": "2026-11-21T19:37:21.685803+00:00",
       "policy_signature": "4d68babce634874c",
       "retry_after": 1795333041.6858234
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122194329728935135",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-21T19:38:28.711321+00:00",
-      "policy_signature": "51c812be1db27acd",
-      "retry_after": 1795333108.7113495
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122194243880935135",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-21T19:38:32.874445+00:00",
-      "policy_signature": "51c812be1db27acd",
-      "retry_after": 1795333112.8744624
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122194017782935135",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-21T19:38:37.972345+00:00",
-      "policy_signature": "51c812be1db27acd",
-      "retry_after": 1795333117.9723613
     },
     {
       "channel_id": "US Army Fans AI",
@@ -18000,6 +17946,60 @@
       "checked_at": "2026-11-22T08:10:07.181324+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795378207.181345
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122194329728935135",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-22T09:07:10.926280+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795381630.9262986
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122194313144935135",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 32.6 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-22T09:07:17.236016+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795381637.2360318
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122194243880935135",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-22T09:07:23.570739+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795381643.5707545
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122194092758935135",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 16.1 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-22T09:07:30.116199+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795381650.1162155
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122130946407277454",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-11-22T09:07:37.926166+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795381657.9261842
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122194017782935135",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-22T09:07:45.768400+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795381665.768416
     }
   ]
 }
