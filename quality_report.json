@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-11-22T13:40:33.297537+00:00",
+  "updated_at": "2026-11-22T14:08:14.286813+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1491226329534857",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-11-15T00:35:55.803707+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794746155.8037271
-    },
     {
       "channel_id": "Guardians of Liberty",
       "post_id": "122192810504935135",
@@ -13980,33 +13971,6 @@
     },
     {
       "channel_id": "Daily Hollywood",
-      "post_id": "1613385234136130",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 16.5 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-21T21:05:23.523438+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795338323.523465
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1510000877650762",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 8.0 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-21T21:05:23.634693+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795338323.6347125
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1509980234319493",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-21T21:05:26.700131+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795338326.7001505
-    },
-    {
-      "channel_id": "Daily Hollywood",
       "post_id": "1509922370991946",
       "stage": "content_or_layout",
       "reason": "Unknown source lettering or watermark overlaps the subject",
@@ -14112,24 +14076,6 @@
       "checked_at": "2026-11-21T21:35:38.980874+00:00",
       "policy_signature": "76b1e04e7afade22",
       "retry_after": 1795340138.9808836
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1497228682267955",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 5.0 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-21T21:36:06.649253+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795340166.6492682
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1510043434313173",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-21T21:36:10.668154+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795340170.66817
     },
     {
       "channel_id": "Daily Hollywood",
@@ -14310,24 +14256,6 @@
       "checked_at": "2026-11-21T22:16:25.943991+00:00",
       "policy_signature": "76b1e04e7afade22",
       "retry_after": 1795342585.9440129
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122127570369298539",
-      "stage": "content_or_layout",
-      "reason": "Source graphics leave too little usable photograph",
-      "checked_at": "2026-11-21T23:07:19.956654+00:00",
-      "policy_signature": "c295b18b43236d9c",
-      "retry_after": 1795345639.9566739
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122127570087298539",
-      "stage": "content_or_layout",
-      "reason": "Source graphics leave too little usable photograph",
-      "checked_at": "2026-11-21T23:07:25.568433+00:00",
-      "policy_signature": "c295b18b43236d9c",
-      "retry_after": 1795345645.5684538
     },
     {
       "channel_id": "daily_netflix",
@@ -14526,15 +14454,6 @@
       "checked_at": "2026-11-22T01:10:59.364930+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795353059.3649468
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1510878200896363",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-22T01:35:41.101210+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795354541.1012359
     },
     {
       "channel_id": "Guardians of Liberty",
@@ -18000,6 +17919,87 @@
       "checked_at": "2026-11-22T13:40:33.297537+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795398033.2975476
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1512512150732968",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-22T14:05:47.491713+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795399547.4917288
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1510878200896363",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-22T14:06:13.742546+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795399573.7425623
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1613385234136130",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 16.5 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-22T14:06:23.288913+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795399583.288931
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1497228682267955",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 5.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-22T14:06:40.989168+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795399600.9891872
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1510043434313173",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-22T14:06:47.667455+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795399607.667471
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1510000877650762",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 8.0 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-22T14:06:48.311820+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795399608.3118374
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1509980234319493",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-22T14:06:54.337706+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795399614.3377228
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122127570369298539",
+      "stage": "content_or_layout",
+      "reason": "Source graphics leave too little usable photograph",
+      "checked_at": "2026-11-22T14:08:03.676736+00:00",
+      "policy_signature": "c295b18b43236d9c",
+      "retry_after": 1795399683.6767554
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122127570087298539",
+      "stage": "content_or_layout",
+      "reason": "Source graphics leave too little usable photograph",
+      "checked_at": "2026-11-22T14:08:14.286813+00:00",
+      "policy_signature": "c295b18b43236d9c",
+      "retry_after": 1795399694.2868316
     }
   ]
 }
