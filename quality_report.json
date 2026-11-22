@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-22T18:40:59.387142+00:00",
+  "updated_at": "2026-11-22T19:07:32.910836+00:00",
   "rejections": [
     {
       "channel_id": "Guardians of Liberty",
@@ -13728,24 +13728,6 @@
     },
     {
       "channel_id": "Guardians of Liberty",
-      "post_id": "1466478735625469",
-      "stage": "source_quality",
-      "reason": "Low resolution: 300x420px (126,000 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-22T01:10:58.905426+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795353058.9054458
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1466319902308019",
-      "stage": "source_quality",
-      "reason": "Low resolution: 300x420px (126,000 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-22T01:10:59.364930+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795353059.3649468
-    },
-    {
-      "channel_id": "Guardians of Liberty",
       "post_id": "1466220838984592",
       "stage": "source_quality",
       "reason": "Low resolution: 300x420px (126,000 pixels; minimum required is 500px short-edge & 350,000px area)",
@@ -14418,42 +14400,6 @@
       "checked_at": "2026-11-22T06:36:40.178475+00:00",
       "policy_signature": "c295b18b43236d9c",
       "retry_after": 1795372600.1784947
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122194313144935135",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 32.6 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-22T06:38:35.025818+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795372715.025834
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122194243880935135",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-22T06:38:39.124599+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795372719.1246154
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1466732878933388",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 14.1 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-22T06:38:39.441680+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795372719.4417007
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122194173932935135",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-11-22T06:38:43.879659+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795372723.8796823
     },
     {
       "channel_id": "daily_netflix",
@@ -18000,6 +17946,60 @@
       "checked_at": "2026-11-22T18:40:59.387142+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795416059.3871603
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122194313144935135",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 32.6 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-22T19:07:24.662978+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795417644.662997
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122194243880935135",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-22T19:07:28.569738+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795417648.569754
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1466732878933388",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 14.1 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-22T19:07:28.704898+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795417648.7049134
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1466478735625469",
+      "stage": "source_quality",
+      "reason": "Low resolution: 300x420px (126,000 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-22T19:07:28.886029+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795417648.8860435
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122194173932935135",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-11-22T19:07:32.765432+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795417652.7654479
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1466319902308019",
+      "stage": "source_quality",
+      "reason": "Low resolution: 300x420px (126,000 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-22T19:07:32.910836+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795417652.9108481
     }
   ]
 }
