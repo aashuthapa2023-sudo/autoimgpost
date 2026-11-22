@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-11-22T02:18:15.388140+00:00",
+  "updated_at": "2026-11-22T02:37:38.296949+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1574079574585713",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-14T18:35:33.556351+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794724533.55636
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1503773511606832",
@@ -18000,6 +17991,15 @@
       "checked_at": "2026-11-22T02:18:15.388140+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795357095.3881595
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122194381244935135",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-11-22T02:37:38.296949+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795358258.296966
     }
   ]
 }
