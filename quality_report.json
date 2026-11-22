@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-22T01:38:12.941193+00:00",
+  "updated_at": "2026-11-22T02:07:54.131619+00:00",
   "rejections": [
     {
       "channel_id": "Music Store",
@@ -14429,24 +14429,6 @@
       "retry_after": 1795311516.0075507
     },
     {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1466220838984592",
-      "stage": "source_quality",
-      "reason": "Low resolution: 300x420px (126,000 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-21T13:38:36.601216+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795311516.6012347
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122130954315277454",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-21T13:38:43.137461+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795311523.1374779
-    },
-    {
       "channel_id": "daily_netflix",
       "post_id": "1613774567430530",
       "stage": "photo_extraction",
@@ -18000,6 +17982,24 @@
       "checked_at": "2026-11-22T01:38:12.941193+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795354692.9412117
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1466220838984592",
+      "stage": "source_quality",
+      "reason": "Low resolution: 300x420px (126,000 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-22T02:07:46.336793+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795356466.3368115
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122130954315277454",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-22T02:07:54.131619+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795356474.1316388
     }
   ]
 }
