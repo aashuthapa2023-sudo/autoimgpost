@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-11-22T09:07:45.768400+00:00",
+  "updated_at": "2026-11-22T09:39:51.672637+00:00",
   "rejections": [
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122192805830935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-14T23:08:44.850973+00:00",
-      "policy_signature": "42b02d01c718ed7d",
-      "retry_after": 1794740924.8509974
-    },
     {
       "channel_id": "Life in Army Boots",
       "post_id": "122192795072935135",
@@ -13728,33 +13719,6 @@
     },
     {
       "channel_id": "Life in Army Boots",
-      "post_id": "122131011987277454",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-11-21T10:08:02.228163+00:00",
-      "policy_signature": "e785af4341c904b4",
-      "retry_after": 1795298882.2281787
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122194173932935135",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-11-21T10:08:06.339186+00:00",
-      "policy_signature": "e785af4341c904b4",
-      "retry_after": 1795298886.3392053
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122131006779277454",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-11-21T10:08:10.439534+00:00",
-      "policy_signature": "e785af4341c904b4",
-      "retry_after": 1795298890.439551
-    },
-    {
-      "channel_id": "Life in Army Boots",
       "post_id": "122131002045277454",
       "stage": "content_or_layout",
       "reason": "Removed source headline contains uncertain OCR words",
@@ -14087,15 +14051,6 @@
       "retry_after": 1795322127.293062
     },
     {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122194313144935135",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 32.6 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-21T17:15:30.961499+00:00",
-      "policy_signature": "e785af4341c904b4",
-      "retry_after": 1795324530.9615128
-    },
-    {
       "channel_id": "Guardians of Liberty",
       "post_id": "122130851445277454",
       "stage": "content_or_layout",
@@ -14193,42 +14148,6 @@
       "checked_at": "2026-11-21T19:37:21.685803+00:00",
       "policy_signature": "4d68babce634874c",
       "retry_after": 1795333041.6858234
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122130909573277454",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-21T19:38:41.839546+00:00",
-      "policy_signature": "51c812be1db27acd",
-      "retry_after": 1795333121.8395627
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122130899889277454",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-21T19:38:46.995051+00:00",
-      "policy_signature": "51c812be1db27acd",
-      "retry_after": 1795333126.9950678
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122194329728935135",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-21T19:39:23.868077+00:00",
-      "policy_signature": "e785af4341c904b4",
-      "retry_after": 1795333163.8680956
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122194243880935135",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-21T19:39:27.698614+00:00",
-      "policy_signature": "e785af4341c904b4",
-      "retry_after": 1795333167.6986296
     },
     {
       "channel_id": "Life in Army Boots",
@@ -14589,15 +14508,6 @@
       "checked_at": "2026-11-21T21:37:07.390249+00:00",
       "policy_signature": "4d68babce634874c",
       "retry_after": 1795340227.390269
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122131124121277454",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-21T21:39:07.671375+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795340347.671396
     },
     {
       "channel_id": "Music Store",
@@ -18000,6 +17910,96 @@
       "checked_at": "2026-11-22T09:07:45.768400+00:00",
       "policy_signature": "51c812be1db27acd",
       "retry_after": 1795381665.768416
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1512011364116380",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-22T09:35:46.093901+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795383346.0939167
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122130909573277454",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-22T09:37:42.660315+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795383462.6603482
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122130899889277454",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-22T09:37:52.616776+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795383472.616791
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122194329728935135",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-22T09:38:28.846236+00:00",
+      "policy_signature": "e785af4341c904b4",
+      "retry_after": 1795383508.8462532
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122194313144935135",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 32.6 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-22T09:38:36.547353+00:00",
+      "policy_signature": "e785af4341c904b4",
+      "retry_after": 1795383516.5473683
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122194243880935135",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-22T09:38:44.142358+00:00",
+      "policy_signature": "e785af4341c904b4",
+      "retry_after": 1795383524.1423733
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122131011987277454",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-11-22T09:38:51.848641+00:00",
+      "policy_signature": "e785af4341c904b4",
+      "retry_after": 1795383531.848658
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122194173932935135",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-11-22T09:38:59.608572+00:00",
+      "policy_signature": "e785af4341c904b4",
+      "retry_after": 1795383539.6085896
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122131006779277454",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-11-22T09:39:07.619683+00:00",
+      "policy_signature": "e785af4341c904b4",
+      "retry_after": 1795383547.6196983
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122131124121277454",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-22T09:39:51.672637+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795383591.672654
     }
   ]
 }
