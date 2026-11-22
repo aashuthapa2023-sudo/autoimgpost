@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-22T07:08:29.317891+00:00",
+  "updated_at": "2026-11-22T07:35:23.311952+00:00",
   "rejections": [
     {
       "channel_id": "oceans_secret",
@@ -14438,24 +14438,6 @@
       "retry_after": 1795327729.8338954
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1620254519905485",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-21T19:04:36.603246+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1795331076.603257
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1619173073346963",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-21T19:04:49.852435+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1795331089.852451
-    },
-    {
       "channel_id": "Daily Hollywood",
       "post_id": "1509049907745859",
       "stage": "topic_or_caption",
@@ -14481,15 +14463,6 @@
       "checked_at": "2026-11-21T19:05:50.449781+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1795331150.4497907
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1583072637019740",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-21T19:35:15.936533+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1795332915.936554
     },
     {
       "channel_id": "Music Store",
@@ -18000,6 +17973,33 @@
       "checked_at": "2026-11-22T07:08:29.317891+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795374509.3179107
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1620254519905485",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-22T07:34:26.673361+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795376066.6733744
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1619173073346963",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-22T07:34:40.582067+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795376080.5820892
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1583072637019740",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-22T07:35:23.311952+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795376123.3119721
     }
   ]
 }
