@@ -1,33 +1,6 @@
 {
-  "updated_at": "2026-11-23T03:06:53.405922+00:00",
+  "updated_at": "2026-11-23T03:20:58.983605+00:00",
   "rejections": [
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1490603189597171",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-15T12:34:57.908141+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1794789297.9081507
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122130139503277454",
-      "stage": "source_quality",
-      "reason": "Low resolution: 512x512px (262,144 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-15T12:37:12.645823+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794789432.645838
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122130136113277454",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-15T12:37:18.565749+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794789438.5657644
-    },
     {
       "channel_id": "US Army Fans AI",
       "post_id": "122130127677277454",
@@ -14717,15 +14690,6 @@
       "retry_after": 1795401399.2988453
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1622254206372183",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-11-22T15:04:51.483223+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1795403091.483245
-    },
-    {
       "channel_id": "Daily Hollywood",
       "post_id": "1497270852263738",
       "stage": "photo_extraction",
@@ -14760,69 +14724,6 @@
       "checked_at": "2026-11-22T15:06:17.505743+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1795403177.505763
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1586583836827189",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-11-22T15:07:03.704686+00:00",
-      "policy_signature": "4d68babce634874c",
-      "retry_after": 1795403223.7047079
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1207658644920478",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 8.2 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-22T15:07:17.801531+00:00",
-      "policy_signature": "4d68babce634874c",
-      "retry_after": 1795403237.8015544
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1207645101588499",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-11-22T15:07:31.014989+00:00",
-      "policy_signature": "4d68babce634874c",
-      "retry_after": 1795403251.0150113
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1207636758256000",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-22T15:07:47.055404+00:00",
-      "policy_signature": "4d68babce634874c",
-      "retry_after": 1795403267.0554235
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1207629821590027",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-22T15:08:03.396584+00:00",
-      "policy_signature": "4d68babce634874c",
-      "retry_after": 1795403283.3966026
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1207617858257890",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-22T15:08:16.506019+00:00",
-      "policy_signature": "4d68babce634874c",
-      "retry_after": 1795403296.5060396
-    },
-    {
-      "channel_id": "oceans_secret",
-      "post_id": "122127729165298539",
-      "stage": "content_or_layout",
-      "reason": "Source graphics leave too little usable photograph",
-      "checked_at": "2026-11-22T15:08:55.724479+00:00",
-      "policy_signature": "c295b18b43236d9c",
-      "retry_after": 1795403335.7245004
     },
     {
       "channel_id": "Guardians of Liberty",
@@ -18000,6 +17901,105 @@
       "checked_at": "2026-11-23T03:06:53.405922+00:00",
       "policy_signature": "4d68babce634874c",
       "retry_after": 1795446413.4059415
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1622254206372183",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-11-23T03:15:25.890737+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795446925.8907528
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1586583836827189",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-11-23T03:17:10.970701+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795447030.9707174
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1207658644920478",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 8.2 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-23T03:17:28.962030+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795447048.9620492
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1207645101588499",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-11-23T03:17:46.006140+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795447066.0061576
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1207636758256000",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-23T03:18:07.129158+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795447087.1291728
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1207629821590027",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-23T03:18:28.799858+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795447108.7998714
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1207617858257890",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-23T03:18:45.972390+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795447125.972407
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122127729165298539",
+      "stage": "content_or_layout",
+      "reason": "Source graphics leave too little usable photograph",
+      "checked_at": "2026-11-23T03:19:22.361699+00:00",
+      "policy_signature": "c295b18b43236d9c",
+      "retry_after": 1795447162.361718
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122194525238935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-23T03:20:03.713864+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795447203.713873
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122194525238935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-23T03:20:28.138361+00:00",
+      "policy_signature": "e785af4341c904b4",
+      "retry_after": 1795447228.1383712
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122194525238935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-23T03:20:58.983605+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795447258.9836166
     }
   ]
 }
