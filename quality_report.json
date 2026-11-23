@@ -1,51 +1,6 @@
 {
-  "updated_at": "2026-11-23T18:40:55.843840+00:00",
+  "updated_at": "2026-11-23T19:08:58.146294+00:00",
   "rejections": [
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122192969852935135",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-16T00:07:17.102857+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794830837.102871
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1459225569684119",
-      "stage": "source_quality",
-      "reason": "Low resolution: 886x494px (437,684 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-16T00:08:18.709333+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794830898.709352
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1504853804832136",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-11-16T00:33:54.273652+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794832434.2736688
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1504819274835589",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-11-16T00:33:57.618025+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794832437.6180418
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1504801158170734",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-16T00:34:00.659455+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794832440.6594727
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1504783801505803",
@@ -13925,15 +13880,6 @@
       "retry_after": 1795447125.972407
     },
     {
-      "channel_id": "oceans_secret",
-      "post_id": "122127729165298539",
-      "stage": "content_or_layout",
-      "reason": "Source graphics leave too little usable photograph",
-      "checked_at": "2026-11-23T03:19:22.361699+00:00",
-      "policy_signature": "c295b18b43236d9c",
-      "retry_after": 1795447162.361718
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1207617508257925",
       "stage": "content_or_layout",
@@ -18000,6 +17946,60 @@
       "checked_at": "2026-11-23T18:40:55.843840+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795502455.8438559
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1685393030294501",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-23T19:05:20.186836+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795503920.1868517
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122127760113298539",
+      "stage": "content_or_layout",
+      "reason": "Source graphics leave too little usable photograph",
+      "checked_at": "2026-11-23T19:07:04.631594+00:00",
+      "policy_signature": "c295b18b43236d9c",
+      "retry_after": 1795504024.6316156
+    },
+    {
+      "channel_id": "oceans_secret",
+      "post_id": "122127729165298539",
+      "stage": "content_or_layout",
+      "reason": "Source graphics leave too little usable photograph",
+      "checked_at": "2026-11-23T19:07:15.175442+00:00",
+      "policy_signature": "c295b18b43236d9c",
+      "retry_after": 1795504035.175463
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122131310019277454",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-23T19:07:55.612233+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795504075.6122494
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122131310019277454",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-23T19:08:23.537467+00:00",
+      "policy_signature": "e785af4341c904b4",
+      "retry_after": 1795504103.53748
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122131310019277454",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-23T19:08:58.146294+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795504138.1463094
     }
   ]
 }
