@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-11-23T04:38:38.649633+00:00",
+  "updated_at": "2026-11-23T05:08:08.935181+00:00",
   "rejections": [
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1458572239749452",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-15T12:38:52.291479+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1794789532.2914944
-    },
     {
       "channel_id": "Guardians of Liberty",
       "post_id": "1458432416430101",
@@ -13511,24 +13502,6 @@
       "retry_after": 1795365556.9291415
     },
     {
-      "channel_id": "nepal_speaks",
-      "post_id": "1668834838621840",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-22T05:07:58.601028+00:00",
-      "policy_signature": "4d68babce634874c",
-      "retry_after": 1795367278.6010437
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1668772101961447",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 23.7 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-22T05:08:09.875389+00:00",
-      "policy_signature": "4d68babce634874c",
-      "retry_after": 1795367289.875405
-    },
-    {
       "channel_id": "daily_netflix",
       "post_id": "1612521230889197",
       "stage": "photo_extraction",
@@ -18000,6 +17973,33 @@
       "checked_at": "2026-11-23T04:38:38.649633+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795451918.6496437
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1668834838621840",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-23T05:06:06.295367+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795453566.2953868
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1668772101961447",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 23.7 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-23T05:06:12.405088+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795453572.4051054
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122194535930935135",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-23T05:08:08.935181+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795453688.9351995
     }
   ]
 }
