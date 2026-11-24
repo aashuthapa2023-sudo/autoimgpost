@@ -1,24 +1,6 @@
 {
-  "updated_at": "2026-11-24T04:07:45.527356+00:00",
+  "updated_at": "2026-11-24T04:52:00.055470+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1575608224432848",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-16T10:04:29.140096+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794866669.1401093
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1526805949319370",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-16T10:04:29.155090+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794866669.155103
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1575586811101656",
@@ -14385,24 +14367,6 @@
     },
     {
       "channel_id": "Music Store",
-      "post_id": "1513578120626371",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-23T15:42:31.395840+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1795491751.3958602
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1513552827295567",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-23T15:42:34.705322+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1795491754.7053413
-    },
-    {
-      "channel_id": "Music Store",
       "post_id": "1512512150732968",
       "stage": "content_or_layout",
       "reason": "Unknown source lettering or watermark overlaps the subject",
@@ -14447,114 +14411,6 @@
       "retry_after": 1795491823.6832218
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1623351809595756",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-23T16:05:26.604570+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1795493126.6045866
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1514458200554753",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-11-23T16:06:33.698450+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1795493193.69847
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1514440857223154",
-      "stage": "content_or_layout",
-      "reason": "Removed source panel contains no prominent headline",
-      "checked_at": "2026-11-23T16:06:41.245333+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1795493201.2453496
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1514398687227371",
-      "stage": "duplicate_photo",
-      "reason": "Source image was already published to this page",
-      "checked_at": "2026-11-23T16:06:41.597360+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1795493201.5973752
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1616873397120647",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 23.5 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-23T16:07:08.729057+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795493228.7290773
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1513552827295567",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-23T16:07:14.724874+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795493234.7248912
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122194530602935135",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-23T16:09:04.396150+00:00",
-      "policy_signature": "51c812be1db27acd",
-      "retry_after": 1795493344.3961704
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1675275880652989",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-23T16:09:04.415008+00:00",
-      "policy_signature": "51c812be1db27acd",
-      "retry_after": 1795493344.4150283
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122194530602935135",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-23T16:09:31.363183+00:00",
-      "policy_signature": "e785af4341c904b4",
-      "retry_after": 1795493371.3631947
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "1675275880652989",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-23T16:09:31.380031+00:00",
-      "policy_signature": "e785af4341c904b4",
-      "retry_after": 1795493371.3800435
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122194530602935135",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-23T16:10:03.593512+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795493403.5935254
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122194389992935135",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-23T16:10:03.611973+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795493403.6119895
-    },
-    {
       "channel_id": "Guardians of Liberty",
       "post_id": "122131054617277454",
       "stage": "topic_or_caption",
@@ -14571,51 +14427,6 @@
       "checked_at": "2026-11-23T16:10:03.649254+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795493403.649269
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122194381244935135",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-11-23T16:10:13.031751+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795493413.0317674
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122131139793277454",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-23T16:10:20.599679+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795493420.5996962
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122194366274935135",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-11-23T16:10:28.140881+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795493428.1408978
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1467382292201780",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-23T16:10:37.602920+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795493437.6029356
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1467323718874304",
-      "stage": "source_quality",
-      "reason": "Low resolution: 555x500px (277,500 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-23T16:10:37.940911+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795493437.9409251
     },
     {
       "channel_id": "Guardians of Liberty",
@@ -18000,6 +17811,195 @@
       "checked_at": "2026-11-24T04:07:45.527356+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795536465.527373
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1623351809595756",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-24T04:47:41.695677+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795538861.6956956
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1514726133861293",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-24T04:48:19.913612+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795538899.913631
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1514458200554753",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-11-24T04:48:22.113450+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795538902.1134677
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1514440857223154",
+      "stage": "content_or_layout",
+      "reason": "Removed source panel contains no prominent headline",
+      "checked_at": "2026-11-24T04:48:25.929444+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795538905.9294624
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1514398687227371",
+      "stage": "duplicate_photo",
+      "reason": "Source image was already published to this page",
+      "checked_at": "2026-11-24T04:48:26.081408+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795538906.0814242
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1513578120626371",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-24T04:48:29.111058+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795538909.1110752
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1513552827295567",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-24T04:48:32.184805+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795538912.1848238
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1616873397120647",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 23.5 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-24T04:48:52.777037+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795538932.7770553
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1513552827295567",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-24T04:48:55.854603+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795538935.8546233
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1587751816710391",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-24T04:49:31.772613+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795538971.7726314
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122194530602935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-24T04:50:47.483948+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795539047.4839594
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1675275880652989",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-24T04:50:47.496568+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795539047.4965777
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122194530602935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-24T04:51:12.124344+00:00",
+      "policy_signature": "e785af4341c904b4",
+      "retry_after": 1795539072.124355
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "1675275880652989",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-24T04:51:12.136663+00:00",
+      "policy_signature": "e785af4341c904b4",
+      "retry_after": 1795539072.136673
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122194530602935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-24T04:51:40.946901+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795539100.9469123
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122194389992935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-24T04:51:40.959698+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795539100.959709
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122194381244935135",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-11-24T04:51:46.335982+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795539106.3360014
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122131139793277454",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-24T04:51:50.540892+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795539110.54091
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122194366274935135",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-11-24T04:51:54.631694+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795539114.6317153
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1467382292201780",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-24T04:51:59.954692+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795539119.9547102
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1467323718874304",
+      "stage": "source_quality",
+      "reason": "Low resolution: 555x500px (277,500 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-24T04:52:00.055470+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795539120.0555005
     }
   ]
 }
