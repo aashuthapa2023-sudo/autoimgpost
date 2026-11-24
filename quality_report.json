@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-11-24T05:46:44.401046+00:00",
+  "updated_at": "2026-11-24T06:08:58.541732+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1575586811101656",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-16T10:04:29.169724+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794866669.1697369
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1575575461102791",
@@ -14618,15 +14609,6 @@
       "retry_after": 1795499007.1876519
     },
     {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122194535930935135",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-23T17:43:31.494493+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795499011.4945092
-    },
-    {
       "channel_id": "daily_netflix",
       "post_id": "1621189269812010",
       "stage": "content_or_layout",
@@ -18000,6 +17982,24 @@
       "checked_at": "2026-11-24T05:46:44.401046+00:00",
       "policy_signature": "51c812be1db27acd",
       "retry_after": 1795542404.4010558
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1588333579985548",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-24T06:06:31.645209+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795543591.6452289
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122194535930935135",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-24T06:08:58.541732+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795543738.5417547
     }
   ]
 }
