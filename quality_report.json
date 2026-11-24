@@ -1,60 +1,6 @@
 {
-  "updated_at": "2026-11-24T13:10:36.166594+00:00",
+  "updated_at": "2026-11-24T13:39:34.941869+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1575949024398768",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-16T13:04:35.805897+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794877475.8059115
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1575925697734434",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-16T13:04:35.819287+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794877475.8193026
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1575903227736681",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-16T13:04:35.832489+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794877475.8325038
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1505914868059363",
-      "stage": "duplicate_photo",
-      "reason": "Source image was already published to this page",
-      "checked_at": "2026-11-16T13:04:36.468056+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794877476.4680707
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1527628045903827",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-11-16T13:04:48.341249+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794877488.3412666
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1493335155990641",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-16T13:34:32.731445+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1794879272.7314637
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1505855471398636",
@@ -14843,24 +14789,6 @@
       "retry_after": 1795524408.5899153
     },
     {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122194329728935135",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-24T01:08:29.708745+00:00",
-      "policy_signature": "e785af4341c904b4",
-      "retry_after": 1795525709.7087684
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "122194313144935135",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 32.6 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-24T01:08:34.806278+00:00",
-      "policy_signature": "e785af4341c904b4",
-      "retry_after": 1795525714.8062987
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1535761658423799",
       "stage": "content_or_layout",
@@ -18000,6 +17928,78 @@
       "checked_at": "2026-11-24T13:10:36.166594+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795569036.1666076
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122131367523277454",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-24T13:38:13.568176+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795570693.5681882
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122131396671277454",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 6.3 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-24T13:38:21.091502+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795570701.091523
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122131367523277454",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-24T13:38:46.035886+00:00",
+      "policy_signature": "e785af4341c904b4",
+      "retry_after": 1795570726.0359
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122131396671277454",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 6.3 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-24T13:38:50.013759+00:00",
+      "policy_signature": "e785af4341c904b4",
+      "retry_after": 1795570730.0137763
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122194329728935135",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-24T13:38:54.662584+00:00",
+      "policy_signature": "e785af4341c904b4",
+      "retry_after": 1795570734.662602
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122194313144935135",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 32.6 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-24T13:38:58.900179+00:00",
+      "policy_signature": "e785af4341c904b4",
+      "retry_after": 1795570738.9001954
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122131367523277454",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-24T13:39:30.858324+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795570770.8583362
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122131396671277454",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 6.3 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-24T13:39:34.941869+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795570774.9418871
     }
   ]
 }
