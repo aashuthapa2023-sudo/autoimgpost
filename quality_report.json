@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-25T18:09:11.680326+00:00",
+  "updated_at": "2026-11-25T18:37:58.694099+00:00",
   "rejections": [
     {
       "channel_id": "Music Store",
@@ -14124,33 +14124,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1618039317004055",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 33.8 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-25T05:04:27.634590+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1795626267.6346052
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1165104585876002",
-      "stage": "content_or_layout",
-      "reason": "Source frame has no verified publisher anchor",
-      "checked_at": "2026-11-25T05:04:34.937998+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1795626274.9380138
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1622538183010452",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-25T05:04:50.545671+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1795626290.5456867
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1622254206372183",
       "stage": "content_or_layout",
       "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
@@ -14267,15 +14240,6 @@
       "retry_after": 1795626641.4725587
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1623351809595756",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-25T05:34:49.238023+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1795628089.2380383
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1514472937203556",
       "stage": "topic_or_caption",
@@ -14348,15 +14312,6 @@
       "retry_after": 1795628301.8354206
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1616873397120647",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 23.5 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-25T06:05:44.925258+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1795629944.9252799
-    },
-    {
       "channel_id": "Daily Hollywood",
       "post_id": "1514762520507931",
       "stage": "content_or_layout",
@@ -14409,15 +14364,6 @@
       "checked_at": "2026-11-25T06:08:14.889295+00:00",
       "policy_signature": "4d68babce634874c",
       "retry_after": 1795630094.8893137
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122131296603277454",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-25T06:09:38.714125+00:00",
-      "policy_signature": "51c812be1db27acd",
-      "retry_after": 1795630178.7141368
     },
     {
       "channel_id": "Guardians of Liberty",
@@ -18000,6 +17946,60 @@
       "checked_at": "2026-11-25T18:09:11.680326+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795673351.6803427
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1618039317004055",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 33.8 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-25T18:34:36.777061+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795674876.7770875
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1165104585876002",
+      "stage": "content_or_layout",
+      "reason": "Source frame has no verified publisher anchor",
+      "checked_at": "2026-11-25T18:34:46.054271+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795674886.0542872
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1623351809595756",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-25T18:35:04.690096+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795674904.6901124
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1616873397120647",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 23.5 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-25T18:35:14.186720+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795674914.1867359
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1622538183010452",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-25T18:35:33.025071+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795674933.0250971
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122131296603277454",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-25T18:37:58.694099+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795675078.694113
     }
   ]
 }
