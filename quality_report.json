@@ -1,15 +1,6 @@
 {
-  "updated_at": "2026-11-25T05:38:21.835411+00:00",
+  "updated_at": "2026-11-25T06:10:44.923339+00:00",
   "rejections": [
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122130354087277454",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-17T12:36:55.901167+00:00",
-      "policy_signature": "f01a39cc46b8a63a",
-      "retry_after": 1794962215.9011886
-    },
     {
       "channel_id": "US Army Fans AI",
       "post_id": "122130337377277454",
@@ -13682,51 +13673,6 @@
       "retry_after": 1795583185.7530565
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1514762520507931",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-24T17:07:07.654926+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795583227.6549408
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1502255641765259",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-24T17:07:25.653061+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795583245.6530764
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1502183475105809",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-24T17:07:42.510818+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795583262.5108328
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1514693510514832",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-24T17:07:48.325502+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795583268.3255157
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1501433075180849",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 3.3 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-24T17:08:05.286810+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795583285.286828
-    },
-    {
       "channel_id": "US Army Fans AI",
       "post_id": "122194754732935135",
       "stage": "content_or_layout",
@@ -13809,15 +13755,6 @@
     },
     {
       "channel_id": "daily_netflix",
-      "post_id": "1616873397120647",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 23.5 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-24T18:05:34.330850+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1795586734.3308744
-    },
-    {
-      "channel_id": "daily_netflix",
       "post_id": "1622717082992562",
       "stage": "content_or_layout",
       "reason": "Source frame would crop a face; choose another image",
@@ -13827,30 +13764,12 @@
     },
     {
       "channel_id": "US Army Fans AI",
-      "post_id": "122131296603277454",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-24T18:08:48.278813+00:00",
-      "policy_signature": "51c812be1db27acd",
-      "retry_after": 1795586928.2788265
-    },
-    {
-      "channel_id": "US Army Fans AI",
       "post_id": "122194389992935135",
       "stage": "topic_or_caption",
       "reason": "Source caption is missing, context-free or outside this page topic",
       "checked_at": "2026-11-24T18:08:48.291683+00:00",
       "policy_signature": "51c812be1db27acd",
       "retry_after": 1795586928.2916949
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122194535930935135",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-24T18:09:55.301765+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795586995.3018055
     },
     {
       "channel_id": "Music Store",
@@ -18000,6 +17919,87 @@
       "checked_at": "2026-11-25T05:38:21.835411+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795628301.8354206
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1616873397120647",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 23.5 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-25T06:05:44.925258+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795629944.9252799
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1514762520507931",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-25T06:07:04.007461+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795630024.007479
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1502255641765259",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-25T06:07:14.046014+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795630034.0460334
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1502183475105809",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-25T06:07:23.275463+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795630043.2754831
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1514693510514832",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-25T06:07:26.674235+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795630046.674255
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1501433075180849",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 3.3 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-25T06:07:36.324376+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795630056.3243947
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1589392626546310",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-25T06:08:14.889295+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795630094.8893137
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122131296603277454",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-25T06:09:38.714125+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795630178.7141368
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122194535930935135",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-25T06:10:44.923339+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795630244.9233558
     }
   ]
 }
