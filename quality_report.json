@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-25T14:38:41.974651+00:00",
+  "updated_at": "2026-11-25T15:09:03.076722+00:00",
   "rejections": [
     {
       "channel_id": "Daily Hollywood",
@@ -13340,24 +13340,6 @@
       "retry_after": 1795593990.011127
     },
     {
-      "channel_id": "nepal_speaks",
-      "post_id": "1209738221379187",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-24T20:08:50.897712+00:00",
-      "policy_signature": "4d68babce634874c",
-      "retry_after": 1795594130.8977344
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1209727461380263",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-24T20:09:05.927904+00:00",
-      "policy_signature": "4d68babce634874c",
-      "retry_after": 1795594145.9279246
-    },
-    {
       "channel_id": "Guardians of Liberty",
       "post_id": "1467840458822630",
       "stage": "source_quality",
@@ -13473,42 +13455,6 @@
       "checked_at": "2026-11-24T20:36:49.489131+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1795595809.4891474
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1673535418151782",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 13.1 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-24T20:37:15.466137+00:00",
-      "policy_signature": "4d68babce634874c",
-      "retry_after": 1795595835.4661546
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1673495684822422",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 15.1 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-24T20:37:21.517383+00:00",
-      "policy_signature": "4d68babce634874c",
-      "retry_after": 1795595841.517401
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1188342653692988",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-24T20:37:28.919432+00:00",
-      "policy_signature": "4d68babce634874c",
-      "retry_after": 1795595848.9194505
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1673440211494636",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 27.7 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-24T20:37:34.794393+00:00",
-      "policy_signature": "4d68babce634874c",
-      "retry_after": 1795595854.7944174
     },
     {
       "channel_id": "nepal_speaks",
@@ -13917,15 +13863,6 @@
     },
     {
       "channel_id": "Daily Hollywood",
-      "post_id": "1502543985069758",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-25T02:36:23.474896+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795617383.4749045
-    },
-    {
-      "channel_id": "Daily Hollywood",
       "post_id": "1502339815090175",
       "stage": "photo_extraction",
       "reason": "Blurry image detected: Sharpness variance 6.5 is below minimum threshold of 35.0",
@@ -14058,15 +13995,6 @@
       "checked_at": "2026-11-25T02:41:11.214515+00:00",
       "policy_signature": "51c812be1db27acd",
       "retry_after": 1795617671.2145302
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "1676249110555666",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-25T02:42:06.349325+00:00",
-      "policy_signature": "e785af4341c904b4",
-      "retry_after": 1795617726.3493335
     },
     {
       "channel_id": "Life in Army Boots",
@@ -14238,15 +14166,6 @@
       "checked_at": "2026-11-25T03:06:59.024510+00:00",
       "policy_signature": "4d68babce634874c",
       "retry_after": 1795619219.0245264
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1676249110555666",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-25T03:08:01.486938+00:00",
-      "policy_signature": "51c812be1db27acd",
-      "retry_after": 1795619281.4869504
     },
     {
       "channel_id": "Guardians of Liberty",
@@ -18000,6 +17919,87 @@
       "checked_at": "2026-11-25T14:38:41.974651+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795660721.9746604
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1502543985069758",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-25T15:06:02.910955+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795662362.9109688
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1209738221379187",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-25T15:06:49.749675+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795662409.7496989
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1209727461380263",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-25T15:07:01.279991+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795662421.2800324
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1673535418151782",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 13.1 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-25T15:07:06.698312+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795662426.6983383
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1673495684822422",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 15.1 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-25T15:07:12.401200+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795662432.401226
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1188342653692988",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-25T15:07:19.353815+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795662439.353838
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1673440211494636",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 27.7 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-25T15:07:25.046546+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795662445.0465703
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1676249110555666",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-25T15:08:36.094331+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795662516.0943434
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "1676249110555666",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-25T15:09:03.076722+00:00",
+      "policy_signature": "e785af4341c904b4",
+      "retry_after": 1795662543.0767303
     }
   ]
 }
