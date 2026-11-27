@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-27T21:05:32.987031+00:00",
+  "updated_at": "2026-11-27T21:37:41.015872+00:00",
   "rejections": [
     {
       "channel_id": "Music Store",
@@ -14007,15 +14007,6 @@
     },
     {
       "channel_id": "Guardians of Liberty",
-      "post_id": "122131643487277454",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-27T06:39:20.376100+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795804760.376117
-    },
-    {
-      "channel_id": "Guardians of Liberty",
       "post_id": "122195096636935135",
       "stage": "content_or_layout",
       "reason": "Source graphics leave too little usable photograph",
@@ -14439,15 +14430,6 @@
     },
     {
       "channel_id": "Guardians of Liberty",
-      "post_id": "122195131172935135",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-11-27T08:38:16.021949+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795811896.0219636
-    },
-    {
-      "channel_id": "Guardians of Liberty",
       "post_id": "1440510304888979",
       "stage": "source_quality",
       "reason": "Low resolution: 188x250px (47,000 pixels; minimum required is 500px short-edge & 350,000px area)",
@@ -14463,69 +14445,6 @@
       "checked_at": "2026-11-27T09:05:22.274664+00:00",
       "policy_signature": "60a6ba0167a1798f",
       "retry_after": 1795813522.2746847
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1517005946950255",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-27T09:06:07.745079+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1795813567.7450924
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1516959920288191",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-27T09:06:07.764286+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1795813567.7642992
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1473266478280028",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-27T09:10:18.269485+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795813818.269495
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1473237064949636",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-27T09:10:25.695929+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795813825.6959505
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1473168524956490",
-      "stage": "source_quality",
-      "reason": "Blurry image detected: Sharpness variance 28.6 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-27T09:10:26.273930+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795813826.273953
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1473054578301218",
-      "stage": "source_quality",
-      "reason": "Low resolution: 249x249px (62,001 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-27T09:10:26.764411+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795813826.764431
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1472974791642530",
-      "stage": "source_quality",
-      "reason": "Low resolution: 583x474px (276,342 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-27T09:10:27.321613+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795813827.3216362
     },
     {
       "channel_id": "Guardians of Liberty",
@@ -18000,6 +17919,87 @@
       "checked_at": "2026-11-27T21:05:32.987031+00:00",
       "policy_signature": "76b1e04e7afade22",
       "retry_after": 1795856732.9870467
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1517005946950255",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-27T21:34:54.592170+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795858494.592181
+    },
+    {
+      "channel_id": "Music Store",
+      "post_id": "1516959920288191",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-27T21:34:54.605977+00:00",
+      "policy_signature": "76b1e04e7afade22",
+      "retry_after": 1795858494.6059904
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1473266478280028",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-27T21:37:24.983113+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795858644.9831254
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1473237064949636",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-27T21:37:32.099309+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795858652.099328
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122131643487277454",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-27T21:37:36.278417+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795858656.278438
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1473168524956490",
+      "stage": "source_quality",
+      "reason": "Blurry image detected: Sharpness variance 28.6 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-27T21:37:36.448943+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795858656.4489648
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1473054578301218",
+      "stage": "source_quality",
+      "reason": "Low resolution: 249x249px (62,001 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-27T21:37:36.577837+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795858656.5778522
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122195131172935135",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-11-27T21:37:40.728334+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795858660.7283497
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1472974791642530",
+      "stage": "source_quality",
+      "reason": "Low resolution: 583x474px (276,342 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-27T21:37:41.015872+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795858661.0158916
     }
   ]
 }
