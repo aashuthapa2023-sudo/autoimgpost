@@ -1,60 +1,6 @@
 {
-  "updated_at": "2026-11-27T19:08:44.393944+00:00",
+  "updated_at": "2026-11-27T19:36:31.229444+00:00",
   "rejections": [
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1181048641089056",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-19T18:35:21.771571+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1795156521.7715907
-    },
-    {
-      "channel_id": "nepal_speaks",
-      "post_id": "1140943768481153",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-19T18:35:35.508919+00:00",
-      "policy_signature": "8821a6e8f53da85d",
-      "retry_after": 1795156535.5089386
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122130676647277454",
-      "stage": "content_or_layout",
-      "reason": "Source text or logo remains inside the photo; skipping to preserve the subject",
-      "checked_at": "2026-11-19T19:11:02.269255+00:00",
-      "policy_signature": "07959af165dc14e8",
-      "retry_after": 1795158662.2692716
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1496435682347255",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-19T20:05:35.299383+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1795161935.299398
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1508892364428280",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-19T20:05:40.013375+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1795161940.0133936
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1508698424447674",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-19T20:05:44.654681+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1795161944.6546996
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1508667854450731",
@@ -18000,6 +17946,60 @@
       "checked_at": "2026-11-27T19:08:44.393944+00:00",
       "policy_signature": "4d68babce634874c",
       "retry_after": 1795849724.3939617
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1627839792480291",
+      "stage": "content_or_layout",
+      "reason": "Source graphics leave too little usable photograph",
+      "checked_at": "2026-11-27T19:34:12.633041+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795851252.6330612
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1621791689962151",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-27T19:34:22.461908+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795851262.461923
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1621791689962151",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-27T19:35:33.480937+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795851333.4809604
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1213110687708607",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-27T19:36:19.957301+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795851379.9573238
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1677396817765642",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 9.9 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-27T19:36:25.149192+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795851385.1492205
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1191773400016580",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-27T19:36:31.229444+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795851391.2294672
     }
   ]
 }
