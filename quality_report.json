@@ -1,33 +1,6 @@
 {
-  "updated_at": "2026-11-27T15:15:01.830489+00:00",
+  "updated_at": "2026-11-27T15:38:39.863341+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1580049580655379",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-11-19T16:06:51.992238+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1795147611.992256
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1579765940683743",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-19T16:06:56.795072+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1795147616.7950907
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1579759334017737",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-19T16:07:04.639168+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1795147624.639186
-    },
     {
       "channel_id": "Music Store",
       "post_id": "122193105032675290",
@@ -13034,33 +13007,6 @@
       "retry_after": 1795739950.4762974
     },
     {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122194813334935135",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 5.5 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-26T12:39:33.303351+00:00",
-      "policy_signature": "51c812be1db27acd",
-      "retry_after": 1795739973.303369
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1619975476830243",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-26T12:39:39.195523+00:00",
-      "policy_signature": "51c812be1db27acd",
-      "retry_after": 1795739979.1955419
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122194794074935135",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-26T12:39:43.721268+00:00",
-      "policy_signature": "51c812be1db27acd",
-      "retry_after": 1795739983.721288
-    },
-    {
       "channel_id": "Life in Army Boots",
       "post_id": "122194642958935135",
       "stage": "topic_or_caption",
@@ -13095,42 +13041,6 @@
       "checked_at": "2026-11-26T12:41:11.906340+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795740071.9063544
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122131437447277454",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 25.7 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-26T13:07:45.068747+00:00",
-      "policy_signature": "51c812be1db27acd",
-      "retry_after": 1795741665.068767
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "1619805813513876",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-26T13:07:50.026311+00:00",
-      "policy_signature": "51c812be1db27acd",
-      "retry_after": 1795741670.0263293
-    },
-    {
-      "channel_id": "US Army Fans AI",
-      "post_id": "122194779776935135",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 3.4 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-26T13:07:54.054455+00:00",
-      "policy_signature": "51c812be1db27acd",
-      "retry_after": 1795741674.0544734
-    },
-    {
-      "channel_id": "Life in Army Boots",
-      "post_id": "1677613810419196",
-      "stage": "source_quality",
-      "reason": "Low resolution: 416x738px (307,008 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-26T13:08:32.790650+00:00",
-      "policy_signature": "e785af4341c904b4",
-      "retry_after": 1795741712.7906697
     },
     {
       "channel_id": "Life in Army Boots",
@@ -17741,15 +17651,6 @@
       "retry_after": 1795833636.6376905
     },
     {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1472112418395434",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-27T14:40:36.769612+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795793136.7696307
-    },
-    {
       "channel_id": "US Army Fans AI",
       "post_id": "122131663167277454",
       "stage": "topic_or_caption",
@@ -18000,6 +17901,105 @@
       "checked_at": "2026-11-27T15:15:01.830489+00:00",
       "policy_signature": "e785af4341c904b4",
       "retry_after": 1795835701.8305073
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122195282654935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-27T15:37:03.165351+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795837023.165365
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122194813334935135",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 5.5 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-27T15:37:12.189881+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795837032.1899023
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1619975476830243",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-27T15:37:18.140785+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795837038.140808
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122194794074935135",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-27T15:37:23.024045+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795837043.024065
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122131437447277454",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 25.7 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-27T15:37:29.136629+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795837049.13665
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "1619805813513876",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-27T15:37:35.390906+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795837055.3909292
+    },
+    {
+      "channel_id": "US Army Fans AI",
+      "post_id": "122194779776935135",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 3.4 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-27T15:37:40.137845+00:00",
+      "policy_signature": "51c812be1db27acd",
+      "retry_after": 1795837060.1378675
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "122195282654935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-27T15:38:06.442290+00:00",
+      "policy_signature": "e785af4341c904b4",
+      "retry_after": 1795837086.442307
+    },
+    {
+      "channel_id": "Life in Army Boots",
+      "post_id": "1677613810419196",
+      "stage": "source_quality",
+      "reason": "Low resolution: 416x738px (307,008 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-27T15:38:06.799260+00:00",
+      "policy_signature": "e785af4341c904b4",
+      "retry_after": 1795837086.7992811
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122195282654935135",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-27T15:38:39.721219+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795837119.7212348
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1472112418395434",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-27T15:38:39.863341+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795796619.8633635
     }
   ]
 }
