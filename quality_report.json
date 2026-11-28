@@ -1,24 +1,6 @@
 {
-  "updated_at": "2026-11-28T01:39:19.620135+00:00",
+  "updated_at": "2026-11-28T02:06:20.178744+00:00",
   "rejections": [
-    {
-      "channel_id": "Music Store",
-      "post_id": "1580036387323365",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-20T04:12:31.473997+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1795191151.4740055
-    },
-    {
-      "channel_id": "Music Store",
-      "post_id": "1580028980657439",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-20T04:12:31.488063+00:00",
-      "policy_signature": "76b1e04e7afade22",
-      "retry_after": 1795191151.488072
-    },
     {
       "channel_id": "Music Store",
       "post_id": "1580013197325684",
@@ -18000,6 +17982,24 @@
       "checked_at": "2026-11-28T01:39:19.620135+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795873159.6201532
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1677005084471482",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-11-28T02:06:14.602960+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795874774.6029787
+    },
+    {
+      "channel_id": "nepal_speaks",
+      "post_id": "1676975707807753",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 21.5 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-28T02:06:20.178744+00:00",
+      "policy_signature": "4d68babce634874c",
+      "retry_after": 1795874780.178761
     }
   ]
 }
