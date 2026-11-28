@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-28T05:07:52.135188+00:00",
+  "updated_at": "2026-11-28T05:37:44.282702+00:00",
   "rejections": [
     {
       "channel_id": "Life in Army Boots",
@@ -14420,15 +14420,6 @@
       "retry_after": 1795838902.8478894
     },
     {
-      "channel_id": "daily_netflix",
-      "post_id": "1626640669266870",
-      "stage": "topic_or_caption",
-      "reason": "Source caption is missing, context-free or outside this page topic",
-      "checked_at": "2026-11-27T17:34:19.321063+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1795844059.3210754
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1503339584990198",
       "stage": "photo_extraction",
@@ -17885,15 +17876,6 @@
       "retry_after": 1795884035.9542706
     },
     {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1472112418395434",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-28T04:40:36.295198+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795843536.295217
-    },
-    {
       "channel_id": "Daily Hollywood",
       "post_id": "1503772378280252",
       "stage": "content_or_layout",
@@ -18000,6 +17982,24 @@
       "checked_at": "2026-11-28T05:07:52.135188+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1795885672.1352057
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1626640669266870",
+      "stage": "topic_or_caption",
+      "reason": "Source caption is missing, context-free or outside this page topic",
+      "checked_at": "2026-11-28T05:34:28.672101+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795887268.6721122
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1472112418395434",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-28T05:37:44.282702+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795846964.2827237
     }
   ]
 }
