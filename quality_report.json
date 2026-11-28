@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-28T10:41:45.901873+00:00",
+  "updated_at": "2026-11-28T11:10:03.324191+00:00",
   "rejections": [
     {
       "channel_id": "Life in Army Boots",
@@ -14501,33 +14501,6 @@
       "retry_after": 1795858494.6059904
     },
     {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122195012966935135",
-      "stage": "content_or_layout",
-      "reason": "Removed source title is ambiguous or too long",
-      "checked_at": "2026-11-27T22:10:08.223708+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795860608.2237277
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122131549995277454",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-11-27T22:10:12.458263+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795860612.4582863
-    },
-    {
-      "channel_id": "daily_netflix",
-      "post_id": "1619516196856367",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 21.8 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-27T22:35:19.743339+00:00",
-      "policy_signature": "60a6ba0167a1798f",
-      "retry_after": 1795862119.7433622
-    },
-    {
       "channel_id": "Music Store",
       "post_id": "1517116980272485",
       "stage": "topic_or_caption",
@@ -14544,87 +14517,6 @@
       "checked_at": "2026-11-27T22:36:00.010417+00:00",
       "policy_signature": "76b1e04e7afade22",
       "retry_after": 1795862160.010435
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1620500040091316",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 15.8 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-27T22:36:23.142452+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795862183.1424723
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1620483346759652",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 13.1 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-27T22:36:28.526854+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795862188.5268738
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1620421650099155",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 27.1 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-27T22:36:33.875170+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795862193.8751938
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1503345268322963",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 8.6 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-27T22:36:43.817999+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795862203.818019
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1620358650105455",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-27T22:36:49.083693+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795862209.0837162
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1516713373646179",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-27T22:36:52.605490+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795862212.6055114
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122131517433277454",
-      "stage": "content_or_layout",
-      "reason": "Source frame would crop a face; choose another image",
-      "checked_at": "2026-11-27T22:39:36.241670+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795862376.2416892
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122131506975277454",
-      "stage": "content_or_layout",
-      "reason": "Removed source headline contains uncertain OCR words",
-      "checked_at": "2026-11-27T22:39:41.116916+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795862381.1169345
-    },
-    {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "122194923770935135",
-      "stage": "source_quality",
-      "reason": "Low resolution: 512x512px (262,144 pixels; minimum required is 500px short-edge & 350,000px area)",
-      "checked_at": "2026-11-27T22:39:41.328039+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795862381.328058
     },
     {
       "channel_id": "daily_netflix",
@@ -17624,15 +17516,6 @@
       "retry_after": 1795901917.501846
     },
     {
-      "channel_id": "Guardians of Liberty",
-      "post_id": "1472112418395434",
-      "stage": "source_image",
-      "reason": "Image is unavailable or corrupt",
-      "checked_at": "2026-11-28T10:08:09.831238+00:00",
-      "policy_signature": "c6efe068d93156f8",
-      "retry_after": 1795863189.8312538
-    },
-    {
       "channel_id": "daily_netflix",
       "post_id": "1627884745809129",
       "stage": "photo_extraction",
@@ -18000,6 +17883,123 @@
       "checked_at": "2026-11-28T10:41:45.901873+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795905705.901891
+    },
+    {
+      "channel_id": "daily_netflix",
+      "post_id": "1619516196856367",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 21.8 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-28T11:05:02.741220+00:00",
+      "policy_signature": "60a6ba0167a1798f",
+      "retry_after": 1795907102.7412372
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1620500040091316",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 15.8 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-28T11:06:11.185581+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795907171.1855984
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1620483346759652",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 13.1 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-28T11:06:20.255386+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795907180.2554045
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1620421650099155",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 27.1 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-28T11:06:29.327003+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795907189.3270185
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1503345268322963",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 8.6 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-28T11:06:46.456980+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795907206.456998
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1620358650105455",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-28T11:06:55.260619+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795907215.2606387
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1516713373646179",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-28T11:07:01.147995+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795907221.1480114
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122195012966935135",
+      "stage": "content_or_layout",
+      "reason": "Removed source title is ambiguous or too long",
+      "checked_at": "2026-11-28T11:09:39.688803+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795907379.6888208
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122131549995277454",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-11-28T11:09:47.130885+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795907387.1309018
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "1472112418395434",
+      "stage": "source_image",
+      "reason": "Image is unavailable or corrupt",
+      "checked_at": "2026-11-28T11:09:47.333599+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795866887.333616
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122131517433277454",
+      "stage": "content_or_layout",
+      "reason": "Source frame would crop a face; choose another image",
+      "checked_at": "2026-11-28T11:09:54.674402+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795907394.6744158
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122131506975277454",
+      "stage": "content_or_layout",
+      "reason": "Removed source headline contains uncertain OCR words",
+      "checked_at": "2026-11-28T11:10:02.971419+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795907402.9714355
+    },
+    {
+      "channel_id": "Guardians of Liberty",
+      "post_id": "122194923770935135",
+      "stage": "source_quality",
+      "reason": "Low resolution: 512x512px (262,144 pixels; minimum required is 500px short-edge & 350,000px area)",
+      "checked_at": "2026-11-28T11:10:03.324191+00:00",
+      "policy_signature": "c6efe068d93156f8",
+      "retry_after": 1795907403.324209
     }
   ]
 }
