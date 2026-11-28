@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-28T04:40:36.295198+00:00",
+  "updated_at": "2026-11-28T04:54:18.465350+00:00",
   "rejections": [
     {
       "channel_id": "Life in Army Boots",
@@ -13430,33 +13430,6 @@
       "retry_after": 1795799799.2154284
     },
     {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1503772378280252",
-      "stage": "content_or_layout",
-      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
-      "checked_at": "2026-11-27T06:36:12.298515+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795804572.298534
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1619516196856367",
-      "stage": "photo_extraction",
-      "reason": "Blurry image detected: Sharpness variance 21.8 is below minimum threshold of 35.0",
-      "checked_at": "2026-11-27T06:36:17.410953+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795804577.410969
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1515990117051838",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-27T06:36:20.554333+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795804580.5543504
-    },
-    {
       "channel_id": "nepal_speaks",
       "post_id": "1676841361154521",
       "stage": "content_or_layout",
@@ -13545,15 +13518,6 @@
       "checked_at": "2026-11-27T07:06:02.068202+00:00",
       "policy_signature": "e71458db959ad8b1",
       "retry_after": 1795806362.068215
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1503457618311728",
-      "stage": "duplicate_photo",
-      "reason": "Retained photograph was already published to this page",
-      "checked_at": "2026-11-27T07:06:11.746213+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795806371.7462282
     },
     {
       "channel_id": "Daily Hollywood",
@@ -13809,15 +13773,6 @@
     },
     {
       "channel_id": "Daily Hollywood",
-      "post_id": "1516280903689426",
-      "stage": "content_or_layout",
-      "reason": "Unknown source lettering or watermark overlaps the subject",
-      "checked_at": "2026-11-27T10:05:28.266856+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795817128.2668731
-    },
-    {
-      "channel_id": "Daily Hollywood",
       "post_id": "1514693510514832",
       "stage": "content_or_layout",
       "reason": "Unknown source lettering or watermark overlaps the subject",
@@ -13869,15 +13824,6 @@
       "checked_at": "2026-11-27T10:36:38.629315+00:00",
       "policy_signature": "4d68babce634874c",
       "retry_after": 1795818998.6293335
-    },
-    {
-      "channel_id": "Daily Hollywood",
-      "post_id": "1516163177034532",
-      "stage": "content_or_layout",
-      "reason": "Source headline needs a proved nonempty removed panel",
-      "checked_at": "2026-11-27T11:06:06.497406+00:00",
-      "policy_signature": "e71458db959ad8b1",
-      "retry_after": 1795820766.4974234
     },
     {
       "channel_id": "US Army Fans AI",
@@ -18000,6 +17946,60 @@
       "checked_at": "2026-11-28T04:40:36.295198+00:00",
       "policy_signature": "c6efe068d93156f8",
       "retry_after": 1795843536.295217
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1503772378280252",
+      "stage": "content_or_layout",
+      "reason": "Complete source-panel headline did not pass caption grounding: Model output changed observable source facts",
+      "checked_at": "2026-11-28T04:53:52.054161+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795884832.054178
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1516280903689426",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-28T04:53:56.755426+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795884836.7554429
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1516163177034532",
+      "stage": "content_or_layout",
+      "reason": "Source headline needs a proved nonempty removed panel",
+      "checked_at": "2026-11-28T04:54:01.536271+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795884841.5362897
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1619516196856367",
+      "stage": "photo_extraction",
+      "reason": "Blurry image detected: Sharpness variance 21.8 is below minimum threshold of 35.0",
+      "checked_at": "2026-11-28T04:54:09.251741+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795884849.2517564
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1515990117051838",
+      "stage": "content_or_layout",
+      "reason": "Unknown source lettering or watermark overlaps the subject",
+      "checked_at": "2026-11-28T04:54:14.024134+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795884854.0241525
+    },
+    {
+      "channel_id": "Daily Hollywood",
+      "post_id": "1503457618311728",
+      "stage": "duplicate_photo",
+      "reason": "Retained photograph was already published to this page",
+      "checked_at": "2026-11-28T04:54:18.465350+00:00",
+      "policy_signature": "e71458db959ad8b1",
+      "retry_after": 1795884858.4653654
     }
   ]
 }
